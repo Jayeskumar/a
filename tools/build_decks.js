@@ -65,6 +65,21 @@ async function iconPng(Icon, color, size = 256) {
 const FEATURE_ICONS = [fa.FaBolt, fa.FaBrain, fa.FaChartLine, fa.FaShieldAlt, fa.FaMobileAlt, fa.FaCogs];
 const INNOVATION_ICONS = [fa.FaLightbulb, fa.FaRocket, fa.FaStar, fa.FaGem];
 
+// QR code for a URL, drawn by CertChain's from-scratch encoder (tools/qr_svg.py); null if Python is unavailable.
+const { execFileSync } = require("child_process");
+async function qrPng(url) {
+  for (const py of ["python3", "python"]) {
+    try {
+      const svg = execFileSync(py, [path.join(__dirname, "qr_svg.py"), url], { encoding: "utf8" });
+      const png = await sharp(Buffer.from(svg)).resize(600, 600, { kernel: "nearest" }).png().toBuffer();
+      return "image/png;base64," + png.toString("base64");
+    } catch (e) {
+      // try the next interpreter name
+    }
+  }
+  return null;
+}
+
 const shadow = () => ({ type: "outer", color: "000000", opacity: 0.14, blur: 8, offset: 2, angle: 90 });
 
 // "Component -> what it does" or "Algorithm – purpose" → [head, tail]
@@ -336,6 +351,12 @@ async function buildDeck(pitchPath, outDir, team) {
     { text: `cd ${pitch.dir} && python app.py`, options: { color: C.background1, fontFace: "Courier New" } },
   ], { x: M, y: 4.3, w: 11.5, h: 1.0, fontSize: 15, margin: 0, valign: "top", paraSpaceAfter: 8, isTextBox: true, objectName: "Links" });
   s.addText("Questions?", { x: M, y: 5.8, w: 6, h: 0.7, fontSize: 26, bold: true, color: C.accent6, margin: 0, isTextBox: true, objectName: "Questions" });
+  const qr = await qrPng(`${team.github}/tree/${team.branch}/${pitch.dir}`);
+  if (qr) {
+    s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: 9.95, y: 1.35, w: 2.75, h: 2.75, rectRadius: 0.12, fill: { color: C.background1 }, line: { type: "none" }, objectName: "QR card" });
+    s.addImage({ data: qr, x: 10.05, y: 1.45, w: 2.55, h: 2.55, objectName: "QR code", altText: "QR code linking to the project's code" });
+    s.addText("Scan for the code", { x: 9.95, y: 4.12, w: 2.75, h: 0.3, fontSize: 12, color: C.accent6, align: "center", margin: 0, isTextBox: true, objectName: "QR caption" });
+  }
   s.addNotes("Close with the impact line, invite questions. Keep the demo tab open in case judges want to try it.");
 
   fs.mkdirSync(outDir, { recursive: true });

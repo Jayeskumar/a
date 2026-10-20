@@ -45,10 +45,11 @@ Measured results for every project are in [`docs/PORTFOLIO.md`](docs/PORTFOLIO.m
 | What | Where |
 |---|---|
 | **Complete report (PDF, A4, ~180 pages)**: cover, strategy playbook, portfolio overview and all 19 project reports with screenshots and architecture diagrams | [`docs/QUANTIX2K26_Report.pdf`](docs/QUANTIX2K26_Report.pdf) |
-| **Pitch decks**: 19 × 11-slide PowerPoint decks with speaker notes | [`decks/`](decks/) |
+| **Pitch decks**: 19 × 11-slide PowerPoint decks with speaker notes and a scan-to-code QR on the closing slide | [`decks/`](decks/) |
+| **Demo videos**: a ~45 s captioned walkthrough per project (title card, live demo, every tab, results card), ready to upload as the "demo link" | `node tools/record_demos.js` → `build/videos/*.mp4` |
 | **Per-project reports**: problem, architecture, algorithms, results, demo script, judges' Q&A | `projects/NN-name/REPORT.md` |
 | **Strategy playbook**: rules, domain picks, 24-hour plan, checklists | [`docs/STRATEGY.md`](docs/STRATEGY.md) |
-| **Working code**: 19 offline demos + showcase hub, 1,159 unit tests, CI on Linux/Windows × Python 3.9/3.13 | [`projects/`](projects/), [`run_all.py`](run_all.py) |
+| **Working code**: 19 offline demos + showcase hub, 1,159 unit tests, a start-up smoke test of every server and a browser QA sweep; CI on Linux/Windows × Python 3.9/3.13 | [`projects/`](projects/), [`run_all.py`](run_all.py) |
 
 ## Gallery
 
@@ -69,6 +70,15 @@ cd projects/03-pulseguard && python app.py      # one project → http://127.0.0
 python run_all.py                               # every project at once + showcase hub on :8000
 python run_all.py --lan                         # bind 0.0.0.0 so judges can open demos on their phones
 python tools/run_tests.py                       # every project's unit tests
+python tools/smoke_test.py                      # start every server once and check it answers
+```
+
+Browser QA (needs Node 18+ and Playwright, with the demos running via `python run_all.py`):
+
+```bash
+NODE_PATH="$(npm root -g)" node tools/qa_sweep.js       # clicks every demo button and tab at desktop and
+                                                        # phone size; reports console errors, failed
+                                                        # requests and horizontal overflow
 ```
 
 ## Repository layout
@@ -81,7 +91,8 @@ hub/                  showcase page served on :8000 by run_all.py
 docs/STRATEGY.md      how to win: rules, domain picks, 24 h plan, checklists, Q&A
 docs/PORTFOLIO.md     generated summary of every project and its measured results
 docs/BUILD_SPEC.md    the conventions every project follows
-tools/                build_decks.js (pptx) · build_report.py (PDF) · build_portfolio.py · run_tests.py · screenshot.js
+tools/                build_decks.js (pptx) · build_report.py (PDF) · build_portfolio.py · record_demos.js (MP4)
+                      run_tests.py · smoke_test.py · qa_sweep.js · screenshot.js
 team.json             team name, members and GitHub link, used on the title and closing slides
 ```
 
@@ -97,6 +108,9 @@ python tools/build_portfolio.py                          # → docs/PORTFOLIO.md
 python tools/build_report.py                             # → build/QUANTIX2K26_Report.pdf (copy to docs/)
 # 5. Fresh screenshot for a project (server must be running):
 NODE_PATH="$(npm root -g)" node tools/screenshot.js http://127.0.0.1:8003/ projects/03-pulseguard/docs/screenshot.png
+# 6. Demo videos (needs Playwright + ffmpeg; run on a scratch copy, since the demos write state files):
+python run_all.py --no-hub &                             # in the copy
+NODE_PATH="$(npm root -g)" node tools/record_demos.js build/videos 8003   # omit ports to record all 19
 ```
 
 ## Honesty notes

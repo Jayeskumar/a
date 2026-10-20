@@ -146,7 +146,8 @@ Rules of thumb: one message per slide, never read the slide aloud, demo before m
 - [ ] **PPT:** `decks/<project>.pptx`, customised and saved as PDF too
 - [ ] **Report:** `docs/QUANTIX2K26_Report.pdf` (rebuild with `python tools/build_report.py` after editing `team.json`) as a leave-behind for judges
 - [ ] **GitHub link:** a public repo with the README screenshot on top and a green CI badge (`.github/workflows/tests.yml` runs every project's tests on Linux and Windows)
-- [ ] **Demo link:** an unlisted YouTube or Drive video of the 3-minute demo; the apps are offline by design, so a video is the most reliable "link"
+- [ ] **Demo link:** an unlisted YouTube or Drive video of the 3-minute demo; the apps are offline by design, so a video is the most reliable "link". `node tools/record_demos.js` produces a ready-made ~45 s captioned MP4 per project as a fallback; record your own voice-over on top if time allows
+- [ ] **Dry run:** `python tools/smoke_test.py` and `node tools/qa_sweep.js` both clean on the laptop you will present from, and the closing-slide QR code scans to your repo
 - [ ] REPORT.md of the pitched project reviewed: every statistic double-checked and anything unsure marked approx.
 
 ## 9. Generic tough questions and crisp answers
