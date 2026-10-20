@@ -30,7 +30,7 @@ function svg(tag, attrs) {
   if (attrs) for (const [k, v] of Object.entries(attrs)) if (v != null) e.setAttribute(k, v);
   return e;
 }
-function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+function esc(s) { return String(s).replace(/ug\/m3/g, 'µg/m³').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 const fmt = (v, d = 0) => (v == null || Number.isNaN(v)) ? '-' : Number(v).toFixed(d);
 const sgn = v => (v < 0 ? '- ' : '+ ') + Math.abs(v);
 const pct = (v, d = 0) => v == null ? '-' : (v * 100).toFixed(d) + '%';
@@ -167,8 +167,8 @@ function renderKpis() {
     kpi('Official station (24-h)', fmt(ref), 'REF-A, CPCB method: one number for the whole town', catChip(ref)),
     kpi('Worst spot now', fmt(wv), worst ? worst.name : '-', catChip(wv)),
     kpi('Hidden exposure', fmt(m.hidden_exposure_pct, 0) + '%', 'of unhealthy sensor-hours the single station missed'),
-    kpi('Calibration error', '-' + fmt(m.calibration_rmse_reduction_pct, 0) + '%', 'PM2.5 RMSE vs reference, raw -> calibrated'),
-    kpi('Forecast vs persistence', '-' + fmt(m.forecast_gain_pct, 0) + '%', `MAE ${fmt(m.forecast_mae, 1)} vs ${fmt(m.persistence_mae, 1)} ug/m3 over 24 h`),
+    kpi('Calibration error cut', '\u2212' + fmt(m.calibration_rmse_reduction_pct, 0) + '%', 'PM2.5 RMSE vs reference, raw → calibrated'),
+    kpi('Forecast error vs persistence', '\u2212' + fmt(m.forecast_gain_pct, 0) + '%', `MAE ${fmt(m.forecast_mae, 1)} vs ${fmt(m.persistence_mae, 1)} µg/m³ over 24 h`),
   );
 }
 
@@ -573,7 +573,7 @@ function renderMapLegend() {
   const L = S.layer;
   let html = '';
   if (L === 'sigma') {
-    html = `<span class="ltitle">Kriging std. dev. PM2.5</span><span class="lrow">0 <i class="ramp" style="background:linear-gradient(90deg,${RAMPS.sigma.join(',')})"></i> ${fmt(S.sigmaMax || 0)} ug/m3</span><span class="lrow muted">higher far from sensors</span>`;
+    html = `<span class="ltitle">Kriging std. dev. PM2.5</span><span class="lrow">0 <i class="ramp" style="background:linear-gradient(90deg,${RAMPS.sigma.join(',')})"></i> ${fmt(S.sigmaMax || 0)} µg/m³</span><span class="lrow muted">higher far from sensors</span>`;
   } else if (L === 'sources') {
     html = `<span class="ltitle">Upwind excess (CWT)</span><span class="lrow">low <i class="ramp" style="background:linear-gradient(90deg,${RAMPS.sources.join(',')})"></i> high</span><span class="lrow muted">arrows: each sensor's dirtiest wind direction</span>`;
   } else {
@@ -602,7 +602,7 @@ function bindMap() {
     if (s) {
       const i = S.idx[s.id], a = F.aqi[t][i], fl = F.flag[t][i];
       const fn = ['', 'stuck reading', 'spike', 'drift - needs re-calibration'][fl];
-      html = `<b>${esc(s.id)} · ${esc(s.name)}</b><br>AQI ${fmt(a)} ${a != null ? '(' + cat(a).name + ')' : ''}<br>PM2.5 ${fmt(F.pm25[t][i], 1)} · PM10 ${fmt(F.pm10[t][i], 1)} ug/m3` +
+      html = `<b>${esc(s.id)} · ${esc(s.name)}</b><br>AQI ${fmt(a)} ${a != null ? '(' + cat(a).name + ')' : ''}<br>PM2.5 ${fmt(F.pm25[t][i], 1)} · PM10 ${fmt(F.pm10[t][i], 1)} µg/m³` +
         (fl ? `<br><span class="bad">Flagged: ${fn}</span>` : '') + (F.missing[t][i] ? '<br><span class="muted">offline this hour</span>' : '');
     } else {
       const x = ikx(px), y = iky(py), { P25, P10 } = layerPoints(t);
@@ -722,7 +722,7 @@ async function refreshSpot() {
     const fl = F.flag[t][i];
     const p25 = F.pm25[t][i], p10 = F.pm10[t][i];
     const prom = p25 == null ? '-' : (subIndex('pm25', p25) >= subIndex('pm10', p10 || 0) ? 'PM2.5' : 'PM10');
-    $('#spot-facts').innerHTML = `<span>PM2.5 <b>${fmt(p25, 1)}</b> ug/m3</span><span>PM10 <b>${fmt(p10, 1)}</b> ug/m3</span>` +
+    $('#spot-facts').innerHTML = `<span>PM2.5 <b>${fmt(p25, 1)}</b> µg/m³</span><span>PM10 <b>${fmt(p10, 1)}</b> µg/m³</span>` +
       `<span>Prominent: <b>${prom}</b></span><span>24-h AQI (CPCB): <b>${fmt(F.aqi24[t][i])}</b></span>` +
       (fl ? `<span class="bad">QA flag: ${['', 'stuck', 'spike', 'drift'][fl]} - excluded from map</span>` : '');
     let adv = null;
@@ -771,11 +771,11 @@ function spotWhySensor(d, t) {
   if (raw == null || rh == null) { box.innerHTML = '<p class="muted">Sensor offline this hour.</p>'; return; }
   const aw = Math.min(rh, 95) / 100, gf = 1 + m.kappa / 1.65 * aw / (1 - aw);
   const flag = d.flags[t];
-  box.innerHTML = `<div class="kv"><span>Raw sensor PM2.5</span><span>${fmt(raw, 1)} ug/m3</span>` +
+  box.innerHTML = `<div class="kv"><span>Raw sensor PM2.5</span><span>${fmt(raw, 1)} µg/m³</span>` +
     `<span>Humidity ${fmt(rh, 0)}%</span><span>inflates optical reading x${gf.toFixed(2)} (kappa ${m.kappa})</span>` +
-    `<span>Dry-corrected</span><span>${fmt(raw / gf, 1)} ug/m3</span>` +
-    `<span>After regression</span><span><b>${fmt(cal, 1)} ug/m3</b> (b1=${m.coef.PM_dry}, RH ${m.coef.RH}, T ${m.coef.T})</span>` +
-    `<span>Official station</span><span>${fmt(d.ref_pm25[t], 1)} ug/m3 at ${esc(d.nearest_reference)}${d.colocated ? ' (co-located)' : ''}</span></div>` +
+    `<span>Dry-corrected</span><span>${fmt(raw / gf, 1)} µg/m³</span>` +
+    `<span>After regression</span><span><b>${fmt(cal, 1)} µg/m³</b> (b1=${m.coef.PM_dry}, RH ${m.coef.RH}, T ${m.coef.T})</span>` +
+    `<span>Official station</span><span>${fmt(d.ref_pm25[t], 1)} µg/m³ at ${esc(d.nearest_reference)}${d.colocated ? ' (co-located)' : ''}</span></div>` +
     (flag ? `<p class="bad">Flagged ${flag}: ${esc((d.events.find(e => t >= e.start_hour && t <= e.end_hour) || {}).reason || '')}</p>` : '');
 }
 
@@ -822,9 +822,13 @@ function yGrid(s, sc, Y, x0, x1) {
   }
 }
 
+// Plain-language names for the forecast regression features (airsense/forecast.py FEATURES).
+const FEATURE_NAMES = { 'a(t)': 'PM2.5 anomaly now', 'a(t-1)': 'anomaly 1 h ago', 'a(t-23)': 'anomaly 23 h ago',
+  'ln wind': 'wind speed', 'rain': 'rain now', 'rain 12h': 'rain, last 12 h', 'RH': 'humidity',
+  'cos wind': 'wind from N/S', 'sin wind': 'wind from E/W', 'Sunday': 'Sunday' };
 function lineChart(box, o) {
   const W = Math.max(320, box.clientWidth || 600), H = o.height || 230;
-  const m = { l: 42, r: 12, t: 10, b: 26 };
+  const m = { l: 42, r: 12, t: o.yLabel ? 24 : 10, b: 26 };
   const n = o.n;
   let ymax = 0;
   for (const s of o.series) for (const v of s.values) if (v != null && v > ymax) ymax = v;
@@ -836,7 +840,7 @@ function lineChart(box, o) {
   const s = svg('svg', { viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': o.label || 'chart' });
   for (const sh of o.shades || []) s.append(svg('rect', { x: X(sh.from) - 1, y: m.t, width: Math.max(2, X(sh.to) - X(sh.from) + 2), height: H - m.t - m.b, fill: sh.color }));
   yGrid(s, sc, Y, m.l, W - m.r);
-  if (o.yLabel) { const t = svg('text', { x: m.l, y: m.t - 1 }); t.textContent = ''; s.append(t); }
+  if (o.yLabel) { const t = svg('text', { x: 2, y: 11, class: 'ylab' }); t.textContent = o.yLabel; s.append(t); }
   for (const [i, lab] of o.xticks || []) {
     const t = svg('text', { x: X(i), y: H - 8, 'text-anchor': 'middle' }); t.textContent = lab; s.append(t);
   }
@@ -889,13 +893,14 @@ function lineChart(box, o) {
 function aqiBars(box, fc, H) {
   const W = Math.max(300, box.clientWidth || 380);
   H = H || 200;
-  const m = { l: 34, r: 8, t: 10, b: 22 }, n = fc.aqi.length;
+  const m = { l: 34, r: 8, t: 22, b: 22 }, n = fc.aqi.length;
   const sc = niceScale(Math.max(...fc.aqi_hi.map(v => v || 0), 60));
   const ymax = sc.max;
   const bw = (W - m.l - m.r) / n;
   const Y = v => H - m.b - v / ymax * (H - m.t - m.b);
   const s = svg('svg', { viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': '24-hour AQI forecast' });
   yGrid(s, sc, Y, m.l, W - m.r);
+  { const t = svg('text', { x: 2, y: 11, class: 'ylab' }); t.textContent = 'AQI (CPCB) · hour of day'; s.append(t); }
   const best = fc.best_run ? fc.best_run.index : -1;
   const thr = S.meta.profileThreshold ? S.meta.profileThreshold[S.profile] : null;
   const tip = el('div', { class: 'ctip', hidden: true });
@@ -909,7 +914,7 @@ function aqiBars(box, fc, H) {
     const hit = svg('rect', { x, y: m.t, width: bw, height: H - m.t - m.b, fill: 'transparent' });
     hit.addEventListener('mousemove', ev => {
       const rr = box.getBoundingClientRect();
-      tip.innerHTML = `<b>${esc(fc.labels[i])}</b><div>AQI ${v} (${c ? c.name : '-'})</div><div class="muted">80% interval ${fc.aqi_lo[i]}-${fc.aqi_hi[i]}</div><div class="muted">PM2.5 ${fmt(fc.pm25[i], 1)} ug/m3</div>`;
+      tip.innerHTML = `<b>${esc(fc.labels[i])}</b><div>AQI ${v} (${c ? c.name : '-'})</div><div class="muted">80% interval ${fc.aqi_lo[i]}-${fc.aqi_hi[i]}</div><div class="muted">PM2.5 ${fmt(fc.pm25[i], 1)} µg/m³</div>`;
       tip.hidden = false;
       tip.style.left = Math.min(ev.clientX - rr.left + 10, rr.width - tip.offsetWidth - 4) + 'px'; tip.style.top = '4px';
     });
@@ -950,10 +955,10 @@ function rose(box, r) {
     const p = `M${c} ${c}L${c + Math.sin(a0) * rr} ${c - Math.cos(a0) * rr}A${rr} ${rr} 0 0 1 ${c + Math.sin(a1) * rr} ${c - Math.cos(a1) * rr}Z`;
     const peak = sec.dir === r.peak_dir;
     const w = svg('path', { d: p, fill: peak ? '#3a2a8f' : 'var(--brand)', opacity: peak ? 0.95 : 0.55, stroke: 'var(--surface)', 'stroke-width': 1 });
-    const ti = svg('title'); ti.textContent = `${sec.label}: ${sec.mean_excess} ug/m3 excess over ${sec.hours} h`; w.append(ti);
+    const ti = svg('title'); ti.textContent = `${sec.label}: ${sec.mean_excess} µg/m³ excess over ${sec.hours} h`; w.append(ti);
     s.append(w);
   }
-  const t = svg('text', { x: 2, y: 11 }); t.textContent = `outer ring ${fmt(mx, 0)} ug/m3`; s.append(t);
+  const t = svg('text', { x: 2, y: 11 }); t.textContent = `outer ring ${fmt(mx, 0)} µg/m³`; s.append(t);
   box.innerHTML = ''; box.append(s);
 }
 
@@ -998,7 +1003,7 @@ async function renderSensorDetail() {
     `<span><i style="background:var(--ref)"></i>${d.colocated ? 'Reference (co-located)' : 'Official station ' + esc(ref.id)}</span>` +
     `<span><i class="box" style="background:var(--flag-spike)"></i>spike</span><span><i class="box" style="background:var(--flag-stuck)"></i>stuck</span><span><i class="box" style="background:var(--flag-drift)"></i>drift</span>`;
   lineChart($('#sd-chart'), {
-    n: n - from, height: 250, label: 'PM2.5 time series',
+    n: n - from, height: 250, label: 'PM2.5 time series', yLabel: 'PM2.5 µg/m³',
     series: [{ name: 'Raw', color: 'var(--s2)', values: sl(d.raw_pm25), width: 1.3, opacity: 0.85 },
       { name: d.colocated ? 'Reference' : 'Official station', color: 'var(--ref)', values: sl(d.ref_pm25), width: 1.3, opacity: 0.7 },
       { name: 'Calibrated', color: 'var(--s1)', values: sl(d.cal_pm25), width: 2 }],
@@ -1015,25 +1020,25 @@ async function renderSensorDetail() {
     `<span>Humidity kappa</span><span>${c.kappa} (PM10 ${c10.kappa})</span>` +
     `<span>Model</span><span>${c.intercept} ${sgn(c.coef.PM_dry)} x PM_dry ${sgn(c.coef.RH)} x RH ${sgn(c.coef.T)} x T</span></div>` +
     `<p class="mini-h" style="margin-top:6px">PM2.5 RMSE on 2 hold-out days</p><div id="sd-cal-bars"></div>` +
-    (d.field_validation ? `<p class="hint">Field check vs reference over 4 weeks: raw MAE ${d.field_validation.raw.mae} -> calibrated ${d.field_validation.calibrated.mae} ug/m3 (R2 ${d.field_validation.calibrated.r2}).</p>` : '');
+    (d.field_validation ? `<p class="hint">Field check vs reference over 4 weeks: raw MAE ${d.field_validation.raw.mae} → calibrated ${d.field_validation.calibrated.mae} µg/m³ (R² ${d.field_validation.calibrated.r2}).</p>` : '');
   const T = c.test, mx = Math.max(T.raw.rmse, T.mlr.rmse, T.hybrid.rmse);
   barList($('#sd-cal-bars'), [{ label: 'Raw', v: T.raw.rmse, color: 'var(--s2)' }, { label: 'MLR only', v: T.mlr.rmse, color: 'var(--s3)' },
     { label: 'Humidity + MLR', v: T.hybrid.rmse, color: 'var(--s1)' }], mx, '');
   rose($('#sd-rose'), d.rose);
   const r = d.rose;
   $('#sd-rose-hint').innerHTML = r.peak_dir == null ? 'Not enough wind data.' :
-    `Dirtiest wind: from <b>${r.peak_label}</b> (${r.peak_excess} ug/m3 excess, ${r.peak_ratio}x this sensor's average). ` +
+    `Dirtiest wind: from <b>${r.peak_label}</b> (${r.peak_excess} µg/m³ excess, ${r.peak_ratio}x this sensor's average). ` +
     (r.upwind.length ? 'Upwind: ' + r.upwind.map(u => `<b>${esc(u.name)}</b> (${u.km} km)`).join(', ') + '.' : 'No mapped source upwind - worth a site visit.');
   const fc = d.forecast;
   lineChart($('#sd-fc'), {
     n: 24, height: 170, series: [{ name: 'Forecast', color: 'var(--s1)', values: fc.pm25 }, { name: 'Persistence', color: 'var(--s2)', values: fc.pm25.map(() => fc.persistence_pm25), width: 1.5, dash: '5 4' }],
     band: { lo: fc.pm25_lo, hi: fc.pm25_hi }, xticks: [[0, fc.labels[0].slice(-5)], [8, fc.labels[8].slice(-5)], [16, fc.labels[16].slice(-5)], [23, fc.labels[23].slice(-5)]],
-    xlabel: i => fc.labels[i], label: '24 hour PM2.5 forecast',
+    xlabel: i => fc.labels[i], label: '24 hour PM2.5 forecast', yLabel: 'PM2.5 µg/m³',
   });
   const w = $('#sd-fc-why');
   w.innerHTML = fc.contributions.length ? '<p class="muted" style="margin:6px 0 2px">What moves the next hour (log-anomaly effect):</p>' +
     fc.contributions.slice().sort((a, b) => Math.abs(b.effect) - Math.abs(a.effect)).slice(0, 4).map(x =>
-      `<div class="wrow"><span>${esc(x.feature)}</span><span class="barbox"><span class="bar" style="display:block;width:${Math.min(100, Math.abs(x.effect) * 200)}%;background:${x.effect >= 0 ? 'var(--s2)' : 'var(--s1)'}"></span></span><span class="num">${x.effect >= 0 ? '+' : ''}${x.effect}</span></div>`).join('')
+      `<div class="wrow"><span title="${esc(x.feature)}">${esc(FEATURE_NAMES[x.feature] || x.feature)}</span><span class="barbox"><span class="bar" style="display:block;width:${Math.min(100, Math.abs(x.effect) * 200)}%;background:${x.effect >= 0 ? 'var(--s2)' : 'var(--s1)'}"></span></span><span class="num">${x.effect >= 0 ? '+' : ''}${x.effect}</span></div>`).join('')
     : (fc.stale ? '<p class="muted">Sensor flagged or offline at the forecast origin: forecast falls back to its daily profile.</p>' : '');
 }
 
@@ -1090,18 +1095,18 @@ async function renderReport() {
   const k = $('#report-kpis');
   k.innerHTML = '';
   k.append(
-    kpi('Calibration RMSE', `${cal.pm25.mean.raw.rmse} \u2192 ${cal.pm25.mean.hybrid.rmse}`, `ug/m3 PM2.5, -${cal.pm25.rmse_reduction_pct}% (PM10 -${cal.pm10.rmse_reduction_pct}%)`),
+    kpi('Calibration RMSE', `${cal.pm25.mean.raw.rmse} \u2192 ${cal.pm25.mean.hybrid.rmse}`, `µg/m³ PM2.5, -${cal.pm25.rmse_reduction_pct}% (PM10 -${cal.pm10.rmse_reduction_pct}%)`),
     kpi('Fault detection', `${pct(fe.overall.event_precision)} / ${pct(fe.overall.event_recall)}`, `precision / recall, ${fe.overall.detected} flags vs ${fe.overall.injected} injected`),
-    kpi('Forecast MAE (24 h)', fmt(fc.mae.model, 2), `vs persistence ${fc.mae.persistence}, seasonal ${fc.mae.seasonal} ug/m3`),
+    kpi('Forecast MAE (24 h)', fmt(fc.mae.model, 2), `vs persistence ${fc.mae.persistence}, seasonal ${fc.mae.seasonal} µg/m³`),
     kpi('Interpolation MAE', `${fmt(ip.kriging.mae, 2)}`, `kriging vs ${fmt(ip.nearest_ref.mae, 2)} using the one official station`),
     kpi('Forecast interval', `${fc.interval_coverage_80}%`, 'of actuals inside the 80% interval (target 80%)'),
   );
   // calibration grouped bars
   $('#cal-legend').innerHTML = '<span><i class="box" style="background:var(--s2)"></i>Raw</span><span><i class="box" style="background:var(--s3)"></i>MLR only</span><span><i class="box" style="background:var(--s1)"></i>Humidity correction + MLR</span>';
   groupBars($('#cal-chart'), [['PM2.5', cal.pm25.mean], ['PM10', cal.pm10.mean]]);
-  const fv = cal.field_validation.map(f => `${f.sensor} vs ${f.reference}: MAE ${f.raw.mae} -> ${f.calibrated.mae} ug/m3 (R2 ${f.calibrated.r2})`).join('; ');
+  const fv = cal.field_validation.map(f => `${f.sensor} vs ${f.reference}: MAE ${f.raw.mae} → ${f.calibrated.mae} µg/m³ (R² ${f.calibrated.r2})`).join('; ');
   $('#cal-notes').innerHTML = `<p><b>Field check (4 weeks, sensors left next to the references):</b> ${esc(fv)}.</p>` +
-    `<p><b>All 25 sensors vs synthetic ground truth:</b> MAE ${cal.field_vs_truth_pm25.raw_mae} -> ${cal.field_vs_truth_pm25.cal_mae} ug/m3 over ${cal.field_vs_truth_pm25.n} healthy sensor-hours.</p>` +
+    `<p><b>All 25 sensors vs synthetic ground truth:</b> MAE ${cal.field_vs_truth_pm25.raw_mae} → ${cal.field_vs_truth_pm25.cal_mae} µg/m³ over ${cal.field_vs_truth_pm25.n} healthy sensor-hours.</p>` +
     `<p class="muted">Per-sensor humidity kappa ranges ${Math.min(...cal.pm25.sensors.map(s => s.kappa))}-${Math.max(...cal.pm25.sensors.map(s => s.kappa))}. MLR alone cannot follow the non-linear humidity growth; the kappa-Koehler step fixes it.</p>`;
   // faults
   const ft = $('#fault-table');
@@ -1128,7 +1133,7 @@ async function renderReport() {
   lineChart($('#fc-chart'), {
     n: 24, height: 220, series: [{ name: 'Persistence', color: 'var(--s2)', values: bh.map(r => r.persistence) }, { name: 'Same hour yesterday', color: 'var(--s3)', values: bh.map(r => r.seasonal) },
       { name: 'AirSense', color: 'var(--s1)', values: bh.map(r => r.model), width: 2.5 }],
-    xticks: [[0, '1 h'], [5, '6 h'], [11, '12 h'], [17, '18 h'], [23, '24 h']], xlabel: i => `${i + 1} h ahead (MAE ug/m3)`, decimals: 2, label: 'MAE by horizon',
+    xticks: [[0, '1 h'], [5, '6 h'], [11, '12 h'], [17, '18 h'], [23, '24 h']], xlabel: i => `${i + 1} h ahead (MAE µg/m³)`, decimals: 2, label: 'MAE by horizon', yLabel: 'MAE, PM2.5 µg/m³',
   });
   // interpolation
   const it = $('#interp-table');
@@ -1146,7 +1151,7 @@ async function renderReport() {
   const curve = bins.map(b => v.model.nugget + v.model.psill * (1 - Math.exp(-b.h / v.model.range)));
   lineChart($('#vario-chart'), {
     n: bins.length, height: 160, series: [{ name: 'Empirical', color: 'var(--s2)', values: bins.map(b => b.gamma), width: 0.01, dots: true }, { name: 'Fitted exponential', color: 'var(--s1)', values: curve }],
-    xticks: bins.filter((b, i) => i % 2 === 0).map((b, i) => [i * 2, b.h.toFixed(1) + ' km']), xlabel: i => `lag ${bins[i].h.toFixed(2)} km, ${bins[i].n} pairs`, decimals: 3, label: 'Variogram',
+    xticks: bins.filter((b, i) => i % 2 === 0).map((b, i) => [i * 2, b.h.toFixed(1) + ' km']), xlabel: i => `lag ${bins[i].h.toFixed(2)} km, ${bins[i].n} pairs`, decimals: 3, label: 'Variogram', yLabel: 'semivariance γ(h)',
   });
   // fault list
   const fl = $('#fault-list');
@@ -1183,9 +1188,9 @@ function groupBars(box, groups) {
       const v = g[k2].rmse, x = x0 + ki * (bw + 2);
       s.append(svg('rect', { x, y: Y(v), width: bw, height: H - m.b - Y(v), fill: col, rx: 4 }));
       const t = svg('text', { x: x + bw / 2, y: Y(v) - 4, 'text-anchor': 'middle', fill: 'var(--text)' }); t.textContent = fmt(v, 1); s.append(t);
-      const ti = svg('title'); ti.textContent = `${name} ${lab}: RMSE ${v} ug/m3`; s.lastChild.append(ti);
+      const ti = svg('title'); ti.textContent = `${name} ${lab}: RMSE ${v} µg/m³`; s.lastChild.append(ti);
     });
-    const t = svg('text', { x: m.l + gi * gw + gw / 2, y: H - 8, 'text-anchor': 'middle', 'font-weight': 650 }); t.textContent = name + ' RMSE (ug/m3)'; s.append(t);
+    const t = svg('text', { x: m.l + gi * gw + gw / 2, y: H - 8, 'text-anchor': 'middle', 'font-weight': 650 }); t.textContent = name + ' RMSE (µg/m³)'; s.append(t);
   });
   box.innerHTML = ''; box.append(s);
 }
@@ -1201,7 +1206,7 @@ const CALC_EXAMPLES = {
 function renderCalcForm() {
   const f = $('#calc-form');
   f.innerHTML = '';
-  const units = { pm25: ['PM2.5', 'ug/m3, 24-h'], pm10: ['PM10', 'ug/m3, 24-h'], no2: ['NO2', 'ug/m3, 24-h'], so2: ['SO2', 'ug/m3, 24-h'], co: ['CO', 'mg/m3, 8-h'], o3: ['O3', 'ug/m3, 8-h'], nh3: ['NH3', 'ug/m3, 24-h'] };
+  const units = { pm25: ['PM2.5', 'µg/m³, 24-h'], pm10: ['PM10', 'µg/m³, 24-h'], no2: ['NO2', 'µg/m³, 24-h'], so2: ['SO2', 'µg/m³, 24-h'], co: ['CO', 'mg/m³, 8-h'], o3: ['O3', 'µg/m³, 8-h'], nh3: ['NH3', 'µg/m³, 24-h'] };
   for (const [k, [nm, u]] of Object.entries(units)) {
     f.append(el('label', null, el('span', null, nm + ' ', el('small', { text: u })), el('input', { type: 'number', min: 0, step: 'any', name: k, inputmode: 'decimal', placeholder: 'not measured' })));
   }
@@ -1209,7 +1214,7 @@ function renderCalcForm() {
   ex.innerHTML = '';
   for (const name of Object.keys(CALC_EXAMPLES)) ex.append(el('button', { class: 'chip', type: 'button', onclick: () => { fillCalc(CALC_EXAMPLES[name]); computeCalc(); } }, name));
   const bp = $('#bp-table');
-  $('#bp-source').textContent = 'Source: ' + S.meta.aqi_source + '. Concentrations in ug/m3 (CO in mg/m3). Averaging: 24-h, except CO and O3 (8-h). Severe upper bounds are an extrapolation for the formula only.';
+  $('#bp-source').textContent = 'Source: ' + S.meta.aqi_source + '. Concentrations in µg/m³ (CO in mg/m³). Averaging: 24-h, except CO and O3 (8-h). Severe upper bounds are an extrapolation for the formula only.';
   const bpData = S.meta.breakpoints;
   if (bpData) {
     const order = ['pm25', 'pm10', 'no2', 'so2', 'co', 'o3', 'nh3'];
@@ -1241,7 +1246,7 @@ async function computeCalc() {
     `<span class="${r.valid ? 'ok' : 'bad'}">${r.valid ? 'Valid AQI' : 'Not a valid AQI'}: ${esc(r.reason)}</span>`;
   const rows = Object.entries(r.sub_indices).sort((a, b) => b[1] - a[1]).map(([p, v]) => ({ label: pn(p), v, d: 0, color: (cat(Math.round(v)) || {}).color || '#999' }));
   barList($('#calc-bars'), rows, 500, '');
-  const why = Object.entries(r.rows || {}).map(([p, row]) => `${pn(p)} ${body[p]} falls in ${row.c_lo}-${row.c_hi} -> ${row.i_lo}-${row.i_hi}`).join('; ');
+  const why = Object.entries(r.rows || {}).map(([p, row]) => `${pn(p)} ${body[p]} falls in ${row.c_lo}-${row.c_hi} → ${row.i_lo}-${row.i_hi}`).join('; ');
   healthBox($('#calc-health'), r.aqi, r.advice);
   if (r.aqi != null) $('#calc-health').append(el('p', { class: 'muted', text: 'Linear interpolation: ' + why + '.' }));
 }

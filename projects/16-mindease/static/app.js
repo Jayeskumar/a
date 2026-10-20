@@ -298,11 +298,11 @@
     if (opts.dip && opts.dip.length) {
       var x0 = x(opts.dip[0]) - pad, x1 = x(opts.dip[opts.dip.length - 1]) + pad;
       out.push('<rect x="' + Math.max(m.l, x0) + '" y="' + m.t + '" width="' + (Math.min(m.l + iw, x1) - Math.max(m.l, x0)) + '" height="' + ih +
-        '" fill="var(--lav-soft)"/><text x="' + (Math.max(m.l, x0) + 4) + '" y="' + (m.t + 11) + '" font-size="10" fill="var(--lav-strong)" font-weight="600">' + esc(opts.dipLabel || "dip") + "</text>");
+        '" fill="var(--lav-soft)"/><text x="' + (Math.max(m.l, x0) + 4) + '" y="' + (m.t + 12) + '" font-size="11.5" fill="var(--lav-strong)" font-weight="600">' + esc(opts.dipLabel || "dip") + "</text>");
     }
     if (opts.band) {
       out.push('<rect x="' + m.l + '" y="' + y(opts.band[1]) + '" width="' + iw + '" height="' + (y(opts.band[0]) - y(opts.band[1])) +
-        '" fill="var(--brand-soft)" opacity=".7"/><text x="' + (m.l + iw - 4) + '" y="' + (y(opts.band[1]) + 11) + '" text-anchor="end" font-size="10" fill="var(--muted)">' + esc(opts.bandLabel) + "</text>");
+        '" fill="var(--brand-soft)" opacity=".7"/><text x="' + (m.l + iw - 4) + '" y="' + (y(opts.band[1]) + 12) + '" text-anchor="end" font-size="11.5" fill="var(--muted)">' + esc(opts.bandLabel) + "</text>");
     }
     out.push('<g class="axis">');
     opts.ticks.forEach(function (t) {
@@ -881,14 +881,14 @@
       if (r.exam) out.push('<rect x="' + (m.l + i * slot) + '" y="' + m.t + '" width="' + slot + '" height="' + ih + '" fill="var(--lav-soft)"/>');
     });
     var firstExam = rows.findIndex(function (r) { return r.exam; });
-    if (firstExam >= 0) out.push('<text x="' + (m.l + firstExam * slot + 4) + '" y="' + (m.t - 8) + '" font-size="10.5" fill="var(--lav-strong)" font-weight="600">Semester exams</text>');
+    if (firstExam >= 0) out.push('<text x="' + (m.l + firstExam * slot + 4) + '" y="' + (m.t - 8) + '" font-size="12" fill="var(--lav-strong)" font-weight="600">Semester exams</text>');
     out.push('<g class="axis">');
     for (var t = 0; t <= top; t += step) {
       out.push('<line class="gridline" x1="' + m.l + '" x2="' + (m.l + iw) + '" y1="' + y(t) + '" y2="' + y(t) + '"/><text x="' + (m.l - 6) + '" y="' + (y(t) + 3.5) + '" text-anchor="end">' + t + "</text>");
     }
     rows.forEach(function (r, i) {
       var cx = m.l + i * slot + slot / 2;
-      out.push('<text x="' + cx + '" y="' + (H - 22) + '" text-anchor="middle">Wk ' + r.week + '</text><text x="' + cx + '" y="' + (H - 8) + '" text-anchor="middle" font-size="10">' + r.pct_moderate_plus.toFixed(0) + (slot >= 64 ? "% mod+" : "%") + "</text>");
+      out.push('<text x="' + cx + '" y="' + (H - 22) + '" text-anchor="middle">Wk ' + r.week + '</text><text x="' + cx + '" y="' + (H - 8) + '" text-anchor="middle" font-size="11">' + r.pct_moderate_plus.toFixed(0) + (slot >= 64 ? "% mod+" : "%") + "</text>");
     });
     out.push("</g>");
     rows.forEach(function (r, i) {
@@ -909,7 +909,7 @@
         }
         acc += v;
       });
-      out.push('<text x="' + (cx + bw / 2) + '" y="' + (y(r.n) - 5) + '" text-anchor="middle" font-size="10.5" fill="var(--text)" font-weight="600">' + r.n + "</text>");
+      out.push('<text x="' + (cx + bw / 2) + '" y="' + (y(r.n) - 5) + '" text-anchor="middle" font-size="11.5" fill="var(--text)" font-weight="600">' + r.n + "</text>");
       out.push('<rect class="hit" data-i="' + i + '" x="' + (m.l + i * slot) + '" y="' + m.t + '" width="' + slot + '" height="' + ih + '" fill="transparent"/>');
     });
     out.push("</svg>");

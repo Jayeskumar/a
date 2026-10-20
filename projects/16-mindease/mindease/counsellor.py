@@ -96,8 +96,8 @@ def _narrative(rows, label):
     if jumps:
         d, r = max(jumps, key=lambda j: j[0])
         if d > 0:
-            notes.append("Biggest week-on-week rise: +%.0f points into week %d."
-                         % (d, r["week"]))
+            notes.append("Biggest %s week-on-week rise: +%.0f points into week %d."
+                         % (label, d, r["week"]))
     return notes
 
 

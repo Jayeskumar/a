@@ -244,7 +244,7 @@ main { padding: 14px 20px 8px; max-width: 1480px; margin: 0 auto; }
 .chart { width: 100%; min-height: 220px; position: relative; }
 .small-chart { min-height: 150px; }
 .chart svg { width: 100%; height: auto; display: block; overflow: visible; }
-.chart text { fill: var(--muted); font-size: 11px; }
+.chart text { fill: var(--muted); font-size: 12px; }
 .chart .gridline { stroke: var(--grid); stroke-width: 1; }
 .chart .axis { stroke: var(--axis); stroke-width: 1; }
 .chart .hoverline { stroke: var(--muted); stroke-width: 1; }
@@ -280,7 +280,7 @@ main { padding: 14px 20px 8px; max-width: 1480px; margin: 0 auto; }
 .ev b { font-weight: 650; }
 .rose { display: flex; justify-content: center; }
 .rose svg { width: 100%; max-width: 260px; height: auto; }
-.rose text { fill: var(--muted); font-size: 10.5px; }
+.rose text { fill: var(--muted); font-size: 11.5px; }
 .kv { display: grid; grid-template-columns: auto 1fr; gap: 3px 12px; font-size: 12.5px; margin: 8px 0; }
 .kv span:nth-child(odd) { color: var(--muted); }
 .kv span:nth-child(even) { font-variant-numeric: tabular-nums; }
@@ -350,3 +350,6 @@ main { padding: 14px 20px 8px; max-width: 1480px; margin: 0 auto; }
   .map-legend .sw { width: 10px; height: 8px; }
   .map-legend .lrow.muted { display: none; }
 }
+
+/* ------------------------------------------------------------ polish */
+.chart text.ylab { fill: var(--text-2); font-weight: 600; }

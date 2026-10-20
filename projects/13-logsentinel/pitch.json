@@ -89,6 +89,16 @@
     "More sources: IIS, Postfix, Windows Event Log, Kubernetes audit.",
     "Tunable rule editor and alert suppression lists in the UI."
   ],
+  "compare": {
+    "columns": ["Manual log review", "Enterprise SIEM", "LogSentinel"],
+    "rows": [
+      ["Works offline on a laptop", "Yes", "Partial", "Yes"],
+      ["Setup effort", "None", "High", "One command"],
+      ["Running cost", "Staff hours", "Licence + infra", "₹0, stdlib only"],
+      ["Correlates multi-step attacks", "No", "Yes", "Yes, kill-chain"],
+      ["Evidence + MITRE per alert", "No", "Partial", "Yes"]
+    ]
+  },
   "port": 8013,
   "dir": "projects/13-logsentinel"
 }

@@ -321,7 +321,7 @@
     // input image
     const ix = 14, iy = 100, ic = 8;
     parts.push('<text class="col-title" x="' + (ix + 64) + '" y="22" text-anchor="middle">Input 16×16</text>');
-    parts.push('<text x="' + (ix + 64) + '" y="38" text-anchor="middle">256 pixels</text>');
+    parts.push('<text class="sub" x="' + (ix + 64) + '" y="38" text-anchor="middle">256 pixels</text>');
     for (let i = 0; i < 256; i++) {
       parts.push('<rect x="' + (ix + (i % 16) * ic) + '" y="' + (iy + Math.floor(i / 16) * ic) + '" width="' + ic + '" height="' + ic + '" fill="' + ink(res.input[i]) + '"/>');
     }
@@ -336,7 +336,7 @@
       const top = new Set(L.top.map(t => t.unit));
       pos[h + 1] = {};
       parts.push('<text class="col-title" x="' + cx + '" y="22" text-anchor="middle">Hidden ' + (h + 1) + '</text>');
-      parts.push('<text x="' + cx + '" y="38" text-anchor="middle">' + L.size + ' ' + (state.model ? state.model.activation : '') + ' · ' + L.active + ' on</text>');
+      parts.push('<text class="sub" x="' + cx + '" y="38" text-anchor="middle">' + L.size + ' ' + (state.model ? state.model.activation : '') + ' · ' + L.active + ' on</text>');
       for (let j = 0; j < L.size; j++) {
         const x = gx + (j % cols) * cell, y = gy + Math.floor(j / cols) * cell;
         pos[h + 1][j] = [x + cell / 2, y + cell / 2];
@@ -350,7 +350,7 @@
     // output column
     const ox = 604;
     parts.push('<text class="col-title" x="' + ox + '" y="22" text-anchor="middle">Output</text>');
-    parts.push('<text x="' + ox + '" y="38" text-anchor="middle">softmax</text>');
+    parts.push('<text class="sub" x="' + ox + '" y="38" text-anchor="middle">softmax</text>');
     pos.out = {};
     for (let k = 0; k < 10; k++) {
       const y = 58 + k * 27;
@@ -489,6 +489,8 @@
     return new Promise(res => { const t0 = performance.now(); const tick = () => (fn() || performance.now() - t0 > (ms || 1500)) ? res() : setTimeout(tick, 40); tick(); });
   }
   let exSeq = 0;
+  // "6e-05%" reads like a glitch on a projector: show vanishing probabilities as "<0.01%".
+  function tinyPct(t) { return t.replace(/\b\d(?:\.\d+)?e-\d+%/g, '<0.01%'); }
   async function runExplain() {
     const box = $('#steps');
     if (!state.lastPixels) {
@@ -506,11 +508,11 @@
       if (seq !== exSeq) return;
       box.innerHTML = d.steps.map(s => {
         const back = /^(Backprop|Saliency|One gradient)/.test(s.title);
-        let h = '<div class="card step' + (back ? ' back' : '') + '"><h3>' + esc(s.title) + '</h3><p>' + esc(s.text) + '</p>';
+        let h = '<div class="card step' + (back ? ' back' : '') + '"><h3>' + esc(s.title) + '</h3><p>' + esc(tinyPct(s.text)) + '</p>';
         if (s.math) h += '<div class="math">' + esc(s.math) + '</div>';
         if (s.table) {
           h += '<div class="tbl-wrap"><table class="tbl"><thead><tr>' + s.table.cols.map(c => '<th>' + esc(c) + '</th>').join('') + '</tr></thead><tbody>' +
-            s.table.rows.map(r => '<tr>' + r.map(c => '<td>' + esc(c) + '</td>').join('') + '</tr>').join('') + '</tbody></table></div>';
+            s.table.rows.map(r => '<tr>' + r.map(c => '<td>' + esc(tinyPct(String(c))) + '</td>').join('') + '</tr>').join('') + '</tbody></table></div>';
         }
         return h + '</div>';
       }).join('');
@@ -582,7 +584,9 @@
   });
 
   function lineChart(svg, opt) {
-    const W = opt.w || 420, H = opt.h || 220, L = 40, R = 12, Tp = 30, B = 28;   // top band holds the legend
+    const cw = svg.getBoundingClientRect().width;
+    const W = cw > 40 ? Math.round(cw) : (opt.w || 420), H = opt.h || 220, L = 44, R = 14, Tp = 30, B = 40;   // top band holds the legend
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
     const xMax = Math.max(opt.xMax || 1, 1e-9), yMin = opt.yMin || 0, yMax = opt.yMax > yMin ? opt.yMax : yMin + 1;
     const X = x => L + (W - L - R) * x / xMax, Y = y => Tp + (H - Tp - B) * (1 - (y - yMin) / (yMax - yMin));
     const out = [];
@@ -591,11 +595,11 @@
       out.push('<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y + '" y2="' + y + '" stroke="var(--grid)"/>');
       out.push('<text x="' + (L - 6) + '" y="' + (y + 3.5) + '" text-anchor="end">' + (opt.yFmt ? opt.yFmt(yv) : yv.toFixed(2)) + '</text>');
     }
-    const step = Math.max(1, Math.ceil(xMax / 10));          // whole-number ticks
+    const step = Math.max(1, Math.ceil(xMax / (W < 380 ? 6 : 10)));          // whole-number ticks
     for (let xv = 0; xv <= xMax + 1e-9; xv += step) {
-      out.push('<text x="' + X(xv) + '" y="' + (H - 10) + '" text-anchor="middle">' + xv + '</text>');
+      out.push('<text x="' + X(xv) + '" y="' + (H - B + 17) + '" text-anchor="middle">' + xv + '</text>');
     }
-    out.push('<text x="' + (W - R) + '" y="' + (H - 0.5) + '" text-anchor="end">' + esc(opt.xLabel || 'epoch') + '</text>');
+    out.push('<text class="axis-title" x="' + (L + (W - L - R) / 2) + '" y="' + (H - 4) + '" text-anchor="middle">' + esc(opt.xLabel || 'epoch') + '</text>');
     for (const s of opt.series) {
       const pts = s.pts.filter(p => p[1] !== null && isFinite(p[1]));
       if (!pts.length) continue;
@@ -608,8 +612,8 @@
     for (const s of opt.series) {
       if (!s.label) continue;
       out.push('<line x1="' + lx + '" x2="' + (lx + 16) + '" y1="10" y2="10" stroke="' + s.color + '" stroke-width="2.5"' + (s.dash ? ' stroke-dasharray="' + s.dash + '"' : '') + '/>');
-      out.push('<text x="' + (lx + 21) + '" y="13.5" style="fill:var(--text-dim)">' + esc(s.label) + '</text>');
-      lx += 30 + 6.2 * s.label.length;
+      out.push('<text x="' + (lx + 21) + '" y="14" style="fill:var(--text-dim)">' + esc(s.label) + '</text>');
+      lx += 34 + 7 * s.label.length;
     }
     if (opt.empty) out.push('<text x="' + (W / 2) + '" y="' + (H / 2) + '" text-anchor="middle">' + esc(opt.empty) + '</text>');
     svg.innerHTML = out.join('');
@@ -792,8 +796,8 @@
       '<div class="kpi"><div class="v cmp">' + cmp(r.lcd_check_before, r.lcd_check_after, v => pct(v, 0)) + '</div><div class="l">unseen LCD digits (generalisation)</div></div>' +
       '<div class="kpi"><div class="v cmp">' + cmp(r.test_acc_before, r.test_acc_after, v => pct(v, 1)) + '</div><div class="l">original test set (forgetting?)</div></div>' +
       '<div class="kpi"><div class="v">' + r.seconds.toFixed(1) + ' s</div><div class="l">' + r.steps + ' SGD steps, ' + r.replay + ' replayed images each</div></div></div>' +
-      '<div class="chart" style="margin-top:8px"><svg id="ch-ft" viewBox="0 0 420 150"></svg></div>';
-    lineChart($('#ch-ft'), { h: 150, xMax: r.losses.length, yMin: 0, yMax: Math.max(0.5, Math.ceil(Math.max.apply(null, r.losses) * 4) / 4), xLabel: 'step', series: [
+      '<div class="chart" style="margin-top:8px"><svg id="ch-ft" viewBox="0 0 320 170"></svg></div>';
+    lineChart($('#ch-ft'), { h: 170, xMax: r.losses.length, yMin: 0, yMax: Math.max(0.5, Math.ceil(Math.max.apply(null, r.losses) * 4) / 4), xLabel: 'step', series: [
       { pts: r.losses.map((l, i) => [i + 1, l]), color: rgb(pal.brand), width: 2, label: 'batch loss' }] });
   }
 

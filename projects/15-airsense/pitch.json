@@ -92,6 +92,16 @@
     "Satellite and traffic data as forecast inputs",
     "Automatic re-calibration using the reference as a moving anchor"
   ],
+  "compare": {
+    "columns": ["One official station", "Raw low-cost sensors", "AirSense"],
+    "rows": [
+      ["Street-level coverage", "No", "Yes", "Yes, heat map"],
+      ["Reading quality", "Reference grade", "Drifts, over-reads", "Calibrated to ref."],
+      ["Flags faulty sensors", "Manual QA", "No", "Yes, automatic"],
+      ["24-h forecast + personal alerts", "No", "No", "Yes"],
+      ["Explains each number", "No", "No", "Yes"]
+    ]
+  },
   "port": 8015,
   "dir": "projects/15-airsense"
 }

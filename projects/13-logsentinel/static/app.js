@@ -39,9 +39,15 @@ function fmtTime(iso) {
   const d = new Date(iso);
   return d.toLocaleString(undefined, { month: "short", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit" });
 }
+function fmtAxis(epoch) {
+  const d = new Date(epoch * 1000);
+  return d.toLocaleDateString(undefined, { month: "short", day: "numeric" }) + " " +
+    d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit", hour12: false });
+}
+const CLOCK_FMT = new Intl.DateTimeFormat(undefined, { hour: "2-digit", minute: "2-digit", second: "2-digit" });
 function fmtClock(iso) {
   if (!iso) return "-";
-  return new Date(iso).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+  return CLOCK_FMT.format(new Date(iso));   // cached formatter: the live tail formats thousands of lines
 }
 
 const state = { summary: null, alerts: [], incidents: [], rpm: null };
@@ -99,7 +105,7 @@ function arcPath(cx, cy, r, start, end) {
 function renderDonut(sev) {
   const total = SEV_ORDER.reduce((a, s) => a + (sev[s] || 0), 0);
   const wrap = $("#donut"); wrap.replaceChildren();
-  const size = 150, cx = size / 2, cy = size / 2, r = 58, sw = 20;
+  const size = 180, cx = size / 2, cy = size / 2, r = 70, sw = 24;
   const s = svg("svg", { viewBox: `0 0 ${size} ${size}`, width: size, height: size, role: "img", "aria-label": "Alerts by severity" });
   if (total === 0) {
     s.append(svg("circle", { cx, cy, r, fill: "none", stroke: cssvar("--surface-3"), "stroke-width": sw }));
@@ -116,9 +122,9 @@ function renderDonut(sev) {
       acc += span;
     });
   }
-  s.append(svg("text", { x: cx, y: cy - 4, "text-anchor": "middle", fill: cssvar("--text"), "font-size": 26, "font-weight": 700 }));
+  s.append(svg("text", { x: cx, y: cy + 2, "text-anchor": "middle", fill: cssvar("--text"), "font-size": 32, "font-weight": 700 }));
   s.lastChild.textContent = total;
-  s.append(svg("text", { x: cx, y: cy + 14, "text-anchor": "middle", fill: cssvar("--muted"), "font-size": 11 }));
+  s.append(svg("text", { x: cx, y: cy + 22, "text-anchor": "middle", fill: cssvar("--muted"), "font-size": 12 }));
   s.lastChild.textContent = "alerts";
   wrap.append(s);
   const legend = el("div", { class: "legend" });
@@ -139,8 +145,8 @@ function renderAttackers(rows) {
   const max = Math.max(...rows.map(r => r.score));
   rows.forEach(r => {
     box.append(el("div", { class: "bar-row" }, [
-      el("span", { class: "ip", title: "Filter alerts for " + r.src, text: r.src, onclick: () => filterToSrc(r.src) }),
-      el("div", { class: "bar-track" }, el("div", { class: "bar-fill", style: `width:${Math.max(4, 100 * r.score / max)}%` })),
+      el("button", { class: "ip", type: "button", title: "Show the " + r.alerts + " alert(s) from " + r.src, text: r.src, onclick: () => filterToSrc(r.src) }),
+      el("div", { class: "bar-track", title: r.alerts + " alert(s): " + r.categories.join(", ") }, el("div", { class: "bar-fill", style: `width:${Math.max(4, 100 * r.score / max)}%;background:${sevColor(r.worst)}` })),
       el("span", { class: "val", text: String(r.score) }),
     ]));
   });
@@ -152,8 +158,8 @@ function renderCategories(cats) {
   const max = Math.max(...ents.map(e => e[1]));
   ents.forEach(([name, n]) => {
     box.append(el("div", { class: "cat-row" }, [
-      el("span", { text: name, style: "min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:60%" }),
-      el("span", { class: "cbar", style: `width:${Math.max(8, 90 * n / max)}px` }),
+      el("span", { class: "cname", text: name, title: name }),
+      el("span", { class: "ctrack" }, el("span", { class: "cbar", style: `width:${Math.max(8, 100 * n / max)}%` })),
       el("span", { class: "cn", text: String(n) }),
     ]));
   });
@@ -163,7 +169,8 @@ function renderCategories(cats) {
 function renderRpm(points) {
   const wrap = $("#rpm"); wrap.replaceChildren();
   if (!points || !points.length) { wrap.append(el("p", { class: "muted small", text: "No data." })); return; }
-  const W = 1000, H = 240, pad = { l: 44, r: 14, t: 14, b: 26 };
+  const W = Math.max(300, Math.round(wrap.clientWidth || 1000));
+  const H = W < 560 ? 200 : 260, pad = { l: 52, r: 14, t: 14, b: 28 };
   const iw = W - pad.l - pad.r, ih = H - pad.t - pad.b;
   const maxY = Math.max(...points.map(p => p.count), ...points.map(p => p.baseline)) * 1.1 || 1;
   const n = points.length;
@@ -175,14 +182,18 @@ function renderRpm(points) {
   for (let g = 0; g <= 4; g++) {
     const y = pad.t + ih * g / 4, val = Math.round(maxY * (1 - g / 4));
     s.append(svg("line", { x1: pad.l, y1: y, x2: W - pad.r, y2: y, stroke: cssvar("--grid"), "stroke-width": 1 }));
-    const tx = svg("text", { x: pad.l - 8, y: y + 3, "text-anchor": "end", fill: cssvar("--muted"), "font-size": 11 });
+    const tx = svg("text", { x: pad.l - 8, y: y + 4, "text-anchor": "end", fill: cssvar("--muted"), "font-size": 12 });
     tx.textContent = val; s.append(tx);
   }
-  // x time labels (start / mid / end)
-  [0, Math.floor(n / 2), n - 1].forEach(i => {
-    const t = svg("text", { x: X(i), y: H - 8, "text-anchor": i === 0 ? "start" : i === n - 1 ? "end" : "middle", fill: cssvar("--muted"), "font-size": 11 });
-    t.textContent = fmtClock(new Date(points[i].t * 1000).toISOString()); s.append(t);
-  });
+  const yt = svg("text", { x: 13, y: pad.t + ih / 2, "text-anchor": "middle", fill: cssvar("--muted"), "font-size": 12, transform: `rotate(-90 13 ${pad.t + ih / 2})` });
+  yt.textContent = "requests / min"; s.append(yt);
+  // x time labels (dated, evenly spaced; fewer on narrow screens)
+  const nt = W < 560 ? 3 : 5;
+  for (let k = 0; k < nt; k++) {
+    const i = Math.round((n - 1) * k / (nt - 1));
+    const t = svg("text", { x: X(i), y: H - 8, "text-anchor": k === 0 ? "start" : k === nt - 1 ? "end" : "middle", fill: cssvar("--muted"), "font-size": 12 });
+    t.textContent = fmtAxis(points[i].t); s.append(t);
+  }
 
   // observed area + line
   let area = `M ${X(0)} ${Y(0)}`, line = "";
@@ -395,17 +406,28 @@ function tailStep() {
   row.append(el("span", { class: "ts", text: fmtClock(e.iso) + " " }));
   row.append(document.createTextNode(e.line));
   con.append(row);
-  // keep DOM bounded
-  while (con.childElementCount > 500) con.removeChild(con.firstChild);
+  if (tail.buf.length - tail.cursor < 450) tailFetch();
+}
+function tailPaint() {   // once per tick, not per line: avoids a forced layout for every appended line
+  const con = $("#tail-console");
+  while (con.childElementCount > 500) con.removeChild(con.firstChild);   // keep DOM bounded
   con.scrollTop = con.scrollHeight;
   $("#tail-progress").textContent = tail.cursor + " / " + (tail.total || tail.buf.length) + " lines";
-  if (tail.buf.length - tail.cursor < 120) tailFetch();
 }
 function tailLoop() {
   if (!tail.playing) return;
-  const n = Math.max(1, Math.round(+$("#tail-speed").value / 40));
-  for (let i = 0; i < n; i++) tailStep();
-  tail.timer = setTimeout(tailLoop, 40);
+  let n = Math.max(1, Math.round(+$("#tail-speed").value / 40));
+  // Fast-forward through plain benign traffic so the replay reaches the attacks quickly;
+  // drop back to the chosen speed as soon as an alerted line is within the look-ahead.
+  if ($("#tail-ffwd").checked) {
+    let quiet = tail.buf.length - tail.cursor > 0;
+    for (let k = tail.cursor; k < Math.min(tail.buf.length, tail.cursor + 150); k++) if (tail.buf[k].sev) { quiet = false; break; }
+    if (quiet) n = Math.max(n, 120);
+    $("#tail-progress").classList.toggle("ffwd", quiet);
+  }
+  for (let i = 0; i < n && tail.playing; i++) tailStep();
+  tailPaint();
+  if (tail.playing) tail.timer = setTimeout(tailLoop, 40);
 }
 function tailPlay() {
   tail.playing = true;
@@ -416,6 +438,7 @@ function tailStop(finished) {
   tail.playing = false;
   clearTimeout(tail.timer);
   $("#tail-play").disabled = false; $("#tail-pause").disabled = true;
+  $("#tail-progress").classList.remove("ffwd");
   if (finished) $("#tail-play").textContent = "▶ Replay finished";
 }
 
@@ -445,6 +468,7 @@ function switchTab(name) {
   $$(".tab").forEach(t => t.classList.toggle("is-active", t.dataset.tab === name));
   $$(".panel").forEach(p => p.classList.toggle("is-active", p.id === "tab-" + name));
   if (name === "eval" && !state.evalLoaded) loadEval();
+  if (name === "overview" && state.rpm) renderRpm(state.rpm); // size the chart to the now-visible card
 }
 function filterToSrc(src) { $("#f-src").value = src; switchTab("alerts"); renderAlertTable(); }
 
@@ -501,9 +525,10 @@ function wire() {
     document.documentElement.setAttribute("data-theme", next);
     try { localStorage.setItem("ls-theme", next); } catch (e) {}
     if (state.rpm) renderRpm(state.rpm);        // redraw SVG with new theme colours
-    if (state.summary) renderDonut(state.summary.severity);
+    if (state.summary) { renderDonut(state.summary.severity); renderAttackers(state.summary.top_attackers); }
   });
 }
+window.addEventListener("resize", debounce(() => { if (state.rpm) renderRpm(state.rpm); }, 200));
 function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
 
 tailReset();

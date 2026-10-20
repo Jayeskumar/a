@@ -86,6 +86,16 @@
     "Encrypted on-device storage as a mobile PWA",
     "Trained peer-listener matching"
   ],
+  "compare": {
+    "columns": ["Walk-in counselling", "Generic wellness apps", "MindEase"],
+    "rows": [
+      ["Early signal before a crisis", "No", "Partial", "Yes, opt-in"],
+      ["Private, no cloud needed", "Yes", "Often cloud", "Yes, local only"],
+      ["Explains each flag", "Human judgement", "Partial", "Yes, rule shown"],
+      ["Helpline one tap away", "Office hours", "Partial", "Yes, every screen"],
+      ["Clinical diagnosis", "Yes, by experts", "No", "No, screening only"]
+    ]
+  },
   "port": 8016,
   "dir": "projects/16-mindease"
 }

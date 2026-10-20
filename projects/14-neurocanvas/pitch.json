@@ -128,6 +128,16 @@
     "Real MNIST import when a copy is available offline",
     "Step-through backprop animation, one neuron at a time"
   ],
+  "compare": {
+    "columns": ["Textbook / slides", "Cloud ML notebooks", "NeuroCanvas"],
+    "rows": [
+      ["Works offline, no GPU", "Yes", "No", "Yes"],
+      ["Shows neurons live as you draw", "No", "No", "Yes"],
+      ["Backprop with your own numbers", "Partial", "No", "Yes, step by step"],
+      ["Teach it new handwriting", "No", "Partial", "Yes, in ~3 s"],
+      ["Setup for a student lab", "None", "Accounts + Wi-Fi", "One command"]
+    ]
+  },
   "port": 8014,
   "dir": "projects/14-neurocanvas"
 }

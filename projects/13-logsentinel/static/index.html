@@ -26,7 +26,7 @@
     <span id="source-label" class="source-pill" title="Current data source">loading…</span>
     <button id="btn-reset" class="btn btn-primary" title="Reload the deterministic demo log">Run demo</button>
     <button id="btn-upload" class="btn" title="Analyse your own log file">Upload log</button>
-    <button id="btn-theme" class="icon-btn" title="Toggle light / dark" aria-label="Toggle theme">◐</button>
+    <button id="btn-theme" class="icon-btn" title="Toggle light / dark" aria-label="Toggle theme"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="8.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 3.8a8.2 8.2 0 0 1 0 16.4z" fill="currentColor"/></svg></button>
   </div>
 </header>
 
@@ -50,6 +50,7 @@
       <div class="card">
         <h2>Top attacker IPs <span class="hint">by threat score</span></h2>
         <div id="attackers"></div>
+        <p class="card-foot muted small">Score = sum of alert weights (critical 85 · high 60 · medium 35 · low 15). Bar colour = worst severity. Click an IP to see its alerts.</p>
       </div>
       <div class="card">
         <h2>Attack categories</h2>
@@ -58,7 +59,12 @@
     </div>
     <div class="card">
       <div class="card-head">
-        <h2>Requests per minute <span class="hint">green = observed · dashed = EWMA baseline · red = anomaly</span></h2>
+        <h2>Requests per minute <span class="hint">all sources, 1-minute buckets</span></h2>
+        <div class="chart-legend" aria-hidden="true">
+          <span><i class="lg-line"></i>observed</span>
+          <span><i class="lg-dash"></i>EWMA baseline</span>
+          <span><i class="lg-dot"></i>anomaly (z-score)</span>
+        </div>
       </div>
       <div id="rpm" class="rpm-wrap"></div>
     </div>
@@ -122,6 +128,7 @@
           <option value="2000">50×</option>
         </select>
       </label>
+      <label class="check" title="Speed through stretches of plain benign traffic, slow down near attacks"><input type="checkbox" id="tail-ffwd" checked> fast-forward quiet traffic</label>
       <span class="grow"></span>
       <span class="tail-stat" id="tail-progress">0 / 0 lines</span>
       <span class="tail-stat alarm" id="tail-alertcount">0 alerts lit</span>
