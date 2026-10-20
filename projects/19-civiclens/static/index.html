@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CivicLens</title>
+<meta name="description" content="AI triage and analytics for citizen complaints: routing, priority, duplicates, hotspots and SLA risk.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230F172A'/%3E%3Ccircle cx='14' cy='14' r='7' stroke='%23DC2626' stroke-width='3' fill='none'/%3E%3Cpath d='M19 19l6 6' stroke='%23DC2626' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" class="logo-bg"/><circle cx="14" cy="14" r="7" class="logo-ring"/><path d="M19 19l6 6" class="logo-ring"/><circle cx="14" cy="14" r="2" class="logo-dot"/></svg>
+    <div>
+      <div class="brand-name">CivicLens</div>
+      <div class="brand-tag">AI triage &amp; analytics for citizen complaints</div>
+    </div>
+  </div>
+  <div class="top-actions">
+    <span class="source-pill" id="sourcePill">Loading…</span>
+    <button class="btn btn-primary" id="demoBtn" type="button" title="File a scripted stream of 8 new complaints">Run demo</button>
+    <button class="btn btn-ghost" id="resetBtn" type="button" title="Remove complaints filed during the demo">Reset</button>
+    <button class="btn btn-ghost" id="themeBtn" type="button" title="Toggle light / dark">Theme</button>
+  </div>
+</header>
+
+<nav class="tabs" id="tabs" role="tablist">
+  <button role="tab" data-tab="triage" class="active">Triage</button>
+  <button role="tab" data-tab="map">Map &amp; hotspots</button>
+  <button role="tab" data-tab="sla">SLA &amp; risk</button>
+  <button role="tab" data-tab="models">Models</button>
+  <button role="tab" data-tab="topics">Topics</button>
+</nav>
+
+<main>
+  <!-- ============================== TRIAGE -->
+  <section class="tab-panel active" id="tab-triage">
+    <div class="kpis" id="kpis"></div>
+    <div class="triage">
+      <div class="card queue-card">
+        <div class="card-h">
+          <h3>Live triage queue</h3><span class="sub" id="queueSub"></span>
+          <div class="filters inline">
+            <select id="qDept" aria-label="Department"></select>
+            <select id="qPri" aria-label="Priority"><option value="">All priorities</option><option value="1">P1 Critical</option><option value="2">P2 High</option><option value="3">P3 Normal</option><option value="4">P4 Low</option></select>
+            <label class="check"><input type="checkbox" id="qOpen"> Open only</label>
+            <input id="qSearch" type="search" placeholder="Search text or ID" aria-label="Search complaints">
+          </div>
+        </div>
+        <div class="table-wrap queue-wrap"><table class="tbl queue" id="queueTbl">
+          <thead><tr><th>Filed</th><th>Priority</th><th>Complaint</th><th>Routed to</th><th>Duplicate</th><th>Ward</th><th>SLA</th></tr></thead>
+          <tbody></tbody></table></div>
+      </div>
+
+      <div class="side">
+        <div class="card form-card">
+          <div class="card-h"><h3>File a complaint</h3><span class="sub">runs the whole pipeline instantly</span></div>
+          <textarea id="cText" rows="2" maxlength="1000" placeholder="e.g. street light not working near bus stand / குப்பை அள்ளவில்லை / drainage overflow ah iruku"></textarea>
+          <div class="examples" id="examples"></div>
+          <div class="loc-row">
+            <canvas id="miniMap" class="mini-map" height="84" aria-label="Click to set the complaint location"></canvas>
+            <div class="loc-ctl">
+              <select id="cChannel" aria-label="Channel"></select>
+              <select id="cWard" aria-label="Ward"></select>
+              <span class="loc" id="cLoc"></span>
+            </div>
+          </div>
+          <div class="form-row buttons">
+            <button class="btn" id="analyzeBtn" type="button">Analyse only</button>
+            <button class="btn btn-primary" id="fileBtn" type="button">File complaint</button>
+            <span class="hint" id="formHint"></span>
+          </div>
+        </div>
+        <div class="card result-card" id="resultCard">
+          <div class="card-h"><h3>Pipeline result</h3><span class="sub" id="resultSub">pick an example or type a complaint</span></div>
+          <div id="result" class="result empty">
+            <p>Every new complaint goes through six steps: language detection, department routing (TF-IDF + logistic regression vs Naive Bayes), urgency (safety rules + model), duplicate search (MinHash LSH + distance + time), hotspot check and SLA breach risk. Each step shows <em>why</em>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="grid g3">
+      <div class="card"><div class="card-h"><h3>Complaints per week</h3><span class="sub">reports vs distinct incidents after de-duplication</span></div><div id="weeklyChart" class="chart"></div></div>
+      <div class="card"><div class="card-h"><h3>Volume by department</h3><span class="sub">routed department</span></div><div id="deptChart" class="chart"></div></div>
+      <div class="card"><div class="card-h"><h3>Emerging this week</h3><span class="sub">Poisson z-test vs 4-week baseline</span></div><div id="emergingList"></div></div>
+    </div>
+  </section>
+
+  <!-- ============================== MAP -->
+  <section class="tab-panel" id="tab-map">
+    <div class="filters">
+      <label>Department <select id="mDept"></select></label>
+      <label>Window <select id="mWeeks"><option value="">All 13 weeks</option><option value="4">Last 4 weeks</option></select></label>
+      <label>DBSCAN eps <input type="range" id="mEps" min="60" max="300" step="10"> <b id="mEpsV"></b> m</label>
+      <label>minPts <input type="range" id="mMin" min="3" max="20" step="1"> <b id="mMinV"></b></label>
+      <label class="check"><input type="checkbox" id="mPlanted" checked> Show planted ground truth</label>
+    </div>
+    <div class="grid g-map">
+      <div class="card">
+        <div class="card-h"><h3>Incident map</h3><span class="sub" id="mapSub"></span></div>
+        <div class="map-wrap"><canvas id="bigMap"></canvas></div>
+        <div class="legend" id="mapLegend"></div>
+      </div>
+      <div class="card">
+        <div class="card-h"><h3>DBSCAN hotspots</h3><span class="sub" id="hsSub"></span></div>
+        <div id="hsEval" class="eval-row"></div>
+        <div class="table-wrap hs-wrap"><table class="tbl" id="hsTbl"><thead><tr><th>ID</th><th>Department</th><th>Ward</th><th>Incidents</th><th>Radius</th><th>Last 4 wk</th><th>Ground truth</th></tr></thead><tbody></tbody></table></div>
+      </div>
+    </div>
+    <div class="grid g-heat">
+      <div class="card">
+        <div class="card-h"><h3>Weekly ward heat grid</h3><span class="sub">distinct incidents per ward per week; outlined cells are emerging (z ≥ 3, ≥ 5 incidents)</span>
+          <div class="filters inline"><select id="hDept" aria-label="Heat grid department"></select></div></div>
+        <div class="heat-wrap"><canvas id="heatGrid"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-h"><h3>Emerging hotspots</h3><span class="sub" id="emSub"></span>
+          <div class="filters inline"><label>Week <select id="emWeek"></select></label></div></div>
+        <div id="emEval" class="eval-row"></div>
+        <div id="emList"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== SLA -->
+  <section class="tab-panel" id="tab-sla">
+    <div class="grid g2">
+      <div class="card">
+        <div class="card-h"><h3>% still open after N days</h3><span class="sub">Kaplan-Meier, open complaints censored</span>
+          <div class="filters inline"><select id="kmDept" aria-label="Department for survival curve"></select></div></div>
+        <div id="kmChart" class="chart tall"></div>
+      </div>
+      <div class="card">
+        <div class="card-h"><h3>Resolution time by department</h3><span class="sub">resolved complaints: box = p25-p75, whiskers p10-p90; red tick = SLA</span></div>
+        <div id="boxChart" class="chart tall"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-h"><h3>Department scorecards</h3><span class="sub" id="scoreSub"></span></div>
+      <div class="table-wrap"><table class="tbl" id="scoreTbl"><thead><tr><th>Department</th><th>SLA</th><th>Received</th><th>Open</th><th>Overdue</th><th>Median</th><th>p90</th><th>KM median</th><th>Open after SLA</th><th>Compliance (4 wk)</th><th>Duplicates</th></tr></thead><tbody></tbody></table></div>
+    </div>
+    <div class="grid g2">
+      <div class="card">
+        <div class="card-h"><h3>SLA at-risk queue</h3><span class="sub" id="riskSub"></span></div>
+        <div class="table-wrap risk-wrap"><table class="tbl" id="riskTbl"><thead><tr><th>Complaint</th><th>Dept</th><th>Priority</th><th>Time left</th><th>Breach risk</th><th>Why</th></tr></thead><tbody></tbody></table></div>
+      </div>
+      <div class="card">
+        <div class="card-h"><h3>Breach-risk model</h3><span class="sub">logistic regression on department, ward, weekday, priority, backlog</span></div>
+        <div id="breachEval" class="eval-row"></div>
+        <div id="breachChart" class="chart"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-h"><h3>Ward ranking</h3><span class="sub">sorted by SLA breach rate</span></div>
+      <div class="table-wrap"><table class="tbl" id="wardTbl"><thead><tr><th>#</th><th>Ward</th><th>Complaints</th><th>Incidents</th><th>Open</th><th>P1</th><th>Median resolution</th><th>Breach rate</th></tr></thead><tbody></tbody></table></div>
+    </div>
+  </section>
+
+  <!-- ============================== MODELS -->
+  <section class="tab-panel" id="tab-models">
+    <div class="card">
+      <div class="card-h"><h3>Department routing</h3><span class="sub" id="routeSub"></span></div>
+      <div id="routeTiles" class="eval-row"></div>
+      <div class="grid g2 inner">
+        <div><h4>F1 per department</h4><div id="f1Chart" class="chart"></div></div>
+        <div><h4>Confusion matrix <select id="cmModel" aria-label="Model"><option value="lr">Logistic regression</option><option value="nb">Naive Bayes</option></select></h4><div id="cmTable" class="table-wrap"></div></div>
+      </div>
+      <h4>Top words per department <select id="twModel" aria-label="Model"><option value="lr">Logistic regression weights</option><option value="nb">Naive Bayes log-ratio</option></select></h4>
+      <div id="topWords" class="topwords"></div>
+      <h4>Where it still fails (hold-out)</h4>
+      <div id="mistakes" class="mistakes"></div>
+    </div>
+    <div class="grid g2">
+      <div class="card">
+        <div class="card-h"><h3>Urgency: rules + model</h3><span class="sub" id="urgSub"></span></div>
+        <div class="table-wrap"><table class="tbl" id="urgTbl"><thead><tr><th>Approach</th><th>Accuracy</th><th>Macro-F1</th><th>P1 recall</th><th>P1 precision</th><th>Under-triage</th></tr></thead><tbody></tbody></table></div>
+        <h4>Rules (fires in the stream, learned weight toward P1)</h4>
+        <div class="table-wrap"><table class="tbl compact" id="rulesTbl"><thead><tr><th>Rule</th><th>Kind</th><th>Fires</th><th>Weight → P1</th></tr></thead><tbody></tbody></table></div>
+      </div>
+      <div class="card">
+        <div class="card-h"><h3>Duplicate detection</h3><span class="sub" id="dupSub"></span></div>
+        <div id="dupTiles" class="eval-row"></div>
+        <h4>LSH S-curve vs similarity of real candidate pairs</h4>
+        <div id="lshChart" class="chart"></div>
+        <h4>Threshold tuning (weeks 1-7)</h4>
+        <div id="tuneChart" class="chart short"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-h"><h3>Hotspots, emerging wards and build time</h3><span class="sub">measured against the planted ground truth</span></div>
+      <div id="otherEval" class="eval-row"></div>
+      <div id="timings" class="timings"></div>
+    </div>
+  </section>
+
+  <!-- ============================== TOPICS -->
+  <section class="tab-panel" id="tab-topics">
+    <div class="filters">
+      <label>k <select id="tK"></select></label>
+      <span class="hint" id="tHint"></span>
+    </div>
+    <div class="grid g-topics">
+      <div class="card"><div class="card-h"><h3>Choosing k</h3><span class="sub">silhouette (cosine)</span></div><div id="silChart" class="chart"></div>
+        <p class="note">Spherical k-means (k-means++ seeding, 4 restarts) on TF-IDF of language-neutral concepts of complaints routed to <b>General / Other</b>. Place names are removed so clusters form around <em>what</em> is wrong, not <em>where</em>.</p></div>
+      <div id="topicCards" class="topic-cards"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">Built for QUANTIX 2K26 · KSRCE <span class="dot">·</span> synthetic demo data, every model written from scratch in Python</footer>
+
+<div class="modal" id="modal" hidden>
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="modal-x" id="modalX" type="button" aria-label="Close">×</button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+<div class="tip" id="tip" hidden></div>
+<div class="toast" id="toast" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>

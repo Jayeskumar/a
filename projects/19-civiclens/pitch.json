@@ -1,0 +1,96 @@
+{
+  "name": "CivicLens",
+  "tagline": "AI triage and analytics for citizen complaints",
+  "domain": "Data Science & Analytics",
+  "color": "#DC2626",
+  "problem": [
+    "Towns and campuses get thousands of complaints via apps, calls and social media",
+    "Clerks route them by hand, in English, Tamil and Tanglish",
+    "Duplicates pile up while a live wire waits behind a parking complaint",
+    "Hotspots and SLA breaches stay invisible until there is a crisis"
+  ],
+  "stats": [
+    {"value": "~48%", "label": "of Tamil Nadu's people live in urban areas (Census 2011, approx.)"},
+    {"value": "1 in 3", "label": "complaints repeat an open issue (our synthetic stream; varies)"}
+  ],
+  "solution": [
+    "Every new complaint is routed, prioritised and de-duplicated in ~3 ms",
+    "Safety rules plus an ML model set P1-P4 and say why",
+    "DBSCAN and Poisson tests flag hotspots and wards that are suddenly worse",
+    "Survival curves and a breach model warn before the SLA is missed"
+  ],
+  "features": [
+    {"title": "Tamil-aware routing", "desc": "TF-IDF logistic regression vs Naive Bayes on words, letters and concepts"},
+    {"title": "Explainable priority", "desc": "Safety rules force P1; the model weighs school, elderly, days pending"},
+    {"title": "Duplicate merging", "desc": "MinHash LSH + distance + time links reports across languages"},
+    {"title": "Hotspots & surges", "desc": "DBSCAN on incidents plus weekly Poisson z-test per ward"},
+    {"title": "SLA risk queue", "desc": "Kaplan-Meier curves and breach probability with reasons"},
+    {"title": "Topic discovery", "desc": "k-means finds themes like noise or encroachment in Other"}
+  ],
+  "architecture": [
+    "Browser UI -> vanilla JS, SVG/canvas charts, live queue and map",
+    "app.py -> stdlib ThreadingHTTPServer, JSON API, input validation",
+    "text + lexicon -> Tamil-safe tokens, graphemes, bilingual concepts",
+    "models -> NB, OvR logistic regression, urgency rules + model",
+    "dedup + hotspot -> MinHash LSH, haversine, DBSCAN, Poisson test",
+    "sla + topics -> Kaplan-Meier, breach LR, spherical k-means"
+  ],
+  "algorithms": [
+    "Multinomial Naive Bayes - department routing baseline",
+    "TF-IDF logistic regression (OvR, SGD) - routing + urgency",
+    "MinHash + LSH banding + haversine - duplicate incidents",
+    "DBSCAN (grid index) - spatial hotspots per department",
+    "Poisson z-test - emerging ward hotspots vs 4-week baseline",
+    "Kaplan-Meier + logistic regression - SLA curves and breach risk",
+    "Spherical k-means++ + silhouette - topics in Other"
+  ],
+  "tech": [
+    "Python 3 stdlib only",
+    "Vanilla HTML/CSS/JS",
+    "Hand-drawn SVG + canvas",
+    "No CDN, fully offline",
+    "unittest (70 tests)"
+  ],
+  "innovation": [
+    "Tamil grapheme tokenizer + bilingual concepts: one model, three scripts",
+    "Duplicates matched across languages using text, place and time",
+    "Safety rules never wait for a model; the model never hides why",
+    "Every metric measured against planted ground truth"
+  ],
+  "results": [
+    {"value": "95.3%", "label": "routing accuracy, 615 held-out (94.2% on unseen phrasing)"},
+    {"value": "0.82", "label": "duplicate-pair F1 (text-only baseline 0.47)"},
+    {"value": "6 / 6", "label": "planted hotspots found, zero false hotspots"},
+    {"value": "2.6 ms", "label": "full pipeline per complaint (p50, pure Python)"}
+  ],
+  "demo_flow": [
+    "Triage: KPIs, live queue with priority and duplicate links",
+    "Run demo: Tanglish live wire becomes P1 by safety rule",
+    "Tamil duplicate merged with an English report",
+    "Map: 6 DBSCAN hotspots match the planted ones",
+    "Heat grid: W11 garbage surge, z = 15",
+    "SLA: survival curve, at-risk queue with reasons",
+    "Models: LR 94% vs NB 61% on unseen phrasing"
+  ],
+  "impact": [
+    "Urgent safety hazards jump the queue within seconds",
+    "~36% fewer tickets once duplicate reports are merged (demo data)",
+    "Ward officers see hotspots and slow wards weekly, not yearly",
+    "Tamil-only complainants are served as well as English ones"
+  ],
+  "business": [
+    "Free open-source edition for colleges and small towns",
+    "Paid hosted edition for municipal corporations with integrations",
+    "Setup and lexicon tuning for each district's own language",
+    "Plugs into existing CPGRAMS-style portals and WhatsApp lines"
+  ],
+  "future": [
+    "Learn from officers' re-routing corrections (active learning)",
+    "Speech-to-text for call-centre and voice notes",
+    "Photo evidence: pothole and garbage image checks",
+    "Crew routing for clustered incidents",
+    "Public status page for citizens"
+  ],
+  "port": 8019,
+  "dir": "projects/19-civiclens"
+}
