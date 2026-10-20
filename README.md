@@ -46,7 +46,7 @@ Measured results for every project are in [`docs/PORTFOLIO.md`](docs/PORTFOLIO.m
 |---|---|
 | **Complete report (PDF, A4, ~180 pages)**: cover, strategy playbook, portfolio overview and all 19 project reports with screenshots and architecture diagrams | [`docs/QUANTIX2K26_Report.pdf`](docs/QUANTIX2K26_Report.pdf) |
 | **Pitch decks**: 19 × 11-slide PowerPoint decks with speaker notes and a scan-to-code QR on the closing slide | [`decks/`](decks/) |
-| **Demo videos**: a ~45 s captioned walkthrough per project (title card, live demo, every tab, results card), ready to upload as the "demo link" | `node tools/record_demos.js` → `build/videos/*.mp4` |
+| **Demo videos**: a ~45 s captioned walkthrough per project (title card, live demo, every tab, results card), ready to upload as the "demo link" | `node tools/record_demos.js` → `build/videos/*.mp4` + an offline `index.html` that plays them all |
 | **Per-project reports**: problem, architecture, algorithms, results, demo script, judges' Q&A | `projects/NN-name/REPORT.md` |
 | **Strategy playbook**: rules, domain picks, 24-hour plan, checklists | [`docs/STRATEGY.md`](docs/STRATEGY.md) |
 | **Working code**: 19 offline demos + showcase hub, 1,159 unit tests, a start-up smoke test of every server and a browser QA sweep; CI on Linux/Windows × Python 3.9/3.13 | [`projects/`](projects/), [`run_all.py`](run_all.py) |

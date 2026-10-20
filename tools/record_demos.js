@@ -4,7 +4,8 @@
 //
 // Each video (~45 s, 1280x720) shows a title card, clicks the demo button, tours every tab
 // with a caption bar and slow scrolling, and ends on a card with the measured results.
-// Output: <outDir>/<NN-name>.mp4 (H.264 via ffmpeg) ready to upload as the hackathon "demo link".
+// Output: <outDir>/<NN-name>.mp4 (H.264 via ffmpeg) ready to upload as the hackathon "demo link",
+// plus <outDir>/index.html, an offline page that plays them all.
 // Run it on a scratch copy of the repo: the demos write their own state files as they run.
 const fs = require('fs');
 const path = require('path');
@@ -197,10 +198,51 @@ async function record(browser, p, outDir) {
   execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', webm, '-c:v', 'libx264', '-preset', 'veryfast',
     '-crf', '26', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', mp4]);
   fs.rmSync(tmp, { recursive: true, force: true });
+  poster(mp4);
   return mp4;
 }
 
-(async () => {
+// Title-card frame as the video's poster image (<name>.jpg) for index.html.
+function poster(mp4) {
+  execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-ss', '3', '-i', mp4, '-frames:v', '1', '-vf', 'scale=640:-1',
+    '-q:v', '4', mp4.replace(/\.mp4$/, '.jpg')]);
+}
+
+// Offline index page for the recorded videos, so the folder can be opened or shared as-is.
+function writeIndex(outDir) {
+  const cards = projects().filter((p) => fs.existsSync(path.join(outDir, `${p.dir}.mp4`))).map((p) => `
+  <article style="--c:${esc(p.color || '#6c4cf1')}">
+    <video controls preload="none" poster="${esc(p.dir)}.jpg" src="${esc(p.dir)}.mp4"></video>
+    <div class="meta"><span>${esc(p.dir.slice(0, 2))} · ${esc(p.domain)}</span><h2>${esc(p.name)}</h2><p>${esc(p.tagline)}</p></div>
+  </article>`).join('');
+  fs.writeFileSync(path.join(outDir, 'index.html'), `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QUANTIX 2K26 demo videos</title>
+<style>
+  :root { --bg: #f4f5fb; --card: #fff; --ink: #0b1026; --muted: #5b6180; --line: #e2e4f0; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #0b1026; --card: #151b3a; --ink: #eef0fa; --muted: #a6acc9; --line: #262d52; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  header { max-width: 1200px; margin: 0 auto; padding: 32px 16px 8px; }
+  header h1 { margin: 0 0 6px; font-size: 28px; }
+  header p { margin: 0; color: var(--muted); }
+  main { max-width: 1200px; margin: 0 auto; padding: 16px; display: grid; gap: 16px;
+         grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr)); }
+  article { background: var(--card); border: 1px solid var(--line); border-top: 4px solid var(--c); border-radius: 12px; overflow: hidden; }
+  video { display: block; width: 100%; aspect-ratio: 16 / 9; background: #000; }
+  .meta { padding: 12px 14px 14px; }
+  .meta span { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+  .meta h2 { margin: 4px 0 2px; font-size: 18px; }
+  .meta p { margin: 0; color: var(--muted); }
+</style></head><body>
+<header><h1>QUANTIX 2K26 demo videos</h1><p>Captioned walkthroughs of every prototype, recorded from the live apps running offline.</p></header>
+<main>${cards}
+</main></body></html>
+`);
+}
+
+if (require.main !== module) module.exports = { writeIndex, poster };
+else (async () => {
   const outDir = path.resolve(process.argv[2] || path.join(ROOT, 'build', 'videos'));
   const ports = process.argv.slice(3).map(Number);
   fs.mkdirSync(outDir, { recursive: true });
@@ -215,4 +257,5 @@ async function record(browser, p, outDir) {
     }
   }
   await browser.close();
+  writeIndex(outDir);
 })();
