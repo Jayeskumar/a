@@ -94,11 +94,36 @@ function matchFeature(tab, features, used) {
   return features[best];
 }
 
+// The first demo-flow step minus presenter set-up advice ("Wi-Fi off"); empty if it is only set-up.
+function firstStep(flow) {
+  const s = (flow || [])[0] || '';
+  if (/projector/i.test(s)) return '';
+  const t = s.replace(/^(turn\s+)?wi-?fi off(\s*,|\s+and)?\s*/i, '').trim();
+  return t && t[0].toUpperCase() + t.slice(1);
+}
+
+// Visible tab-like controls as {name (to find it again), label (caption text without badge counters)}.
 async function visibleTabs(page) {
-  const names = await page.$$eval(TAB_SELECTOR, (els) => els
+  const tabs = await page.$$eval(TAB_SELECTOR, (els) => els
     .filter((e) => e.offsetParent !== null && (e.innerText || '').trim().length > 0 && (e.innerText || '').trim().length < 40)
-    .map((e) => (e.innerText || '').trim().split('\n')[0]));
-  return [...new Set(names)].slice(0, MAX_TABS);
+    .map((e) => {
+      const name = (e.innerText || '').trim().split('\n')[0];
+      const badge = [...e.querySelectorAll('*')].map((k) => k.textContent.trim()).find((t) => /^\(?\d+\)?$/.test(t));
+      return { name, label: badge && name.endsWith(badge) ? name.slice(0, -badge.length).trim() : name };
+    }));
+  const seen = new Set();
+  return tabs.filter((t) => !seen.has(t.name) && seen.add(t.name));
+}
+
+// Group numbered runs of tabs ("Flight 1" .. "Flight 5") so they are stepped through as one tour stop.
+function groupTabs(tabs) {
+  const stem = (s) => (s.match(/^(.*\S)\s+\d+$/) || [])[1];
+  const groups = [];
+  for (const t of tabs) {
+    const g = groups[groups.length - 1], st = stem(t.label);
+    if (st && g && g.stem === st) g.items.push(t); else groups.push({ stem: st, items: [t] });
+  }
+  return groups.slice(0, MAX_TABS);
 }
 
 async function record(browser, p, outDir) {
@@ -116,13 +141,14 @@ async function record(browser, p, outDir) {
     <div style="font-size:21px;color:#b9c0e0;margin-top:34px;max-width:980px">${esc((p.problem || [])[0] || '')}</div>
     <div style="font-size:16px;color:#8a90b4;margin-top:46px">QUANTIX 2K26 · K.S.R. College of Engineering · runs offline: python app.py</div>`, color, 4200);
 
+  const step = firstStep(p.demo_flow);
   const demo = page.getByRole('button', { name: DEMO_RE }).first();
   if (await demo.count()) {
-    await caption(page, `Run demo · ${(p.demo_flow || [])[0] || 'loading the demo scenario'}`, color);
+    await caption(page, !step ? 'Run demo · loading the demo scenario' : /demo/i.test(step) ? step : `Run demo · ${step}`, color);
     await demo.click({ timeout: 5000 }).catch(() => {});
     await page.waitForTimeout(3500);
   } else {
-    await caption(page, (p.demo_flow || [])[0] || p.tagline, color);
+    await caption(page, step || p.tagline, color);
     await page.waitForTimeout(1500);
   }
   const tabs = await visibleTabs(page);
@@ -131,11 +157,23 @@ async function record(browser, p, outDir) {
     await tour(page, 6);
   }
   const used = new Set();
-  for (const name of tabs) {
-    const el = page.locator(TAB_SELECTOR).filter({ hasText: name }).first();
+  const tabEl = (t) => page.locator(TAB_SELECTOR).filter({ hasText: t.name }).first();
+  for (const g of groupTabs(tabs)) {
+    if (g.items.length > 1) { // a numbered sequence: click through it in place, then scroll once
+      for (const t of g.items) {
+        const el = tabEl(t);
+        if (!(await el.isVisible().catch(() => false))) continue;
+        await caption(page, `${t.label} of ${g.items.length}`, color);
+        await el.click({ timeout: 5000 }).catch(() => {});
+        await page.waitForTimeout(1300);
+      }
+      await tour(page, 3);
+      continue;
+    }
+    const t = g.items[0], el = tabEl(t);
     if (!(await el.isVisible().catch(() => false))) continue;
-    const feature = matchFeature(name, p.features || [], used);
-    await caption(page, feature ? `${name} — ${feature.title}: ${feature.desc}` : name, color);
+    const feature = matchFeature(t.label, p.features || [], used);
+    await caption(page, feature ? `${t.label} — ${feature.title}: ${feature.desc}` : t.label, color);
     await el.click({ timeout: 5000 }).catch(() => {});
     await page.waitForTimeout(1500);
     await tour(page, 3);
