@@ -134,6 +134,7 @@ main { flex: 1; padding: 18px 24px 8px; max-width: 1480px; width: 100%; margin: 
 .filters .range input { width: 140px; accent-color: var(--brand); }
 .filters .check input { accent-color: var(--brand); }
 .hint { color: var(--muted); font-size: 12px; }
+.swipe { display: none; margin: 6px 0 0; }
 
 /* ---------- cards & grid */
 .card {
@@ -164,9 +165,9 @@ main { flex: 1; padding: 18px 24px 8px; max-width: 1480px; width: 100%; margin: 
 .kpi.alert::before { background: var(--critical); }
 
 /* ---------- SVG marks */
-.ax text, .lbl { fill: var(--muted); font-size: 11px; }
-.lbl-ink { fill: var(--ink); font-size: 12px; }
-.lbl-ink2 { fill: var(--ink-2); font-size: 11px; }
+.ax text, .lbl { fill: var(--muted); font-size: 12px; }
+.lbl-ink { fill: var(--ink); font-size: 12px; font-weight: 600; }
+.lbl-ink2 { fill: var(--ink-2); font-size: 12px; }
 .gridline { stroke: var(--grid); stroke-width: 1; }
 .baseline { stroke: var(--axis); stroke-width: 1; }
 .m-accent { fill: var(--accent-fill); }
@@ -183,6 +184,7 @@ main { flex: 1; padding: 18px 24px 8px; max-width: 1480px; width: 100%; margin: 
 .tbl tr.click { cursor: pointer; }
 .tbl tr.click:hover td { background: var(--surface-2); }
 .tbl td.num, .tbl th.num { text-align: right; }
+.tbl td.nowrap { white-space: nowrap; }
 #riskTable { min-width: 820px; }
 .table-wrap:has(#riskTable) { max-height: 64vh; }
 
@@ -214,7 +216,7 @@ main { flex: 1; padding: 18px 24px 8px; max-width: 1480px; width: 100%; margin: 
 .stu-item:hover { background: var(--surface-2); }
 .stu-item.active { border-color: var(--brand); background: var(--accent-soft); }
 .stu-item .s-name { font-weight: 600; font-size: 13px; }
-.stu-item .s-meta { color: var(--muted); font-size: 11px; }
+.stu-item .s-meta { color: var(--muted); font-size: 12px; }
 .coach-main { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 .coach-main > .card.wide { grid-column: 1 / -1; }
 .stu-head { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
@@ -236,7 +238,7 @@ main { flex: 1; padding: 18px 24px 8px; max-width: 1480px; width: 100%; margin: 
 .plan-step .t { font-weight: 650; }
 .plan-step .d { color: var(--muted); font-size: 12px; }
 .plan-step .p { text-align: right; font-variant-numeric: tabular-nums; font-weight: 700; }
-.plan-step .p small { display: block; color: var(--muted); font-weight: 500; font-size: 11px; }
+.plan-step .p small { display: block; color: var(--muted); font-weight: 500; font-size: 12px; }
 .plan-sum { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; padding: 8px 2px 0; color: var(--ink-2); font-size: 13px; }
 .alt-list { margin: 6px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; font-size: 13px; }
 .alt-list li { display: flex; justify-content: space-between; gap: 10px; color: var(--ink-2); border-bottom: 1px dashed var(--grid); padding: 4px 0; }
@@ -262,7 +264,7 @@ main { flex: 1; padding: 18px 24px 8px; max-width: 1480px; width: 100%; margin: 
 .persona .desc { color: var(--ink-2); font-size: 13px; min-height: 38px; }
 .persona .nums { display: flex; gap: 16px; margin: 8px 0; }
 .persona .nums .v { font-size: 20px; font-weight: 750; }
-.persona .nums .l { font-size: 11px; color: var(--muted); }
+.persona .nums .l { font-size: 12px; color: var(--muted); }
 .persona .mix { color: var(--muted); font-size: 12px; }
 
 /* ---------- confusion matrix */
@@ -324,7 +326,8 @@ main { flex: 1; padding: 18px 24px 8px; max-width: 1480px; width: 100%; margin: 
   .sim-side { position: static; }
   .sliders { grid-template-columns: minmax(0, 1fr); }
   .source-pill { display: none; }
-  .gauge-wrap { width: 160px; }
+  .swipe { display: block; }
+  .kpis > .kpi:last-child:nth-child(odd) { grid-column: 1 / -1; }
 }
 @media (forced-colors: active) {
   .m-accent, .m-neg { fill: CanvasText; }

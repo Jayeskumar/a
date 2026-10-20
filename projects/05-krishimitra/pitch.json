@@ -85,5 +85,15 @@
     "Android PWA and SMS/IVR for feature phones"
   ],
   "port": 8005,
-  "dir": "projects/05-krishimitra"
+  "dir": "projects/05-krishimitra",
+  "compare": {
+    "columns": ["Habit / neighbour advice", "Generic agri apps", "KrishiMitra"],
+    "rows": [
+      ["Works without internet", "Yes", "Mostly online", "Yes"],
+      ["Explains each recommendation", "No", "Rarely", "Yes, per input"],
+      ["Advice in Tamil (text + voice)", "Spoken only", "Partial", "Yes"],
+      ["Crop, fertiliser, water, market", "Piecemeal", "Often separate", "One screen"],
+      ["Accuracy measured", "No", "Rarely shown", "94% (synthetic)"]
+    ]
+  }
 }

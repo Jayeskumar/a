@@ -90,5 +90,15 @@
     "Tamil/English interface"
   ],
   "port": 8006,
-  "dir": "projects/06-placeiq"
+  "dir": "projects/06-placeiq",
+  "compare": {
+    "columns": ["Spreadsheets + gut feel", "Generic BI dashboards", "PlaceIQ"],
+    "rows": [
+      ["Flags at-risk students early", "No", "Manual setup", "Yes, per student"],
+      ["Explains each prediction", "No", "Rarely", "Yes, per feature"],
+      ["Personal fix-next plan", "No", "No", "Yes, min-effort"],
+      ["Accuracy proven on hold-out", "No", "Not built in", "AUC 0.94 synthetic"],
+      ["Offline, no licence cost", "Yes", "Often paid/cloud", "Yes, ₹0"]
+    ]
+  }
 }

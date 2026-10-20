@@ -108,16 +108,16 @@
   <section id="tab-bulk" class="tab">
     <div class="grid-bulk">
       <div class="card">
-        <div class="card-h"><h2>Paste many messages / links</h2><button id="bulkDemo" class="btn ghost" type="button">Load demo lines</button></div>
-        <textarea id="bulkText" rows="14" placeholder="One message or link per line (max 200 lines)"></textarea>
-        <div class="row"><button id="bulkBtn" class="btn primary" type="button">Scan all</button><span class="muted small" id="bulkMeta"></span></div>
+        <div class="card-h"><h2>Paste many messages / links</h2><button id="bulkDemo" class="btn primary" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>Run demo scan</button></div>
+        <textarea id="bulkText" rows="14" wrap="off" placeholder="One message or link per line (max 200 lines)"></textarea>
+        <div class="row"><button id="bulkBtn" class="btn" type="button">Scan all</button><span class="muted small" id="bulkMeta"></span></div>
       </div>
       <div class="card">
         <div class="card-h"><h2>Verdicts</h2><div id="bulkSummary" class="summary"></div></div>
         <div class="table-wrap">
           <table class="tbl" id="bulkTable">
             <thead><tr><th>#</th><th>Message</th><th>Risk</th><th>Verdict</th><th>Main reason</th></tr></thead>
-            <tbody><tr><td colspan="5" class="muted">Click <b>Load demo lines</b> then <b>Scan all</b>. Click any row to open its full explanation.</td></tr></tbody>
+            <tbody><tr><td colspan="5" class="muted">Click <b>Run demo scan</b> (or paste your own lines and press <b>Scan all</b>). Click any row to open its full explanation.</td></tr></tbody>
           </table>
         </div>
       </div>

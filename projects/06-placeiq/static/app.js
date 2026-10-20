@@ -23,6 +23,25 @@ function esc(s) {
 }
 const pct = (p, d) => (p == null ? '–' : (100 * p).toFixed(d == null ? 0 : d) + '%');
 const fmt = (n, d) => (n == null ? '–' : Number(n).toLocaleString('en-IN', { maximumFractionDigits: d == null ? 2 : d, minimumFractionDigits: 0 }));
+// probabilities below 0.5% read as "<1%" instead of a misleading flat "0%"
+const pctP = p => (p != null && p < 0.005 ? '<1%' : pct(p));
+// server/UI templates use "(s)": "1 backlog(s)" -> "1 backlog", "8 backlog(s)" -> "8 backlogs"
+const plural = t => String(t == null ? '' : t).replace(/\b1 (\w+)\(s\)/g, '1 $1').replace(/(\w)\(s\)/g, '$1s');
+// Charts are drawn at their container's pixel width so SVG text stays 12px on phones and projectors.
+const cw = (sel, def) => { const el = typeof sel === 'string' ? $(sel) : sel; const w = el ? el.clientWidth : 0; return w > 120 ? Math.round(w) : (def || 460); };
+const isNarrow = sel => cw(sel, 999) < 480;
+// Round axis maximum: smallest 1/2/2.5/5 x 10^k step that covers max in at most 6 ticks
+// (minStep 1 for counts, so small counts never get fractional, duplicated tick labels).
+function niceAxis(max, minStep) {
+  max = Math.max(max, minStep || 1e-9);
+  const p = Math.pow(10, Math.floor(Math.log10(max / 6)));
+  for (const m of [1, 2, 2.5, 5, 10, 20]) {
+    const step = m * p, n = Math.ceil(max / step - 1e-9);
+    if (minStep && step < minStep) continue;
+    if (n <= 6) return { top: step * n, n: Math.max(1, n), step };
+  }
+  return { top: max, n: 4, step: max / 4 };
+}
 const sigmoid = z => (z >= 0 ? 1 / (1 + Math.exp(-z)) : Math.exp(z) / (1 + Math.exp(z)));
 function statusOf(p) {
   if (p >= 0.7) return { cls: 'good', label: 'On track', icon: '✓' };
@@ -30,7 +49,7 @@ function statusOf(p) {
   if (p >= 0.3) return { cls: 'serious', label: 'At risk', icon: '!' };
   return { cls: 'critical', label: 'High risk', icon: '!!' };
 }
-const probChip = p => { const s = statusOf(p); return `<span class="chip" title="${s.label}"><i class="dot-${s.cls}"></i>${pct(p)} · ${s.label}</span>`; };
+const probChip = p => { const s = statusOf(p); return `<span class="chip" title="${s.label}"><i class="dot-${s.cls}"></i>${pctP(p)} · ${s.label}</span>`; };
 function toast(msg, ms) {
   const t = $('#toast'); t.textContent = msg; t.classList.add('show');
   clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('show'), ms || 2800);
@@ -90,39 +109,44 @@ function svg(w, h, inner, label) {
 // Horizontal bars: items [{label, value, tip, color, text}]
 function hbars(items, o) {
   o = Object.assign({ W: 460, row: 28, labelW: 96, max: null, fmt: v => fmt(v), valueW: 60 }, o || {});
-  const max = o.max || Math.max(1e-9, ...items.map(d => d.value));
+  // 'auto': fit the longest label (≈6.7px per char at 12px), capped at ~half the chart width
+  if (o.labelW === 'auto') o.labelW = Math.round(Math.min(o.W * (o.W >= 400 ? 0.56 : 0.45), Math.max(...items.map(d => String(d.label).length)) * 6.7 + 14));
+  const maxCh = Math.max(4, Math.floor((o.labelW - 12) / 6.7));
+  const clip = t => (String(t).length > maxCh ? String(t).slice(0, maxCh - 1) + '…' : String(t));
+  const ax = o.max ? { top: o.max, n: 4 } : niceAxis(Math.max(...items.map(d => d.value)), items.every(d => Number.isInteger(d.value)) ? 1 : 0);
+  const max = ax.top;
   const plotW = o.W - o.labelW - o.valueW;
-  const H = items.length * o.row + 18;
+  const H = items.length * o.row + 20;
   let g = '';
-  for (let t = 0; t <= 4; t++) {
-    const x = o.labelW + plotW * t / 4;
-    g += `<line class="gridline" x1="${x}" x2="${x}" y1="0" y2="${H - 16}"/>`;
-    g += `<text class="lbl" x="${x}" y="${H - 3}" text-anchor="middle">${esc(o.fmt(max * t / 4))}</text>`;
+  for (let t = 0; t <= ax.n; t++) {
+    const x = o.labelW + plotW * t / ax.n;
+    g += `<line class="gridline" x1="${x}" x2="${x}" y1="0" y2="${H - 18}"/>`;
+    g += `<text class="lbl" x="${x}" y="${H - 3}" text-anchor="middle">${esc(o.fmt(max * t / ax.n))}</text>`;
   }
   items.forEach((d, i) => {
     const y = i * o.row + 5, bh = o.row - 10;
     const len = Math.max(0, plotW * d.value / max);
     g += `<g data-tip="${esc(d.tip || d.label + ': ' + o.fmt(d.value))}">`;
     g += `<rect class="hit" x="0" y="${y - 4}" width="${o.W}" height="${o.row}"/>`;
-    g += `<text class="lbl-ink2" x="${o.labelW - 8}" y="${y + bh / 2 + 4}" text-anchor="end">${esc(d.label)}</text>`;
+    g += `<text class="lbl-ink2" x="${o.labelW - 8}" y="${y + bh / 2 + 4}" text-anchor="end">${esc(clip(d.label))}</text>`;
     g += `<path d="${barH(o.labelW, y, len, bh)}" style="fill:${d.color || 'var(--accent-fill)'}"/>`;
     g += `<text class="lbl-ink" x="${o.labelW + len + 6}" y="${y + bh / 2 + 4}">${esc(d.text != null ? d.text : o.fmt(d.value))}</text>`;
     g += `</g>`;
   });
-  g += `<line class="baseline" x1="${o.labelW}" x2="${o.labelW}" y1="0" y2="${H - 16}"/>`;
+  g += `<line class="baseline" x1="${o.labelW}" x2="${o.labelW}" y1="0" y2="${H - 18}"/>`;
   return svg(o.W, H, g, o.label);
 }
 
 // Vertical columns: items [{label, value, tip, color}]
 function columns(items, o) {
   o = Object.assign({ W: 460, H: 200, fmt: v => fmt(v, 0), pad: 30 }, o || {});
-  const max = Math.max(1, ...items.map(d => d.value));
+  const ax = niceAxis(Math.max(1, ...items.map(d => d.value)), items.every(d => Number.isInteger(d.value)) ? 1 : 0), max = ax.top;
   const plotH = o.H - 44, base = o.H - 24, left = o.pad, plotW = o.W - left - 6;
   const bw = plotW / items.length;
   let g = '';
-  for (let t = 0; t <= 4; t++) {
-    const y = base - plotH * t / 4;
-    g += `<line class="gridline" x1="${left}" x2="${o.W}" y1="${y}" y2="${y}"/><text class="lbl" x="${left - 6}" y="${y + 4}" text-anchor="end">${esc(o.fmt(max * t / 4))}</text>`;
+  for (let t = 0; t <= ax.n; t++) {
+    const y = base - plotH * t / ax.n;
+    g += `<line class="gridline" x1="${left}" x2="${o.W}" y1="${y}" y2="${y}"/><text class="lbl" x="${left - 6}" y="${y + 4}" text-anchor="end">${esc(o.fmt(max * t / ax.n))}</text>`;
   }
   items.forEach((d, i) => {
     const x = left + i * bw + Math.max(2, bw * 0.18), w = Math.max(2, bw * 0.64);
@@ -140,7 +164,8 @@ function columns(items, o) {
 function diverging(items, o) {
   o = Object.assign({ W: 460, row: 24, labelW: 120, fmt: v => (v >= 0 ? '+' : '') + v.toFixed(2) }, o || {});
   const max = Math.max(1e-6, ...items.map(d => Math.abs(d.value)));
-  const plotW = o.W - o.labelW - 46, mid = o.labelW + 40 + plotW / 2, half = plotW / 2 - 4;
+  // equal room for the value label on both sides so "+0.65" never runs past the edge
+  const pad = 44, plotW = o.W - o.labelW - 2 * pad, mid = o.labelW + pad + plotW / 2, half = plotW / 2 - 2;
   const H = items.length * o.row + 20;
   let g = `<text class="lbl" x="${mid - 6}" y="${H - 4}" text-anchor="end">${esc(o.negLabel || '◀ lowers')}</text><text class="lbl" x="${mid + 6}" y="${H - 4}">${esc(o.posLabel || 'raises ▶')}</text>`;
   items.forEach((d, i) => {
@@ -162,8 +187,9 @@ function lineChart(series, o) {
   const L = 44, R = 10, T = 10, B = 34, pw = o.W - L - R, ph = o.H - T - B;
   const sx = x => L + pw * (x - o.xmin) / ((o.xmax - o.xmin) || 1), sy = y => T + ph - ph * (y - o.ymin) / ((o.ymax - o.ymin) || 1);
   let g = '';
-  for (let t = 0; t <= 4; t++) {
-    const y = o.ymin + (o.ymax - o.ymin) * t / 4, x = o.xmin + (o.xmax - o.xmin) * t / 4;
+  const nt = o.ticks || 4;
+  for (let t = 0; t <= nt; t++) {
+    const y = o.ymin + (o.ymax - o.ymin) * t / nt, x = o.xmin + (o.xmax - o.xmin) * t / nt;
     g += `<line class="gridline" x1="${L}" x2="${L + pw}" y1="${sy(y)}" y2="${sy(y)}"/><text class="lbl" x="${L - 6}" y="${sy(y) + 4}" text-anchor="end">${esc(o.yfmt(y))}</text>`;
     g += `<text class="lbl" x="${sx(x)}" y="${T + ph + 16}" text-anchor="middle">${esc(o.xfmt(x))}</text>`;
   }
@@ -205,12 +231,12 @@ function heatmap(rowLabels, colLabels, M, o) {
       g += `<g data-tip="${esc(tip)}"><rect x="${x + 1}" y="${y + 1}" width="${o.cell - 2}" height="${o.cell - 2}" rx="4" style="fill:${fill}"/>`;
       if (v != null && o.showText !== false) {
         const strong = Math.abs(v / o.scale) > 0.55;
-        g += `<text x="${x + o.cell / 2}" y="${y + o.cell / 2 + 4}" text-anchor="middle" style="font-size:10px;fill:${strong ? '#fff' : 'var(--ink-2)'}">${esc(o.short ? o.short(v) : o.fmt(v))}</text>`;
+        g += `<text x="${x + o.cell / 2}" y="${y + o.cell / 2 + 4}" text-anchor="middle" style="font-size:12px;fill:${strong ? '#fff' : 'var(--ink-2)'}">${esc(o.short ? o.short(v) : o.fmt(v))}</text>`;
       }
       g += `</g>`;
     });
   });
-  return `<div class="table-wrap">${svg(W, H, g, o.label).replace('<svg ', `<svg style="min-width:${Math.min(W, 640)}px;max-width:${W * 1.25}px" `)}</div>`;
+  return `<div class="table-wrap">${svg(W, H, g, o.label).replace('<svg ', `<svg style="min-width:${Math.min(W, 640)}px;max-width:${W * 1.25}px;margin:0 auto" `)}</div>${W > 360 ? '<p class="hint swipe">Swipe sideways to see every column →</p>' : ''}`;
 }
 
 function gauge(p, o) {
@@ -226,7 +252,7 @@ function gauge(p, o) {
   g += `<path d="${arc(0, pv)}" style="stroke:var(--${s.cls});stroke-width:16;fill:none" stroke-linecap="round"/>`;
   g += `<line x1="${tx0}" y1="${ty0}" x2="${tx1}" y2="${ty1}" style="stroke:var(--ink);stroke-width:2"/>`;
   g += `<text x="${tx1 + 2}" y="${ty1 - 2}" class="lbl">70%</text>`;
-  g += `<text x="${cx}" y="${cy - 18}" text-anchor="middle" style="font-size:34px;font-weight:800;fill:var(--ink)">${pct(p)}</text>`;
+  g += `<text x="${cx}" y="${cy - 18}" text-anchor="middle" style="font-size:34px;font-weight:800;fill:var(--ink)">${pctP(p)}</text>`;
   g += `<text x="${cx}" y="${cy + 2}" text-anchor="middle" style="font-size:12px;font-weight:700;fill:var(--ink-2)">${esc(s.icon + ' ' + s.label)}</text>`;
   return `<div class="gauge-wrap">${svg(W, H, g, 'Predicted placement probability ' + pct(p))}<div class="gauge-cap">${esc(o.caption || 'P(placed)')}</div></div>`;
 }
@@ -277,18 +303,18 @@ async function loadOverview() {
     label: r.dept, value: r.rate, text: pct(r.rate),
     tip: `${r.dept}\nPlaced ${r.placed} of ${r.n} (${pct(r.rate, 1)})\nAvg package ${r.avg_package == null ? '–' : fmt(r.avg_package, 2) + ' LPA'}`,
     color: dept !== 'ALL' && dept !== r.dept ? 'var(--axis)' : undefined
-  })), { max: 1, fmt: v => pct(v), labelW: 60, label: 'Placement rate by department' });
+  })), { W: cw('#ovDeptChart'), max: 1, fmt: v => pct(v), labelW: 60, label: 'Placement rate by department' });
   const bandColor = ['var(--critical)', 'var(--serious)', 'var(--warn)', 'var(--good)', 'var(--good)'];
-  $('#ovBands').innerHTML = columns(d.probability_bands.map((b, i) => ({ label: b.band, value: b.count, color: bandColor[i], tip: `${b.band}: ${b.count} students` })), { label: 'Students per probability band' });
-  $('#ovGaps').innerHTML = d.top_gaps.length ? hbars(d.top_gaps.slice(0, 6).map(g => ({ label: SHORT[keyOfLabel(g.label)] || g.label, value: g.count, tip: `${g.label}: top gap for ${g.count} at-risk students` })), { labelW: 80, fmt: v => fmt(v, 0), label: 'Most common top gap' }) : '<p class="hint">No at-risk students in this view.</p>';
-  $('#ovPersonas').innerHTML = hbars(d.personas.map(p => ({ label: p.name, value: p.count, color: personaColor(p.id), tip: `${p.name}: ${p.count} students` })), { labelW: 190, fmt: v => fmt(v, 0), W: 480, label: 'Persona sizes' });
+  $('#ovBands').innerHTML = columns(d.probability_bands.map((b, i) => ({ label: b.band, value: b.count, color: bandColor[i], tip: `${b.band}: ${b.count} students` })), { W: cw('#ovBands'), label: 'Students per probability band' });
+  $('#ovGaps').innerHTML = d.top_gaps.length ? hbars(d.top_gaps.slice(0, 6).map(g => ({ label: SHORT[keyOfLabel(g.label)] || g.label, value: g.count, tip: `${g.label}: top gap for ${g.count} at-risk students` })), { W: cw('#ovGaps'), labelW: 96, fmt: v => fmt(v, 0), label: 'Most common top gap' }) : '<p class="hint">No at-risk students in this view.</p>';
+  $('#ovPersonas').innerHTML = hbars(d.personas.map(p => ({ label: p.name, value: p.count, color: personaColor(p.id), tip: `${p.name}: ${p.count} students` })), { labelW: 'auto', fmt: v => fmt(v, 0), W: cw('#ovPersonas', 480), label: 'Persona sizes' });
   const risk = await api('/api/at-risk' + qs({ dept, batch, threshold: 0.5 }));
   const top = risk.students.slice(0, 6);
   $('#ovUrgent').innerHTML = top.length ? `<div class="urgent">${top.map(s => `
     <button class="urgent-item" type="button" data-sid="${esc(s.student_id)}">
       <div class="u-top"><span class="u-name">${esc(s.name)}</span>${probChip(s.probability)}</div>
       <div class="u-meta">${esc(s.student_id)} · ${esc(s.dept)} · batch ${esc(s.batch)}</div>
-      <div class="u-fix">Fix first: <b>${esc(s.top_gap)}</b></div>
+      <div class="u-fix">Fix first: <b>${esc(plural(s.top_gap))}</b></div>
     </button>`).join('')}</div>` : '<p class="hint">Nobody below 50% in this view.</p>';
 }
 function keyOfLabel(label) {
@@ -339,7 +365,7 @@ function renderStudent(d) {
   const head = `
     <div class="card wide"><div class="stu-head">
       <div class="who"><h2>${esc(d.name)}</h2>
-        <div class="meta">${esc(d.student_id)} · ${esc(d.dept)} · batch ${esc(d.batch)} · CGPA ${fmt(d.cgpa)} · ${fmt(d.backlogs, 0)} backlog(s)</div>
+        <div class="meta">${esc(d.student_id)} · ${esc(d.dept)} · batch ${esc(d.batch)} · CGPA ${fmt(d.cgpa)} · ${plural(fmt(d.backlogs, 0) + ' backlog(s)')}</div>
         <div class="tags">${statusChip}${persona}</div>
         <div class="stat-row" style="margin-top:12px">
           <div><div class="v">${d.expected_package_lpa == null ? '–' : fmt(d.expected_package_lpa, 1) + ' LPA'}</div><div class="l">expected package if placed</div></div>
@@ -351,12 +377,18 @@ function renderStudent(d) {
     </div></div>`;
   const contrib = `
     <div class="card"><div class="card-h"><h3>Why this prediction</h3><span class="sub">feature contribution = coefficient × standardised value (log-odds vs. an average student)</span></div>
-      <div class="chart">${diverging(d.contributions.map(c => ({
-        label: c.label, value: c.contribution,
-        tip: `${c.label} = ${fmt(c.value)}\n${c.z >= 0 ? '+' : ''}${fmt(c.z, 2)} SD vs cohort\ncontribution ${c.contribution >= 0 ? '+' : ''}${fmt(c.contribution, 3)} log-odds`
-      })), { labelW: 150, label: 'Feature contributions' })}</div></div>`;
+      <div class="chart" id="contribChart"></div></div>`;
   $('#stuDetail').innerHTML = head + contrib + `<div class="card" id="planCard">${planHtml(plan, false)}</div>` + simHtml(d);
+  drawContrib(d);
   bindSim();
+}
+// drawn after insertion so it can use the card's real width (and redrawn on resize)
+function drawContrib(d) {
+  const narrow = isNarrow('#contribChart');
+  $('#contribChart').innerHTML = diverging(d.contributions.map(c => ({
+    label: narrow ? (SHORT[c.feature] || c.label) : c.label, value: c.contribution,
+    tip: `${c.label} = ${fmt(c.value)}\n${c.z >= 0 ? '+' : ''}${fmt(c.z, 2)} SD vs cohort\ncontribution ${c.contribution >= 0 ? '+' : ''}${fmt(c.contribution, 3)} log-odds`
+  })), { W: cw('#contribChart'), labelW: narrow ? 84 : 150, label: 'Feature contributions' });
 }
 function planHtml(plan, fromSim) {
   let h = `<div class="card-h"><h3>What to fix next</h3><span class="sub">${fromSim ? 'from the simulator values' : 'minimum-effort plan'} → ${pct(plan.target)}</span></div>`;
@@ -369,7 +401,7 @@ function planHtml(plan, fromSim) {
   h += `<div class="plan">${plan.actions.map((a, i) => stepHtml(a, i)).join('')}</div>`;
   h += `<div class="plan-sum"><span>${pct(plan.p_before)} → <b>${pct(plan.p_after)}</b> ${plan.reachable ? '' : '<span class="flag">(target not reachable within realistic limits – best possible shown)</span>'}</span><span>total ≈ <b>${fmt(plan.total_effort_weeks, 1)} weeks</b> of focused effort</span></div>`;
   if (plan.single_lever_options && plan.single_lever_options.length) {
-    h += `<div class="subhead">Or one lever alone</div><ul class="alt-list">${plan.single_lever_options.slice(0, 4).map(a => `<li><span>${esc(a.text)}</span><span>${fmt(a.effort_weeks, 1)} wks → ${pct(a.p_after)}</span></li>`).join('')}</ul>`;
+    h += `<div class="subhead">Or one lever alone</div><ul class="alt-list">${plan.single_lever_options.slice(0, 4).map(a => `<li><span>${esc(plural(a.text))}</span><span>${fmt(a.effort_weeks, 1)} wks → ${pct(a.p_after)}</span></li>`).join('')}</ul>`;
   }
   h += `<div class="row-actions"><button class="btn btn-small" type="button" id="applyPlan" style="margin-left:0">Try this plan in the simulator ↓</button></div>`;
   return h;
@@ -377,7 +409,7 @@ function planHtml(plan, fromSim) {
 function stepHtml(a, i) {
   const from = a.feature === 'cgpa' ? fmt(a.from, 2) : fmt(a.from, 1), to = a.feature === 'cgpa' ? fmt(a.to, 2) : fmt(a.to, 1);
   return `<div class="plan-step" data-tip="${esc(a.label + ': ' + from + ' → ' + to + '\n+' + fmt(a.logit_gain, 2) + ' log-odds\n≈ ' + fmt(a.effort_weeks, 1) + ' weeks (assumed effort)')}">
-    <span class="n">${i + 1}</span><span><span class="t">${esc(a.text)}</span><br><span class="d">${esc(a.label)} ${from} → ${to} · ≈ ${fmt(a.effort_weeks, 1)} wks</span></span>
+    <span class="n">${i + 1}</span><span><span class="t">${esc(plural(a.text))}</span><br><span class="d">${esc(a.label)} ${from} → ${to} · ≈ ${fmt(a.effort_weeks, 1)} wks</span></span>
     <span class="p">${pct(a.p_after)}<small>after step</small></span></div>`;
 }
 function simHtml(d) {
@@ -464,8 +496,8 @@ async function loadRisk() {
   $('#riskTitle').textContent = `${r.count} at-risk student${r.count === 1 ? '' : 's'}`;
   const rows = r.students.slice(0, 300);
   $('#riskTable').innerHTML = `<thead><tr><th>#</th><th>Student</th><th>Dept</th><th>Batch</th><th>Status</th><th>P(placed)</th><th>Top gap (fix first)</th><th class="num">Plan effort</th><th class="num">P after plan</th></tr></thead><tbody>` +
-    rows.map((s, i) => `<tr class="click" data-sid="${esc(s.student_id)}"><td>${i + 1}</td><td><b>${esc(s.name)}</b><br><span class="hint">${esc(s.student_id)}</span></td><td>${esc(s.dept)}</td><td>${esc(s.batch)}</td><td>${esc(s.status)}</td>
-      <td>${probChip(s.probability)}</td><td>${esc(s.top_gap)}</td><td class="num">${fmt(s.plan_effort_weeks, 1)} wks</td><td class="num">${pct(s.plan_p_after)}${s.plan_reachable ? '' : ' <span class="flag" title="target not reachable with realistic changes">*</span>'}</td></tr>`).join('') +
+    rows.map((s, i) => `<tr class="click" data-sid="${esc(s.student_id)}"><td>${i + 1}</td><td><b>${esc(s.name)}</b><br><span class="hint">${esc(s.student_id)}</span></td><td>${esc(s.dept)}</td><td>${esc(s.batch)}</td><td class="nowrap">${esc(s.status)}</td>
+      <td>${probChip(s.probability)}</td><td>${esc(plural(s.top_gap))}</td><td class="num">${fmt(s.plan_effort_weeks, 1)} wks</td><td class="num">${pct(s.plan_p_after)}${s.plan_reachable ? '' : ' <span class="flag" title="target not reachable with realistic changes">*</span>'}</td></tr>`).join('') +
     `</tbody>` + (r.count > 300 ? `<caption class="hint" style="caption-side:bottom;text-align:left;padding-top:6px">Showing 300 of ${r.count}; export the CSV for all.</caption>` : '');
 }
 
@@ -509,7 +541,7 @@ async function loadModel() {
   $('#rocSub').textContent = `hold-out test set · n = ${t.n} · AUC ${fmt(t.roc_auc, 3)}`;
   const pts = m.roc.map(p => [p.fpr, p.tpr]);
   $('#rocChart').innerHTML = lineChart([{ points: pts, area: true }], {
-    xmax: 1, ymax: 1, xfmt: v => v.toFixed(2), yfmt: v => v.toFixed(2), xlabel: 'False positive rate', ylabel: 'True positive rate', H: 280,
+    xmax: 1, ymax: 1, xfmt: v => v.toFixed(2), yfmt: v => v.toFixed(2), xlabel: 'False positive rate', ylabel: 'True positive rate', H: 280, W: cw('#rocChart'),
     extra: [(sx, sy) => `<line x1="${sx(0)}" y1="${sy(0)}" x2="${sx(1)}" y2="${sy(1)}" style="stroke:var(--axis);stroke-dasharray:4 4"/><text class="lbl" x="${sx(0.62)}" y="${sy(0.55)}">random (0.5)</text>`],
     hover: (sx, sy) => m.roc.filter((p, i) => i % Math.max(1, Math.floor(m.roc.length / 40)) === 0).map(p => `<circle cx="${sx(p.fpr)}" cy="${sy(p.tpr)}" r="7" fill="transparent" data-tip="threshold ${p.threshold.toFixed(2)}\nTPR ${p.tpr.toFixed(2)} · FPR ${p.fpr.toFixed(2)}"/>`).join(''),
     label: 'ROC curve'
@@ -520,15 +552,15 @@ async function loadModel() {
     <div class="h">Actually not placed</div><div class="cell bad"><b>${c.fp}</b><span>false positive</span></div><div class="cell ok"><b>${c.tn}</b><span>true negative</span></div></div>
     <p class="notes">A false negative is a student we would wrongly flag as at risk (cheap: extra coaching). A false positive is a student we would miss – the costlier error, so the at-risk list can use a higher threshold.</p>`;
   const coefs = m.coefficients.slice().sort((a, b) => Math.abs(b.weight) - Math.abs(a.weight));
-  $('#coefChart').innerHTML = diverging(coefs.map(cf => ({ label: cf.label, value: cf.weight, tip: `${cf.label}\nweight ${cf.weight.toFixed(3)} per SD\nodds ×${Math.exp(cf.weight).toFixed(2)} per +1 SD` })), { labelW: 150, label: 'Coefficients' });
+  $('#coefChart').innerHTML = diverging(coefs.map(cf => ({ label: isNarrow('#coefChart') ? (SHORT[cf.feature] || cf.label) : cf.label, value: cf.weight, tip: `${cf.label}\nweight ${cf.weight.toFixed(3)} per SD\nodds ×${Math.exp(cf.weight).toFixed(2)} per +1 SD` })), { W: cw('#coefChart'), labelW: isNarrow('#coefChart') ? 84 : 150, label: 'Coefficients' });
   const lh = m.loss_history;
   const it = lh.map((v, i) => [i === 0 ? 1 : i * 25, v]);
-  $('#lossChart').innerHTML = lineChart([{ points: it }], { xmin: 0, xmax: it[it.length - 1][0], ymin: Math.floor(Math.min(...lh) * 10) / 10, ymax: Math.ceil(lh[0] * 10) / 10, xfmt: v => fmt(v, 0), yfmt: v => v.toFixed(2), xlabel: `iteration (converged after ${t.iterations})`, ylabel: 'log-loss + L2', label: 'Training loss' });
+  $('#lossChart').innerHTML = lineChart([{ points: it }], { xmin: 0, xmax: it[it.length - 1][0], ymin: Math.floor(Math.min(...lh) * 10) / 10, ymax: Math.ceil(lh[0] * 10) / 10, xfmt: v => fmt(v, 0), yfmt: v => v.toFixed(2), xlabel: `iteration (converged after ${t.iterations})`, ylabel: 'log-loss + L2', W: cw('#lossChart'), label: 'Training loss' });
   if (m.package) {
-    const P = m.package.points, mx = Math.ceil(Math.max(...P.map(p => Math.max(p.actual, p.pred))));
+    const P = m.package.points, ax = niceAxis(Math.max(...P.map(p => Math.max(p.actual, p.pred)))), mx = ax.top;
     $('#pkgSub').textContent = `placed students, test set n = ${m.package.n_test} · R² ${fmt(m.package.r2, 3)} · MAE ${fmt(m.package.mae, 2)} LPA`;
     $('#pkgChart').innerHTML = lineChart([], {
-      xmin: 0, xmax: mx, ymin: 0, ymax: mx, xfmt: v => fmt(v, 0), yfmt: v => fmt(v, 0), xlabel: 'actual package (LPA)', ylabel: 'predicted (LPA)',
+      xmin: 0, xmax: mx, ymin: 0, ymax: mx, ticks: ax.n, xfmt: v => fmt(v, 1), yfmt: v => fmt(v, 1), xlabel: 'actual package (LPA)', ylabel: 'predicted (LPA)', W: cw('#pkgChart'),
       extra: [(sx, sy) => `<line x1="${sx(0)}" y1="${sy(0)}" x2="${sx(mx)}" y2="${sy(mx)}" style="stroke:var(--axis);stroke-dasharray:4 4"/>` +
         P.map(p => `<circle cx="${sx(p.actual)}" cy="${sy(Math.min(mx, Math.max(0, p.pred)))}" r="4" style="fill:var(--accent-fill);fill-opacity:.7;stroke:var(--surface);stroke-width:1.5" data-tip="actual ${fmt(p.actual, 2)} LPA\npredicted ${fmt(p.pred, 2)} LPA"/>`).join('')],
       label: 'Predicted vs actual package'
@@ -568,7 +600,7 @@ async function loadEda() {
       return `<tr><td>${i + 1}</td><td><b>${esc(d.label)}</b></td><td><div class="bar-cell"><span style="width:44px;text-align:right">${d.coefficient >= 0 ? '+' : ''}${d.coefficient.toFixed(2)}</span><span class="track"><span class="fill" style="width:${w}%;background:${d.coefficient >= 0 ? 'var(--accent-fill)' : 'var(--neg)'};display:block"></span></span></div></td>
       <td class="num">${d.odds_ratio_per_sd.toFixed(2)}</td><td class="num">${d.correlation >= 0 ? '+' : ''}${d.correlation.toFixed(2)}</td><td class="num">${pct(d.rate_bottom_quartile)}</td><td class="num">${pct(d.rate_top_quartile)}</td></tr>`;
     }).join('') + '</tbody>';
-  $('#edaDept').innerHTML = hbars(e.dept_rates.map(r => ({ label: r.dept, value: r.rate, text: pct(r.rate), tip: `${r.dept}: ${r.placed}/${r.n} placed\navg package ${r.avg_package == null ? '–' : fmt(r.avg_package, 2) + ' LPA'}` })), { max: 1, fmt: v => pct(v), labelW: 60 });
+  $('#edaDept').innerHTML = hbars(e.dept_rates.map(r => ({ label: r.dept, value: r.rate, text: pct(r.rate), tip: `${r.dept}: ${r.placed}/${r.n} placed\navg package ${r.avg_package == null ? '–' : fmt(r.avg_package, 2) + ' LPA'}` })), { W: cw('#edaDept'), max: 1, fmt: v => pct(v), labelW: 60 });
   const names = e.correlation.names;
   $('#corrChart').innerHTML = heatmap(names.map(n => SHORT[n] || n), names.map(n => SHORT[n] || n), e.correlation.matrix, {
     cell: 44, labelW: 90, top: 70, scale: 1, short: v => v.toFixed(2),
@@ -577,7 +609,12 @@ async function loadEda() {
   $('#histGrid').innerHTML = e.columns.map(c => `<div><h5>${esc(c.label)} <span class="hint">mean ${fmt(c.mean, 1)} · median ${fmt(c.median, 1)}</span></h5>${histogram(c)}</div>`).join('') +
     (e.package ? `<div><h5>Package (LPA, placed) <span class="hint">mean ${fmt(e.package.mean, 1)} · median ${fmt(e.package.median, 1)}</span></h5>${histogram(e.package)}</div>` : '');
   $('#summaryTable').innerHTML = `<thead><tr><th>Column</th>${['count', 'mean', 'std', 'min', 'q1', 'median', 'q3', 'max'].map(h => `<th class="num">${h}</th>`).join('')}</tr></thead><tbody>` +
-    e.columns.map(c => `<tr><td><b>${esc(c.label)}</b></td>${['count', 'mean', 'std', 'min', 'q1', 'median', 'q3', 'max'].map(k => `<td class="num">${fmt(c[k], 2)}</td>`).join('')}</tr>`).join('') + '</tbody>';
+    e.columns.map(c => {
+      // consistent decimals per row: whole-number columns stay whole, mean/std always 2 dp
+      const q = ['min', 'q1', 'median', 'q3', 'max'], whole = q.every(k => c[k] == null || Number.isInteger(c[k]));
+      const f = k => (c[k] == null ? '–' : k === 'count' ? fmt(c[k], 0) : (k === 'mean' || k === 'std' || !whole) ? Number(c[k]).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : fmt(c[k], 0));
+      return `<tr><td><b>${esc(c.label)}</b></td>${['count', 'mean', 'std', 'min', 'q1', 'median', 'q3', 'max'].map(k => `<td class="num">${f(k)}</td>`).join('')}</tr>`;
+    }).join('') + '</tbody>';
 }
 function histogram(c) {
   const bins = c.histogram, W = 240, H = 92, base = H - 16, max = Math.max(...bins.map(b => b.count)), bw = (W - 4) / bins.length;
@@ -597,7 +634,7 @@ async function loadData() {
   $('#previewSub').textContent = `${info.source} · ${info.rows} rows (${info.labelled_rows} labelled, ${info.pending_rows} pending) · lowest probability first`;
   const cols = ['student_id', 'name', 'dept', 'batch', 'cgpa', 'backlogs', 'internships', 'projects', 'coding_problems', 'aptitude_score', 'mock_interview_score', 'status', 'package_lpa', 'probability'];
   $('#previewTable').innerHTML = `<thead><tr>${cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>` +
-    info.sample.map(r => `<tr>${cols.map(c => `<td>${c === 'probability' ? pct(r[c], 1) : esc(r[c] == null ? '' : r[c])}</td>`).join('')}</tr>`).join('') + '</tbody>';
+    info.sample.map(r => `<tr>${cols.map(c => `<td>${previewCell(r, c)}</td>`).join('')}</tr>`).join('') + '</tbody>';
   $('#schema').innerHTML = `<p>Required: ${info.required_columns.map(c => `<code>${esc(c)}</code>`).join(' ')}</p>
     <p>Optional: <code>student_id</code> <code>name</code> <code>batch</code> <code>package_lpa</code></p>
     <ul><li><code>dept</code> one of ${S.info.departments.length ? 'CSE, AI&amp;DS, CSD, IT, ECE, MECH' : ''} (aliases like AIDS, MECHANICAL accepted)</li>
@@ -605,6 +642,15 @@ async function loadData() {
     <li>Scores are 0–100, CGPA 0–10; counts must be whole numbers</li>
     <li>Bad rows are skipped and listed with the line number and the reason; at least 40 valid labelled rows with both outcomes are needed to retrain</li></ul>`;
   if (info.upload_report) renderReport({ ok: true, message: info.source, report: info.upload_report });
+}
+function previewCell(r, c) {
+  const v = r[c];
+  if (c === 'probability') return v != null && v < 0.0005 ? '&lt;0.1%' : pct(v, 1);
+  if (v == null || v === '') return '–';
+  if (c === 'cgpa') return Number(v).toFixed(2);
+  // a package only exists for placed students; 0 for the others reads like a real salary
+  if (c === 'package_lpa') return Number(v) > 0 ? Number(v).toFixed(1) : '–';
+  return esc(v);
 }
 function renderReport(res) {
   const r = res.report || {};
@@ -630,9 +676,10 @@ async function afterDatasetChange(msg) {
   setSource();
   fillFilters();
   toast(msg || 'Dataset updated');
+  // model first: the overview's short feature labels (keyOfLabel) need it
+  S.model = await api('/api/model');
   const active = ($('.tabs button.active') || {}).dataset;
   await loadTab(active ? active.tab : 'overview');
-  if (!S.model) S.model = await api('/api/model');
 }
 function setSource() {
   const i = S.info;
@@ -713,6 +760,17 @@ function readFile(f) {
 }
 async function boot() {
   bind();
+  let lastW = innerWidth, rz;
+  addEventListener('resize', () => {
+    clearTimeout(rz);
+    rz = setTimeout(() => {
+      if (Math.abs(innerWidth - lastW) < 40) return;
+      lastW = innerWidth;
+      const a = ($('.tabs button.active') || {}).dataset;
+      if (a) loadTab(a.tab);
+      if (a && a.tab === 'students' && S.current && $('#contribChart')) drawContrib(S.current);
+    }, 250);
+  });
   try {
     S.info = await api('/api/dataset?limit=0');
     setSource();

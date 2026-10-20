@@ -84,5 +84,15 @@
     "Optional user-approved domain-age and blocklist lookups"
   ],
   "port": 8007,
-  "dir": "projects/07-phishguard"
+  "dir": "projects/07-phishguard",
+  "compare": {
+    "columns": ["Gut feel / forwards", "Spam filters, link checkers", "PhishGuard"],
+    "rows": [
+      ["Works fully offline", "Yes", "Mostly cloud", "Yes"],
+      ["Explains why it is a scam", "No", "Rarely", "Yes, word-level"],
+      ["India scam patterns (KYC, UPI)", "Partial", "Generic", "17 rules"],
+      ["Messages stay on the device", "Yes", "Often uploaded", "Yes"],
+      ["Accuracy on unseen templates", "Unknown", "Not published", "97% (synthetic)"]
+    ]
+  }
 }

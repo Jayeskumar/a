@@ -65,9 +65,10 @@
       '<circle cx="50" cy="50" r="' + r + '" fill="none" stroke="' + col + '" stroke-width="10" stroke-linecap="round" ' +
       'stroke-dasharray="' + (c * v / 100).toFixed(1) + ' ' + c.toFixed(1) + '" transform="rotate(-90 50 50)"/>' +
       '<text x="50" y="55" text-anchor="middle" font-size="22">' + fmt(v) + '</text>' +
-      (label ? '<text x="50" y="70" text-anchor="middle" font-size="9" style="fill:var(--muted);font-weight:600">' + esc(label) + '</text>' : '') +
+      (label ? '<text x="50" y="72" text-anchor="middle" font-size="13" style="fill:var(--muted);font-weight:600">' + esc(label) + '</text>' : '') +
       '</svg>';
   }
+  function mathSym(t) { return esc(t).replace(/&gt;=/g, '≥').replace(/&lt;=/g, '≤'); }
   function chips(items, cls) {
     return items.map(function (t) { return '<span class="chip ' + (cls || '') + '">' + esc(t) + '</span>'; }).join('');
   }
@@ -76,6 +77,9 @@
   function showView(name) {
     $$('.tab').forEach(function (t) { t.classList.toggle('active', t.dataset.view === name); });
     $$('.view').forEach(function (v) { v.classList.toggle('active', v.id === 'view-' + name); });
+    if (name === 'how') drawOnto();
+    // first visit to the coach: show a worked example instead of an empty report
+    if (name === 'coach' && !S.coach && S.demo && !$('#coach-text').value.trim()) loadSample('R03');
     if (name === 'how' && !S.evalLoaded) runEval();
   }
 
@@ -242,15 +246,19 @@
         '<td class="rank">' + r.rank + '</td>' +
         '<td class="cand">' + esc(r.display_name) + '<small><span class="pill ' + rec + '">' + REC_SHORT[rec] + '</span></small></td>' +
         '<td class="scorecell"><span class="num">' + fmt(r.score) + '</span>' + scoreBar(r) + '</td>' +
-        '<td><span class="num">' + s.must_met + '</span>/' + s.must_total + (s.must_partial ? ' <span class="muted">+' + s.must_partial + ' partial</span>' : '') +
-        (s.top_missing.length ? '<br><span class="muted">' + esc('missing ' + s.top_missing.slice(0, 2).join(', ')) + '</span>' : '') + '</td>' +
+        '<td class="mustcell"><span class="nw"><span class="num">' + s.must_met + '</span>/' + s.must_total + (s.must_partial ? ' <span class="muted">+' + s.must_partial + ' partial</span>' : '') + '</span>' +
+        (s.top_missing.length ? '<span class="muted miss-line">' + esc('missing ' + s.top_missing.slice(0, 2).join(', ')) + '</span>' : '') + '</td>' +
         '<td class="hide-sm">' + fmt(s.years) + 'y</td>' +
         '<td class="hide-sm">' + fmt(s.ats, 0) + '</td>' +
         '<td class="hide-sm">' + (flags || '<span class="muted">-</span>') + '</td></tr>';
     });
     el.innerHTML = h + '</tbody></table>';
     $$('tbody tr', el).forEach(function (tr) {
-      var pick = function () { S.sel = tr.dataset.id; $$('tbody tr', el).forEach(function (x) { x.classList.toggle('sel', x === tr); }); renderDetail($('#detail'), selected(), 'screen'); };
+      var pick = function () {
+        S.sel = tr.dataset.id; $$('tbody tr', el).forEach(function (x) { x.classList.toggle('sel', x === tr); }); renderDetail($('#detail'), selected(), 'screen');
+        // single-column layout: the explanation sits below the table, so bring it into view
+        if (window.innerWidth <= 1180) $('#detail').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      };
       tr.addEventListener('click', pick);
       tr.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); } });
     });
@@ -278,7 +286,7 @@
     var m = rep.match, rec = m.recommendation;
     var name = where === 'coach' ? 'Your resume' : rep.display_name;
     var h = '<div class="d-head">' + donut(rep.score, 92, 'match') + '<div><h2>' + esc(name) + '</h2>' +
-      '<div style="margin:4px 0"><span class="pill ' + rec.level + '">' + esc(rec.label) + '</span> <span class="muted">rule: ' + esc(rec.rule) + '</span></div>' +
+      '<div style="margin:4px 0"><span class="pill ' + rec.level + '">' + esc(rec.label) + '</span> <span class="muted">rule: ' + mathSym(rec.rule) + '</span></div>' +
       '<div class="muted">' + esc(oneLiner(rep)) + '</div></div></div>';
     h += '<div class="subtabs" role="tablist">' + tabs.map(function (t) {
       return '<button class="subtab' + (S[tabKey] === t[0] ? ' active' : '') + '" data-t="' + t[0] + '" type="button">' + esc(t[1]) + '</button>';
@@ -385,12 +393,12 @@
 
   function atsBody(rep) {
     var a = rep.ats;
-    var h = '<div class="d-head">' + donut(a.score, 76, 'ATS') + '<div><b>' + esc(a.grade) + '</b><div class="muted">' + fmt(a.points) + ' of ' + a.max_points +
+    var h = '<div class="d-head">' + donut(a.score, 88, 'ATS') + '<div><b>' + esc(a.grade) + '</b><div class="muted">' + fmt(a.points, a.points % 1 ? 1 : 0) + ' of ' + a.max_points +
       ' points from ' + a.checks.length + ' rule checks. Scored on the resume as submitted.</div></div></div><div class="checks">';
     a.checks.forEach(function (c) {
       var ic = { pass: '✓', warn: '!', fail: '✕' }[c.status];
       h += '<div class="check"><span class="ic ' + c.status + '">' + ic + '</span><div><b>' + esc(c.label) + '</b> - ' + esc(c.message) +
-        (c.fix ? '<div class="fix">Fix: ' + esc(c.fix) + '</div>' : '') + '</div><span class="pts">' + fmt(c.points) + '/' + c.max + '</span></div>';
+        (c.fix ? '<div class="fix">Fix: ' + esc(c.fix) + '</div>' : '') + '</div><span class="pts">' + fmt(c.points, c.points % 1 ? 1 : 0) + '/' + c.max + '</span></div>';
     });
     return h + '</div>';
   }
@@ -423,16 +431,17 @@
 
   // ------------------------------------------------------------------ bias card
   function biasChart(rows, key, good) {
-    var w = 420, h = 96, mid = h / 2, n = rows.length;
+    var w = 340, h = 104, mid = h / 2, n = rows.length, L = 40;
     var maxAbs = 1.5;
     rows.forEach(function (r) { maxAbs = Math.max(maxAbs, Math.abs(r[key] - r.score)); });
-    var bw = Math.max(3, (w - 30) / Math.max(1, n) - 3);
+    var bw = Math.max(3, (w - L - 2) / Math.max(1, n) - 3);
     var s = '<svg class="bias-chart" viewBox="0 0 ' + w + ' ' + h + '" role="img" aria-label="score change per candidate after identity swap">';
-    s += '<line x1="24" x2="' + w + '" y1="' + mid + '" y2="' + mid + '" stroke="var(--border)" stroke-width="1"/>';
-    s += '<text x="0" y="12">+' + fmt(maxAbs, 1) + '</text><text x="0" y="' + (mid + 3) + '">0</text><text x="0" y="' + (h - 4) + '">-' + fmt(maxAbs, 1) + '</text>';
+    s += '<line x1="' + (L - 4) + '" x2="' + w + '" y1="' + mid + '" y2="' + mid + '" stroke="var(--border)" stroke-width="1"/>';
+    s += '<text x="' + (L - 6) + '" y="13" text-anchor="end">+' + fmt(maxAbs, 1) + '</text><text x="' + (L - 6) + '" y="' + (mid + 4) + '" text-anchor="end">0</text><text x="' + (L - 6) + '" y="' + (h - 3) + '" text-anchor="end">-' + fmt(maxAbs, 1) + '</text>' +
+      '<text x="' + w + '" y="13" text-anchor="end">Δ score (pts)</text>';
     rows.forEach(function (r, i) {
       var d = r[key] - r.score;
-      var x = 26 + i * (bw + 3);
+      var x = L + i * (bw + 3);
       var bh = Math.abs(d) / maxAbs * (mid - 6);
       if (Math.abs(d) < 1e-9) {
         s += '<rect x="' + x.toFixed(1) + '" y="' + (mid - 1.5) + '" width="' + bw.toFixed(1) + '" height="3" rx="1.5" fill="var(--good)"><title>' + esc(displayName(r.id)) + ': 0.00</title></rect>';
@@ -550,22 +559,27 @@
       '<li>Skill in the job title counts x' + c.title_skill_weight + '; "strong/expert" lines x' + c.strong_cue_weight + '</li>' +
       '<li>TF-IDF cosine reaches full credit at ' + c.semantic_cos_full + '; internships count x' + c.internship_weight + '</li>' +
       '<li>Bands: shortlist ≥ ' + c.shortlist_at + ', human review ≥ ' + c.review_at + '. Soft skills are never scored.</li></ul>';
-    var cats = S.onto.stats.by_category;
-    var keys = Object.keys(cats).sort(function (a, b) { return cats[b] - cats[a]; });
-    var max = Math.max.apply(null, keys.map(function (k) { return cats[k]; }));
-    var bh = 17, w = 520, lw = 140;
-    var svg = '<svg viewBox="0 0 ' + w + ' ' + (keys.length * bh + 4) + '" role="img" aria-label="skills per category">';
-    keys.forEach(function (k, i) {
-      var bw = (w - lw - 40) * cats[k] / max;
-      svg += '<text x="' + (lw - 6) + '" y="' + (i * bh + 12) + '" text-anchor="end" font-size="11" fill="var(--muted)">' + esc(k) + '</text>' +
-        '<rect x="' + lw + '" y="' + (i * bh + 3) + '" width="' + bw.toFixed(1) + '" height="' + (bh - 6) + '" rx="3" fill="var(--accent)" opacity="' + (0.45 + 0.55 * cats[k] / max).toFixed(2) + '"/>' +
-        '<text x="' + (lw + bw + 5).toFixed(1) + '" y="' + (i * bh + 12) + '" font-size="11" fill="var(--text)">' + cats[k] + '</text>';
-    });
-    $('#onto-chart').innerHTML = svg + '</svg>';
-    $('#onto-chart').className = 'onto-chart';
+    drawOnto();
     $('#onto-meta').textContent = S.onto.stats.skills + ' skills · ' + S.onto.stats.prerequisite_edges + ' prerequisite edges · ' +
       S.onto.questions.questions + ' interview questions';
     searchOnto('');
+  }
+  function drawOnto() {
+    if (!S.onto) return;
+    var cats = S.onto.stats.by_category;
+    var keys = Object.keys(cats).sort(function (a, b) { return cats[b] - cats[a]; });
+    var max = Math.max.apply(null, keys.map(function (k) { return cats[k]; }));
+    var cw = $('#onto-chart').clientWidth;
+    var bh = 20, w = cw > 200 ? cw : 520, lw = 130;
+    var svg = '<svg viewBox="0 0 ' + w + ' ' + (keys.length * bh + 4) + '" role="img" aria-label="skills per category">';
+    keys.forEach(function (k, i) {
+      var bw = (w - lw - 40) * cats[k] / max;
+      svg += '<text x="' + (lw - 6) + '" y="' + (i * bh + 14) + '" text-anchor="end" font-size="12.5" fill="var(--muted)">' + esc(k) + '</text>' +
+        '<rect x="' + lw + '" y="' + (i * bh + 4) + '" width="' + bw.toFixed(1) + '" height="' + (bh - 7) + '" rx="3" fill="var(--accent)" opacity="' + (0.45 + 0.55 * cats[k] / max).toFixed(2) + '"/>' +
+        '<text x="' + (lw + bw + 5).toFixed(1) + '" y="' + (i * bh + 14) + '" font-size="12.5" font-weight="600" fill="var(--text)">' + cats[k] + '</text>';
+    });
+    $('#onto-chart').innerHTML = svg + '</svg>';
+    $('#onto-chart').className = 'onto-chart';
   }
   function searchOnto(q) {
     q = (q || '').trim().toLowerCase();
@@ -596,7 +610,7 @@
       kpi(fmt(m.resumeradar['ndcg@5'], 2), 'NDCG@5 (keyword ATS ' + fmt(m.keyword_ats['ndcg@5'], 2) + ')', 'accent') +
       kpi(fmt(ex.resumeradar.f1, 2), 'Skill-extraction F1 (keyword ' + fmt(ex.keyword_baseline.f1, 2) + ')', 'good') +
       kpi(lat ? fmt(lat.full_reports_ms, 0) + ' ms' : '-', lat ? 'Full reports for ' + lat.resumes + ' resumes' : 'Latency', '') + '</div>';
-    h += '<h3>Ranking agreement per job (20 resumes, hand-labelled 0-3)</h3><div class="table-wrap"><table class="metrics"><thead><tr><th>Job</th><th>System</th><th>Spearman ρ</th><th>NDCG@5</th><th>Top-5 overlap</th></tr></thead><tbody>';
+    h += '<h3>Ranking agreement per job (20 resumes, hand-labelled 0-3)</h3><div class="table-wrap"><table class="metrics"><thead><tr><th>Job</th><th>System</th><th>Spearman <span class="nocase">ρ</span></th><th>NDCG@5</th><th>Top-5 overlap</th></tr></thead><tbody>';
     Object.keys(r.rankings).forEach(function (jid) {
       var row = r.rankings[jid];
       var sys = [['resumeradar', 'ResumeRadar'], ['keyword_ats', 'Keyword ATS (literal)'], ['plain_tfidf', 'Plain TF-IDF']];
@@ -683,6 +697,8 @@
 
   function init() {
     bind();
+    var rz = null;
+    window.addEventListener('resize', function () { clearTimeout(rz); rz = setTimeout(function () { if ($('#view-how').classList.contains('active')) drawOnto(); }, 200); });
     renderAll();
     renderDetail($('#coach-detail'), null, 'coach');
     Promise.all([api('/api/demo'), api('/api/config'), api('/api/ontology')]).then(function (r) {
@@ -691,7 +707,7 @@
       fillJdSelects();
       renderHowStatic();
       renderKpis();
-      return setJd(S.demo.jds[0].id, null, false);
+      return loadDemo();
     }).catch(function (e) { toast('Could not reach the ResumeRadar server: ' + e.message, true); });
   }
 

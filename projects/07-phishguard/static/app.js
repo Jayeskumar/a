@@ -109,7 +109,7 @@
       var u = r.entities.urls[0];
       tk.innerHTML = '<div class="muted small">Link-only input, so the text model is skipped. Feature contributions of the URL model (w &middot; x):</div>' +
         u.reasons.map(function (x) {
-          return '<div class="tok' + (x.contribution < 0 ? " neg" : "") + '" title="' + esc(x.label) + '"><span class="k">' + esc(x.feature) +
+          return '<div class="tok url' + (x.contribution < 0 ? " neg" : "") + '" title="' + esc(x.feature) + '"><span class="k">' + esc(x.label) +
             '</span><div class="bar"><i style="width:' + Math.min(100, Math.round(Math.abs(x.contribution) / 3.5 * 100)) + '%"></i></div><span class="v">' +
             (x.contribution > 0 ? "+" : "") + fmt(x.contribution, 2) + "</span></div>";
         }).join("");
@@ -222,15 +222,15 @@
       var fill = good ? "rgba(16,185,129," + a.toFixed(2) + ")" : (v ? "rgba(239,68,68," + Math.max(a, 0.25).toFixed(2) + ")" : "rgba(148,163,184,.12)");
       return '<rect x="' + x + '" y="' + y + '" width="96" height="70" rx="8" fill="' + fill + '"/>' +
         '<text x="' + (x + 48) + '" y="' + (y + 38) + '" text-anchor="middle" font-size="22" font-weight="800" fill="currentColor">' + v + "</text>" +
-        '<text x="' + (x + 48) + '" y="' + (y + 58) + '" text-anchor="middle" font-size="10" fill="currentColor" opacity=".7">' + lab + "</text>";
+        '<text x="' + (x + 48) + '" y="' + (y + 58) + '" text-anchor="middle" font-size="12" fill="currentColor" opacity=".8">' + lab + "</text>";
     };
     return '<svg class="cm-svg" viewBox="0 0 260 200" role="img" aria-label="confusion matrix">' +
-      '<text x="160" y="12" text-anchor="middle" font-size="10" fill="currentColor" opacity=".65">PREDICTED</text>' +
-      '<text x="112" y="28" text-anchor="middle" font-size="11" fill="currentColor" opacity=".8">Scam</text>' +
-      '<text x="210" y="28" text-anchor="middle" font-size="11" fill="currentColor" opacity=".8">Safe</text>' +
-      '<text x="12" y="118" text-anchor="middle" font-size="10" fill="currentColor" opacity=".65" transform="rotate(-90 12 118)">ACTUAL</text>' +
-      '<text x="46" y="75" text-anchor="end" font-size="11" fill="currentColor" opacity=".8">Scam</text>' +
-      '<text x="46" y="149" text-anchor="end" font-size="11" fill="currentColor" opacity=".8">Safe</text>' +
+      '<text x="160" y="12" text-anchor="middle" font-size="11" font-weight="700" fill="currentColor" opacity=".7">PREDICTED</text>' +
+      '<text x="110" y="29" text-anchor="middle" font-size="12" fill="currentColor" opacity=".85">Scam</text>' +
+      '<text x="210" y="29" text-anchor="middle" font-size="12" fill="currentColor" opacity=".85">Safe</text>' +
+      '<text x="12" y="112" text-anchor="middle" font-size="11" font-weight="700" fill="currentColor" opacity=".7" transform="rotate(-90 12 112)">ACTUAL</text>' +
+      '<text x="56" y="75" text-anchor="end" font-size="12" fill="currentColor" opacity=".85">Scam</text>' +
+      '<text x="56" y="151" text-anchor="end" font-size="12" fill="currentColor" opacity=".85">Safe</text>' +
       cell(62, 36, c.tp, true, "true positive") + cell(162, 36, c.fn, false, "missed scam") +
       cell(62, 112, c.fp, false, "false alarm") + cell(162, 112, c.tn, true, "true negative") + "</svg>";
   }
@@ -259,14 +259,14 @@
       $("honesty").innerHTML = "<b>Honesty note:</b> " + esc(s.note) + " On the random split the test messages share templates with training, so the text model looks perfect. " +
         "The <b>unseen-template</b> split (whole phrasings held out) is the more realistic number. Real SMS will be messier still.";
       $("cms").innerHTML = cmCard("Text model (Naive Bayes)", "Random 25% hold-out, threshold p = 0.5", s.message_nb) +
-        cmCard("Full pipeline", "Random hold-out, flagged if risk >= " + s.config.safe_below, s.message_combined) +
+        cmCard("Full pipeline", "Random hold-out, flagged if risk ≥ " + s.config.safe_below, s.message_combined) +
         cmCard("Full pipeline, unseen templates", s.heldout_templates.train + " train / " + s.heldout_templates.test + " test", s.heldout_templates.combined) +
         cmCard("URL model (logistic regression)", "Random 25% hold-out of " + d.urls + " URLs", s.url_lr);
 
       var rows = [
-        ["Naive Bayes only", "random", s.message_nb], ["Rules only (score >= 0.35)", "random", s.message_rules_only],
-        ["Full pipeline (risk >= 35)", "random", s.message_combined], ["Full pipeline (risk >= 65)", "random", s.message_combined_dangerous],
-        ["Naive Bayes only", "unseen templates", s.heldout_templates.nb], ["Full pipeline (risk >= 35)", "unseen templates", s.heldout_templates.combined],
+        ["Naive Bayes only", "random", s.message_nb], ["Rules only (score ≥ 0.35)", "random", s.message_rules_only],
+        ["Full pipeline (risk ≥ 35)", "random", s.message_combined], ["Full pipeline (risk ≥ 65)", "random", s.message_combined_dangerous],
+        ["Naive Bayes only", "unseen templates", s.heldout_templates.nb], ["Full pipeline (risk ≥ 35)", "unseen templates", s.heldout_templates.combined],
         ["URL logistic regression", "random", s.url_lr],
       ];
       $("evalTable").innerHTML = "<thead><tr><th>Model</th><th>Split</th><th>n</th><th>Acc</th><th>Prec</th><th>Recall</th><th>F1</th></tr></thead><tbody>" +
@@ -313,7 +313,7 @@
       setText(state.samples[idx].text);
       analyse();
     });
-    $("bulkDemo").addEventListener("click", function () { $("bulkText").value = state.bulk.join("\n"); });
+    $("bulkDemo").addEventListener("click", function () { $("bulkText").value = state.bulk.join("\n"); bulkScan(); });
     $("bulkBtn").addEventListener("click", bulkScan);
     $("bulkTable").addEventListener("click", function (e) {
       var tr = e.target.closest("tr.click");
@@ -340,6 +340,7 @@
         setText(state.samples[+c.getAttribute("data-i")].text);
         analyse();
       });
+      if (!$("msg").value.trim() && s.samples.length) { setText(s.samples[0].text); analyse(); }
     }).catch(function () { /* server offline */ });
     api("/api/quiz").then(function (q) {
       state.quiz = q.questions;

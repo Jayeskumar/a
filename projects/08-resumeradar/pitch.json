@@ -90,5 +90,15 @@
     "Optional embeddings, checked by the same bias test"
   ],
   "port": 8008,
-  "dir": "projects/08-resumeradar"
+  "dir": "projects/08-resumeradar",
+  "compare": {
+    "columns": ["Manual skim", "Keyword ATS", "ResumeRadar"],
+    "rows": [
+      ["Synonym-aware skill matching", "Yes, but slow", "No, literal", "908 aliases"],
+      ["Identity masked before scoring", "No", "Rarely", "Yes, blind mode"],
+      ["Explains every score", "No", "Rarely", "Yes, itemised"],
+      ["Feedback + learning plan", "No", "No", "Yes"],
+      ["Ranking checked vs labels", "No", "Rarely shown", "ρ 0.84 synthetic"]
+    ]
+  }
 }

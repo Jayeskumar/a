@@ -133,7 +133,7 @@ textarea:focus { outline: 2px solid rgba(245,158,11,.5); border-color: var(--bra
 .hl.token { background: var(--warn-bg); color: var(--warn); }
 .hl.safe { background: var(--safe-bg); color: var(--safe); }
 .legend { display: flex; gap: 6px; flex-wrap: wrap; }
-.lg { font-size: 11px; padding: 1px 7px; border-radius: 4px; }
+.lg { font-size: 12px; padding: 1px 7px; border-radius: 4px; }
 .lg.rule { background: var(--danger-bg); color: var(--danger); }
 .lg.url { background: var(--url-bg); color: var(--url-ink); }
 .lg.phone { background: var(--phone-bg); color: var(--phone-ink); }
@@ -150,9 +150,10 @@ textarea:focus { outline: 2px solid rgba(245,158,11,.5); border-color: var(--bra
 .g-track, .g-val { fill: none; stroke-width: 16; stroke-linecap: round; }
 .g-track { stroke: var(--line); }
 .g-val { stroke: var(--muted); transition: stroke-dasharray .6s cubic-bezier(.2,.8,.2,1), stroke .3s; }
+.verdict-card:not([class*="v-"]) .g-val { stroke-opacity: 0; } /* no stray round-cap dot before the first result */
 .gauge-num { position: absolute; left: 0; right: 0; bottom: 6px; text-align: center; }
 .gauge-num span { font-size: 40px; font-weight: 800; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
-.gauge-num small { display: block; color: var(--muted); font-size: 11px; margin-top: -4px; }
+.gauge-num small { display: block; color: var(--muted); font-size: 12px; margin-top: -4px; }
 .verdict { font-size: 26px; font-weight: 800; }
 .v-Safe .verdict, .c-Safe { color: var(--safe); }
 .v-Suspicious .verdict, .c-Suspicious { color: var(--warn); }
@@ -176,19 +177,21 @@ textarea:focus { outline: 2px solid rgba(245,158,11,.5); border-color: var(--bra
 .tok .bar > i { background: var(--danger); }
 .tok.neg .bar > i { background: var(--safe); }
 .tok .v { text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; }
-.subhead { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 8px 0 5px; }
+.tok.url { grid-template-columns: minmax(0, 1.7fr) minmax(50px, 1fr) 48px; }
+.tok.url .k { font-family: inherit; white-space: normal; line-height: 1.25; }
+.subhead { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 8px 0 5px; }
 .nbmeta { font-size: 12px; color: var(--muted); margin-top: 6px; }
 
 /* ---------- entities ---------- */
 .ent { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; margin-bottom: 8px; background: var(--panel-2); }
-.ent-h { display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+.ent-h { display: flex; justify-content: space-between; gap: 6px 10px; align-items: center; flex-wrap: wrap; }
 .ent-v { font: 12.5px var(--mono); overflow-wrap: anywhere; }
-.badge { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 99px; white-space: nowrap; }
+.badge { font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 99px; white-space: nowrap; }
 .badge.Safe { background: var(--safe-bg); color: var(--safe); }
 .badge.Suspicious { background: var(--warn-bg); color: var(--warn); }
 .badge.Dangerous { background: var(--danger-bg); color: var(--danger); }
 .reasons { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
-.reason { font-size: 11.5px; padding: 1px 7px; border-radius: 4px; background: var(--danger-bg); color: var(--danger); }
+.reason { font-size: 12px; padding: 1px 7px; border-radius: 4px; background: var(--danger-bg); color: var(--danger); }
 .reason.neg { background: var(--safe-bg); color: var(--safe); }
 
 /* ---------- advice ---------- */
@@ -199,10 +202,12 @@ textarea:focus { outline: 2px solid rgba(245,158,11,.5); border-color: var(--bra
 /* ---------- bulk ---------- */
 .table-wrap { overflow-x: auto; }
 .tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
-.tbl th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding: 7px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.tbl th { text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding: 7px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
 .tbl td { padding: 7px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
 .tbl tbody tr.click { cursor: pointer; }
 .tbl tbody tr.click:hover { background: var(--panel-2); }
+#bulkText { white-space: pre; overflow-x: auto; }
+#bulkTable td { vertical-align: middle; }
 .tbl .msgcell { max-width: 420px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--mono); font-size: 12px; }
 .minibar { display: flex; align-items: center; gap: 6px; min-width: 90px; }
 .minibar .bar { width: 56px; }
@@ -236,7 +241,7 @@ textarea:focus { outline: 2px solid rgba(245,158,11,.5); border-color: var(--bra
 .cm-metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-top: 8px; text-align: center; }
 .cm-metrics div { background: var(--panel-2); border-radius: 6px; padding: 4px 2px; }
 .cm-metrics b { display: block; font-size: 14px; font-variant-numeric: tabular-nums; }
-.cm-metrics span { font-size: 10.5px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+.cm-metrics span { font-size: 11.5px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
 .cm-sub { font-size: 12px; color: var(--muted); margin-top: -6px; margin-bottom: 6px; }
 .wrow { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) 48px; gap: 8px; align-items: center; font-size: 12px; margin-bottom: 3px; }
 .wrow .lab { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink-2); }
@@ -256,6 +261,15 @@ footer { text-align: center; color: var(--muted); font-size: 12px; padding: 14px
 }
 @media (max-width: 900px) {
   .grid-analyse, .grid-bulk, .two { grid-template-columns: minmax(0, 1fr); }
+  /* single column: show the verdict right under the input instead of three cards below it */
+  .grid-analyse { display: flex; flex-direction: column; gap: 0; }
+  .grid-analyse > .col { display: contents; }
+  .grid-analyse > .col:first-child > .card:nth-child(1) { order: 1; }
+  .grid-analyse .verdict-card { order: 2; }
+  .grid-analyse > .col:first-child > .card:nth-child(2) { order: 3; }
+  .grid-analyse > .col:last-child > .two { order: 4; gap: 0; }
+  .grid-analyse > .col:first-child > .card:nth-child(3) { order: 5; }
+  .grid-analyse .advice-card { order: 6; }
 }
 @media (max-width: 600px) {
   .top { padding: 10px 16px; flex-wrap: wrap; }

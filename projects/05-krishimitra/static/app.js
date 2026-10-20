@@ -17,9 +17,11 @@
     if (s === undefined) s = I18N.en[key];
     if (s === undefined) return key;
     if (params) Object.keys(params).forEach(function (k) { s = s.split("{" + k + "}").join(params[k]); });
-    return s;
+    return plural(s);
   }
-  function L(obj) { return obj ? (obj[state.lang] || obj.en || "") : ""; }
+  function L(obj) { return obj ? plural(obj[state.lang] || obj.en || "") : ""; }
+  // "1 week(s)" -> "1 week", "3 week(s)" -> "3 weeks" (English templates use the (s) placeholder)
+  function plural(t) { return typeof t !== "string" ? t : t.replace(/\b1 (\w+)\(s\)/g, "1 $1").replace(/(\w)\(s\)/g, "$1s"); }
   function h(tag, attrs, kids) {
     var e = document.createElement(tag);
     if (attrs) Object.keys(attrs).forEach(function (k) {
@@ -62,6 +64,9 @@
     var p = Math.pow(10, Math.floor(Math.log(Math.max(raw, 1e-6)) / Math.LN10)), f = raw / p;
     return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 5 ? 5 : 10) * p;
   }
+  // Charts are drawn 1:1 with their container so SVG text stays readable on phones and projectors.
+  function chartW(el, def) { var w = el && el.clientWidth; return w > 0 ? Math.round(w) : def; }
+  function pctTxt(p) { return p < 0.0005 ? "<0.1%" : (p * 100).toFixed(p > 0.995 ? 0 : 1) + "%"; }
   function cropName(c) { var m = state.meta && state.meta.crops.filter(function (x) { return x.crop === c; })[0]; return m ? L(m.name) : c; }
   var toastTimer = null;
   function toast(msg) {
@@ -206,7 +211,7 @@
         h("span", { cls: "rank", text: String(i + 1) }),
         h("span", null, [h("span", { cls: "nm", text: L(c.name) + " " }), h("span", { cls: "alt", text: other }),
           h("div", { cls: "bar" }, [h("i", { style: "width:" + Math.max(2, c.prob * 100).toFixed(1) + "%" })])]),
-        h("span", { cls: "pct", text: (c.prob * 100).toFixed(c.prob > 0.995 ? 0 : 1) + "%" })
+        h("span", { cls: "pct", text: pctTxt(c.prob) })
       ]));
     });
     var m = state.meta.metrics, mc = clear($("modelCompare"));
@@ -229,10 +234,10 @@
     maxAbs = Math.min(maxAbs, 12);
     ex.features.forEach(function (f) {
       var v = Math.max(-maxAbs, Math.min(maxAbs, f.gnb_log_odds)), w = Math.abs(v) / maxAbs * 50;
-      var range = tr("typical") + " " + f.typical_range[0] + "–" + f.typical_range[1];
+      var rng = h("span", { cls: "nw", text: f.typical_range[0] + "–" + f.typical_range[1] });
       box.appendChild(h("div", { cls: "why-row", title: "log-odds " + f.gnb_log_odds + " | z " + f.z }, [
         h("div", { cls: "lbl" }, [tr("f_" + f.feature) + " = " + fmt(f.value, 1),
-          h("small", { cls: f.in_range ? "" : "out", text: f.in_range ? range : tr("outOfRange") + " (" + f.typical_range[0] + "–" + f.typical_range[1] + ")" })]),
+          h("small", { cls: f.in_range ? "" : "out" }, f.in_range ? [tr("typical") + " ", rng] : [tr("outOfRange") + " (", rng, ")"])]),
         h("div", { cls: "dbar" }, [h("i", { cls: v >= 0 ? "pos" : "neg", style: "width:" + Math.max(w, 0.8).toFixed(1) + "%" })]),
         h("div", { cls: "rfv", text: (f.rf_contribution >= 0 ? "+" : "") + (f.rf_contribution * 100).toFixed(1) + "%" })
       ]));
@@ -278,7 +283,7 @@
     $("irrSummary").textContent = L(irr.summary);
     $("irrMeta").textContent = tr("irrMeta", { stage: tr("st_" + d0.stage), kc: d0.kc, need: irr.daily_need_mm, litres: fmt(irr.daily_need_litres_per_acre) });
     // chart
-    var W = 560, H = 200, pl = 34, pr = 8, pt = 16, pb = 34, n = irr.days.length;
+    var W = chartW($("irrChart"), 560), H = 220, pl = 36, pr = 8, pt = 24, pb = 38, n = irr.days.length;
     var maxV = 1;
     irr.days.forEach(function (d) { maxV = Math.max(maxV, d.etc, d.peff, d.gross_mm); });
     var stepV = niceStep(maxV * 1.1 / 4); maxV = stepV * 4;
@@ -287,25 +292,28 @@
     for (var g = 0; g <= 4; g++) {
       var gv = maxV * g / 4;
       svg.appendChild(s("line", { x1: pl, x2: W - pr, y1: y(gv), y2: y(gv), style: "stroke:var(--grid)" }));
-      svg.appendChild(s("text", { x: pl - 4, y: y(gv) + 3, "text-anchor": "end", "font-size": 10, style: "fill:var(--muted)" }, fmt(gv, 1)));
+      svg.appendChild(s("text", { x: pl - 5, y: y(gv) + 4, "text-anchor": "end", "font-size": 12, style: "fill:var(--muted)" }, fmt(gv, 1)));
     }
-    svg.appendChild(s("text", { x: 2, y: 10, "font-size": 10, style: "fill:var(--muted)" }, "mm"));
-    var gw = (W - pl - pr) / n, bw = Math.min(16, gw / 4);
+    svg.appendChild(s("text", { x: pl - 5, y: 12, "text-anchor": "end", "font-size": 12, "font-weight": 600, style: "fill:var(--muted)" }, state.lang === "ta" ? "மி.மீ" : "mm"));
+    var gw = (W - pl - pr) / n, bw = Math.min(16, gw / 4), narrow = gw < 60;
     irr.days.forEach(function (d, i) {
       var cx = pl + gw * i + gw / 2;
       [["etc", "var(--amber)", -1], ["peff", "var(--water)", 0], ["gross_mm", "var(--leaf)", 1]].forEach(function (b) {
         var v = d[b[0]], x = cx + b[2] * (bw + 2) - bw / 2;
         svg.appendChild(s("rect", { x: x, y: y(v), width: bw, height: Math.max(0, y(0) - y(v)), rx: 3, style: "fill:" + b[1] }));
       });
-      if (d.irrigate) svg.appendChild(s("text", { x: cx + bw + 2, y: y(d.gross_mm) - 4, "text-anchor": "middle", "font-size": 10, "font-weight": 700, style: "fill:var(--leaf-strong)" }, fmt(d.gross_mm, 0)));
-      svg.appendChild(s("text", { x: cx, y: H - 18, "text-anchor": "middle", "font-size": 11, "font-weight": 600, style: "fill:var(--text)" }, weekday(d.date)));
-      svg.appendChild(s("text", { x: cx, y: H - 5, "text-anchor": "middle", "font-size": 10, style: "fill:var(--muted)" }, fmtDate(d.date)));
+      if (d.irrigate) svg.appendChild(s("text", { x: cx + bw + 2, y: y(d.gross_mm) - 5, "text-anchor": "middle", "font-size": 12, "font-weight": 700, style: "fill:var(--leaf-strong)" }, fmt(d.gross_mm, 0) + " mm"));
+      // Long Tamil weekday names do not fit a phone-width column: show day number + month there.
+      var dd = new Date(d.date + "T00:00:00Z"), taN = narrow && state.lang === "ta";
+      var l1 = taN ? String(dd.getUTCDate()) : weekday(d.date), l2 = taN ? tr("months")[dd.getUTCMonth()] : fmtDate(d.date);
+      svg.appendChild(s("text", { x: cx, y: H - 21, "text-anchor": "middle", "font-size": 12, "font-weight": 600, style: "fill:var(--text)" }, l1));
+      svg.appendChild(s("text", { x: cx, y: H - 6, "text-anchor": "middle", "font-size": narrow && !taN ? 11 : 12, style: "fill:var(--muted)" }, l2));
     });
     clear($("irrChart")).appendChild(svg);
     // table
     var tb = clear($("irrTable"));
-    var cols = [["date", function (d) { return weekday(d.date) + " " + fmtDate(d.date); }], ["temp", function (d) { return fmt(d.tmax, 1) + " / " + fmt(d.tmin, 1); }], ["rain", "rain"],
-      ["et0", "et0"], ["etc", "etc"], ["irrigate", function (d) { return d.irrigate ? null : tr("none"); }], ["litresAcre", function (d) { return d.irrigate ? compactL(d.litres_per_acre) : "–"; }]];
+    var cols = [["date", function (d) { return weekday(d.date) + " " + fmtDate(d.date); }], ["temp", function (d) { return d.tmax.toFixed(1) + " / " + d.tmin.toFixed(1); }], ["rain", function (d) { return d.rain.toFixed(1); }],
+      ["et0", function (d) { return d.et0.toFixed(1); }], ["etc", function (d) { return d.etc.toFixed(1); }], ["irrigate", function (d) { return d.irrigate ? null : tr("none"); }], ["litresAcre", function (d) { return d.irrigate ? compactL(d.litres_per_acre) : "–"; }]];
     tb.appendChild(h("thead", null, [h("tr", null, cols.map(function (c) { return h("th", { text: tr(c[0]) }); }))]));
     var body = h("tbody");
     irr.days.forEach(function (d) {
@@ -326,10 +334,10 @@
     dec.className = "decision" + (d.action === "hold" ? " hold" : "");
     dec.appendChild(h("div", { cls: "act", text: d.action === "hold" ? tr("holdN", { n: d.weeks }) : tr("sellNow") }));
     dec.appendChild(h("div", { cls: "why-txt" }, [L(d.text), d.reason ? h("div", { cls: "muted", text: L(d.reason) }) : null,
-      h("div", { cls: "muted", text: tr("today") + ": " + fmt(mk.current) + " " + unitL(mk.unit) + " · " + tr("trendWk", { v: fmt(mk.trend_per_week, 1) }) })]));
+      h("div", { cls: "muted", text: tr("today") + ": " + fmt(mk.current) + " " + unitL(mk.unit) + " · " + tr("trendWk", { v: (mk.trend_per_week > 0 ? "+" : "") + fmt(mk.trend_per_week, 1) + " " + unitL(mk.unit) }) })]));
     // chart: last 52 weeks + 12-week forecast
     var hist = mk.history.slice(-52), fc = mk.forecast;
-    var W = 560, H = 210, pl = 46, pr = 8, pt = 12, pb = 24, n = hist.length + fc.length;
+    var W = chartW($("mktChart"), 560), H = 230, pl = 48, pr = 8, pt = 24, pb = 26, n = hist.length + fc.length;
     var lo = Infinity, hi = -Infinity;
     hist.forEach(function (p) { lo = Math.min(lo, p.price); hi = Math.max(hi, p.price); });
     fc.forEach(function (p) { lo = Math.min(lo, p.low); hi = Math.max(hi, p.high); });
@@ -340,12 +348,13 @@
     for (var g = 0; g <= 4; g++) {
       var gv = lo + (hi - lo) * g / 4;
       svg.appendChild(s("line", { x1: pl, x2: W - pr, y1: y(gv), y2: y(gv), style: "stroke:var(--grid)" }));
-      svg.appendChild(s("text", { x: pl - 4, y: y(gv) + 3, "text-anchor": "end", "font-size": 10, style: "fill:var(--muted)" }, fmt(gv)));
+      svg.appendChild(s("text", { x: pl - 5, y: y(gv) + 4, "text-anchor": "end", "font-size": 12, style: "fill:var(--muted)" }, fmt(gv)));
     }
+    svg.appendChild(s("text", { x: 2, y: 12, "font-size": 12, "font-weight": 600, style: "fill:var(--muted)" }, unitL(mk.unit)));
     var lastMonth = -1;
     hist.concat(fc).forEach(function (p, i) {
       var m = new Date(p.date + "T00:00:00Z").getUTCMonth();
-      if (m !== lastMonth && i > 0 && m % 2 === 0) svg.appendChild(s("text", { x: x(i), y: H - 6, "text-anchor": "middle", "font-size": 10, style: "fill:var(--muted)" }, tr("months")[m]));
+      if (m !== lastMonth && i > 0 && m % 2 === 0) svg.appendChild(s("text", { x: x(i), y: H - 7, "text-anchor": "middle", "font-size": 12, style: "fill:var(--muted)" }, tr("months")[m]));
       lastMonth = m;
     });
     var k = hist.length - 1;
@@ -357,7 +366,7 @@
     svg.appendChild(s("polyline", { points: [x(k) + "," + y(hist[k].price)].concat(fc.map(function (p, i) { return x(k + 1 + i) + "," + y(p.price); })).join(" "), style: "fill:none;stroke:var(--amber);stroke-width:2.4;stroke-dasharray:5 4" }));
     svg.appendChild(s("line", { x1: x(k), x2: x(k), y1: pt, y2: H - pb, style: "stroke:var(--text);stroke-dasharray:2 3;opacity:.5" }));
     svg.appendChild(s("circle", { cx: x(k), cy: y(hist[k].price), r: 4, style: "fill:var(--text)" }));
-    svg.appendChild(s("text", { x: x(k) - 4, y: pt + 9, "text-anchor": "end", "font-size": 10, "font-weight": 700, style: "fill:var(--text)" }, tr("today")));
+    svg.appendChild(s("text", { x: x(k) - 5, y: pt + 10, "text-anchor": "end", "font-size": 12, "font-weight": 700, style: "fill:var(--text)" }, tr("today")));
     if (d.action === "hold") {
       var hp = fc[d.weeks - 1], hx = x(k + d.weeks);
       svg.appendChild(s("circle", { cx: hx, cy: y(hp.price), r: 5, style: "fill:var(--amber);stroke:var(--surface);stroke-width:2" }));
@@ -369,7 +378,7 @@
     mk.seasonal_index.forEach(function (v, i) {
       var hgt = 15 + 70 * (v - mn) / ((mx - mn) || 1);
       si.appendChild(h("div", { cls: i === now ? "now" : "", title: tr("months")[i] + ": " + v.toFixed(3) }, [
-        h("i", { cls: v === mx ? "hi" : "", style: "height:" + hgt.toFixed(0) + "%" }), h("span", { text: tr("months")[i].slice(0, 3) })]));
+        h("i", { cls: v === mx ? "hi" : "", style: "height:" + hgt.toFixed(0) + "%" }), h("span", { text: tr("months")[i] })]));
     });
   }
 
@@ -380,34 +389,39 @@
     var start = st.reduce(function (a, b) { return b.start < a ? b.start : a; }, st[0].start);
     var end = st.reduce(function (a, b) { return b.end > a ? b.end : a; }, st[0].end);
     var total = Math.max(1, dayDiff(start, end));
-    var W = 1000, lw = 190, rh = 28, top = 26, H = top + st.length * rh + 8;
+    // Wide screens: stage names in a left column. Phones: stage name above its bar.
+    var W = chartW($("calendar"), 1000), narrow = W < 620;
+    var lw = narrow ? 4 : (state.lang === "ta" ? 200 : 190), rh = narrow ? 38 : 28, top = 26, H = top + st.length * rh + 22;
     var x = function (iso) { return lw + (W - lw - 10) * dayDiff(start, iso) / total; };
     var svg = s("svg", { viewBox: "0 0 " + W + " " + H, role: "img", "aria-label": "crop calendar" });
+    var gToday = s("g"); svg.appendChild(gToday);
+    clear($("calendar")).appendChild(svg); // attached first so text widths can be measured
     // month ticks
     var d = new Date(start + "T00:00:00Z"); d.setUTCDate(1); d.setUTCMonth(d.getUTCMonth() + 1);
     var step = total > 300 ? 2 : 1;
     while (d.toISOString().slice(0, 10) < end) {
       var iso = d.toISOString().slice(0, 10), xx = x(iso);
-      if (xx > W - 50) break;
+      if (xx > W - (narrow ? 64 : 50)) break;
       svg.appendChild(s("line", { x1: xx, x2: xx, y1: top - 6, y2: H - 4, style: "stroke:var(--grid)" }));
       svg.appendChild(s("text", { x: xx + 3, y: top - 10, "font-size": 12, style: "fill:var(--muted)" }, tr("months")[d.getUTCMonth()] + (d.getUTCMonth() === 0 ? " " + d.getUTCFullYear() : "")));
       d.setUTCMonth(d.getUTCMonth() + step);
     }
     var colors = { land_prep: "var(--muted)", nursery: "var(--water)", initial: "#84cc16", development: "var(--leaf)", mid: "var(--amber)", late: "#a16207", harvest: "#dc2626" };
     st.forEach(function (row, i) {
-      var yy = top + i * rh;
-      svg.appendChild(s("text", { x: 4, y: yy + 18, "font-size": 13, "font-weight": 600, style: "fill:var(--text)" }, L(row.label)));
+      var yy = top + i * rh, by = narrow ? yy + 17 : yy + 5;
       var x1 = x(row.start), x2 = Math.max(x(row.end), x1 + 3);
-      svg.appendChild(s("rect", { x: x1, y: yy + 5, width: x2 - x1, height: rh - 10, rx: 6, style: "fill:" + colors[row.key] + ";opacity:.9" }));
+      var nm = svg.appendChild(s("text", { x: narrow ? x1 : 4, y: narrow ? yy + 13 : yy + 18, "font-size": narrow ? 12 : 13, "font-weight": 600, style: "fill:var(--text)" }, L(row.label)));
+      if (narrow) { var tl = nm.getComputedTextLength ? nm.getComputedTextLength() : 0; if (x1 + tl > W - 4) nm.setAttribute("x", Math.max(2, W - 4 - tl)); }
+      svg.appendChild(s("rect", { x: x1, y: by, width: x2 - x1, height: 18, rx: 6, style: "fill:" + colors[row.key] + ";opacity:.9" }));
       var label = fmtDate(row.start) + (row.kc ? " · Kc " + row.kc : "");
-      if (x2 - x1 > 110) svg.appendChild(s("text", { x: x1 + 6, y: yy + 18, "font-size": 11, "font-weight": 600, style: "fill:#fff" }, label));
+      if (x2 - x1 > label.length * 6.6 + 12) svg.appendChild(s("text", { x: x1 + 6, y: by + 13, "font-size": 12, "font-weight": 600, style: "fill:#fff" }, label));
     });
     if (cal.today >= start && cal.today <= end) {
+      // drawn under the bars so it never crosses the white labels inside them
       var tx = x(cal.today);
-      svg.appendChild(s("line", { x1: tx, x2: tx, y1: top - 4, y2: H - 2, style: "stroke:var(--text);stroke-width:2;stroke-dasharray:4 3" }));
-      svg.appendChild(s("text", { x: tx + 4, y: H - 6, "font-size": 11, "font-weight": 700, style: "fill:var(--text)" }, tr("today")));
+      gToday.appendChild(s("line", { x1: tx, x2: tx, y1: top - 4, y2: H - 18, style: "stroke:var(--text);stroke-width:2;stroke-dasharray:4 3" }));
+      gToday.appendChild(s("text", { x: tx, y: H - 4, "text-anchor": "middle", "font-size": 12, "font-weight": 700, style: "fill:var(--text)" }, tr("today")));
     }
-    clear($("calendar")).appendChild(svg);
     var ops = clear($("calOps"));
     cal.operations.forEach(function (o) { ops.appendChild(h("li", null, [h("b", { text: fmtDate(o.date, true) }), L(o.text)])); });
   }
@@ -449,6 +463,11 @@
     $("demoBtn").addEventListener("click", function () { loadPreset((state.preset + 1) % state.meta.presets.length, true); });
     $("farmForm").addEventListener("submit", function (e) { e.preventDefault(); submit(); });
     ["soil", "method", "cropChoice", "sowing"].forEach(function (id) { $(id).addEventListener("change", submit); });
+    var lastW = window.innerWidth, rT = null;
+    window.addEventListener("resize", function () {
+      clearTimeout(rT);
+      rT = setTimeout(function () { if (Math.abs(window.innerWidth - lastW) > 20) { lastW = window.innerWidth; render(); } }, 200);
+    });
     applyStatic();
     api("/api/meta").then(function (meta) {
       state.meta = meta;
