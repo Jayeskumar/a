@@ -1,0 +1,88 @@
+{
+  "name": "PhishGuard",
+  "tagline": "Explainable scam & phishing detector for SMS, email and links",
+  "domain": "Cybersecurity & Blockchain Technology",
+  "color": "#F59E0B",
+  "problem": [
+    "Daily flood of fake KYC, EB-bill, parcel, lottery and UPI-collect SMS",
+    "Students targeted by fake internships that demand a 'registration fee'",
+    "Spam filters are black boxes: users never learn why a message is dangerous",
+    "Link checkers need the internet and upload your private messages"
+  ],
+  "stats": [
+    {"value": "10B+", "label": "UPI transactions per month (NPCI, approx.)"},
+    {"value": "~1M", "label": "cyber-fraud complaints a year on the national portal (I4C, approx.)"},
+    {"value": "1930", "label": "India's national cyber-fraud helpline"}
+  ],
+  "solution": [
+    "Paste an SMS, WhatsApp forward, e-mail or link -> risk 0-100 + verdict",
+    "Naive Bayes text model + URL logistic regression + India-specific rules",
+    "Highlights the exact words, links, numbers and UPI IDs that raised the alarm",
+    "Runs 100% offline in pure Python - nothing leaves the device"
+  ],
+  "features": [
+    {"title": "Explanation panel", "desc": "Rules fired, NB token weights, link feature contributions, highlighted spans"},
+    {"title": "Link analyser", "desc": "28 lexical features: IP host, @ trick, punycode, look-alike brands, cheap TLDs"},
+    {"title": "India-first rules", "desc": "KYC/PAN, EB cut, UPI collect, job fee, OTP, digital arrest; Tanglish/Hinglish"},
+    {"title": "Bulk scan", "desc": "Paste 200 lines, get a table of verdicts and main reasons in milliseconds"},
+    {"title": "Spot the scam quiz", "desc": "10-question awareness game with explanations and the model's verdict"},
+    {"title": "What to do", "desc": "Clear next steps: call 1930, report on cybercrime.gov.in, block sender"}
+  ],
+  "architecture": [
+    "Browser UI (vanilla JS, SVG charts) -> JSON API on local Python server",
+    "extract.py -> finds URLs, phone numbers, UPI IDs with character offsets",
+    "Multinomial Naive Bayes -> text probability with per-token LLR",
+    "URL features + logistic regression -> link probability with contributions",
+    "Rule layer + entity heuristics -> India-specific scam patterns",
+    "Noisy-OR combiner -> risk 0-100, verdict, highlights and advice"
+  ],
+  "algorithms": [
+    "Multinomial Naive Bayes (words, bigrams, char 3-4-grams, Laplace) - text",
+    "Logistic regression (gradient descent + L2) on 28 URL features - links",
+    "Homoglyph map + edit distance - look-alike brand domains",
+    "Negation-aware regex rules - India-specific scam patterns",
+    "Noisy-OR evidence fusion with temperature + prior calibration"
+  ],
+  "tech": ["Python 3 stdlib (http.server, re, math)", "Vanilla HTML/CSS/JS", "Inline SVG charts", "unittest (55 tests)", "No CDN, no pip, no network"],
+  "innovation": [
+    "Every score decomposes into visible parts - no black box",
+    "Built for Indian scams and Tanglish/Hinglish text",
+    "URL risk from characters alone: works on brand-new domains, offline",
+    "Honest evaluation on unseen message templates, not just a random split"
+  ],
+  "results": [
+    {"value": "97%", "label": "accuracy on unseen message templates (n=168)"},
+    {"value": "94%", "label": "URL model accuracy, 100% precision (n=110)"},
+    {"value": "~1 ms", "label": "full analysis per message (p50, pure Python)"},
+    {"value": "~1 s", "label": "training both models from scratch"}
+  ],
+  "demo_flow": [
+    "Run demo: KYC SMS scores 99 Dangerous with highlighted reasons",
+    "Bank OTP SMS: 'do not share' negation keeps it Safe",
+    "Tanglish scam and UPI collect trick explained",
+    "Bulk scan 15 lines, click a row for its explanation",
+    "Spot the scam quiz question",
+    "Model stats: confusion matrices and honest unseen-template score"
+  ],
+  "impact": [
+    "Teaches why a message is a scam, so users spot the next variant",
+    "Protects first-time smartphone users, elders and students",
+    "Private by design: personal messages are never uploaded",
+    "Runs on a cheap laptop or phone browser, no cloud cost"
+  ],
+  "business": [
+    "Free consumer app and awareness kit for colleges and NGOs",
+    "B2B SDK for banks, telcos and wallets: explainable in-app warnings",
+    "White-label security-awareness training for companies",
+    "Opt-in message reporting builds a real labelled dataset"
+  ],
+  "future": [
+    "Retrain and calibrate on real, consented, labelled SMS data",
+    "Android app with on-device SMS warnings",
+    "Tamil and Hindi script support",
+    "QR-code and screenshot (OCR) checking",
+    "Optional user-approved domain-age and blocklist lookups"
+  ],
+  "port": 8007,
+  "dir": "projects/07-phishguard"
+}
