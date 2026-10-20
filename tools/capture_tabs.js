@@ -5,8 +5,10 @@
 // Start the demos first (`python run_all.py`, ideally from a scratch copy: the demos write state
 // files). For each project: load it at 1440x900, press its demo button, then screenshot the first
 // tab and the next distinct tabs (a numbered run such as "Flight 1..5" counts once, at its last
-// step). Apps without tabs are captured at successive scroll positions instead.
-// Output: projects/<dir>/docs/shots/<n>.jpg plus shots.json [{file, label}], used by build_decks.js.
+// step). Apps without tabs, or with pitch.deck_views.mode = "scroll", are captured at successive
+// scroll positions instead.
+// Output: projects/<dir>/docs/shots/<n>.jpg plus shots.json [{file, label}], used by build_decks.js,
+// and projects/<dir>/docs/screenshot.png (the first view) for the README, hub, decks and PDF report.
 const fs = require('fs');
 const path = require('path');
 const { chromium } = require('playwright');
@@ -30,6 +32,9 @@ async function capture(browser, p) {
   await page.goto(`http://127.0.0.1:${p.port}/`, { waitUntil: 'networkidle', timeout: 30000 });
   await page.waitForTimeout(800);
   await clickDemo(page, 3000);
+  // transient "demo loaded" toasts would cover content in a still image
+  await page.addStyleTag({ content: '#toast, .toast { display: none !important; }' });
+  const opts = p.deck_views || {};
 
   const shots = [];
   const outDir = path.join(ROOT, 'projects', p.dir, 'docs', 'shots');
@@ -37,12 +42,15 @@ async function capture(browser, p) {
   fs.mkdirSync(outDir, { recursive: true });
   const snap = async (label) => {
     const file = `${shots.length + 1}.jpg`;
+    // view 1 (or pitch.deck_views.hero) is also the hero image: README gallery, hub, decks, PDF report
+    const n = shots.length + 1;
+    if (n === 1 || n === opts.hero) await page.screenshot({ path: path.join(ROOT, 'projects', p.dir, 'docs', 'screenshot.png') });
     await page.screenshot({ path: path.join(outDir, file), type: 'jpeg', quality: 80 });
     shots.push({ file, label });
   };
 
   const groups = groupTabs(await visibleTabs(page));
-  if (groups.length >= 2) {
+  if (groups.length >= 2 && opts.mode !== 'scroll') {
     for (const g of groups) {
       if (shots.length >= MAX_SHOTS) break;
       for (const t of g.items) await tabLocator(page, t).click({ timeout: 5000 }).catch(() => {});

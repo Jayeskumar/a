@@ -1,0 +1,18 @@
+[
+  {
+    "file": "1.jpg",
+    "label": "Summary"
+  },
+  {
+    "file": "2.jpg",
+    "label": "Concepts"
+  },
+  {
+    "file": "3.jpg",
+    "label": "Quiz"
+  },
+  {
+    "file": "4.jpg",
+    "label": "Flashcards"
+  }
+]

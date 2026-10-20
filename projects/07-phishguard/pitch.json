@@ -94,5 +94,6 @@
       ["Messages stay on the device", "Yes", "Often uploaded", "Yes"],
       ["Accuracy on unseen templates", "Unknown", "Not published", "97% (synthetic)"]
     ]
-  }
+  },
+  "deck_views": {"solution": 4, "demo": 3}
 }

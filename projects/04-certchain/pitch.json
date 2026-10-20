@@ -101,5 +101,6 @@
       ["Signed, on-chain revocation", "No", "Partial", "Yes"],
       ["Cost per verification", "Staff time", "Network fees", "₹0 / offline"]
     ]
-  }
+  },
+  "deck_views": {"solution": 3, "demo": 2}
 }

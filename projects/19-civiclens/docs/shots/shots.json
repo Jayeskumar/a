@@ -1,0 +1,18 @@
+[
+  {
+    "file": "1.jpg",
+    "label": "Triage"
+  },
+  {
+    "file": "2.jpg",
+    "label": "Map & hotspots"
+  },
+  {
+    "file": "3.jpg",
+    "label": "SLA & risk"
+  },
+  {
+    "file": "4.jpg",
+    "label": "Models"
+  }
+]

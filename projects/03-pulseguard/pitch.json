@@ -94,5 +94,6 @@
       ["Works offline, data stays local", "Yes", "No", "Yes"],
       ["Cost to the ward", "₹0 / manual", "Subscription", "₹0 / offline"]
     ]
-  }
+  },
+  "deck_views": {"solution": 4, "demo": 3}
 }

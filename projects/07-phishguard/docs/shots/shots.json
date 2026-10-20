@@ -1,0 +1,18 @@
+[
+  {
+    "file": "1.jpg",
+    "label": "Analyse"
+  },
+  {
+    "file": "2.jpg",
+    "label": "Bulk scan"
+  },
+  {
+    "file": "3.jpg",
+    "label": "Spot the scam"
+  },
+  {
+    "file": "4.jpg",
+    "label": "Model stats"
+  }
+]

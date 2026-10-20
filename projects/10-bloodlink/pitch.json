@@ -103,5 +103,6 @@
       ["Balances stock across banks", "No", "No", "Yes"],
       ["Works offline", "No", "No", "Yes"]
     ]
-  }
+  },
+  "deck_views": {"solution": 3, "demo": 4}
 }

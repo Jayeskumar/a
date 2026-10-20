@@ -1,0 +1,18 @@
+[
+  {
+    "file": "1.jpg",
+    "label": "Vote"
+  },
+  {
+    "file": "2.jpg",
+    "label": "Dashboard"
+  },
+  {
+    "file": "3.jpg",
+    "label": "Bulletin board"
+  },
+  {
+    "file": "4.jpg",
+    "label": "Results"
+  }
+]

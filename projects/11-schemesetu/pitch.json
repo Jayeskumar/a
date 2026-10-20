@@ -93,5 +93,6 @@
       ["Effort to screen 22 schemes", "Many visits", "Form per scheme", "~15 questions"],
       ["Village unclaimed-benefit view", "No", "No", "Yes"]
     ]
-  }
+  },
+  "deck_views": {"solution": 2, "demo": 4}
 }

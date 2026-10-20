@@ -103,5 +103,6 @@
       ["Tamil bin guide for citizens", "No", "No", "Yes"],
       ["Works offline", "Yes", "Cloud + SIM", "Yes"]
     ]
-  }
+  },
+  "deck_views": {"solution": 3, "demo": 4}
 }

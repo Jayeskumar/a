@@ -1,0 +1,18 @@
+[
+  {
+    "file": "1.jpg",
+    "label": "Draw & inspect"
+  },
+  {
+    "file": "2.jpg",
+    "label": "Explain"
+  },
+  {
+    "file": "3.jpg",
+    "label": "Live training"
+  },
+  {
+    "file": "4.jpg",
+    "label": "Evaluation"
+  }
+]

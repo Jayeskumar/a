@@ -101,5 +101,6 @@
     ]
   },
   "port": 8017,
-  "dir": "projects/17-campusvote"
+  "dir": "projects/17-campusvote",
+  "deck_views": {"hero": 2, "solution": 3, "demo": 1}
 }

@@ -96,5 +96,6 @@
     ]
   },
   "port": 8018,
-  "dir": "projects/18-agrisky"
+  "dir": "projects/18-agrisky",
+  "deck_views": {"mode": "scroll"}
 }

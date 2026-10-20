@@ -139,5 +139,6 @@
     ]
   },
   "port": 8014,
-  "dir": "projects/14-neurocanvas"
+  "dir": "projects/14-neurocanvas",
+  "deck_views": {"solution": 2, "demo": 4}
 }

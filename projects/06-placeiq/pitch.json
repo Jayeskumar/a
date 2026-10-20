@@ -100,5 +100,6 @@
       ["Accuracy proven on hold-out", "No", "Not built in", "AUC 0.94 synthetic"],
       ["Offline, no licence cost", "Yes", "Often paid/cloud", "Yes, ₹0"]
     ]
-  }
+  },
+  "deck_views": {"solution": 2, "demo": 4}
 }
