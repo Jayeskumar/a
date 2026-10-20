@@ -237,7 +237,7 @@ section.tab.on { display: block; }
 /* ------------------------------------------------------------ search */
 .search-box { display: flex; gap: 8px; }
 .search-box input {
-  flex: 1; min-height: 52px; border: 2px solid var(--line); border-radius: 12px; padding: 10px 14px;
+  flex: 1; min-width: 0; min-height: 52px; border: 2px solid var(--line); border-radius: 12px; padding: 10px 14px;
   font-size: 16.5px; background: var(--surface);
 }
 .search-box input:focus { outline: none; border-color: var(--brand); }
@@ -325,7 +325,8 @@ footer b { color: var(--brand-600); }
   .brand p { display: none; }
   .tabs { padding: 0 8px; }
   main { padding: 14px; }
-  .find-grid, .village-grid, .search-layout, .about-grid, .check-grid { grid-template-columns: 1fr; }
+  .find-grid, .village-grid, .search-layout, .about-grid, .check-grid { grid-template-columns: minmax(0, 1fr); }
+  .find-grid > *, .village-grid > *, .search-layout > *, .about-grid > *, .check-grid > * { min-width: 0; }
   .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .qtext { font-size: 20px; }
   .ans { min-height: 60px; font-size: 16.5px; }

@@ -203,7 +203,7 @@ input[type="range"] { accent-color: var(--brand); width: 110px; }
 .step { border-top: 1px solid var(--grid); padding: 8px 0; }
 .step h5 { margin: 0 0 6px; font-size: 12px; color: var(--ink-2); display: flex; justify-content: space-between; gap: 8px; }
 .step h5 .ms { color: var(--muted); font-weight: 500; font-variant-numeric: tabular-nums; }
-.tokens { line-height: 1.9; font-size: 13.5px; }
+.tokens { line-height: 1.9; font-size: 13.5px; overflow-wrap: anywhere; }
 .tok { padding: 1px 3px; border-radius: 4px; margin-right: 1px; }
 .bars .bar-row { display: grid; grid-template-columns: 150px 1fr 52px; align-items: center; gap: 8px; font-size: 12px; margin: 3px 0; }
 .bars .bar-row .lab { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--ink-2); }
@@ -299,7 +299,13 @@ input[type="range"] { accent-color: var(--brand); width: 110px; }
   .topwords { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 1020px) {
-  .triage, .g2, .g3, .g-map, .g-heat, .g-topics { grid-template-columns: 1fr; }
+  .triage, .g2, .g3, .g-map, .g-heat, .g-topics { grid-template-columns: minmax(0, 1fr); }
+  .triage > *, .grid > * { min-width: 0; }
+  .card-h { flex-wrap: wrap; }
+  .card-h .filters.inline { margin-left: 0; }
+  .chart svg { max-width: 100%; height: auto; }
+  .result, .result-card { min-width: 0; overflow-wrap: anywhere; }
+  .examples .chip { white-space: normal; }
   .queue-wrap { max-height: 520px; }
 }
 @media (max-width: 640px) {
