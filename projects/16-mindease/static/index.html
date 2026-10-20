@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MindEase</title>
+<meta name="description" content="A private, early-support companion for student mental wellbeing. Screening and self-help, not a diagnosis.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%230D9488'/%3E%3Cpath d='M9 18c3-6 11-6 14 0' stroke='%23EDE9FE' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <svg width="38" height="38" viewBox="0 0 40 40" aria-hidden="true">
+      <circle cx="20" cy="20" r="19" fill="var(--brand)"/>
+      <path d="M10 23c4-8 16-8 20 0" stroke="var(--lav-mid)" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+      <path d="M14 27c3-3.5 9-3.5 12 0" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" opacity=".9"/>
+      <circle cx="20" cy="13" r="3" fill="#fff" opacity=".95"/>
+    </svg>
+    <div>
+      <h1>Mind<span>Ease</span></h1>
+      <p>A private, early-support companion for student wellbeing</p>
+    </div>
+  </div>
+  <nav class="tabs" role="tablist" aria-label="Sections">
+    <button role="tab" data-view="today" aria-selected="true">Today</button>
+    <button role="tab" data-view="checkin">Check-in</button>
+    <button role="tab" data-view="journal">Journal</button>
+    <button role="tab" data-view="toolkit">Toolkit</button>
+    <button role="tab" data-view="talk">Talk &amp; support</button>
+    <button role="tab" data-view="counsellor" class="tab-counsellor">Counsellor</button>
+    <button role="tab" data-view="about">How it works</button>
+  </nav>
+  <div class="actions">
+    <button id="btnDemo" class="btn ghost" title="Reset everything to the deterministic demo data">Load demo data</button>
+    <button id="btnHelp" class="btn help">Need help now?</button>
+  </div>
+</header>
+
+<div class="helpbar" role="note">
+  <span class="hb-item"><b>Tele-MANAS</b> <a href="tel:14416">14416</a> · <a href="tel:18008914416">1-800-891-4416</a> <span class="muted">free, 24×7, many languages</span></span>
+  <span class="hb-item"><b>In immediate danger?</b> Call <a href="tel:112">112</a></span>
+  <span class="hb-item muted">Screening &amp; self-help only, not a diagnosis</span>
+</div>
+
+<main id="main">
+  <!-- ============================== TODAY ============================== -->
+  <section id="view-today" class="view active" aria-label="Today">
+    <div class="hero card">
+      <div class="hero-text">
+        <h2 id="greeting">Hi there</h2>
+        <p class="muted" id="heroSub">How are you feeling today?</p>
+      </div>
+      <div class="quick-mood" id="quickMood" aria-label="Quick mood check"></div>
+      <div class="hero-meta" id="heroMeta"></div>
+    </div>
+
+    <div class="section-head">
+      <h3>What MindEase noticed</h3>
+      <span class="muted small">Compared only with <em>your</em> usual, never with anyone else. Tap “Why?” to see the rule that fired.</span>
+    </div>
+    <div class="insights" id="insights"></div>
+
+    <div class="charts3">
+      <div class="card chart-card">
+        <div class="chart-head"><h4>Mood</h4><span class="legend" id="lgMood"></span></div>
+        <div class="chart" id="chMood"></div>
+      </div>
+      <div class="card chart-card">
+        <div class="chart-head"><h4>Sleep</h4><span class="legend" id="lgSleep"></span></div>
+        <div class="chart" id="chSleep"></div>
+      </div>
+      <div class="card chart-card">
+        <div class="chart-head"><h4>Journal tone</h4><span class="legend" id="lgTone"></span></div>
+        <div class="chart" id="chTone"></div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="card-head"><h4>Your check-ins</h4><button class="btn small" data-go="checkin">Take a check-in</button></div>
+        <div id="checkinSummary"></div>
+      </div>
+      <div class="card privacy-mini">
+        <h4>Your privacy</h4>
+        <ul class="ticks" id="privacyMini">
+          <li>Your journal, mood and sleep stay private to you. They are never shared, not even as totals.</li>
+          <li>Check-in scores are shared with the counselling cell only if you switch sharing on, and only under a pseudonymous ID (<b id="myPid">S-····</b>).</li>
+          <li>A counsellor contacts you only if you ask them to.</li>
+        </ul>
+        <label class="switch"><input type="checkbox" id="consentShare"> <span>Share check-in scores anonymously</span></label>
+        <button class="btn link small" id="btnErase">Delete all my data</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== CHECK-IN ============================== -->
+  <section id="view-checkin" class="view" aria-label="Check-in">
+    <div class="two-col">
+      <div class="card">
+        <div class="seg" role="tablist" aria-label="Questionnaire">
+          <button data-inst="phq9" class="on">Mood (PHQ-9)</button>
+          <button data-inst="gad7">Worry (GAD-7)</button>
+        </div>
+        <p class="stem" id="qStem"></p>
+        <ol class="qlist" id="qList"></ol>
+        <div id="qDifficulty"></div>
+        <p class="muted small" id="qSource"></p>
+      </div>
+      <aside class="side">
+        <div class="card">
+          <h4>About this check-in</h4>
+          <p class="muted small">Two minutes, nine or seven questions about the last two weeks. These are the standard, widely used PHQ-9 and GAD-7 questionnaires. Your score shows how often things bothered you. It is a screening check, not a diagnosis.</p>
+          <div class="progress"><div id="qProgress"></div></div>
+          <p class="small" id="qProgressText">0 answered</p>
+          <label class="switch"><input type="checkbox" id="qShare"> <span>Share my score anonymously with the counselling cell</span></label>
+          <div class="row gap">
+            <button class="btn primary" id="btnSubmitQ" disabled>See my result</button>
+            <button class="btn ghost small" id="btnExampleQ">Fill example answers</button>
+          </div>
+        </div>
+        <div class="card result" id="qResult" hidden></div>
+        <div class="card" id="qHistoryCard">
+          <h4>Earlier check-ins</h4>
+          <div id="qHistory"></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============================== JOURNAL ============================== -->
+  <section id="view-journal" class="view" aria-label="Journal">
+    <div class="two-col">
+      <div class="card">
+        <h3>Today's entry</h3>
+        <p class="muted small">Private to you. MindEase reads it on this laptop with a simple, explainable word list. Nothing is sent to the cloud or to anyone else.</p>
+        <div class="field">
+          <span class="label">Mood</span>
+          <div class="mood-pick" id="moodPick" role="radiogroup" aria-label="Mood from 1 to 5"></div>
+        </div>
+        <div class="field">
+          <span class="label">Sleep last night <b id="sleepVal">7.0 h</b></span>
+          <input type="range" id="sleep" min="0" max="12" step="0.5" value="7" aria-label="Hours of sleep">
+        </div>
+        <div class="field">
+          <label class="label" for="jText">A line or two about your day <span class="muted small">(English, Tanglish and emoji are all fine)</span></label>
+          <textarea id="jText" rows="4" maxlength="1000" placeholder="e.g. Romba tired today, but the group study helped a bit."></textarea>
+        </div>
+        <div class="row gap">
+          <button class="btn primary" id="btnSaveJ">Save entry</button>
+          <button class="btn ghost" id="btnExampleJ">Use example entry</button>
+        </div>
+        <div class="noticed" id="noticed" aria-live="polite">
+          <h4>What the app noticed</h4>
+          <p class="muted small">Start typing to see how MindEase reads your words. It is never a diagnosis.</p>
+        </div>
+      </div>
+      <aside class="side">
+        <div class="card">
+          <div class="card-head"><h4>Recent entries</h4><span class="muted small" id="jCount"></span></div>
+          <ul class="entries" id="entries"></ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============================== TOOLKIT ============================== -->
+  <section id="view-toolkit" class="view" aria-label="Self-help toolkit">
+    <div class="tool-grid">
+      <div class="card" id="tool-breathing">
+        <h3>Box breathing</h3>
+        <p class="muted small">Breathe in 4 · hold 4 · out 4 · hold 4. Follow the dot around the square.</p>
+        <div class="breath-wrap">
+          <div class="breath-box" id="breathBox"><div class="breath-dot"></div><div class="breath-label" id="breathLabel">Ready</div></div>
+        </div>
+        <div class="row gap center">
+          <button class="btn primary" id="btnBreath">Start</button>
+          <span class="muted small" id="breathCount">0 rounds</span>
+        </div>
+        <p class="muted xsmall" id="breathNote"></p>
+      </div>
+      <div class="card" id="tool-grounding">
+        <h3>5-4-3-2-1 grounding</h3>
+        <p class="muted small">When thoughts race, come back to your senses. Tap a dot for each thing you notice.</p>
+        <div id="grounding"></div>
+      </div>
+      <div class="card" id="tool-sleep">
+        <h3>Sleep tips</h3>
+        <ul class="tips" id="sleepTips"></ul>
+      </div>
+      <div class="card wide" id="tool-planner">
+        <div class="card-head"><h3>Exam-stress study planner</h3><button class="btn ghost small" id="btnExamplePlan">Use example timetable</button></div>
+        <p class="muted small">Pomodoro blocks (25 min focus, 5 min break). Subjects you feel less ready for get more time, and sleep is protected.</p>
+        <div class="planner">
+          <div class="plan-form">
+            <div id="examRows"></div>
+            <button class="btn link small" id="btnAddExam">+ Add exam</button>
+            <div class="row gap wrap">
+              <label class="inline">Hours a day <input type="number" id="pHours" min="0.5" max="12" step="0.5" value="3"></label>
+              <label class="inline">Start at <input type="time" id="pStart" value="17:30"></label>
+              <button class="btn primary" id="btnPlan">Make my plan</button>
+            </div>
+            <div class="pomodoro">
+              <svg viewBox="0 0 120 120" class="pomo-ring" aria-hidden="true"><circle cx="60" cy="60" r="52" class="track"/><circle cx="60" cy="60" r="52" class="fill" id="pomoFill"/></svg>
+              <div class="pomo-center"><b id="pomoTime">25:00</b><span id="pomoPhase">Focus</span></div>
+              <div class="pomo-btns"><button class="btn small" id="btnPomo">Start</button><button class="btn ghost small" id="btnPomoReset">Reset</button></div>
+            </div>
+          </div>
+          <div class="plan-out" id="planOut"><p class="muted small">Your day-by-day plan will appear here.</p></div>
+        </div>
+      </div>
+      <div class="card help-card wide help-banner">
+        <h3>If things feel too much</h3>
+        <p>You don't have to wait until it's “bad enough”. Talking early helps.</p>
+        <div class="help-actions">
+          <a class="btn primary" href="tel:14416">Call Tele-MANAS 14416</a>
+          <button class="btn" data-go="talk">Prepare what to say</button>
+        </div>
+        <p class="muted small">In immediate danger, call <a href="tel:112">112</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== TALK ============================== -->
+  <section id="view-talk" class="view" aria-label="Talk and support">
+    <div class="two-col">
+      <div class="card">
+        <h3>Prepare to talk to someone</h3>
+        <p class="muted small">Starting the conversation is often the hardest part. Tap what fits and MindEase writes words you can say, or simply show on your phone.</p>
+        <div id="scriptForm"></div>
+        <div class="row gap"><button class="btn primary" id="btnScript">Write my script</button><button class="btn ghost" id="btnScriptExample">Example</button></div>
+        <div id="scriptOut"></div>
+      </div>
+      <aside class="side">
+        <div class="card help-card">
+          <h4>Talk to someone now</h4>
+          <div class="helplines" id="helplines"></div>
+          <button class="btn" id="btnTalkCounsellor">Ask a counsellor to reach out</button>
+          <p class="muted xsmall" id="counsellingCell"></p>
+        </div>
+        <div class="card">
+          <h4>Worried about a friend?</h4>
+          <p class="muted small" id="peerIntro"></p>
+          <ol class="steps" id="peerSteps"></ol>
+          <h5>Peer-support ideas for your campus</h5>
+          <ul class="tips" id="peerIdeas"></ul>
+        </div>
+        <div class="card">
+          <h4>When to get help soon</h4>
+          <ul class="tips" id="whenHelp"></ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============================== COUNSELLOR ============================== -->
+  <section id="view-counsellor" class="view" aria-label="Counsellor dashboard">
+    <div class="card login" id="loginCard">
+      <h3>Counsellor sign-in <span class="pill">demo role</span></h3>
+      <p class="muted small">The counsellor view shows only anonymised, opt-in totals and pseudonymous alerts. No names, no journals.</p>
+      <div class="row gap wrap">
+        <label class="inline">Name <input id="cName" value="Ms. Kavya (demo)" maxlength="60"></label>
+        <label class="inline">PIN <input id="cPin" type="password" inputmode="numeric" maxlength="8" placeholder="2468"></label>
+        <button class="btn primary" id="btnLogin">Sign in</button>
+      </div>
+      <p class="muted xsmall">Demo PIN: <b>2468</b>. A real deployment would use the college single sign-on.</p>
+    </div>
+    <div id="dash" hidden>
+      <div class="dash-head">
+        <div><h3>Counselling cell overview</h3><p class="muted small" id="dashSub"></p></div>
+        <div class="row gap"><span class="muted small" id="viewer"></span><button class="btn ghost small" id="btnLogout">Sign out</button></div>
+      </div>
+      <div class="kpis" id="kpis"></div>
+      <div class="dash-grid">
+        <div class="card span2">
+          <div class="chart-head">
+            <h4>Check-ins by severity band, per week</h4>
+            <div class="seg small" id="dashInst"><button data-inst="phq9" class="on">PHQ-9</button><button data-inst="gad7">GAD-7</button></div>
+          </div>
+          <div class="legend" id="lgBands"></div>
+          <div class="chart tall" id="chBands"></div>
+          <p class="muted xsmall">Number on each bar: check-ins shared that week. Percentage under each week: share at moderate or above. Shaded weeks: semester exams.</p>
+          <ul class="narrative" id="narrative"></ul>
+        </div>
+        <div class="card">
+          <h4>Privacy principles</h4>
+          <ul class="principles" id="principles"></ul>
+        </div>
+        <div class="card span2">
+          <div class="card-head"><h4>Item-9 alerts awaiting follow-up</h4><span class="muted small">PHQ-9 item 9 &gt; 0 on a shared check-in</span></div>
+          <div class="table-wrap"><table class="tbl" id="alertsTbl"></table></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h4>Asked to be contacted</h4><span class="muted small" id="contactCount"></span></div>
+          <ul class="contacts" id="contacts"></ul>
+        </div>
+        <div class="card">
+          <h4>This week by year of study</h4>
+          <p class="muted xsmall" id="byYearNote"></p>
+          <table class="tbl compact" id="byYear"></table>
+        </div>
+        <div class="card span2">
+          <h4>How to read this</h4>
+          <ul class="tips" id="dashExplain"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== ABOUT ============================== -->
+  <section id="view-about" class="view" aria-label="How it works">
+    <div class="about-grid" id="about"></div>
+  </section>
+</main>
+
+<footer class="foot">
+  <span>Built for QUANTIX 2K26 · KSRCE</span>
+  <span class="muted">MindEase is a supportive screening and self-help prototype. It does not diagnose or treat any condition. All data shown is synthetic.</span>
+</footer>
+
+<div class="modal" id="modal" hidden>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <div class="modal-art" aria-hidden="true">
+      <svg viewBox="0 0 120 60" width="120" height="60"><path d="M10 45c20-30 80-30 100 0" stroke="var(--lav)" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M30 50c12-14 48-14 60 0" stroke="var(--brand)" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="60" cy="18" r="7" fill="var(--brand)"/></svg>
+    </div>
+    <h2 id="mTitle">You don't have to go through this alone.</h2>
+    <p id="mBody"></p>
+    <p class="m-noticed small" id="mNoticed" hidden></p>
+    <div class="m-lines" id="mLines"></div>
+    <p class="m-emergency" id="mEmergency">If you are in immediate danger, call <a href="tel:112">112</a> now.</p>
+    <div class="m-actions">
+      <button class="btn primary" id="mCounsellor">Talk to a counsellor now</button>
+      <button class="btn" id="mBreathe">Breathe with me for a minute</button>
+      <button class="btn" id="mPeer" hidden>How to help a friend</button>
+    </div>
+    <p class="m-confirm small" id="mConfirm" hidden></p>
+    <button class="btn link m-close" id="mClose">I'm okay for now, close</button>
+  </div>
+</div>
+<div class="tooltip" id="tooltip" hidden></div>
+<div class="toast" id="toast" role="status" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,7230 @@
+{
+ "version": 1,
+ "generated_for": "2026-10-23",
+ "student": {
+  "name": "Ananya",
+  "pid": "S-E13D",
+  "year": 2,
+  "consent": {
+   "share_aggregate": true,
+   "contact": false
+  },
+  "journal": [
+   {
+    "id": "j01",
+    "date": "2026-10-02",
+    "mood": 4,
+    "sleep": 7.5,
+    "text": "Back to college after the weekend. Had a semma fun lunch with my friends 😄",
+    "sentiment": 0.79,
+    "label": "positive",
+    "emotions": [
+     "joy"
+    ],
+    "flagged": false
+   },
+   {
+    "id": "j02",
+    "date": "2026-10-03",
+    "mood": 4,
+    "sleep": 7.0,
+    "text": "Lab session went well, finally understood how the circuit works.",
+    "sentiment": 0.527,
+    "label": "positive",
+    "emotions": [],
+    "flagged": false
+   },
+   {
+    "id": "j03",
+    "date": "2026-10-04",
+    "mood": 5,
+    "sleep": 8.0,
+    "text": "Cultural fest practice tonight! Really happy and excited for the dance performance 🎉",
+    "sentiment": 0.904,
+    "label": "positive",
+    "emotions": [
+     "joy"
+    ],
+    "flagged": false
+   },
+   {
+    "id": "j04",
+    "date": "2026-10-05",
+    "mood": 4,
+    "sleep": 7.5,
+    "text": "Bit tired after practice but it was totally worth it.",
+    "sentiment": 0.548,
+    "label": "positive",
+    "emotions": [
+     "joy",
+     "tiredness"
+    ],
+    "flagged": false
+   },
+   {
+    "id": "j05",
+    "date": "2026-10-06",
+    "mood": 4,
+    "sleep": 7.0,
+    "text": "Normal day. Classes, canteen, library.",
+    "sentiment": 0.0,
+    "label": "neutral",
+    "emotions": [],
+    "flagged": false
+   },
+   {
+    "id": "j06",
+    "date": "2026-10-07",
+    "mood": 5,
+    "sleep": 8.0,
+    "text": "We performed at the fest and everyone loved it! Vera level feeling 😊",
+    "sentiment": 0.902,
+    "label": "positive",
+    "emotions": [
+     "joy"
+    ],
+    "flagged": false
+   },
+   {
+    "id": "j07",
+    "date": "2026-10-08",
+    "mood": 4,
+    "sleep": 8.5,
+    "text": "Lazy Sunday, slept well and watched a movie with my cousins.",
+    "sentiment": 0.178,
+    "label": "neutral",
+    "emotions": [
+     "calm",
+     "self_doubt"
+    ],
+    "flagged": false
+   },
+   {
+    "id": "j08",
+    "date": "2026-10-09",
+    "mood": 4,
+    "sleep": 7.0,
+    "text": "Timetable for semester exams is out. A little nervous but I have a plan.",
+    "sentiment": -0.166,
+    "label": "neutral",
+    "emotions": [
+     "anxiety"
+    ],
+    "flagged": false
+   },
+   {
+    "id": "j09",
+    "date": "2026-10-10",
+    "mood": 4,
+    "sleep": 7.0,
+    "text": "Studied two chapters of maths. Felt productive.",
+    "sentiment": 0.459,
+    "label": "positive",
+    "emotions": [
+     "joy"
+    ],
+    "flagged": false
+   },
+   {
+    "id": "j10",
+    "date": "2026-10-11",
+    "mood": 3,
+    "sleep": 6.5,
+    "text": "Too many assignments this week, konjam stressed.",
+    "sentiment": -0.423,
+    "label": "negative",
+    "emotions": [
+     "anxiety"
+    ],
+    "flagged": false
+   },
+   {
+    "id": "j11",
+    "date": "2026-10-12",
+    "mood": 4,
+    "sleep": 7.0,
+    "text": "Group study with Divya helped a lot, not bad at all.",
+    "sentiment": 0.665,
+    "label": "positive",
+    "emotions": [],
+    "flagged": false
+   },
+   {
+    "id": "j12",
+    "date": "2026-10-13",
+    "mood": 4,
+    "sleep": 7.5,
+    "text": "Calm day. Went for a walk in the evening, felt peaceful.",
+    "sentiment": 0.727,
+    "label": "positive",
+    "emotions": [
+     "calm"
+    ],
+    "flagged": false
+   },
+   {
+    "id": "j13",
+    "date": "2026-10-14",
+    "mood": 3,
+    "sleep": 6.5,
+    "text": "Internal marks came out. Not happy with my physics score, but okay.",
+    "sentiment": -0.064,
+    "label": "neutral",
+    "emotions": [],
+    "flagged": false
+   },
+   {
+    "id": "j14",
+    "date": "2026-10-15",
+    "mood": 4,
+    "sleep": 7.5,
+    "text": "Called Amma, felt better after talking to her.",
+    "sentiment": 0.44,
+    "label": "positive",
+    "emotions": [],
+    "flagged": false
+   },
+   {
+    "id": "j15",
+    "date": "2026-10-16",
+    "mood": 4,
+    "sleep": 6.5,
+    "text": "Revision is slow but steady. A bit worried about the syllabus.",
+    "sentiment": -0.383,
+    "label": "negative",
+    "emotions": [
+     "anxiety"
+    ],
+    "flagged": false
+   },
+   {
+    "id": "j16",
+    "date": "2026-10-17",
+    "mood": 4,
+    "sleep": 6.0,
+    "text": "Long study day, but I finished the electronics unit. Proud of that.",
+    "sentiment": 0.511,
+    "label": "positive",
+    "emotions": [
+     "joy"
+    ],
+    "flagged": false
+   },
+   {
+    "id": "j17",
+    "date": "2026-10-18",
+    "mood": 2,
+    "sleep": 5.5,
+    "text": "Couldn't sleep properly, so much tension about the maths exam 😟",
+    "sentiment": -0.844,
+    "label": "negative",
+    "emotions": [
+     "anxiety",
+     "tiredness"
+    ],
+    "flagged": false
+   },
+   {
+    "id": "j18",
+    "date": "2026-10-19",
+    "mood": 2,
+    "sleep": 5.0,
+    "text": "Feeling really tired and not happy with how I'm studying. Everyone else seems ahead.",
+    "sentiment": -0.7,
+    "label": "negative",
+    "emotions": [
+     "tiredness"
+    ],
+    "flagged": false
+   },
+   {
+    "id": "j19",
+    "date": "2026-10-20",
+    "mood": 3,
+    "sleep": 5.5,
+    "text": "Video call with my cousin helped a bit, but still anxious.",
+    "sentiment": -0.542,
+    "label": "negative",
+    "emotions": [
+     "anxiety"
+    ],
+    "flagged": false
+   },
+   {
+    "id": "j20",
+    "date": "2026-10-21",
+    "mood": 2,
+    "sleep": 5.0,
+    "text": "Romba stressed. Skipped lunch to study and still feel behind 😞",
+    "sentiment": -0.822,
+    "label": "negative",
+    "emotions": [
+     "anxiety",
+     "sadness"
+    ],
+    "flagged": false
+   },
+   {
+    "id": "j21",
+    "date": "2026-10-22",
+    "mood": 2,
+    "sleep": 4.5,
+    "text": "I feel so drained and lonely. Thookam varala, my mind keeps racing about exams.",
+    "sentiment": -0.906,
+    "label": "negative",
+    "emotions": [
+     "tiredness",
+     "loneliness"
+    ],
+    "flagged": false
+   }
+  ],
+  "screenings": [
+   {
+    "id": "s01",
+    "date": "2026-10-02",
+    "instrument": "phq9",
+    "answers": [
+     0,
+     1,
+     1,
+     1,
+     0,
+     0,
+     1,
+     0,
+     0
+    ],
+    "total": 4,
+    "band": "minimal",
+    "shared": true
+   },
+   {
+    "id": "s02",
+    "date": "2026-10-02",
+    "instrument": "gad7",
+    "answers": [
+     1,
+     1,
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "total": 3,
+    "band": "minimal",
+    "shared": true
+   },
+   {
+    "id": "s03",
+    "date": "2026-10-16",
+    "instrument": "phq9",
+    "answers": [
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     0,
+     0
+    ],
+    "total": 7,
+    "band": "mild",
+    "shared": true
+   },
+   {
+    "id": "s04",
+    "date": "2026-10-16",
+    "instrument": "gad7",
+    "answers": [
+     2,
+     2,
+     1,
+     1,
+     1,
+     1,
+     1
+    ],
+    "total": 9,
+    "band": "mild",
+    "shared": true
+   }
+  ]
+ },
+ "cohort": {
+  "weeks": [
+   {
+    "week": 1,
+    "start": "2026-08-31",
+    "exam": false
+   },
+   {
+    "week": 2,
+    "start": "2026-09-07",
+    "exam": false
+   },
+   {
+    "week": 3,
+    "start": "2026-09-14",
+    "exam": false
+   },
+   {
+    "week": 4,
+    "start": "2026-09-21",
+    "exam": false
+   },
+   {
+    "week": 5,
+    "start": "2026-09-28",
+    "exam": false
+   },
+   {
+    "week": 6,
+    "start": "2026-10-05",
+    "exam": false
+   },
+   {
+    "week": 7,
+    "start": "2026-10-12",
+    "exam": true
+   },
+   {
+    "week": 8,
+    "start": "2026-10-19",
+    "exam": true
+   }
+  ],
+  "students": [
+   {
+    "pid": "S-96BB",
+    "year": 3,
+    "contact_opt_in": false,
+    "preferred": "phone call"
+   },
+   {
+    "pid": "S-B162",
+    "year": 4,
+    "contact_opt_in": false,
+    "preferred": "college email"
+   },
+   {
+    "pid": "S-BF84",
+    "year": 3,
+    "contact_opt_in": false,
+    "preferred": "in person"
+   },
+   {
+    "pid": "S-09C9",
+    "year": 1,
+    "contact_opt_in": true,
+    "preferred": "phone call"
+   },
+   {
+    "pid": "S-B41D",
+    "year": 3,
+    "contact_opt_in": false,
+    "preferred": "college email"
+   },
+   {
+    "pid": "S-C303",
+    "year": 1,
+    "contact_opt_in": false,
+    "preferred": "phone call"
+   },
+   {
+    "pid": "S-2B42",
+    "year": 1,
+    "contact_opt_in": false,
+    "preferred": "phone call"
+   },
+   {
+    "pid": "S-DB76",
+    "year": 4,
+    "contact_opt_in": true,
+    "preferred": "phone call"
+   },
+   {
+    "pid": "S-A6AA",
+    "year": 1,
+    "contact_opt_in": false,
+    "preferred": "phone call"
+   },
+   {
+    "pid": "S-6232",
+    "year": 1,
+    "contact_opt_in": false,
+    "preferred": "in person"
+   },
+   {
+    "pid": "S-209A",
+    "year": 4,
+    "contact_opt_in": false,
+    "preferred": "phone call"
+   },
+   {
+    "pid": "S-2E77",
+    "year": 2,
+    "contact_opt_in": true,
+    "preferred": "phone call"
+   },
+   {
+    "pid": "S-27B9",
+    "year": 1,
+    "contact_opt_in": true,
+    "preferred": "in person"
+   },
+   {
+    "pid": "S-0C87",
+    "year": 2,
+    "contact_opt_in": true,
+    "preferred": "in person"
+   },
+   {
+    "pid": "S-9B89",
+    "year": 3,
+    "contact_opt_in": false,
+    "preferred": "college email"
+   },
+   {
+    "pid": "S-757C",
+    "year": 2,
+    "contact_opt_in": true,
+    "preferred": "in person"
+   },
+   {
+    "pid": "S-D47E",
+    "year": 2,
+    "contact_opt_in": false,
+    "preferred": "college email"
+   },
+   {
+    "pid": "S-267C",
+    "year": 3,
+    "contact_opt_in": false,
+    "preferred": "phone call"
+   },
+   {
+    "pid": "S-BB5F",
+    "year": 1,
+    "contact_opt_in": false,
+    "preferred": "college email"
+   },
+   {
+    "pid": "S-5D99",
+    "year": 2,
+    "contact_opt_in": false,
+    "preferred": "college email"
+   },
+   {
+    "pid": "S-C7A8",
+    "year": 3,
+    "contact_opt_in": false,
+    "preferred": "in person"
+   },
+   {
+    "pid": "S-2BC8",
+    "year": 4,
+    "contact_opt_in": true,
+    "preferred": "college email"
+   },
+   {
+    "pid": "S-EA6F",
+    "year": 3,
+    "contact_opt_in": false,
+    "preferred": "phone call"
+   },
+   {
+    "pid": "S-DA77",
+    "year": 2,
+    "contact_opt_in": true,
+    "preferred": "in person"
+   },
+   {
+    "pid": "S-62B4",
+    "year": 2,
+    "contact_opt_in": false,
+    "preferred": "phone call"
+   },
+   {
+    "pid": "S-C704",
+    "year": 4,
+    "contact_opt_in": false,
+    "preferred": "phone call"
+   },
+   {
+    "pid": "S-5EA6",
+    "year": 2,
+    "contact_opt_in": false,
+    "preferred": "phone call"
+   },
+   {
+    "pid": "S-F8A2",
+    "year": 2,
+    "contact_opt_in": false,
+    "preferred": "college email"
+   },
+   {
+    "pid": "S-4090",
+    "year": 3,
+    "contact_opt_in": true,
+    "preferred": "in person"
+   },
+   {
+    "pid": "S-FDE4",
+    "year": 2,
+    "contact_opt_in": true,
+    "preferred": "in person"
+   },
+   {
+    "pid": "S-259C",
+    "year": 2,
+    "contact_opt_in": true,
+    "preferred": "college email"
+   },
+   {
+    "pid": "S-0194",
+    "year": 1,
+    "contact_opt_in": false,
+    "preferred": "in person"
+   },
+   {
+    "pid": "S-FE19",
+    "year": 2,
+    "contact_opt_in": false,
+    "preferred": "phone call"
+   },
+   {
+    "pid": "S-21E9",
+    "year": 4,
+    "contact_opt_in": false,
+    "preferred": "in person"
+   },
+   {
+    "pid": "S-671C",
+    "year": 4,
+    "contact_opt_in": false,
+    "preferred": "in person"
+   },
+   {
+    "pid": "S-887E",
+    "year": 1,
+    "contact_opt_in": false,
+    "preferred": "college email"
+   },
+   {
+    "pid": "S-E47B",
+    "year": 3,
+    "contact_opt_in": false,
+    "preferred": "in person"
+   },
+   {
+    "pid": "S-FB59",
+    "year": 2,
+    "contact_opt_in": false,
+    "preferred": "in person"
+   },
+   {
+    "pid": "S-2EFD",
+    "year": 2,
+    "contact_opt_in": false,
+    "preferred": "in person"
+   },
+   {
+    "pid": "S-0314",
+    "year": 2,
+    "contact_opt_in": false,
+    "preferred": "college email"
+   },
+   {
+    "pid": "S-D0CC",
+    "year": 2,
+    "contact_opt_in": false,
+    "preferred": "phone call"
+   },
+   {
+    "pid": "S-E737",
+    "year": 4,
+    "contact_opt_in": false,
+    "preferred": "phone call"
+   },
+   {
+    "pid": "S-3692",
+    "year": 4,
+    "contact_opt_in": false,
+    "preferred": "college email"
+   },
+   {
+    "pid": "S-4438",
+    "year": 2,
+    "contact_opt_in": false,
+    "preferred": "in person"
+   },
+   {
+    "pid": "S-4C70",
+    "year": 3,
+    "contact_opt_in": false,
+    "preferred": "phone call"
+   },
+   {
+    "pid": "S-DFF6",
+    "year": 4,
+    "contact_opt_in": true,
+    "preferred": "college email"
+   },
+   {
+    "pid": "S-A52C",
+    "year": 4,
+    "contact_opt_in": false,
+    "preferred": "in person"
+   },
+   {
+    "pid": "S-2DE2",
+    "year": 2,
+    "contact_opt_in": false,
+    "preferred": "in person"
+   },
+   {
+    "pid": "S-3039",
+    "year": 1,
+    "contact_opt_in": false,
+    "preferred": "college email"
+   },
+   {
+    "pid": "S-6CB8",
+    "year": 1,
+    "contact_opt_in": false,
+    "preferred": "in person"
+   },
+   {
+    "pid": "S-B1FA",
+    "year": 2,
+    "contact_opt_in": false,
+    "preferred": "phone call"
+   },
+   {
+    "pid": "S-639B",
+    "year": 3,
+    "contact_opt_in": false,
+    "preferred": "in person"
+   },
+   {
+    "pid": "S-1AED",
+    "year": 4,
+    "contact_opt_in": false,
+    "preferred": "phone call"
+   },
+   {
+    "pid": "S-75C4",
+    "year": 4,
+    "contact_opt_in": false,
+    "preferred": "in person"
+   },
+   {
+    "pid": "S-BD9A",
+    "year": 3,
+    "contact_opt_in": true,
+    "preferred": "in person"
+   },
+   {
+    "pid": "S-5AC3",
+    "year": 4,
+    "contact_opt_in": false,
+    "preferred": "phone call"
+   },
+   {
+    "pid": "S-0B2C",
+    "year": 1,
+    "contact_opt_in": false,
+    "preferred": "college email"
+   },
+   {
+    "pid": "S-2909",
+    "year": 2,
+    "contact_opt_in": false,
+    "preferred": "phone call"
+   },
+   {
+    "pid": "S-6D53",
+    "year": 3,
+    "contact_opt_in": false,
+    "preferred": "in person"
+   },
+   {
+    "pid": "S-ED32",
+    "year": 3,
+    "contact_opt_in": false,
+    "preferred": "in person"
+   }
+  ],
+  "screenings": [
+   {
+    "pid": "S-96BB",
+    "week": 2,
+    "date": "2026-09-10",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-96BB",
+    "week": 2,
+    "date": "2026-09-10",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-96BB",
+    "week": 3,
+    "date": "2026-09-17",
+    "instrument": "phq9",
+    "total": 6,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-96BB",
+    "week": 3,
+    "date": "2026-09-17",
+    "instrument": "gad7",
+    "total": 8,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-96BB",
+    "week": 4,
+    "date": "2026-09-22",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-96BB",
+    "week": 4,
+    "date": "2026-09-22",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-96BB",
+    "week": 6,
+    "date": "2026-10-05",
+    "instrument": "phq9",
+    "total": 6,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-96BB",
+    "week": 6,
+    "date": "2026-10-05",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-96BB",
+    "week": 7,
+    "date": "2026-10-13",
+    "instrument": "phq9",
+    "total": 9,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-96BB",
+    "week": 7,
+    "date": "2026-10-13",
+    "instrument": "gad7",
+    "total": 12,
+    "band": "moderate",
+    "item9": null
+   },
+   {
+    "pid": "S-96BB",
+    "week": 8,
+    "date": "2026-10-23",
+    "instrument": "phq9",
+    "total": 13,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-96BB",
+    "week": 8,
+    "date": "2026-10-23",
+    "instrument": "gad7",
+    "total": 13,
+    "band": "moderate",
+    "item9": null
+   },
+   {
+    "pid": "S-B162",
+    "week": 1,
+    "date": "2026-08-31",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-B162",
+    "week": 1,
+    "date": "2026-08-31",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-B162",
+    "week": 2,
+    "date": "2026-09-08",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-B162",
+    "week": 2,
+    "date": "2026-09-08",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-B162",
+    "week": 3,
+    "date": "2026-09-16",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-B162",
+    "week": 3,
+    "date": "2026-09-16",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-B162",
+    "week": 4,
+    "date": "2026-09-22",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-B162",
+    "week": 4,
+    "date": "2026-09-22",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-B162",
+    "week": 5,
+    "date": "2026-10-02",
+    "instrument": "phq9",
+    "total": 6,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-B162",
+    "week": 5,
+    "date": "2026-10-02",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-B162",
+    "week": 6,
+    "date": "2026-10-07",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-B162",
+    "week": 6,
+    "date": "2026-10-07",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-B162",
+    "week": 8,
+    "date": "2026-10-22",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-B162",
+    "week": 8,
+    "date": "2026-10-22",
+    "instrument": "gad7",
+    "total": 10,
+    "band": "moderate",
+    "item9": null
+   },
+   {
+    "pid": "S-BF84",
+    "week": 1,
+    "date": "2026-09-04",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-BF84",
+    "week": 1,
+    "date": "2026-09-04",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-BF84",
+    "week": 3,
+    "date": "2026-09-15",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-BF84",
+    "week": 3,
+    "date": "2026-09-15",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-BF84",
+    "week": 5,
+    "date": "2026-09-30",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-BF84",
+    "week": 5,
+    "date": "2026-09-30",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-BF84",
+    "week": 7,
+    "date": "2026-10-16",
+    "instrument": "phq9",
+    "total": 11,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-BF84",
+    "week": 7,
+    "date": "2026-10-16",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-09C9",
+    "week": 1,
+    "date": "2026-08-31",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-09C9",
+    "week": 1,
+    "date": "2026-08-31",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-09C9",
+    "week": 2,
+    "date": "2026-09-10",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-09C9",
+    "week": 2,
+    "date": "2026-09-10",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-09C9",
+    "week": 3,
+    "date": "2026-09-17",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-09C9",
+    "week": 3,
+    "date": "2026-09-17",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-09C9",
+    "week": 4,
+    "date": "2026-09-21",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-09C9",
+    "week": 4,
+    "date": "2026-09-21",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-09C9",
+    "week": 6,
+    "date": "2026-10-05",
+    "instrument": "phq9",
+    "total": 8,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-09C9",
+    "week": 6,
+    "date": "2026-10-05",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-09C9",
+    "week": 7,
+    "date": "2026-10-13",
+    "instrument": "phq9",
+    "total": 8,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-09C9",
+    "week": 7,
+    "date": "2026-10-13",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-09C9",
+    "week": 8,
+    "date": "2026-10-22",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-09C9",
+    "week": 8,
+    "date": "2026-10-22",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-B41D",
+    "week": 1,
+    "date": "2026-09-01",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-B41D",
+    "week": 1,
+    "date": "2026-09-01",
+    "instrument": "gad7",
+    "total": 1,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-B41D",
+    "week": 2,
+    "date": "2026-09-08",
+    "instrument": "phq9",
+    "total": 2,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-B41D",
+    "week": 2,
+    "date": "2026-09-08",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-B41D",
+    "week": 4,
+    "date": "2026-09-22",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-B41D",
+    "week": 4,
+    "date": "2026-09-22",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-B41D",
+    "week": 6,
+    "date": "2026-10-06",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-B41D",
+    "week": 6,
+    "date": "2026-10-06",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-B41D",
+    "week": 7,
+    "date": "2026-10-13",
+    "instrument": "phq9",
+    "total": 9,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-B41D",
+    "week": 7,
+    "date": "2026-10-13",
+    "instrument": "gad7",
+    "total": 11,
+    "band": "moderate",
+    "item9": null
+   },
+   {
+    "pid": "S-B41D",
+    "week": 8,
+    "date": "2026-10-21",
+    "instrument": "phq9",
+    "total": 11,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-B41D",
+    "week": 8,
+    "date": "2026-10-21",
+    "instrument": "gad7",
+    "total": 9,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-C303",
+    "week": 1,
+    "date": "2026-09-01",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-C303",
+    "week": 1,
+    "date": "2026-09-01",
+    "instrument": "gad7",
+    "total": 8,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-C303",
+    "week": 3,
+    "date": "2026-09-18",
+    "instrument": "phq9",
+    "total": 8,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-C303",
+    "week": 3,
+    "date": "2026-09-18",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-C303",
+    "week": 5,
+    "date": "2026-10-02",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-C303",
+    "week": 5,
+    "date": "2026-10-02",
+    "instrument": "gad7",
+    "total": 10,
+    "band": "moderate",
+    "item9": null
+   },
+   {
+    "pid": "S-C303",
+    "week": 6,
+    "date": "2026-10-05",
+    "instrument": "phq9",
+    "total": 9,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-C303",
+    "week": 6,
+    "date": "2026-10-05",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-C303",
+    "week": 7,
+    "date": "2026-10-13",
+    "instrument": "phq9",
+    "total": 11,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-C303",
+    "week": 7,
+    "date": "2026-10-13",
+    "instrument": "gad7",
+    "total": 9,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-C303",
+    "week": 8,
+    "date": "2026-10-23",
+    "instrument": "phq9",
+    "total": 11,
+    "band": "moderate",
+    "item9": 1
+   },
+   {
+    "pid": "S-C303",
+    "week": 8,
+    "date": "2026-10-23",
+    "instrument": "gad7",
+    "total": 12,
+    "band": "moderate",
+    "item9": null
+   },
+   {
+    "pid": "S-2B42",
+    "week": 1,
+    "date": "2026-08-31",
+    "instrument": "phq9",
+    "total": 1,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-2B42",
+    "week": 1,
+    "date": "2026-08-31",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-2B42",
+    "week": 2,
+    "date": "2026-09-07",
+    "instrument": "phq9",
+    "total": 1,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-2B42",
+    "week": 2,
+    "date": "2026-09-07",
+    "instrument": "gad7",
+    "total": 2,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-2B42",
+    "week": 4,
+    "date": "2026-09-23",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-2B42",
+    "week": 4,
+    "date": "2026-09-23",
+    "instrument": "gad7",
+    "total": 1,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-2B42",
+    "week": 5,
+    "date": "2026-09-28",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-2B42",
+    "week": 5,
+    "date": "2026-09-28",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-2B42",
+    "week": 6,
+    "date": "2026-10-05",
+    "instrument": "phq9",
+    "total": 6,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-2B42",
+    "week": 6,
+    "date": "2026-10-05",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-2B42",
+    "week": 7,
+    "date": "2026-10-12",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-2B42",
+    "week": 7,
+    "date": "2026-10-12",
+    "instrument": "gad7",
+    "total": 8,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-2B42",
+    "week": 8,
+    "date": "2026-10-19",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-2B42",
+    "week": 8,
+    "date": "2026-10-19",
+    "instrument": "gad7",
+    "total": 8,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-DB76",
+    "week": 1,
+    "date": "2026-09-03",
+    "instrument": "phq9",
+    "total": 2,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-DB76",
+    "week": 1,
+    "date": "2026-09-03",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-DB76",
+    "week": 4,
+    "date": "2026-09-22",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-DB76",
+    "week": 4,
+    "date": "2026-09-22",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-DB76",
+    "week": 7,
+    "date": "2026-10-13",
+    "instrument": "phq9",
+    "total": 6,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-DB76",
+    "week": 7,
+    "date": "2026-10-13",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-DB76",
+    "week": 8,
+    "date": "2026-10-21",
+    "instrument": "phq9",
+    "total": 6,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-DB76",
+    "week": 8,
+    "date": "2026-10-21",
+    "instrument": "gad7",
+    "total": 8,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-A6AA",
+    "week": 1,
+    "date": "2026-08-31",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-A6AA",
+    "week": 1,
+    "date": "2026-08-31",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-A6AA",
+    "week": 2,
+    "date": "2026-09-11",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-A6AA",
+    "week": 2,
+    "date": "2026-09-11",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-A6AA",
+    "week": 4,
+    "date": "2026-09-22",
+    "instrument": "phq9",
+    "total": 6,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-A6AA",
+    "week": 4,
+    "date": "2026-09-22",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-A6AA",
+    "week": 5,
+    "date": "2026-09-29",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-A6AA",
+    "week": 5,
+    "date": "2026-09-29",
+    "instrument": "gad7",
+    "total": 8,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-A6AA",
+    "week": 8,
+    "date": "2026-10-20",
+    "instrument": "phq9",
+    "total": 9,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-A6AA",
+    "week": 8,
+    "date": "2026-10-20",
+    "instrument": "gad7",
+    "total": 9,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-6232",
+    "week": 1,
+    "date": "2026-09-02",
+    "instrument": "phq9",
+    "total": 10,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-6232",
+    "week": 1,
+    "date": "2026-09-02",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-6232",
+    "week": 2,
+    "date": "2026-09-11",
+    "instrument": "phq9",
+    "total": 9,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-6232",
+    "week": 2,
+    "date": "2026-09-11",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-6232",
+    "week": 3,
+    "date": "2026-09-15",
+    "instrument": "phq9",
+    "total": 13,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-6232",
+    "week": 3,
+    "date": "2026-09-15",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-6232",
+    "week": 5,
+    "date": "2026-09-29",
+    "instrument": "phq9",
+    "total": 11,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-6232",
+    "week": 5,
+    "date": "2026-09-29",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-6232",
+    "week": 6,
+    "date": "2026-10-07",
+    "instrument": "phq9",
+    "total": 11,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-6232",
+    "week": 6,
+    "date": "2026-10-07",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-6232",
+    "week": 7,
+    "date": "2026-10-15",
+    "instrument": "phq9",
+    "total": 16,
+    "band": "moderately_severe",
+    "item9": 0
+   },
+   {
+    "pid": "S-6232",
+    "week": 7,
+    "date": "2026-10-15",
+    "instrument": "gad7",
+    "total": 13,
+    "band": "moderate",
+    "item9": null
+   },
+   {
+    "pid": "S-6232",
+    "week": 8,
+    "date": "2026-10-23",
+    "instrument": "phq9",
+    "total": 16,
+    "band": "moderately_severe",
+    "item9": 0
+   },
+   {
+    "pid": "S-6232",
+    "week": 8,
+    "date": "2026-10-23",
+    "instrument": "gad7",
+    "total": 15,
+    "band": "severe",
+    "item9": null
+   },
+   {
+    "pid": "S-209A",
+    "week": 1,
+    "date": "2026-08-31",
+    "instrument": "phq9",
+    "total": 0,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-209A",
+    "week": 1,
+    "date": "2026-08-31",
+    "instrument": "gad7",
+    "total": 2,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-209A",
+    "week": 2,
+    "date": "2026-09-10",
+    "instrument": "phq9",
+    "total": 1,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-209A",
+    "week": 2,
+    "date": "2026-09-10",
+    "instrument": "gad7",
+    "total": 2,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-209A",
+    "week": 3,
+    "date": "2026-09-18",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-209A",
+    "week": 3,
+    "date": "2026-09-18",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-209A",
+    "week": 4,
+    "date": "2026-09-22",
+    "instrument": "phq9",
+    "total": 1,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-209A",
+    "week": 4,
+    "date": "2026-09-22",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-209A",
+    "week": 5,
+    "date": "2026-10-01",
+    "instrument": "phq9",
+    "total": 2,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-209A",
+    "week": 5,
+    "date": "2026-10-01",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-209A",
+    "week": 6,
+    "date": "2026-10-08",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-209A",
+    "week": 6,
+    "date": "2026-10-08",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-209A",
+    "week": 7,
+    "date": "2026-10-14",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-209A",
+    "week": 7,
+    "date": "2026-10-14",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-2E77",
+    "week": 1,
+    "date": "2026-09-03",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-2E77",
+    "week": 1,
+    "date": "2026-09-03",
+    "instrument": "gad7",
+    "total": 0,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-2E77",
+    "week": 3,
+    "date": "2026-09-16",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-2E77",
+    "week": 3,
+    "date": "2026-09-16",
+    "instrument": "gad7",
+    "total": 2,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-2E77",
+    "week": 6,
+    "date": "2026-10-09",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-2E77",
+    "week": 6,
+    "date": "2026-10-09",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-2E77",
+    "week": 7,
+    "date": "2026-10-13",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-2E77",
+    "week": 7,
+    "date": "2026-10-13",
+    "instrument": "gad7",
+    "total": 9,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-2E77",
+    "week": 8,
+    "date": "2026-10-20",
+    "instrument": "phq9",
+    "total": 10,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-2E77",
+    "week": 8,
+    "date": "2026-10-20",
+    "instrument": "gad7",
+    "total": 9,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-27B9",
+    "week": 1,
+    "date": "2026-08-31",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-27B9",
+    "week": 1,
+    "date": "2026-08-31",
+    "instrument": "gad7",
+    "total": 2,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-27B9",
+    "week": 2,
+    "date": "2026-09-08",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-27B9",
+    "week": 2,
+    "date": "2026-09-08",
+    "instrument": "gad7",
+    "total": 2,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-27B9",
+    "week": 3,
+    "date": "2026-09-18",
+    "instrument": "phq9",
+    "total": 2,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-27B9",
+    "week": 3,
+    "date": "2026-09-18",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-27B9",
+    "week": 4,
+    "date": "2026-09-23",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-27B9",
+    "week": 4,
+    "date": "2026-09-23",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-27B9",
+    "week": 6,
+    "date": "2026-10-06",
+    "instrument": "phq9",
+    "total": 8,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-27B9",
+    "week": 6,
+    "date": "2026-10-06",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-27B9",
+    "week": 7,
+    "date": "2026-10-12",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-27B9",
+    "week": 7,
+    "date": "2026-10-12",
+    "instrument": "gad7",
+    "total": 10,
+    "band": "moderate",
+    "item9": null
+   },
+   {
+    "pid": "S-27B9",
+    "week": 8,
+    "date": "2026-10-22",
+    "instrument": "phq9",
+    "total": 6,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-27B9",
+    "week": 8,
+    "date": "2026-10-22",
+    "instrument": "gad7",
+    "total": 8,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-0C87",
+    "week": 6,
+    "date": "2026-10-08",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-0C87",
+    "week": 6,
+    "date": "2026-10-08",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-9B89",
+    "week": 1,
+    "date": "2026-09-03",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-9B89",
+    "week": 1,
+    "date": "2026-09-03",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-9B89",
+    "week": 2,
+    "date": "2026-09-09",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-9B89",
+    "week": 2,
+    "date": "2026-09-09",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-9B89",
+    "week": 5,
+    "date": "2026-09-30",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-9B89",
+    "week": 5,
+    "date": "2026-09-30",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-9B89",
+    "week": 6,
+    "date": "2026-10-07",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-9B89",
+    "week": 6,
+    "date": "2026-10-07",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-757C",
+    "week": 1,
+    "date": "2026-09-01",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-757C",
+    "week": 1,
+    "date": "2026-09-01",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-757C",
+    "week": 2,
+    "date": "2026-09-08",
+    "instrument": "phq9",
+    "total": 1,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-757C",
+    "week": 2,
+    "date": "2026-09-08",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-757C",
+    "week": 3,
+    "date": "2026-09-15",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-757C",
+    "week": 3,
+    "date": "2026-09-15",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-757C",
+    "week": 5,
+    "date": "2026-10-02",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-757C",
+    "week": 5,
+    "date": "2026-10-02",
+    "instrument": "gad7",
+    "total": 1,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-757C",
+    "week": 7,
+    "date": "2026-10-16",
+    "instrument": "phq9",
+    "total": 8,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-757C",
+    "week": 7,
+    "date": "2026-10-16",
+    "instrument": "gad7",
+    "total": 8,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-D47E",
+    "week": 1,
+    "date": "2026-08-31",
+    "instrument": "phq9",
+    "total": 1,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-D47E",
+    "week": 1,
+    "date": "2026-08-31",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-D47E",
+    "week": 2,
+    "date": "2026-09-10",
+    "instrument": "phq9",
+    "total": 1,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-D47E",
+    "week": 2,
+    "date": "2026-09-10",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-D47E",
+    "week": 3,
+    "date": "2026-09-15",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-D47E",
+    "week": 3,
+    "date": "2026-09-15",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-D47E",
+    "week": 4,
+    "date": "2026-09-21",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-D47E",
+    "week": 4,
+    "date": "2026-09-21",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-D47E",
+    "week": 5,
+    "date": "2026-09-28",
+    "instrument": "phq9",
+    "total": 1,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-D47E",
+    "week": 5,
+    "date": "2026-09-28",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-D47E",
+    "week": 6,
+    "date": "2026-10-06",
+    "instrument": "phq9",
+    "total": 2,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-D47E",
+    "week": 6,
+    "date": "2026-10-06",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-D47E",
+    "week": 7,
+    "date": "2026-10-13",
+    "instrument": "phq9",
+    "total": 2,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-D47E",
+    "week": 7,
+    "date": "2026-10-13",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-D47E",
+    "week": 8,
+    "date": "2026-10-23",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-D47E",
+    "week": 8,
+    "date": "2026-10-23",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-267C",
+    "week": 1,
+    "date": "2026-09-02",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-267C",
+    "week": 1,
+    "date": "2026-09-02",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-267C",
+    "week": 2,
+    "date": "2026-09-09",
+    "instrument": "phq9",
+    "total": 0,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-267C",
+    "week": 2,
+    "date": "2026-09-09",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-267C",
+    "week": 3,
+    "date": "2026-09-14",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-267C",
+    "week": 3,
+    "date": "2026-09-14",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-267C",
+    "week": 4,
+    "date": "2026-09-21",
+    "instrument": "phq9",
+    "total": 2,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-267C",
+    "week": 4,
+    "date": "2026-09-21",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-267C",
+    "week": 5,
+    "date": "2026-09-29",
+    "instrument": "phq9",
+    "total": 6,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-267C",
+    "week": 5,
+    "date": "2026-09-29",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-267C",
+    "week": 6,
+    "date": "2026-10-08",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-267C",
+    "week": 6,
+    "date": "2026-10-08",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-267C",
+    "week": 7,
+    "date": "2026-10-15",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-267C",
+    "week": 7,
+    "date": "2026-10-15",
+    "instrument": "gad7",
+    "total": 9,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-267C",
+    "week": 8,
+    "date": "2026-10-23",
+    "instrument": "phq9",
+    "total": 8,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-267C",
+    "week": 8,
+    "date": "2026-10-23",
+    "instrument": "gad7",
+    "total": 12,
+    "band": "moderate",
+    "item9": null
+   },
+   {
+    "pid": "S-BB5F",
+    "week": 3,
+    "date": "2026-09-14",
+    "instrument": "phq9",
+    "total": 14,
+    "band": "moderate",
+    "item9": 1
+   },
+   {
+    "pid": "S-BB5F",
+    "week": 3,
+    "date": "2026-09-14",
+    "instrument": "gad7",
+    "total": 8,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-BB5F",
+    "week": 4,
+    "date": "2026-09-21",
+    "instrument": "phq9",
+    "total": 13,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-BB5F",
+    "week": 4,
+    "date": "2026-09-21",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-BB5F",
+    "week": 7,
+    "date": "2026-10-14",
+    "instrument": "phq9",
+    "total": 16,
+    "band": "moderately_severe",
+    "item9": 0
+   },
+   {
+    "pid": "S-BB5F",
+    "week": 7,
+    "date": "2026-10-14",
+    "instrument": "gad7",
+    "total": 9,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-5D99",
+    "week": 2,
+    "date": "2026-09-08",
+    "instrument": "phq9",
+    "total": 8,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-5D99",
+    "week": 2,
+    "date": "2026-09-08",
+    "instrument": "gad7",
+    "total": 8,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-5D99",
+    "week": 3,
+    "date": "2026-09-16",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-5D99",
+    "week": 3,
+    "date": "2026-09-16",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-5D99",
+    "week": 5,
+    "date": "2026-09-29",
+    "instrument": "phq9",
+    "total": 6,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-5D99",
+    "week": 5,
+    "date": "2026-09-29",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-5D99",
+    "week": 6,
+    "date": "2026-10-09",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-5D99",
+    "week": 6,
+    "date": "2026-10-09",
+    "instrument": "gad7",
+    "total": 8,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-5D99",
+    "week": 7,
+    "date": "2026-10-12",
+    "instrument": "phq9",
+    "total": 8,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-5D99",
+    "week": 7,
+    "date": "2026-10-12",
+    "instrument": "gad7",
+    "total": 8,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-5D99",
+    "week": 8,
+    "date": "2026-10-20",
+    "instrument": "phq9",
+    "total": 8,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-5D99",
+    "week": 8,
+    "date": "2026-10-20",
+    "instrument": "gad7",
+    "total": 9,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-C7A8",
+    "week": 1,
+    "date": "2026-09-01",
+    "instrument": "phq9",
+    "total": 6,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-C7A8",
+    "week": 1,
+    "date": "2026-09-01",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-C7A8",
+    "week": 2,
+    "date": "2026-09-11",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-C7A8",
+    "week": 2,
+    "date": "2026-09-11",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-C7A8",
+    "week": 3,
+    "date": "2026-09-17",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-C7A8",
+    "week": 3,
+    "date": "2026-09-17",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-C7A8",
+    "week": 4,
+    "date": "2026-09-22",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-C7A8",
+    "week": 4,
+    "date": "2026-09-22",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-C7A8",
+    "week": 5,
+    "date": "2026-10-01",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-C7A8",
+    "week": 5,
+    "date": "2026-10-01",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-C7A8",
+    "week": 6,
+    "date": "2026-10-09",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-C7A8",
+    "week": 6,
+    "date": "2026-10-09",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-C7A8",
+    "week": 7,
+    "date": "2026-10-15",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-C7A8",
+    "week": 7,
+    "date": "2026-10-15",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-C7A8",
+    "week": 8,
+    "date": "2026-10-21",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-C7A8",
+    "week": 8,
+    "date": "2026-10-21",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-2BC8",
+    "week": 1,
+    "date": "2026-09-03",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-2BC8",
+    "week": 1,
+    "date": "2026-09-03",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-2BC8",
+    "week": 2,
+    "date": "2026-09-11",
+    "instrument": "phq9",
+    "total": 8,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-2BC8",
+    "week": 2,
+    "date": "2026-09-11",
+    "instrument": "gad7",
+    "total": 8,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-2BC8",
+    "week": 3,
+    "date": "2026-09-16",
+    "instrument": "phq9",
+    "total": 11,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-2BC8",
+    "week": 3,
+    "date": "2026-09-16",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-2BC8",
+    "week": 6,
+    "date": "2026-10-06",
+    "instrument": "phq9",
+    "total": 9,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-2BC8",
+    "week": 6,
+    "date": "2026-10-06",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-2BC8",
+    "week": 8,
+    "date": "2026-10-23",
+    "instrument": "phq9",
+    "total": 16,
+    "band": "moderately_severe",
+    "item9": 2
+   },
+   {
+    "pid": "S-2BC8",
+    "week": 8,
+    "date": "2026-10-23",
+    "instrument": "gad7",
+    "total": 8,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-EA6F",
+    "week": 1,
+    "date": "2026-09-02",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-EA6F",
+    "week": 1,
+    "date": "2026-09-02",
+    "instrument": "gad7",
+    "total": 2,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-EA6F",
+    "week": 2,
+    "date": "2026-09-09",
+    "instrument": "phq9",
+    "total": 2,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-EA6F",
+    "week": 2,
+    "date": "2026-09-09",
+    "instrument": "gad7",
+    "total": 1,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-EA6F",
+    "week": 3,
+    "date": "2026-09-18",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-EA6F",
+    "week": 3,
+    "date": "2026-09-18",
+    "instrument": "gad7",
+    "total": 2,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-EA6F",
+    "week": 4,
+    "date": "2026-09-23",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-EA6F",
+    "week": 4,
+    "date": "2026-09-23",
+    "instrument": "gad7",
+    "total": 2,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-EA6F",
+    "week": 6,
+    "date": "2026-10-06",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-EA6F",
+    "week": 6,
+    "date": "2026-10-06",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-EA6F",
+    "week": 7,
+    "date": "2026-10-13",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-EA6F",
+    "week": 7,
+    "date": "2026-10-13",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-EA6F",
+    "week": 8,
+    "date": "2026-10-23",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-EA6F",
+    "week": 8,
+    "date": "2026-10-23",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-DA77",
+    "week": 1,
+    "date": "2026-08-31",
+    "instrument": "phq9",
+    "total": 1,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-DA77",
+    "week": 1,
+    "date": "2026-08-31",
+    "instrument": "gad7",
+    "total": 2,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-DA77",
+    "week": 3,
+    "date": "2026-09-18",
+    "instrument": "phq9",
+    "total": 2,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-DA77",
+    "week": 3,
+    "date": "2026-09-18",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-DA77",
+    "week": 4,
+    "date": "2026-09-21",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-DA77",
+    "week": 4,
+    "date": "2026-09-21",
+    "instrument": "gad7",
+    "total": 2,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-DA77",
+    "week": 5,
+    "date": "2026-09-28",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-DA77",
+    "week": 5,
+    "date": "2026-09-28",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-DA77",
+    "week": 6,
+    "date": "2026-10-07",
+    "instrument": "phq9",
+    "total": 1,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-DA77",
+    "week": 6,
+    "date": "2026-10-07",
+    "instrument": "gad7",
+    "total": 1,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-DA77",
+    "week": 7,
+    "date": "2026-10-13",
+    "instrument": "phq9",
+    "total": 6,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-DA77",
+    "week": 7,
+    "date": "2026-10-13",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-62B4",
+    "week": 1,
+    "date": "2026-09-04",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-62B4",
+    "week": 1,
+    "date": "2026-09-04",
+    "instrument": "gad7",
+    "total": 1,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-62B4",
+    "week": 2,
+    "date": "2026-09-11",
+    "instrument": "phq9",
+    "total": 11,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-62B4",
+    "week": 2,
+    "date": "2026-09-11",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-62B4",
+    "week": 3,
+    "date": "2026-09-15",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-62B4",
+    "week": 3,
+    "date": "2026-09-15",
+    "instrument": "gad7",
+    "total": 2,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-62B4",
+    "week": 4,
+    "date": "2026-09-23",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-62B4",
+    "week": 4,
+    "date": "2026-09-23",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-62B4",
+    "week": 5,
+    "date": "2026-09-29",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-62B4",
+    "week": 5,
+    "date": "2026-09-29",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-62B4",
+    "week": 6,
+    "date": "2026-10-06",
+    "instrument": "phq9",
+    "total": 6,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-62B4",
+    "week": 6,
+    "date": "2026-10-06",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-62B4",
+    "week": 7,
+    "date": "2026-10-13",
+    "instrument": "phq9",
+    "total": 11,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-62B4",
+    "week": 7,
+    "date": "2026-10-13",
+    "instrument": "gad7",
+    "total": 9,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-62B4",
+    "week": 8,
+    "date": "2026-10-20",
+    "instrument": "phq9",
+    "total": 11,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-62B4",
+    "week": 8,
+    "date": "2026-10-20",
+    "instrument": "gad7",
+    "total": 9,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-C704",
+    "week": 1,
+    "date": "2026-09-04",
+    "instrument": "phq9",
+    "total": 6,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-C704",
+    "week": 1,
+    "date": "2026-09-04",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-C704",
+    "week": 2,
+    "date": "2026-09-10",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-C704",
+    "week": 2,
+    "date": "2026-09-10",
+    "instrument": "gad7",
+    "total": 2,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-C704",
+    "week": 3,
+    "date": "2026-09-15",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-C704",
+    "week": 3,
+    "date": "2026-09-15",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-C704",
+    "week": 5,
+    "date": "2026-09-29",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-C704",
+    "week": 5,
+    "date": "2026-09-29",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-C704",
+    "week": 7,
+    "date": "2026-10-12",
+    "instrument": "phq9",
+    "total": 13,
+    "band": "moderate",
+    "item9": 1
+   },
+   {
+    "pid": "S-C704",
+    "week": 7,
+    "date": "2026-10-12",
+    "instrument": "gad7",
+    "total": 11,
+    "band": "moderate",
+    "item9": null
+   },
+   {
+    "pid": "S-C704",
+    "week": 8,
+    "date": "2026-10-21",
+    "instrument": "phq9",
+    "total": 16,
+    "band": "moderately_severe",
+    "item9": 1
+   },
+   {
+    "pid": "S-C704",
+    "week": 8,
+    "date": "2026-10-21",
+    "instrument": "gad7",
+    "total": 12,
+    "band": "moderate",
+    "item9": null
+   },
+   {
+    "pid": "S-5EA6",
+    "week": 1,
+    "date": "2026-09-03",
+    "instrument": "phq9",
+    "total": 2,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-5EA6",
+    "week": 1,
+    "date": "2026-09-03",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-5EA6",
+    "week": 5,
+    "date": "2026-09-30",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-5EA6",
+    "week": 5,
+    "date": "2026-09-30",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-5EA6",
+    "week": 6,
+    "date": "2026-10-05",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-5EA6",
+    "week": 6,
+    "date": "2026-10-05",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-F8A2",
+    "week": 3,
+    "date": "2026-09-15",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-F8A2",
+    "week": 3,
+    "date": "2026-09-15",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-F8A2",
+    "week": 5,
+    "date": "2026-09-30",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-F8A2",
+    "week": 5,
+    "date": "2026-09-30",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-F8A2",
+    "week": 6,
+    "date": "2026-10-09",
+    "instrument": "phq9",
+    "total": 6,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-F8A2",
+    "week": 6,
+    "date": "2026-10-09",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-F8A2",
+    "week": 7,
+    "date": "2026-10-12",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-F8A2",
+    "week": 7,
+    "date": "2026-10-12",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-F8A2",
+    "week": 8,
+    "date": "2026-10-19",
+    "instrument": "phq9",
+    "total": 8,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-F8A2",
+    "week": 8,
+    "date": "2026-10-19",
+    "instrument": "gad7",
+    "total": 9,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-4090",
+    "week": 1,
+    "date": "2026-09-03",
+    "instrument": "phq9",
+    "total": 2,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-4090",
+    "week": 1,
+    "date": "2026-09-03",
+    "instrument": "gad7",
+    "total": 8,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-4090",
+    "week": 2,
+    "date": "2026-09-11",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-4090",
+    "week": 2,
+    "date": "2026-09-11",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-4090",
+    "week": 3,
+    "date": "2026-09-18",
+    "instrument": "phq9",
+    "total": 6,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-4090",
+    "week": 3,
+    "date": "2026-09-18",
+    "instrument": "gad7",
+    "total": 8,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-4090",
+    "week": 4,
+    "date": "2026-09-25",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-4090",
+    "week": 4,
+    "date": "2026-09-25",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-4090",
+    "week": 5,
+    "date": "2026-10-01",
+    "instrument": "phq9",
+    "total": 6,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-4090",
+    "week": 5,
+    "date": "2026-10-01",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-4090",
+    "week": 6,
+    "date": "2026-10-09",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-4090",
+    "week": 6,
+    "date": "2026-10-09",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-4090",
+    "week": 8,
+    "date": "2026-10-22",
+    "instrument": "phq9",
+    "total": 13,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-4090",
+    "week": 8,
+    "date": "2026-10-22",
+    "instrument": "gad7",
+    "total": 13,
+    "band": "moderate",
+    "item9": null
+   },
+   {
+    "pid": "S-FDE4",
+    "week": 2,
+    "date": "2026-09-10",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-FDE4",
+    "week": 2,
+    "date": "2026-09-10",
+    "instrument": "gad7",
+    "total": 1,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-FDE4",
+    "week": 4,
+    "date": "2026-09-25",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-FDE4",
+    "week": 4,
+    "date": "2026-09-25",
+    "instrument": "gad7",
+    "total": 2,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-FDE4",
+    "week": 5,
+    "date": "2026-10-02",
+    "instrument": "phq9",
+    "total": 1,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-FDE4",
+    "week": 5,
+    "date": "2026-10-02",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-FDE4",
+    "week": 6,
+    "date": "2026-10-05",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-FDE4",
+    "week": 6,
+    "date": "2026-10-05",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-FDE4",
+    "week": 7,
+    "date": "2026-10-12",
+    "instrument": "phq9",
+    "total": 6,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-FDE4",
+    "week": 7,
+    "date": "2026-10-12",
+    "instrument": "gad7",
+    "total": 9,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-FDE4",
+    "week": 8,
+    "date": "2026-10-22",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-FDE4",
+    "week": 8,
+    "date": "2026-10-22",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-259C",
+    "week": 2,
+    "date": "2026-09-11",
+    "instrument": "phq9",
+    "total": 1,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-259C",
+    "week": 2,
+    "date": "2026-09-11",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-259C",
+    "week": 4,
+    "date": "2026-09-24",
+    "instrument": "phq9",
+    "total": 6,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-259C",
+    "week": 4,
+    "date": "2026-09-24",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-259C",
+    "week": 5,
+    "date": "2026-09-29",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-259C",
+    "week": 5,
+    "date": "2026-09-29",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-259C",
+    "week": 8,
+    "date": "2026-10-20",
+    "instrument": "phq9",
+    "total": 9,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-259C",
+    "week": 8,
+    "date": "2026-10-20",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-0194",
+    "week": 1,
+    "date": "2026-08-31",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-0194",
+    "week": 1,
+    "date": "2026-08-31",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-0194",
+    "week": 2,
+    "date": "2026-09-10",
+    "instrument": "phq9",
+    "total": 2,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-0194",
+    "week": 2,
+    "date": "2026-09-10",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-0194",
+    "week": 3,
+    "date": "2026-09-16",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-0194",
+    "week": 3,
+    "date": "2026-09-16",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-0194",
+    "week": 4,
+    "date": "2026-09-22",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-0194",
+    "week": 4,
+    "date": "2026-09-22",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-0194",
+    "week": 5,
+    "date": "2026-09-28",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-0194",
+    "week": 5,
+    "date": "2026-09-28",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-0194",
+    "week": 6,
+    "date": "2026-10-09",
+    "instrument": "phq9",
+    "total": 6,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-0194",
+    "week": 6,
+    "date": "2026-10-09",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-0194",
+    "week": 7,
+    "date": "2026-10-13",
+    "instrument": "phq9",
+    "total": 8,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-0194",
+    "week": 7,
+    "date": "2026-10-13",
+    "instrument": "gad7",
+    "total": 9,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-0194",
+    "week": 8,
+    "date": "2026-10-23",
+    "instrument": "phq9",
+    "total": 9,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-0194",
+    "week": 8,
+    "date": "2026-10-23",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-FE19",
+    "week": 1,
+    "date": "2026-08-31",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-FE19",
+    "week": 1,
+    "date": "2026-08-31",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-FE19",
+    "week": 2,
+    "date": "2026-09-11",
+    "instrument": "phq9",
+    "total": 2,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-FE19",
+    "week": 2,
+    "date": "2026-09-11",
+    "instrument": "gad7",
+    "total": 2,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-FE19",
+    "week": 3,
+    "date": "2026-09-17",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-FE19",
+    "week": 3,
+    "date": "2026-09-17",
+    "instrument": "gad7",
+    "total": 2,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-FE19",
+    "week": 4,
+    "date": "2026-09-25",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-FE19",
+    "week": 4,
+    "date": "2026-09-25",
+    "instrument": "gad7",
+    "total": 1,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-FE19",
+    "week": 5,
+    "date": "2026-10-02",
+    "instrument": "phq9",
+    "total": 1,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-FE19",
+    "week": 5,
+    "date": "2026-10-02",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-FE19",
+    "week": 7,
+    "date": "2026-10-13",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-FE19",
+    "week": 7,
+    "date": "2026-10-13",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-FE19",
+    "week": 8,
+    "date": "2026-10-22",
+    "instrument": "phq9",
+    "total": 6,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-FE19",
+    "week": 8,
+    "date": "2026-10-22",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-21E9",
+    "week": 2,
+    "date": "2026-09-09",
+    "instrument": "phq9",
+    "total": 2,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-21E9",
+    "week": 2,
+    "date": "2026-09-09",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-21E9",
+    "week": 6,
+    "date": "2026-10-05",
+    "instrument": "phq9",
+    "total": 1,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-21E9",
+    "week": 6,
+    "date": "2026-10-05",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-21E9",
+    "week": 7,
+    "date": "2026-10-16",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-21E9",
+    "week": 7,
+    "date": "2026-10-16",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-21E9",
+    "week": 8,
+    "date": "2026-10-23",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-21E9",
+    "week": 8,
+    "date": "2026-10-23",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-671C",
+    "week": 1,
+    "date": "2026-09-01",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-671C",
+    "week": 1,
+    "date": "2026-09-01",
+    "instrument": "gad7",
+    "total": 2,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-671C",
+    "week": 3,
+    "date": "2026-09-17",
+    "instrument": "phq9",
+    "total": 2,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-671C",
+    "week": 3,
+    "date": "2026-09-17",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-671C",
+    "week": 4,
+    "date": "2026-09-24",
+    "instrument": "phq9",
+    "total": 2,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-671C",
+    "week": 4,
+    "date": "2026-09-24",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-671C",
+    "week": 5,
+    "date": "2026-09-29",
+    "instrument": "phq9",
+    "total": 2,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-671C",
+    "week": 5,
+    "date": "2026-09-29",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-671C",
+    "week": 6,
+    "date": "2026-10-09",
+    "instrument": "phq9",
+    "total": 2,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-671C",
+    "week": 6,
+    "date": "2026-10-09",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-887E",
+    "week": 1,
+    "date": "2026-09-01",
+    "instrument": "phq9",
+    "total": 0,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-887E",
+    "week": 1,
+    "date": "2026-09-01",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-887E",
+    "week": 2,
+    "date": "2026-09-07",
+    "instrument": "phq9",
+    "total": 1,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-887E",
+    "week": 2,
+    "date": "2026-09-07",
+    "instrument": "gad7",
+    "total": 2,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-887E",
+    "week": 3,
+    "date": "2026-09-14",
+    "instrument": "phq9",
+    "total": 1,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-887E",
+    "week": 3,
+    "date": "2026-09-14",
+    "instrument": "gad7",
+    "total": 2,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-887E",
+    "week": 4,
+    "date": "2026-09-21",
+    "instrument": "phq9",
+    "total": 1,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-887E",
+    "week": 4,
+    "date": "2026-09-21",
+    "instrument": "gad7",
+    "total": 1,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-887E",
+    "week": 5,
+    "date": "2026-09-28",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-887E",
+    "week": 5,
+    "date": "2026-09-28",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-887E",
+    "week": 6,
+    "date": "2026-10-07",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-887E",
+    "week": 6,
+    "date": "2026-10-07",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-887E",
+    "week": 7,
+    "date": "2026-10-15",
+    "instrument": "phq9",
+    "total": 8,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-887E",
+    "week": 7,
+    "date": "2026-10-15",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-887E",
+    "week": 8,
+    "date": "2026-10-19",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-887E",
+    "week": 8,
+    "date": "2026-10-19",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-E47B",
+    "week": 1,
+    "date": "2026-09-01",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-E47B",
+    "week": 1,
+    "date": "2026-09-01",
+    "instrument": "gad7",
+    "total": 0,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-E47B",
+    "week": 2,
+    "date": "2026-09-10",
+    "instrument": "phq9",
+    "total": 2,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-E47B",
+    "week": 2,
+    "date": "2026-09-10",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-E47B",
+    "week": 5,
+    "date": "2026-09-28",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-E47B",
+    "week": 5,
+    "date": "2026-09-28",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-E47B",
+    "week": 6,
+    "date": "2026-10-07",
+    "instrument": "phq9",
+    "total": 8,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-E47B",
+    "week": 6,
+    "date": "2026-10-07",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-E47B",
+    "week": 7,
+    "date": "2026-10-15",
+    "instrument": "phq9",
+    "total": 6,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-E47B",
+    "week": 7,
+    "date": "2026-10-15",
+    "instrument": "gad7",
+    "total": 9,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-E47B",
+    "week": 8,
+    "date": "2026-10-20",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-E47B",
+    "week": 8,
+    "date": "2026-10-20",
+    "instrument": "gad7",
+    "total": 8,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-FB59",
+    "week": 1,
+    "date": "2026-09-02",
+    "instrument": "phq9",
+    "total": 6,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-FB59",
+    "week": 1,
+    "date": "2026-09-02",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-FB59",
+    "week": 3,
+    "date": "2026-09-17",
+    "instrument": "phq9",
+    "total": 8,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-FB59",
+    "week": 3,
+    "date": "2026-09-17",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-FB59",
+    "week": 4,
+    "date": "2026-09-21",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-FB59",
+    "week": 4,
+    "date": "2026-09-21",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-FB59",
+    "week": 6,
+    "date": "2026-10-07",
+    "instrument": "phq9",
+    "total": 8,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-FB59",
+    "week": 6,
+    "date": "2026-10-07",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-FB59",
+    "week": 7,
+    "date": "2026-10-14",
+    "instrument": "phq9",
+    "total": 10,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-FB59",
+    "week": 7,
+    "date": "2026-10-14",
+    "instrument": "gad7",
+    "total": 8,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-FB59",
+    "week": 8,
+    "date": "2026-10-22",
+    "instrument": "phq9",
+    "total": 11,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-FB59",
+    "week": 8,
+    "date": "2026-10-22",
+    "instrument": "gad7",
+    "total": 9,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-2EFD",
+    "week": 2,
+    "date": "2026-09-07",
+    "instrument": "phq9",
+    "total": 9,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-2EFD",
+    "week": 2,
+    "date": "2026-09-07",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-2EFD",
+    "week": 3,
+    "date": "2026-09-18",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-2EFD",
+    "week": 3,
+    "date": "2026-09-18",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-2EFD",
+    "week": 4,
+    "date": "2026-09-25",
+    "instrument": "phq9",
+    "total": 8,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-2EFD",
+    "week": 4,
+    "date": "2026-09-25",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-2EFD",
+    "week": 5,
+    "date": "2026-09-30",
+    "instrument": "phq9",
+    "total": 9,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-2EFD",
+    "week": 5,
+    "date": "2026-09-30",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-2EFD",
+    "week": 7,
+    "date": "2026-10-15",
+    "instrument": "phq9",
+    "total": 12,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-2EFD",
+    "week": 7,
+    "date": "2026-10-15",
+    "instrument": "gad7",
+    "total": 10,
+    "band": "moderate",
+    "item9": null
+   },
+   {
+    "pid": "S-2EFD",
+    "week": 8,
+    "date": "2026-10-21",
+    "instrument": "phq9",
+    "total": 12,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-2EFD",
+    "week": 8,
+    "date": "2026-10-21",
+    "instrument": "gad7",
+    "total": 8,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-0314",
+    "week": 1,
+    "date": "2026-09-01",
+    "instrument": "phq9",
+    "total": 2,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-0314",
+    "week": 1,
+    "date": "2026-09-01",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-0314",
+    "week": 2,
+    "date": "2026-09-08",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-0314",
+    "week": 2,
+    "date": "2026-09-08",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-0314",
+    "week": 3,
+    "date": "2026-09-14",
+    "instrument": "phq9",
+    "total": 2,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-0314",
+    "week": 3,
+    "date": "2026-09-14",
+    "instrument": "gad7",
+    "total": 2,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-0314",
+    "week": 6,
+    "date": "2026-10-06",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-0314",
+    "week": 6,
+    "date": "2026-10-06",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-0314",
+    "week": 7,
+    "date": "2026-10-16",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-0314",
+    "week": 7,
+    "date": "2026-10-16",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-0314",
+    "week": 8,
+    "date": "2026-10-21",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-0314",
+    "week": 8,
+    "date": "2026-10-21",
+    "instrument": "gad7",
+    "total": 8,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-D0CC",
+    "week": 1,
+    "date": "2026-09-01",
+    "instrument": "phq9",
+    "total": 13,
+    "band": "moderate",
+    "item9": 2
+   },
+   {
+    "pid": "S-D0CC",
+    "week": 1,
+    "date": "2026-09-01",
+    "instrument": "gad7",
+    "total": 9,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-D0CC",
+    "week": 3,
+    "date": "2026-09-14",
+    "instrument": "phq9",
+    "total": 12,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-D0CC",
+    "week": 3,
+    "date": "2026-09-14",
+    "instrument": "gad7",
+    "total": 8,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-D0CC",
+    "week": 4,
+    "date": "2026-09-22",
+    "instrument": "phq9",
+    "total": 13,
+    "band": "moderate",
+    "item9": 2
+   },
+   {
+    "pid": "S-D0CC",
+    "week": 4,
+    "date": "2026-09-22",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-D0CC",
+    "week": 5,
+    "date": "2026-09-30",
+    "instrument": "phq9",
+    "total": 14,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-D0CC",
+    "week": 5,
+    "date": "2026-09-30",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-D0CC",
+    "week": 7,
+    "date": "2026-10-13",
+    "instrument": "phq9",
+    "total": 13,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-D0CC",
+    "week": 7,
+    "date": "2026-10-13",
+    "instrument": "gad7",
+    "total": 13,
+    "band": "moderate",
+    "item9": null
+   },
+   {
+    "pid": "S-E737",
+    "week": 1,
+    "date": "2026-08-31",
+    "instrument": "phq9",
+    "total": 2,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-E737",
+    "week": 1,
+    "date": "2026-08-31",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-E737",
+    "week": 2,
+    "date": "2026-09-10",
+    "instrument": "phq9",
+    "total": 1,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-E737",
+    "week": 2,
+    "date": "2026-09-10",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-E737",
+    "week": 7,
+    "date": "2026-10-13",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-E737",
+    "week": 7,
+    "date": "2026-10-13",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-3692",
+    "week": 1,
+    "date": "2026-09-01",
+    "instrument": "phq9",
+    "total": 6,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-3692",
+    "week": 1,
+    "date": "2026-09-01",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-3692",
+    "week": 3,
+    "date": "2026-09-15",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-3692",
+    "week": 3,
+    "date": "2026-09-15",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-3692",
+    "week": 4,
+    "date": "2026-09-25",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-3692",
+    "week": 4,
+    "date": "2026-09-25",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-3692",
+    "week": 5,
+    "date": "2026-09-29",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-3692",
+    "week": 5,
+    "date": "2026-09-29",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-3692",
+    "week": 6,
+    "date": "2026-10-09",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-3692",
+    "week": 6,
+    "date": "2026-10-09",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-3692",
+    "week": 7,
+    "date": "2026-10-15",
+    "instrument": "phq9",
+    "total": 10,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-3692",
+    "week": 7,
+    "date": "2026-10-15",
+    "instrument": "gad7",
+    "total": 8,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-3692",
+    "week": 8,
+    "date": "2026-10-20",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-3692",
+    "week": 8,
+    "date": "2026-10-20",
+    "instrument": "gad7",
+    "total": 8,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-4438",
+    "week": 2,
+    "date": "2026-09-08",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-4438",
+    "week": 2,
+    "date": "2026-09-08",
+    "instrument": "gad7",
+    "total": 2,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-4438",
+    "week": 4,
+    "date": "2026-09-23",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-4438",
+    "week": 4,
+    "date": "2026-09-23",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-4438",
+    "week": 6,
+    "date": "2026-10-09",
+    "instrument": "phq9",
+    "total": 6,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-4438",
+    "week": 6,
+    "date": "2026-10-09",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-4C70",
+    "week": 1,
+    "date": "2026-08-31",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-4C70",
+    "week": 1,
+    "date": "2026-08-31",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-4C70",
+    "week": 3,
+    "date": "2026-09-15",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-4C70",
+    "week": 3,
+    "date": "2026-09-15",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-4C70",
+    "week": 4,
+    "date": "2026-09-25",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-4C70",
+    "week": 4,
+    "date": "2026-09-25",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-4C70",
+    "week": 5,
+    "date": "2026-09-28",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-4C70",
+    "week": 5,
+    "date": "2026-09-28",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-4C70",
+    "week": 6,
+    "date": "2026-10-05",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-4C70",
+    "week": 6,
+    "date": "2026-10-05",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-4C70",
+    "week": 7,
+    "date": "2026-10-14",
+    "instrument": "phq9",
+    "total": 6,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-4C70",
+    "week": 7,
+    "date": "2026-10-14",
+    "instrument": "gad7",
+    "total": 11,
+    "band": "moderate",
+    "item9": null
+   },
+   {
+    "pid": "S-4C70",
+    "week": 8,
+    "date": "2026-10-23",
+    "instrument": "phq9",
+    "total": 8,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-4C70",
+    "week": 8,
+    "date": "2026-10-23",
+    "instrument": "gad7",
+    "total": 9,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-DFF6",
+    "week": 2,
+    "date": "2026-09-09",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-DFF6",
+    "week": 2,
+    "date": "2026-09-09",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-DFF6",
+    "week": 5,
+    "date": "2026-09-28",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-DFF6",
+    "week": 5,
+    "date": "2026-09-28",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-DFF6",
+    "week": 6,
+    "date": "2026-10-07",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-DFF6",
+    "week": 6,
+    "date": "2026-10-07",
+    "instrument": "gad7",
+    "total": 8,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-DFF6",
+    "week": 7,
+    "date": "2026-10-15",
+    "instrument": "phq9",
+    "total": 8,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-DFF6",
+    "week": 7,
+    "date": "2026-10-15",
+    "instrument": "gad7",
+    "total": 10,
+    "band": "moderate",
+    "item9": null
+   },
+   {
+    "pid": "S-DFF6",
+    "week": 8,
+    "date": "2026-10-23",
+    "instrument": "phq9",
+    "total": 8,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-DFF6",
+    "week": 8,
+    "date": "2026-10-23",
+    "instrument": "gad7",
+    "total": 12,
+    "band": "moderate",
+    "item9": null
+   },
+   {
+    "pid": "S-A52C",
+    "week": 1,
+    "date": "2026-09-04",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-A52C",
+    "week": 1,
+    "date": "2026-09-04",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-A52C",
+    "week": 3,
+    "date": "2026-09-14",
+    "instrument": "phq9",
+    "total": 6,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-A52C",
+    "week": 3,
+    "date": "2026-09-14",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-A52C",
+    "week": 7,
+    "date": "2026-10-13",
+    "instrument": "phq9",
+    "total": 10,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-A52C",
+    "week": 7,
+    "date": "2026-10-13",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-2DE2",
+    "week": 2,
+    "date": "2026-09-08",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-2DE2",
+    "week": 2,
+    "date": "2026-09-08",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-2DE2",
+    "week": 3,
+    "date": "2026-09-14",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-2DE2",
+    "week": 3,
+    "date": "2026-09-14",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-2DE2",
+    "week": 7,
+    "date": "2026-10-15",
+    "instrument": "phq9",
+    "total": 8,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-2DE2",
+    "week": 7,
+    "date": "2026-10-15",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-2DE2",
+    "week": 8,
+    "date": "2026-10-23",
+    "instrument": "phq9",
+    "total": 12,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-2DE2",
+    "week": 8,
+    "date": "2026-10-23",
+    "instrument": "gad7",
+    "total": 9,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-3039",
+    "week": 1,
+    "date": "2026-09-01",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-3039",
+    "week": 1,
+    "date": "2026-09-01",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-3039",
+    "week": 2,
+    "date": "2026-09-07",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-3039",
+    "week": 2,
+    "date": "2026-09-07",
+    "instrument": "gad7",
+    "total": 1,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-3039",
+    "week": 4,
+    "date": "2026-09-23",
+    "instrument": "phq9",
+    "total": 6,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-3039",
+    "week": 4,
+    "date": "2026-09-23",
+    "instrument": "gad7",
+    "total": 2,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-3039",
+    "week": 5,
+    "date": "2026-09-29",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-3039",
+    "week": 5,
+    "date": "2026-09-29",
+    "instrument": "gad7",
+    "total": 2,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-3039",
+    "week": 7,
+    "date": "2026-10-15",
+    "instrument": "phq9",
+    "total": 10,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-3039",
+    "week": 7,
+    "date": "2026-10-15",
+    "instrument": "gad7",
+    "total": 10,
+    "band": "moderate",
+    "item9": null
+   },
+   {
+    "pid": "S-3039",
+    "week": 8,
+    "date": "2026-10-23",
+    "instrument": "phq9",
+    "total": 11,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-3039",
+    "week": 8,
+    "date": "2026-10-23",
+    "instrument": "gad7",
+    "total": 9,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-6CB8",
+    "week": 1,
+    "date": "2026-09-01",
+    "instrument": "phq9",
+    "total": 0,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-6CB8",
+    "week": 1,
+    "date": "2026-09-01",
+    "instrument": "gad7",
+    "total": 1,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-6CB8",
+    "week": 3,
+    "date": "2026-09-17",
+    "instrument": "phq9",
+    "total": 1,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-6CB8",
+    "week": 3,
+    "date": "2026-09-17",
+    "instrument": "gad7",
+    "total": 2,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-6CB8",
+    "week": 5,
+    "date": "2026-10-01",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-6CB8",
+    "week": 5,
+    "date": "2026-10-01",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-6CB8",
+    "week": 6,
+    "date": "2026-10-09",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-6CB8",
+    "week": 6,
+    "date": "2026-10-09",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-6CB8",
+    "week": 8,
+    "date": "2026-10-22",
+    "instrument": "phq9",
+    "total": 6,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-6CB8",
+    "week": 8,
+    "date": "2026-10-22",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-B1FA",
+    "week": 1,
+    "date": "2026-09-02",
+    "instrument": "phq9",
+    "total": 2,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-B1FA",
+    "week": 1,
+    "date": "2026-09-02",
+    "instrument": "gad7",
+    "total": 2,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-B1FA",
+    "week": 2,
+    "date": "2026-09-11",
+    "instrument": "phq9",
+    "total": 1,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-B1FA",
+    "week": 2,
+    "date": "2026-09-11",
+    "instrument": "gad7",
+    "total": 2,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-B1FA",
+    "week": 3,
+    "date": "2026-09-16",
+    "instrument": "phq9",
+    "total": 2,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-B1FA",
+    "week": 3,
+    "date": "2026-09-16",
+    "instrument": "gad7",
+    "total": 1,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-B1FA",
+    "week": 5,
+    "date": "2026-10-01",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-B1FA",
+    "week": 5,
+    "date": "2026-10-01",
+    "instrument": "gad7",
+    "total": 2,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-B1FA",
+    "week": 8,
+    "date": "2026-10-21",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-B1FA",
+    "week": 8,
+    "date": "2026-10-21",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-639B",
+    "week": 1,
+    "date": "2026-09-04",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-639B",
+    "week": 1,
+    "date": "2026-09-04",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-639B",
+    "week": 3,
+    "date": "2026-09-15",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-639B",
+    "week": 3,
+    "date": "2026-09-15",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-639B",
+    "week": 5,
+    "date": "2026-10-01",
+    "instrument": "phq9",
+    "total": 8,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-639B",
+    "week": 5,
+    "date": "2026-10-01",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-639B",
+    "week": 6,
+    "date": "2026-10-06",
+    "instrument": "phq9",
+    "total": 10,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-639B",
+    "week": 6,
+    "date": "2026-10-06",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-639B",
+    "week": 7,
+    "date": "2026-10-14",
+    "instrument": "phq9",
+    "total": 11,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-639B",
+    "week": 7,
+    "date": "2026-10-14",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-639B",
+    "week": 8,
+    "date": "2026-10-23",
+    "instrument": "phq9",
+    "total": 12,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-639B",
+    "week": 8,
+    "date": "2026-10-23",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-1AED",
+    "week": 1,
+    "date": "2026-09-04",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-1AED",
+    "week": 1,
+    "date": "2026-09-04",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-1AED",
+    "week": 2,
+    "date": "2026-09-09",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-1AED",
+    "week": 2,
+    "date": "2026-09-09",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-1AED",
+    "week": 3,
+    "date": "2026-09-17",
+    "instrument": "phq9",
+    "total": 1,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-1AED",
+    "week": 3,
+    "date": "2026-09-17",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-1AED",
+    "week": 4,
+    "date": "2026-09-25",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-1AED",
+    "week": 4,
+    "date": "2026-09-25",
+    "instrument": "gad7",
+    "total": 0,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-1AED",
+    "week": 5,
+    "date": "2026-09-30",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-1AED",
+    "week": 5,
+    "date": "2026-09-30",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-1AED",
+    "week": 6,
+    "date": "2026-10-05",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-1AED",
+    "week": 6,
+    "date": "2026-10-05",
+    "instrument": "gad7",
+    "total": 2,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-1AED",
+    "week": 7,
+    "date": "2026-10-13",
+    "instrument": "phq9",
+    "total": 9,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-1AED",
+    "week": 7,
+    "date": "2026-10-13",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-1AED",
+    "week": 8,
+    "date": "2026-10-19",
+    "instrument": "phq9",
+    "total": 9,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-1AED",
+    "week": 8,
+    "date": "2026-10-19",
+    "instrument": "gad7",
+    "total": 8,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-75C4",
+    "week": 1,
+    "date": "2026-09-04",
+    "instrument": "phq9",
+    "total": 2,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-75C4",
+    "week": 1,
+    "date": "2026-09-04",
+    "instrument": "gad7",
+    "total": 3,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-75C4",
+    "week": 2,
+    "date": "2026-09-11",
+    "instrument": "phq9",
+    "total": 2,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-75C4",
+    "week": 2,
+    "date": "2026-09-11",
+    "instrument": "gad7",
+    "total": 0,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-75C4",
+    "week": 3,
+    "date": "2026-09-14",
+    "instrument": "phq9",
+    "total": 1,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-75C4",
+    "week": 3,
+    "date": "2026-09-14",
+    "instrument": "gad7",
+    "total": 2,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-75C4",
+    "week": 4,
+    "date": "2026-09-25",
+    "instrument": "phq9",
+    "total": 2,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-75C4",
+    "week": 4,
+    "date": "2026-09-25",
+    "instrument": "gad7",
+    "total": 0,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-75C4",
+    "week": 8,
+    "date": "2026-10-21",
+    "instrument": "phq9",
+    "total": 8,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-75C4",
+    "week": 8,
+    "date": "2026-10-21",
+    "instrument": "gad7",
+    "total": 8,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-BD9A",
+    "week": 2,
+    "date": "2026-09-10",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-BD9A",
+    "week": 2,
+    "date": "2026-09-10",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-BD9A",
+    "week": 3,
+    "date": "2026-09-15",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-BD9A",
+    "week": 3,
+    "date": "2026-09-15",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-BD9A",
+    "week": 4,
+    "date": "2026-09-24",
+    "instrument": "phq9",
+    "total": 5,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-BD9A",
+    "week": 4,
+    "date": "2026-09-24",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-BD9A",
+    "week": 5,
+    "date": "2026-10-01",
+    "instrument": "phq9",
+    "total": 6,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-BD9A",
+    "week": 5,
+    "date": "2026-10-01",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-BD9A",
+    "week": 6,
+    "date": "2026-10-06",
+    "instrument": "phq9",
+    "total": 8,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-BD9A",
+    "week": 6,
+    "date": "2026-10-06",
+    "instrument": "gad7",
+    "total": 8,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-BD9A",
+    "week": 7,
+    "date": "2026-10-16",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-BD9A",
+    "week": 7,
+    "date": "2026-10-16",
+    "instrument": "gad7",
+    "total": 9,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-BD9A",
+    "week": 8,
+    "date": "2026-10-19",
+    "instrument": "phq9",
+    "total": 11,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-BD9A",
+    "week": 8,
+    "date": "2026-10-19",
+    "instrument": "gad7",
+    "total": 9,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-5AC3",
+    "week": 1,
+    "date": "2026-09-01",
+    "instrument": "phq9",
+    "total": 1,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-5AC3",
+    "week": 1,
+    "date": "2026-09-01",
+    "instrument": "gad7",
+    "total": 2,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-5AC3",
+    "week": 2,
+    "date": "2026-09-10",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-5AC3",
+    "week": 2,
+    "date": "2026-09-10",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-5AC3",
+    "week": 3,
+    "date": "2026-09-18",
+    "instrument": "phq9",
+    "total": 2,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-5AC3",
+    "week": 3,
+    "date": "2026-09-18",
+    "instrument": "gad7",
+    "total": 2,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-5AC3",
+    "week": 4,
+    "date": "2026-09-21",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-5AC3",
+    "week": 4,
+    "date": "2026-09-21",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-5AC3",
+    "week": 6,
+    "date": "2026-10-06",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-5AC3",
+    "week": 6,
+    "date": "2026-10-06",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-5AC3",
+    "week": 8,
+    "date": "2026-10-23",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-5AC3",
+    "week": 8,
+    "date": "2026-10-23",
+    "instrument": "gad7",
+    "total": 8,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-0B2C",
+    "week": 2,
+    "date": "2026-09-07",
+    "instrument": "phq9",
+    "total": 1,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-0B2C",
+    "week": 2,
+    "date": "2026-09-07",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-0B2C",
+    "week": 3,
+    "date": "2026-09-16",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-0B2C",
+    "week": 3,
+    "date": "2026-09-16",
+    "instrument": "gad7",
+    "total": 2,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-0B2C",
+    "week": 4,
+    "date": "2026-09-21",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-0B2C",
+    "week": 4,
+    "date": "2026-09-21",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-0B2C",
+    "week": 6,
+    "date": "2026-10-09",
+    "instrument": "phq9",
+    "total": 6,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-0B2C",
+    "week": 6,
+    "date": "2026-10-09",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-0B2C",
+    "week": 7,
+    "date": "2026-10-14",
+    "instrument": "phq9",
+    "total": 8,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-0B2C",
+    "week": 7,
+    "date": "2026-10-14",
+    "instrument": "gad7",
+    "total": 9,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-0B2C",
+    "week": 8,
+    "date": "2026-10-23",
+    "instrument": "phq9",
+    "total": 9,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-0B2C",
+    "week": 8,
+    "date": "2026-10-23",
+    "instrument": "gad7",
+    "total": 9,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-2909",
+    "week": 1,
+    "date": "2026-09-04",
+    "instrument": "phq9",
+    "total": 8,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-2909",
+    "week": 1,
+    "date": "2026-09-04",
+    "instrument": "gad7",
+    "total": 9,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-2909",
+    "week": 3,
+    "date": "2026-09-18",
+    "instrument": "phq9",
+    "total": 9,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-2909",
+    "week": 3,
+    "date": "2026-09-18",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-2909",
+    "week": 4,
+    "date": "2026-09-25",
+    "instrument": "phq9",
+    "total": 8,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-2909",
+    "week": 4,
+    "date": "2026-09-25",
+    "instrument": "gad7",
+    "total": 8,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-2909",
+    "week": 5,
+    "date": "2026-10-01",
+    "instrument": "phq9",
+    "total": 9,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-2909",
+    "week": 5,
+    "date": "2026-10-01",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-2909",
+    "week": 6,
+    "date": "2026-10-05",
+    "instrument": "phq9",
+    "total": 9,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-2909",
+    "week": 6,
+    "date": "2026-10-05",
+    "instrument": "gad7",
+    "total": 9,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-2909",
+    "week": 7,
+    "date": "2026-10-12",
+    "instrument": "phq9",
+    "total": 10,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-2909",
+    "week": 7,
+    "date": "2026-10-12",
+    "instrument": "gad7",
+    "total": 11,
+    "band": "moderate",
+    "item9": null
+   },
+   {
+    "pid": "S-2909",
+    "week": 8,
+    "date": "2026-10-22",
+    "instrument": "phq9",
+    "total": 11,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-2909",
+    "week": 8,
+    "date": "2026-10-22",
+    "instrument": "gad7",
+    "total": 9,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-6D53",
+    "week": 1,
+    "date": "2026-09-04",
+    "instrument": "phq9",
+    "total": 2,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-6D53",
+    "week": 1,
+    "date": "2026-09-04",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-6D53",
+    "week": 2,
+    "date": "2026-09-09",
+    "instrument": "phq9",
+    "total": 4,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-6D53",
+    "week": 2,
+    "date": "2026-09-09",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-6D53",
+    "week": 3,
+    "date": "2026-09-16",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-6D53",
+    "week": 3,
+    "date": "2026-09-16",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-6D53",
+    "week": 6,
+    "date": "2026-10-08",
+    "instrument": "phq9",
+    "total": 3,
+    "band": "minimal",
+    "item9": 0
+   },
+   {
+    "pid": "S-6D53",
+    "week": 6,
+    "date": "2026-10-08",
+    "instrument": "gad7",
+    "total": 4,
+    "band": "minimal",
+    "item9": null
+   },
+   {
+    "pid": "S-6D53",
+    "week": 7,
+    "date": "2026-10-15",
+    "instrument": "phq9",
+    "total": 7,
+    "band": "mild",
+    "item9": 0
+   },
+   {
+    "pid": "S-6D53",
+    "week": 7,
+    "date": "2026-10-15",
+    "instrument": "gad7",
+    "total": 5,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-ED32",
+    "week": 1,
+    "date": "2026-09-03",
+    "instrument": "phq9",
+    "total": 11,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-ED32",
+    "week": 1,
+    "date": "2026-09-03",
+    "instrument": "gad7",
+    "total": 9,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-ED32",
+    "week": 2,
+    "date": "2026-09-09",
+    "instrument": "phq9",
+    "total": 11,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-ED32",
+    "week": 2,
+    "date": "2026-09-09",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-ED32",
+    "week": 3,
+    "date": "2026-09-17",
+    "instrument": "phq9",
+    "total": 12,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-ED32",
+    "week": 3,
+    "date": "2026-09-17",
+    "instrument": "gad7",
+    "total": 7,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-ED32",
+    "week": 5,
+    "date": "2026-10-01",
+    "instrument": "phq9",
+    "total": 12,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-ED32",
+    "week": 5,
+    "date": "2026-10-01",
+    "instrument": "gad7",
+    "total": 8,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-ED32",
+    "week": 6,
+    "date": "2026-10-09",
+    "instrument": "phq9",
+    "total": 11,
+    "band": "moderate",
+    "item9": 0
+   },
+   {
+    "pid": "S-ED32",
+    "week": 6,
+    "date": "2026-10-09",
+    "instrument": "gad7",
+    "total": 6,
+    "band": "mild",
+    "item9": null
+   },
+   {
+    "pid": "S-ED32",
+    "week": 7,
+    "date": "2026-10-15",
+    "instrument": "phq9",
+    "total": 16,
+    "band": "moderately_severe",
+    "item9": 0
+   },
+   {
+    "pid": "S-ED32",
+    "week": 7,
+    "date": "2026-10-15",
+    "instrument": "gad7",
+    "total": 13,
+    "band": "moderate",
+    "item9": null
+   }
+  ],
+  "alerts": [
+   {
+    "id": "A001",
+    "pid": "S-C303",
+    "week": 8,
+    "raised": "2026-10-23",
+    "source": "PHQ-9 item 9",
+    "item9": 1,
+    "item9_label": "Several days",
+    "phq9_total": 11,
+    "band": "moderate",
+    "contact_ok": false,
+    "preferred": null,
+    "status": "new",
+    "history": []
+   },
+   {
+    "id": "A002",
+    "pid": "S-BB5F",
+    "week": 3,
+    "raised": "2026-09-14",
+    "source": "PHQ-9 item 9",
+    "item9": 1,
+    "item9_label": "Several days",
+    "phq9_total": 14,
+    "band": "moderate",
+    "contact_ok": false,
+    "preferred": null,
+    "status": "followed_up",
+    "history": [
+     {
+      "action": "acknowledged",
+      "by": "Ms. Kavya (demo)",
+      "at": "2026-09-14",
+      "note": "Reviewed same day."
+     },
+     {
+      "action": "followed_up",
+      "by": "Ms. Kavya (demo)",
+      "at": "2026-09-14",
+      "note": "No contact consent: cohort-wide support message sent."
+     }
+    ]
+   },
+   {
+    "id": "A003",
+    "pid": "S-2BC8",
+    "week": 8,
+    "raised": "2026-10-23",
+    "source": "PHQ-9 item 9",
+    "item9": 2,
+    "item9_label": "More than half the days",
+    "phq9_total": 16,
+    "band": "moderately_severe",
+    "contact_ok": true,
+    "preferred": "college email",
+    "status": "new",
+    "history": []
+   },
+   {
+    "id": "A004",
+    "pid": "S-C704",
+    "week": 7,
+    "raised": "2026-10-12",
+    "source": "PHQ-9 item 9",
+    "item9": 1,
+    "item9_label": "Several days",
+    "phq9_total": 13,
+    "band": "moderate",
+    "contact_ok": false,
+    "preferred": null,
+    "status": "acknowledged",
+    "history": [
+     {
+      "action": "acknowledged",
+      "by": "Ms. Kavya (demo)",
+      "at": "2026-10-12",
+      "note": "Reviewed same day."
+     }
+    ]
+   },
+   {
+    "id": "A005",
+    "pid": "S-C704",
+    "week": 8,
+    "raised": "2026-10-21",
+    "source": "PHQ-9 item 9",
+    "item9": 1,
+    "item9_label": "Several days",
+    "phq9_total": 16,
+    "band": "moderately_severe",
+    "contact_ok": false,
+    "preferred": null,
+    "status": "new",
+    "history": []
+   },
+   {
+    "id": "A006",
+    "pid": "S-D0CC",
+    "week": 1,
+    "raised": "2026-09-01",
+    "source": "PHQ-9 item 9",
+    "item9": 2,
+    "item9_label": "More than half the days",
+    "phq9_total": 13,
+    "band": "moderate",
+    "contact_ok": false,
+    "preferred": null,
+    "status": "followed_up",
+    "history": [
+     {
+      "action": "acknowledged",
+      "by": "Ms. Kavya (demo)",
+      "at": "2026-09-01",
+      "note": "Reviewed same day."
+     },
+     {
+      "action": "followed_up",
+      "by": "Ms. Kavya (demo)",
+      "at": "2026-09-01",
+      "note": "No contact consent: cohort-wide support message sent."
+     }
+    ]
+   },
+   {
+    "id": "A007",
+    "pid": "S-D0CC",
+    "week": 4,
+    "raised": "2026-09-22",
+    "source": "PHQ-9 item 9",
+    "item9": 2,
+    "item9_label": "More than half the days",
+    "phq9_total": 13,
+    "band": "moderate",
+    "contact_ok": false,
+    "preferred": null,
+    "status": "followed_up",
+    "history": [
+     {
+      "action": "acknowledged",
+      "by": "Ms. Kavya (demo)",
+      "at": "2026-09-22",
+      "note": "Reviewed same day."
+     },
+     {
+      "action": "followed_up",
+      "by": "Ms. Kavya (demo)",
+      "at": "2026-09-22",
+      "note": "No contact consent: cohort-wide support message sent."
+     }
+    ]
+   }
+  ],
+  "contacts": [
+   {
+    "id": "C001",
+    "pid": "S-09C9",
+    "week": 1,
+    "requested": "2026-08-31",
+    "reason": "Asked for a chat at check-in",
+    "preferred": "phone call",
+    "latest_band": "mild",
+    "status": "contacted"
+   },
+   {
+    "id": "C002",
+    "pid": "S-DB76",
+    "week": 7,
+    "requested": "2026-10-13",
+    "reason": "Asked for a chat at check-in",
+    "preferred": "phone call",
+    "latest_band": "mild",
+    "status": "pending"
+   },
+   {
+    "id": "C003",
+    "pid": "S-2E77",
+    "week": 7,
+    "requested": "2026-10-13",
+    "reason": "Asked for a chat at check-in",
+    "preferred": "phone call",
+    "latest_band": "moderate",
+    "status": "pending"
+   },
+   {
+    "id": "C004",
+    "pid": "S-27B9",
+    "week": 1,
+    "requested": "2026-08-31",
+    "reason": "Asked for a chat at check-in",
+    "preferred": "in person",
+    "latest_band": "mild",
+    "status": "contacted"
+   },
+   {
+    "id": "C005",
+    "pid": "S-0C87",
+    "week": 6,
+    "requested": "2026-10-08",
+    "reason": "Asked for a chat at check-in",
+    "preferred": "in person",
+    "latest_band": "mild",
+    "status": "contacted"
+   },
+   {
+    "id": "C006",
+    "pid": "S-757C",
+    "week": 7,
+    "requested": "2026-10-16",
+    "reason": "Asked for a chat at check-in",
+    "preferred": "in person",
+    "latest_band": "mild",
+    "status": "pending"
+   },
+   {
+    "id": "C007",
+    "pid": "S-2BC8",
+    "week": 1,
+    "requested": "2026-09-03",
+    "reason": "Asked for a chat at check-in",
+    "preferred": "college email",
+    "latest_band": "moderately_severe",
+    "status": "contacted"
+   },
+   {
+    "id": "C008",
+    "pid": "S-DA77",
+    "week": 7,
+    "requested": "2026-10-13",
+    "reason": "Asked for a chat at check-in",
+    "preferred": "in person",
+    "latest_band": "mild",
+    "status": "pending"
+   },
+   {
+    "id": "C009",
+    "pid": "S-4090",
+    "week": 1,
+    "requested": "2026-09-03",
+    "reason": "Asked for a chat at check-in",
+    "preferred": "in person",
+    "latest_band": "moderate",
+    "status": "contacted"
+   },
+   {
+    "id": "C010",
+    "pid": "S-FDE4",
+    "week": 2,
+    "requested": "2026-09-10",
+    "reason": "Asked for a chat at check-in",
+    "preferred": "in person",
+    "latest_band": "mild",
+    "status": "contacted"
+   },
+   {
+    "id": "C011",
+    "pid": "S-259C",
+    "week": 2,
+    "requested": "2026-09-11",
+    "reason": "Asked for a chat at check-in",
+    "preferred": "college email",
+    "latest_band": "mild",
+    "status": "contacted"
+   },
+   {
+    "id": "C012",
+    "pid": "S-DFF6",
+    "week": 5,
+    "requested": "2026-09-28",
+    "reason": "Asked for a chat at check-in",
+    "preferred": "college email",
+    "latest_band": "mild",
+    "status": "contacted"
+   },
+   {
+    "id": "C013",
+    "pid": "S-BD9A",
+    "week": 2,
+    "requested": "2026-09-10",
+    "reason": "Asked for a chat at check-in",
+    "preferred": "in person",
+    "latest_band": "moderate",
+    "status": "contacted"
+   }
+  ]
+ },
+ "counter": {
+  "journal": 21,
+  "screening": 4,
+  "alert": 7,
+  "contact": 13
+ }
+}

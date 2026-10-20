@@ -1,0 +1,428 @@
+{
+ "sentiment": {
+  "dev": {
+   "n": 30,
+   "accuracy": 1.0,
+   "macro_f1": 1.0,
+   "per_class": {
+    "positive": {
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "support": 11
+    },
+    "negative": {
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "support": 12
+    },
+    "neutral": {
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "support": 7
+    }
+   },
+   "confusion": {
+    "positive": {
+     "positive": 11,
+     "negative": 0,
+     "neutral": 0
+    },
+    "negative": {
+     "positive": 0,
+     "negative": 12,
+     "neutral": 0
+    },
+    "neutral": {
+     "positive": 0,
+     "negative": 0,
+     "neutral": 7
+    }
+   },
+   "polarity_flips": 0,
+   "baseline_accuracy": 0.733,
+   "errors": []
+  },
+  "heldout": {
+   "n": 30,
+   "accuracy": 0.933,
+   "macro_f1": 0.931,
+   "per_class": {
+    "positive": {
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "support": 10
+    },
+    "negative": {
+     "precision": 0.917,
+     "recall": 0.917,
+     "f1": 0.917,
+     "support": 12
+    },
+    "neutral": {
+     "precision": 0.875,
+     "recall": 0.875,
+     "f1": 0.875,
+     "support": 8
+    }
+   },
+   "confusion": {
+    "positive": {
+     "positive": 10,
+     "negative": 0,
+     "neutral": 0
+    },
+    "negative": {
+     "positive": 0,
+     "negative": 11,
+     "neutral": 1
+    },
+    "neutral": {
+     "positive": 0,
+     "negative": 1,
+     "neutral": 7
+    }
+   },
+   "polarity_flips": 0,
+   "baseline_accuracy": 0.8,
+   "errors": [
+    {
+     "text": "My chest feels tight whenever I think about the results.",
+     "gold": "negative",
+     "predicted": "neutral",
+     "compound": 0.0
+    },
+    {
+     "text": "Physics class was cancelled so I went to the library.",
+     "gold": "neutral",
+     "predicted": "negative",
+     "compound": -0.25
+    }
+   ]
+  },
+  "fresh": {
+   "n": 20,
+   "accuracy": 0.55,
+   "macro_f1": 0.553,
+   "per_class": {
+    "positive": {
+     "precision": 1.0,
+     "recall": 0.444,
+     "f1": 0.615,
+     "support": 9
+    },
+    "negative": {
+     "precision": 0.8,
+     "recall": 0.5,
+     "f1": 0.615,
+     "support": 8
+    },
+    "neutral": {
+     "precision": 0.273,
+     "recall": 1.0,
+     "f1": 0.429,
+     "support": 3
+    }
+   },
+   "confusion": {
+    "positive": {
+     "positive": 4,
+     "negative": 1,
+     "neutral": 4
+    },
+    "negative": {
+     "positive": 0,
+     "negative": 4,
+     "neutral": 4
+    },
+    "neutral": {
+     "positive": 0,
+     "negative": 0,
+     "neutral": 3
+    }
+   },
+   "polarity_flips": 1,
+   "baseline_accuracy": 0.55,
+   "errors": [
+    {
+     "text": "Woke up with a heavy heart today.",
+     "gold": "negative",
+     "predicted": "neutral",
+     "compound": 0.0
+    },
+    {
+     "text": "Spent the evening sketching, it felt like old times.",
+     "gold": "positive",
+     "predicted": "neutral",
+     "compound": 0.0
+    },
+    {
+     "text": "My project guide appreciated my work in front of everyone.",
+     "gold": "positive",
+     "predicted": "neutral",
+     "compound": 0.0
+    },
+    {
+     "text": "I'm drowning in assignments.",
+     "gold": "negative",
+     "predicted": "neutral",
+     "compound": 0.0
+    },
+    {
+     "text": "Not in the mood to talk to anyone today.",
+     "gold": "negative",
+     "predicted": "neutral",
+     "compound": 0.0
+    },
+    {
+     "text": "I was worried for nothing, the viva was easy.",
+     "gold": "positive",
+     "predicted": "neutral",
+     "compound": -0.128
+    },
+    {
+     "text": "Lab record submission tomorrow, haven't even started.",
+     "gold": "negative",
+     "predicted": "neutral",
+     "compound": 0.0
+    },
+    {
+     "text": "I feel lighter after crying it out.",
+     "gold": "positive",
+     "predicted": "negative",
+     "compound": -0.494
+    },
+    {
+     "text": "The weather is pleasant and the campus looks green.",
+     "gold": "positive",
+     "predicted": "neutral",
+     "compound": 0.0
+    }
+   ]
+  },
+  "untuned_combined": {
+   "n": 50,
+   "accuracy": 0.78,
+   "macro_f1": 0.775,
+   "per_class": {
+    "positive": {
+     "precision": 1.0,
+     "recall": 0.737,
+     "f1": 0.848,
+     "support": 19
+    },
+    "negative": {
+     "precision": 0.882,
+     "recall": 0.75,
+     "f1": 0.811,
+     "support": 20
+    },
+    "neutral": {
+     "precision": 0.526,
+     "recall": 0.909,
+     "f1": 0.667,
+     "support": 11
+    }
+   },
+   "confusion": {
+    "positive": {
+     "positive": 14,
+     "negative": 1,
+     "neutral": 4
+    },
+    "negative": {
+     "positive": 0,
+     "negative": 15,
+     "neutral": 5
+    },
+    "neutral": {
+     "positive": 0,
+     "negative": 1,
+     "neutral": 10
+    }
+   },
+   "polarity_flips": 1,
+   "baseline_accuracy": 0.7
+  },
+  "negation_checks": {
+   "passed": 16,
+   "total": 16,
+   "failures": []
+  }
+ },
+ "safety": {
+  "heldout_direct": {
+   "tp": 24,
+   "fn": 0,
+   "fp": 0,
+   "tn": 22,
+   "sensitivity": 1.0,
+   "specificity": 1.0,
+   "misses": [],
+   "false_alarms": []
+  },
+  "fresh_indirect": {
+   "tp": 12,
+   "fn": 0,
+   "fp": 0,
+   "tn": 8,
+   "sensitivity": 1.0,
+   "specificity": 1.0,
+   "misses": [],
+   "false_alarms": []
+  },
+  "check3": {
+   "tp": 8,
+   "fn": 2,
+   "fp": 0,
+   "tn": 10,
+   "sensitivity": 0.8,
+   "specificity": 1.0,
+   "misses": [
+    "I feel like I'm drowning and there's no way I'll get through this.",
+    "What if I just never came back from the terrace."
+   ],
+   "false_alarms": []
+  },
+  "ablation_no_cooccurrence": {
+   "heldout_direct": {
+    "tp": 24,
+    "fn": 0,
+    "fp": 0,
+    "tn": 22,
+    "sensitivity": 1.0,
+    "specificity": 1.0,
+    "misses": [],
+    "false_alarms": []
+   },
+   "fresh_indirect": {
+    "tp": 7,
+    "fn": 5,
+    "fp": 0,
+    "tn": 8,
+    "sensitivity": 0.583,
+    "specificity": 1.0,
+    "misses": [
+     "I keep thinking everyone's life would be easier if I wasn't around.",
+     "I've been looking up ways to die.",
+     "Sometimes I want to sleep forever.",
+     "I'm tired of being alive.",
+     "I hate myself so much I want to disappear."
+    ],
+    "false_alarms": []
+   },
+   "check3": {
+    "tp": 4,
+    "fn": 6,
+    "fp": 0,
+    "tn": 10,
+    "sensitivity": 0.4,
+    "specificity": 1.0,
+    "misses": [
+     "I wish I could just stop existing.",
+     "Honestly it would be easier for everyone if I died.",
+     "I don't think I can keep living like this.",
+     "I feel like I'm drowning and there's no way I'll get through this.",
+     "What if I just never came back from the terrace.",
+     "I want everything to stop, permanently."
+    ],
+    "false_alarms": []
+   }
+  },
+  "first_run_history": {
+   "heldout_direct": "24/24 caught, 0/22 false alarms (phrase rules only)",
+   "fresh_indirect": "0/12 caught, 1/8 false alarm (phrase rules only) - this motivated the co-occurrence layer and 6 new phrase rules",
+   "check3": "8/10 caught, 0/10 false alarms (first run with co-occurrence layer)"
+  },
+  "item9_rule": {
+   "combinations": 16,
+   "correct": 16
+  }
+ },
+ "trends": {
+  "seed": 101,
+  "n_series_per_condition": 300,
+  "baseline_days": 21,
+  "watch_days": 7,
+  "mood_model": "integer mood = round(N(3.8, 0.7)) clipped to 1-5",
+  "conditions": {
+   "no_dip": {
+    "rule": 0.033,
+    "run3": 0.107,
+    "cusum": 0.05,
+    "slope": 0.27,
+    "median_delay_days": 4.0
+   },
+   "dip_1.0": {
+    "rule": 0.593,
+    "run3": 0.673,
+    "cusum": 0.68,
+    "slope": 0.68,
+    "median_delay_days": 4.0
+   },
+   "dip_1.5": {
+    "rule": 0.9,
+    "run3": 0.857,
+    "cusum": 0.967,
+    "slope": 0.837,
+    "median_delay_days": 3.0
+   }
+  },
+  "note": "'rule' is what the app uses (CUSUM alarm + latest 2 days below usual). run3 / cusum / slope are each detector alone. For no_dip, each value is the share of journals with any alert in a 7-day window, i.e. a false-alarm rate per week.",
+  "superseded_rule": "first version: run >= 3 OR (CUSUM h=4 + 2-day run) OR (slope + 2-day run) - tuning seed 7: 21% false alarms/week, 78% of 1-point dips, 96% of 1.5-point dips"
+ },
+ "trends_tuning": {
+  "seed": 7,
+  "n_series_per_condition": 300,
+  "baseline_days": 21,
+  "watch_days": 7,
+  "mood_model": "integer mood = round(N(3.8, 0.7)) clipped to 1-5",
+  "conditions": {
+   "no_dip": {
+    "rule": 0.033,
+    "run3": 0.127,
+    "cusum": 0.05,
+    "slope": 0.26,
+    "median_delay_days": 3.0
+   },
+   "dip_1.0": {
+    "rule": 0.617,
+    "run3": 0.667,
+    "cusum": 0.677,
+    "slope": 0.677,
+    "median_delay_days": 5
+   },
+   "dip_1.5": {
+    "rule": 0.9,
+    "run3": 0.873,
+    "cusum": 0.98,
+    "slope": 0.857,
+    "median_delay_days": 3.0
+   }
+  },
+  "note": "'rule' is what the app uses (CUSUM alarm + latest 2 days below usual). run3 / cusum / slope are each detector alone. For no_dip, each value is the share of journals with any alert in a 7-day window, i.e. a false-alarm rate per week.",
+  "superseded_rule": "first version: run >= 3 OR (CUSUM h=4 + 2-day run) OR (slope + 2-day run) - tuning seed 7: 21% false alarms/week, 78% of 1-point dips, 96% of 1.5-point dips"
+ },
+ "latency": {
+  "sentiment_analyse_us": 106.37,
+  "safety_detect_us": 87.98,
+  "phq9_score_us": 9.47,
+  "trends_analyse_21d_ms": 1.71,
+  "counsellor_dashboard_ms": 2.65,
+  "planner_14d_ms": 0.63
+ },
+ "python": "3.13.16",
+ "http": {
+  "post_analyze_ms": {
+   "median": 2.06,
+   "p95": 6.06
+  },
+  "get_student_ms": {
+   "median": 3.24,
+   "p95": 7.97
+  }
+ }
+}

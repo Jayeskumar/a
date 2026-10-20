@@ -1,0 +1,91 @@
+{
+  "name": "MindEase",
+  "tagline": "A private, early-support companion for student mental wellbeing",
+  "domain": "HealthTech & Biomedical Innovation",
+  "color": "#0D9488",
+  "problem": [
+    "Exam stress, anxiety and low mood in students often go unnoticed",
+    "Stigma stops students from walking into the counselling room",
+    "Counsellors get no early signal until a crisis",
+    "Help-seeking info is hard to find at the moment it's needed"
+  ],
+  "stats": [
+    {"value": "~13,000", "label": "student suicides a year in India (NCRB ADSI 2021-22, approx.)"},
+    {"value": "70–92%", "label": "treatment gap for mental disorders in India (NMHS 2015-16)"},
+    {"value": "1 in 2", "label": "mental health conditions begin by age 14 (WHO)"}
+  ],
+  "solution": [
+    "Private daily journal plus PHQ-9 / GAD-7 check-ins, in English and Tanglish",
+    "Explainable engine notices dips vs your own baseline, kindly",
+    "Instant support screen with Tele-MANAS 14416 and 112 when risk words appear",
+    "Counsellors see only opt-in, pseudonymous aggregates and alerts"
+  ],
+  "features": [
+    {"title": "PHQ-9 & GAD-7", "desc": "Standard wording and bands; item 9 > 0 opens a support screen at once"},
+    {"title": "Explainable journal", "desc": "Lexicon sentiment with negation, emoji, Tanglish; shows why, never diagnoses"},
+    {"title": "Personal trends", "desc": "CUSUM + dip run vs your usual: 'your mood has dipped for 5 days'"},
+    {"title": "Offline toolkit", "desc": "Box breathing, 5-4-3-2-1 grounding, Pomodoro exam planner, sleep tips"},
+    {"title": "Prepare to talk", "desc": "Turns a few taps into words to say to a friend, parent or counsellor"},
+    {"title": "Counsellor view", "desc": "Opt-in pseudonymous aggregates, small-cell suppression, alert follow-up"}
+  ],
+  "architecture": [
+    "Browser UI (vanilla JS, inline SVG) -> student and counsellor views",
+    "app.py ThreadingHTTPServer -> JSON API, demo PIN role check",
+    "questionnaires.py -> PHQ-9 / GAD-7 scoring, bands, item-9 rule",
+    "sentiment.py + safety.py -> tone, emotions, concerning phrases",
+    "trends.py -> rolling means, CUSUM, dip run, OLS slope",
+    "store.py -> consent-aware state in data/state.json",
+    "counsellor.py -> weekly bands, suppression, alert workflow"
+  ],
+  "algorithms": [
+    "PHQ-9 / GAD-7 – published 0-3 scoring and severity bands",
+    "Lexicon sentiment – valence, negation, intensifiers, 'but', emoji",
+    "Safety net – 41 phrase rules + first-person co-occurrence layer",
+    "One-sided CUSUM – small persistent dips vs personal baseline",
+    "OLS slope t-test – supporting trend evidence",
+    "Greedy Pomodoro allocation – need x urgency, sleep protected"
+  ],
+  "tech": ["Python 3 stdlib", "http.server", "Vanilla HTML/CSS/JS", "Inline SVG charts", "unittest (100 tests)"],
+  "innovation": [
+    "Safety-first: crisis help one tap away on every screen",
+    "Explainable, offline, no cloud: journal never leaves the laptop",
+    "Understands Tanglish and emoji the way students actually write",
+    "Early signal for counsellors without surveillance"
+  ],
+  "results": [
+    {"value": "78%", "label": "sentiment accuracy, 50 untuned sentences (word count: 70%)"},
+    {"value": "24/24", "label": "direct risk phrases caught, 0/22 false alarms; 8/10 indirect"},
+    {"value": "90% · 3%", "label": "sim. mood dips flagged · false alarms per stable week"},
+    {"value": "0.1 ms", "label": "to analyse one journal entry (pure Python)"}
+  ],
+  "demo_flow": [
+    "Load demo data: Ananya's 3-week journal, 60-student cohort",
+    "Today: 'mood dipped for 5 days', tap Why? to see CUSUM",
+    "Journal example: 'killing me' ignored, hopeless phrase noticed",
+    "Gentle support screen: Tele-MANAS 14416, 112, counsellor",
+    "Check-in: item 9 answer opens support instantly",
+    "Toolkit: box breathing and Pomodoro exam plan",
+    "Counsellor (PIN 2468): exam spike, acknowledge alert"
+  ],
+  "impact": [
+    "Earlier, stigma-free first step towards help",
+    "Counsellors spot exam-time spikes and plan outreach",
+    "Crisis numbers always visible, never buried",
+    "Free to run on existing college laptops"
+  ],
+  "business": [
+    "Free for students, always",
+    "College licence for the counsellor dashboard",
+    "Deploy via student-welfare and NSS/CSR programmes",
+    "Paid add-ons: SSO, multi-campus reports, local languages"
+  ],
+  "future": [
+    "Validate with the counselling cell under ethics approval",
+    "Official Tamil/Hindi PHQ-9 and GAD-7 translations",
+    "Larger, multi-rater Tanglish lexicon",
+    "Encrypted on-device storage as a mobile PWA",
+    "Trained peer-listener matching"
+  ],
+  "port": 8016,
+  "dir": "projects/16-mindease"
+}
