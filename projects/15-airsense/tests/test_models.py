@@ -103,7 +103,10 @@ class IDW(unittest.TestCase):
     def test_constant_field(self):
         pts = [(x, y, 42.0) for x, y, _ in self.PTS]
         self.assertAlmostEqual(interpolate.idw(pts, 1.7, 2.2), 42.0)
-        self.assertEqual(interpolate.idw_loo(pts), [42.0] * 4)
+        loo = interpolate.idw_loo(pts)
+        self.assertEqual(len(loo), 4)
+        for v in loo:  # float sums differ in the last bit before Python 3.12
+            self.assertAlmostEqual(v, 42.0)
 
 
 class Kriging(unittest.TestCase):
