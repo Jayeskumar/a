@@ -91,6 +91,16 @@
     "Crew routing for clustered incidents",
     "Public status page for citizens"
   ],
+  "compare": {
+    "columns": ["Manual clerk triage", "Generic helpdesk tools", "CivicLens"],
+    "rows": [
+      ["Auto-routes to department", "No", "Partial", "Yes · 95% acc."],
+      ["Reads Tamil + Tanglish", "Clerk-dependent", "Rare", "Yes"],
+      ["Merges duplicate reports", "Partial", "Partial", "Yes · text+place"],
+      ["Explains its priority call", "No", "No", "Yes · rule shown"],
+      ["Warns before SLA breach", "No", "Partial", "Yes · risk model"]
+    ]
+  },
   "port": 8019,
   "dir": "projects/19-civiclens"
 }

@@ -385,10 +385,11 @@ function drawWards(ctx, P, labels, emph) {
     if (emph && emph[w.code]) { ctx.fillStyle = css("--accent-soft"); ctx.fillRect(x0, y0, x1 - x0, y1 - y0); }
     ctx.strokeStyle = css("--axis"); ctx.lineWidth = 1; ctx.strokeRect(x0 + 0.5, y0 + 0.5, x1 - x0, y1 - y0);
     if (labels) {
-      ctx.fillStyle = css("--muted"); ctx.font = "600 11px system-ui, sans-serif";
-      ctx.fillText(w.code, x0 + 6, y0 + 14);
-      ctx.font = "11px system-ui, sans-serif";
-      ctx.fillText(w.name, x0 + 6, y0 + 27);
+      ctx.fillStyle = css("--muted"); ctx.font = "600 12px system-ui, sans-serif";
+      ctx.fillText(w.code, x0 + 6, y0 + 15);
+      ctx.font = "12px system-ui, sans-serif";
+      // on narrow maps the ward name would spill into the next ward, so only draw it when it fits
+      if (ctx.measureText(w.name).width <= x1 - x0 - 10) ctx.fillText(w.name, x0 + 6, y0 + 29);
     }
   });
 }
@@ -690,11 +691,11 @@ function drawBigMap() {
     const x = P.x(hs.center[1]), r = Math.max(8, hs.radius_m / mPerPx);
     let y = P.y(hs.center[0]) - 3;
     const label = hs.id + " · " + hs.n;
-    ctx.font = "700 11px system-ui, sans-serif";
+    ctx.font = "700 12px system-ui, sans-serif";
     const tw = ctx.measureText(label).width, lx = x + r + 3;
     while (placed.some((b) => lx < b[0] + b[2] && lx + tw > b[0] && Math.abs(y - b[1]) < 13)) y += 13;
     placed.push([lx, y, tw]);
-    ctx.fillStyle = css("--surface"); ctx.globalAlpha = 0.8; ctx.fillRect(lx - 2, y - 10, tw + 4, 13); ctx.globalAlpha = 1;
+    ctx.fillStyle = css("--surface"); ctx.globalAlpha = 0.92; ctx.fillRect(lx - 3, y - 11, tw + 6, 15); ctx.globalAlpha = 1;
     ctx.fillStyle = css("--ink"); ctx.fillText(label, lx, y);
   });
   const lg = clear($("#mapLegend"));
@@ -702,7 +703,7 @@ function drawBigMap() {
   lg.appendChild(h("span", null, h("span", { class: "sw ring", style: "border-color:" + css("--ink") }), "still open"));
   lg.appendChild(h("span", null, h("span", { class: "sw ring", style: "border-color:" + css("--brand") }), "DBSCAN hotspot"));
   if ($("#mPlanted").checked) lg.appendChild(h("span", null, h("span", { class: "sw dash", style: "border-color:" + css("--ink-2") }), "planted ground truth"));
-  lg.appendChild(h("span", null, h("span", { class: "sw box", style: "background:" + css("--accent-soft") }), "ward with an emerging hotspot this week"));
+  lg.appendChild(h("span", null, h("span", { class: "sw box", style: "background:" + css("--accent-soft") + ";box-shadow:inset 0 0 0 1px " + css("--brand") }), "ward with an emerging hotspot this week"));
   $("#mapSub").textContent = num(S.mapData.points.length) + " incidents" + (sel ? " · " + DEPT_SHORT[sel] : " · all departments");
 }
 function mapHover(evt) {
@@ -747,17 +748,19 @@ function heatColor(v, max) {
 function drawHeat() {
   const c = $("#heatGrid"), hg = S.heat;
   if (!c.clientWidth || !hg) return;
-  const rows = hg.rows.length, cols = hg.weeks.length, lw = 150, top = 20, ch = 19;
+  const rows = hg.rows.length, cols = hg.weeks.length, lw = c.clientWidth < 520 ? 124 : 150, top = 20, ch = 19;
   const hh = top + rows * ch + 6;
   const { ctx, w } = setupCanvas(c, hh);
   const cw = (w - lw - 8) / cols;
+  const fitText = (t, max) => { if (ctx.measureText(t).width <= max) return t; while (t.length > 3 && ctx.measureText(t + "…").width > max) t = t.slice(0, -1); return t + "…"; };
+  const wkStep = cw < 30 ? 2 : 1;   // phones: label every other week so the headers do not run together
   ctx.clearRect(0, 0, w, hh);
-  ctx.font = "11px system-ui, sans-serif"; ctx.fillStyle = css("--muted"); ctx.textAlign = "center";
-  hg.weeks.forEach((wk, j) => ctx.fillText("W" + wk, lw + j * cw + cw / 2, 13));
+  ctx.font = "12px system-ui, sans-serif"; ctx.fillStyle = css("--muted"); ctx.textAlign = "center";
+  hg.weeks.forEach((wk, j) => { if (j % wkStep === 0) ctx.fillText("W" + wk, lw + j * cw + cw / 2, 13); });
   ctx.textAlign = "right";
   hg.rows.forEach((r, i) => {
     const y = top + i * ch;
-    ctx.fillStyle = css("--ink-2"); ctx.fillText(r.ward + " " + r.name, lw - 8, y + 13);
+    ctx.fillStyle = css("--ink-2"); ctx.fillText(fitText(r.ward + " " + r.name, lw - 12), lw - 8, y + 13);
     r.counts.forEach((v, j) => {
       ctx.fillStyle = heatColor(v, hg.max);
       ctx.fillRect(lw + j * cw + 1, y + 1, cw - 2, ch - 2);
@@ -766,6 +769,16 @@ function drawHeat() {
   });
   ctx.textAlign = "left";
   S._heatGeom = { lw, top, ch, cw };
+  // colour key: the five shades are equal fifths of the busiest ward-week
+  const lg = $("#heatLegend");
+  if (lg) {
+    clear(lg);
+    const cuts = [0, 0.2, 0.4, 0.6, 0.8].map((f) => Math.ceil(f * hg.max));
+    lg.appendChild(h("span", null, "incidents / ward / week:"));
+    cuts.forEach((lo, k) => lg.appendChild(h("span", null, h("span", { class: "sw box", style: "background:" + heatColor(k * 0.2 + 0.01, 1) + ";box-shadow:inset 0 0 0 1px " + css("--border") }),
+      k === 4 ? lo + "–" + hg.max : lo + "–" + Math.max(lo, cuts[k + 1] - 1))));
+    lg.appendChild(h("span", null, h("span", { class: "sw box", style: "background:transparent;box-shadow:inset 0 0 0 2px " + css("--ink") }), "emerging (z ≥ 3)"));
+  }
 }
 function heatHover(evt) {
   const g = S._heatGeom, hg = S.heat;
@@ -903,7 +916,7 @@ async function renderModelsTab() {
       { name: "true duplicates", color: css("--s2"), values: dupShare }, { name: "other pairs", color: css("--s1"), values: nonShare }],
   });
   lineChart($("#tuneChart"), {
-    xs: D.tuning.map((t) => t.threshold), xNumeric: true, height: 140, yMax: 1, yFmt: (v) => v.toFixed(1), xLabel: (i) => D.tuning[i].threshold.toFixed(2),
+    xs: D.tuning.map((t) => t.threshold), xNumeric: true, height: 140, yMax: 1, yFmt: (v) => v.toFixed(2), xLabel: (i) => D.tuning[i].threshold.toFixed(2),
     tipTitle: (i) => "threshold " + D.tuning[i].threshold, vlines: [{ x: D.threshold, label: "chosen " + D.threshold, color: css("--brand") }],
     series: [{ name: "precision", color: css("--s1"), values: D.tuning.map((t) => t.precision) }, { name: "recall", color: css("--s3"), values: D.tuning.map((t) => t.recall) }, { name: "F1", color: css("--s2"), values: D.tuning.map((t) => t.f1) }],
   });

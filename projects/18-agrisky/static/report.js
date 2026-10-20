@@ -62,7 +62,7 @@
     $("totals").innerHTML = tiles.map((t) => "<div><b>" + esc(t[0]) + "</b><span>" + esc(t[1]) + "</span></div>").join("");
     const order = { pest: 0, nitrogen: 1, waterlogging: 2, healthy: 3, soil: 4, water: 5 };
     $("zones").innerHTML = sc.zones.slice().sort((x, y) => order[x.label] - order[y.label] || y.cells - x.cells).map((z) =>
-      "<tr><td>Z" + z.id + '</td><td><span class="swatch" style="background:' + info[z.label].color + '"></span>' + esc(info[z.label].en) + '</td><td class="num">' + Math.round(z.area_m2) + '</td><td class="num">' + fmt(z.ndvi, 2) + "</td><td>" + esc(z.why) + "</td></tr>").join("");
+      "<tr><td>Z" + z.id + '</td><td><span class="swatch" style="background:' + info[z.label].color + '"></span>' + esc(info[z.label].en) + '</td><td class="num">' + Math.round(z.area_m2).toLocaleString("en-IN") + '</td><td class="num">' + fmt(z.ndvi, 2) + "</td><td>" + esc(z.why) + "</td></tr>").join("");
   }
   $("printBtn").addEventListener("click", () => window.print());
   main();

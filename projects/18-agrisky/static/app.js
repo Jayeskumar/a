@@ -47,6 +47,10 @@
   function fmtInt(v) { return v === null || v === undefined ? "—" : Math.round(v).toLocaleString("en-IN"); }
   function esc(s) { return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
   function classInfo(c) { const m = S.meta.classes.find((x) => x.id === c); return m || { en: c, ta: c, color: "#888" }; }
+  // SVG charts are drawn at their container's pixel width so 12px labels stay 12px on phones.
+  function fitW(id, def) { const el = $(id), w = el && el.clientWidth; return w ? Math.max(300, Math.min(640, Math.round(w))) : def; }
+  // Canvas labels scale with the displayed map size so they stay legible on small screens.
+  function mapLabelScale() { const w = $("mapCanvas").clientWidth || CW; return clamp(0.85 * CW / w, 1, 2.6); }
   function cssVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
   async function api(path, opts) {
     const r = await fetch(path, opts);
@@ -228,7 +232,9 @@
     ctx.fillStyle = "#0284c7"; ctx.beginPath(); ctx.arc(wx(home[0]), wy(home[1]), 13, 0, Math.PI * 2); ctx.fill();
     ctx.fillStyle = "#fff"; ctx.font = "bold 14px system-ui, sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
     ctx.fillText("H", wx(home[0]), wy(home[1]) + 1);
-    ctx.font = "11px system-ui, sans-serif"; ctx.fillText("home", wx(home[0]), wy(home[1]) + 24);
+    ctx.font = Math.round(11 * mapLabelScale()) + "px system-ui, sans-serif";
+    const hw = ctx.measureText("home").width;
+    ctx.fillText("home", Math.max(hw / 2 + 3, wx(home[0])), wy(home[1]) + 16 + 8 * mapLabelScale());
   }
 
   function renderMap() {
@@ -245,9 +251,14 @@
     if (S.layer === "dndvi") drawHotspots(ctx);
     drawZoneLabels(ctx);
     // compass + scale bar
-    ctx.fillStyle = "rgba(255,255,255,.9)"; ctx.font = "11px system-ui, sans-serif"; ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
-    ctx.fillRect(wx(98), wy(H) + 5, 20 * SCALE, 3);
-    ctx.fillText("20 m", wx(98) + 50, wy(H) + 3);
+    // scale bar sits in the bottom margin; its label gets a dark pill so it never blends into the crop
+    const ks = mapLabelScale(), fs = Math.round(11 * ks), barY = wy(H) + 5;
+    ctx.fillStyle = "rgba(255,255,255,.9)"; ctx.fillRect(wx(98), barY, 20 * SCALE, 3);
+    ctx.font = "600 " + fs + "px system-ui, sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    const sw = ctx.measureText("20 m").width + 10 * ks, sh = fs + 6 * ks, sx = wx(98) + 10 * SCALE;
+    ctx.fillStyle = "rgba(10,20,8,.82)"; roundRect(ctx, sx - sw / 2, barY - sh - 2, sw, sh, sh / 2); ctx.fill();
+    ctx.fillStyle = "#fff"; ctx.fillText("20 m", sx, barY - sh / 2 - 1);
+    ctx.textBaseline = "alphabetic"; ctx.textAlign = "left";
     const lay = LAYERS.find((l) => l.id === S.layer);
     $("mapBadge").textContent = lay.name + " · flight " + S.flight;
     let cap = lay.caption || "";
@@ -290,14 +301,16 @@
 
   function drawZoneLabels(ctx) {
     if (!["stress", "rx", "ndvi", "ndre", "cir"].includes(S.layer)) return;
-    ctx.font = "bold 11px system-ui, sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    const ks = mapLabelScale(), fs = Math.round(11 * ks), lh = Math.round(18 * ks);
+    ctx.font = "bold " + fs + "px system-ui, sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
     S.scene.zones.forEach((z) => {
       if (!["pest", "nitrogen", "waterlogging"].includes(z.label) || z.cells < 40) return;
       const t = "Z" + z.id + " " + classInfo(z.label).en.split(" (")[0];
       const x = wx(z.centroid[0]), y = wy(z.centroid[1]);
-      const w = ctx.measureText(t).width + 12;
-      ctx.fillStyle = "rgba(10,20,8,.78)"; roundRect(ctx, x - w / 2, y - 9, w, 18, 9); ctx.fill();
-      ctx.fillStyle = "#fff"; ctx.fillText(t, x, y + 1);
+      const w = ctx.measureText(t).width + 12 * ks;
+      const cx = clamp(x, wx(0) + w / 2 + 2, wx(W) - w / 2 - 2);
+      ctx.fillStyle = "rgba(10,20,8,.78)"; roundRect(ctx, cx - w / 2, y - lh / 2, w, lh, lh / 2); ctx.fill();
+      ctx.fillStyle = "#fff"; ctx.fillText(t, cx, y + 1);
     });
   }
   function roundRect(ctx, x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
@@ -438,15 +451,16 @@
     if (proj && !proj.already_reached) maxDay = Math.max(maxDay, Math.min(lastDay + 28, Math.ceil(proj.day) + 3));
     let maxA = Math.max(50, ...series.map((s) => s.area_m2), ...truth.series.map((s) => s.area_m2));
     if (proj) maxA = Math.max(maxA, proj.target_m2 * 1.08);
-    const Wd = 380, Hd = 206, l = 46, r = 10, t = 14, b = 44;
+    const Wd = fitW("changeChart", 380), Hd = 200, l = 46, r = 12, t = 16, b = 26;
     const X = (d) => l + (Wd - l - r) * d / maxDay, Y = (a) => t + (Hd - t - b) * (1 - a / maxA);
     let g = '<svg viewBox="0 0 ' + Wd + " " + Hd + '" role="img" aria-label="Pest area per flight with trend and projection">';
     const grid = cssVar("--grid"), muted = cssVar("--muted");
-    for (let k = 0; k <= 4; k++) { const a = maxA * k / 4; g += '<line x1="' + l + '" x2="' + (Wd - r) + '" y1="' + Y(a) + '" y2="' + Y(a) + '" stroke="' + grid + '"/><text x="' + (l - 5) + '" y="' + (Y(a) + 4) + '" font-size="10" text-anchor="end" fill="' + muted + '">' + Math.round(a) + "</text>"; }
-    for (let d = 0; d <= maxDay; d += 7) g += '<text x="' + X(d) + '" y="' + (Hd - b + 14) + '" font-size="10" text-anchor="middle" fill="' + muted + '">day ' + d + "</text>";
-    g += '<text x="4" y="' + (t + 4) + '" font-size="10" fill="' + muted + '">m²</text>';
+    for (let k = 0; k <= 4; k++) { const a = maxA * k / 4; g += '<line x1="' + l + '" x2="' + (Wd - r) + '" y1="' + Y(a) + '" y2="' + Y(a) + '" stroke="' + grid + '"/><text x="' + (l - 5) + '" y="' + (Y(a) + 4) + '" font-size="12" text-anchor="end" fill="' + muted + '">' + Math.round(a) + "</text>"; }
+    const dayStep = (Wd - l - r) / maxDay * 7 < 44 ? 14 : 7;
+    for (let d = 0; d <= maxDay; d += dayStep) g += '<text x="' + X(d) + '" y="' + (Hd - b + 17) + '" font-size="12" text-anchor="' + (d === 0 ? "start" : "middle") + '" fill="' + muted + '">day ' + d + "</text>";
+    g += '<text x="2" y="' + (t - 4) + '" font-size="12" fill="' + muted + '">m²</text>';
     if (proj) {
-      g += '<line x1="' + l + '" x2="' + (Wd - r) + '" y1="' + Y(proj.target_m2) + '" y2="' + Y(proj.target_m2) + '" stroke="#dc2626" stroke-dasharray="4 4"/><text x="' + (l + 4) + '" y="' + (Y(proj.target_m2) - 4) + '" font-size="10" fill="#dc2626">' + proj.target_pct + "% of crop</text>";
+      g += '<line x1="' + l + '" x2="' + (Wd - r) + '" y1="' + Y(proj.target_m2) + '" y2="' + Y(proj.target_m2) + '" stroke="#dc2626" stroke-dasharray="4 4"/><text x="' + (l + 6) + '" y="' + (Y(proj.target_m2) - 5) + '" font-size="12" font-weight="600" fill="' + cssVar("--danger") + '">' + proj.target_pct + "% of crop</text>";
       const pc = proj.curve.filter((p) => p.day >= lastDay && p.day <= maxDay && p.area_m2 <= maxA);
       if (pc.length > 1) g += '<polyline fill="none" stroke="#dc2626" stroke-width="2" stroke-dasharray="5 4" points="' + pc.map((p) => X(p.day) + "," + Y(p.area_m2)).join(" ") + '"/>';
     }
@@ -457,12 +471,9 @@
     truth.series.forEach((p) => { g += '<circle cx="' + X(p.day) + '" cy="' + Y(p.area_m2) + '" r="5" fill="none" stroke="' + muted + '" stroke-width="1.5"/>'; });
     series.forEach((p) => { g += '<circle cx="' + X(p.day) + '" cy="' + Y(p.area_m2) + '" r="4" fill="#dc2626"/>'; });
     g += '<line x1="' + X(lastDay) + '" x2="' + X(lastDay) + '" y1="' + t + '" y2="' + (Hd - b) + '" stroke="#0284c7" stroke-dasharray="2 3"/>';
-    const ly = Hd - 6;
-    g += '<g font-size="10" fill="' + muted + '"><circle cx="' + (l + 4) + '" cy="' + (ly - 3) + '" r="3.5" fill="#dc2626"/><text x="' + (l + 11) + '" y="' + ly + '">detected</text>' +
-      '<circle cx="' + (l + 70) + '" cy="' + (ly - 3) + '" r="4" fill="none" stroke="' + muted + '"/><text x="' + (l + 78) + '" y="' + ly + '">generator truth</text>' +
-      '<line x1="' + (l + 162) + '" x2="' + (l + 178) + '" y1="' + (ly - 3) + '" y2="' + (ly - 3) + '" stroke="#65A30D" stroke-width="2.4"/><text x="' + (l + 182) + '" y="' + ly + '">√area OLS</text>' +
-      '<line x1="' + (l + 246) + '" x2="' + (l + 262) + '" y1="' + (ly - 3) + '" y2="' + (ly - 3) + '" stroke="#dc2626" stroke-width="2" stroke-dasharray="4 3"/><text x="' + (l + 266) + '" y="' + ly + '">projection</text></g>';
     g += "</svg>";
+    g += '<div class="chart-key"><span><i class="dotk" style="background:#dc2626"></i>detected</span><span><i class="dotk ring"></i>generator truth</span>' +
+      '<span><i class="linek" style="border-color:#65A30D"></i>√area OLS fit</span><span><i class="linek dash" style="border-color:#dc2626"></i>projection</span></div>';
     $("changeChart").innerHTML = g;
     const d = ch.diff, tr = sp.trend;
     const rows = [
@@ -530,14 +541,15 @@
   // ---------------- k-means
   function renderKmeans() {
     const km = S.scene.kmeans, hist = km.history;
-    const Wd = 380, Hd = 130, l = 46, r = 10, t = 10, b = 24;
+    const Wd = fitW("kmChart", 380), Hd = 136, l = 46, r = 12, t = 12, b = 26;
     const maxI = Math.max(...hist), minI = Math.min(...hist);
     const X = (i) => l + (Wd - l - r) * i / Math.max(1, hist.length - 1), Y = (v) => t + (Hd - t - b) * (1 - (v - minI) / ((maxI - minI) || 1));
     const muted = cssVar("--muted"), grid = cssVar("--grid");
     let g = '<svg viewBox="0 0 ' + Wd + " " + Hd + '" role="img" aria-label="k-means inertia per iteration">';
-    [minI, (minI + maxI) / 2, maxI].forEach((v) => { g += '<line x1="' + l + '" x2="' + (Wd - r) + '" y1="' + Y(v) + '" y2="' + Y(v) + '" stroke="' + grid + '"/><text x="' + (l - 5) + '" y="' + (Y(v) + 4) + '" font-size="10" text-anchor="end" fill="' + muted + '">' + Math.round(v) + "</text>"; });
+    [minI, (minI + maxI) / 2, maxI].forEach((v) => { g += '<line x1="' + l + '" x2="' + (Wd - r) + '" y1="' + Y(v) + '" y2="' + Y(v) + '" stroke="' + grid + '"/><text x="' + (l - 5) + '" y="' + (Y(v) + 4) + '" font-size="12" text-anchor="end" fill="' + muted + '">' + Math.round(v) + "</text>"; });
     g += '<polyline fill="none" stroke="#0284c7" stroke-width="2" points="' + hist.map((v, i) => X(i) + "," + Y(v)).join(" ") + '"/>';
-    g += '<text x="' + l + '" y="' + (Hd - 6) + '" font-size="10" fill="' + muted + '">iteration 1</text><text x="' + (Wd - r) + '" y="' + (Hd - 6) + '" font-size="10" text-anchor="end" fill="' + muted + '">' + km.iterations + " iterations · " + (km.converged ? "converged" : "max iter") + " · inertia (sample of " + km.sample_size + ")</text></svg>";
+    g += '<text x="' + (Wd - r) + '" y="' + (t + 12) + '" font-size="12" text-anchor="end" fill="' + muted + '">inertia (within-cluster SS, sample of ' + fmtInt(km.sample_size) + ")</text>" +
+      '<text x="' + l + '" y="' + (Hd - 6) + '" font-size="12" fill="' + muted + '">iteration 1</text><text x="' + (Wd - r) + '" y="' + (Hd - 6) + '" font-size="12" text-anchor="end" fill="' + muted + '">iteration ' + km.iterations + " · " + (km.converged ? "converged" : "max iter") + "</text></svg>";
     $("kmChart").innerHTML = g;
     $("kmTable").innerHTML = '<table><thead><tr><th>Cluster</th><th class="num">cells</th><th class="num">NDVI</th><th class="num">NDRE</th><th class="num">NDWI</th><th class="num">SAVI</th></tr></thead><tbody>' +
       km.centroids.map((c, j) => '<tr><td><span class="swatch" style="background:' + CLUSTER_COLORS[j % CLUSTER_COLORS.length] + '"></span>C' + j + '</td><td class="num">' + fmtInt(c.cells) + '</td><td class="num">' + fmt(c.ndvi, 3) + '</td><td class="num">' + fmt(c.ndre, 3) + '</td><td class="num">' + fmt(c.ndwi, 3) + '</td><td class="num">' + fmt(c.savi, 3) + "</td></tr>").join("") +
@@ -642,6 +654,8 @@
       const v = clamp(parseInt($("seedInput").value, 10) || 0, 0, 1000000); $("seedInput").value = v; S.seed = v; S.selectedZone = null; loadScene();
     });
     $("demoBtn").addEventListener("click", runDemo);
+    let rsT = 0;
+    window.addEventListener("resize", () => { clearTimeout(rsT); rsT = setTimeout(() => { if (S.scene && !S.anim) { renderMap(); renderChange(); renderKmeans(); } }, 250); });
     $("playBtn").addEventListener("click", () => (S.playing ? stopPlay() : playWeeks()));
     ["cG", "cR", "cE", "cN"].forEach((id) => $(id).addEventListener("input", calc));
     const tip = $("tooltip");

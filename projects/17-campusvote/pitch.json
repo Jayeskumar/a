@@ -90,6 +90,16 @@
     "Anchor checkpoint hashes on a public chain or notice board QR",
     "Ranked-choice and multi-seat posts"
   ],
+  "compare": {
+    "columns": ["Paper ballots", "Online form polls", "CampusVote"],
+    "rows": [
+      ["Voter can verify own vote", "No", "No", "Yes · receipt"],
+      ["Admin can't see who voted what", "Yes", "No", "Yes · blind sigs"],
+      ["Anyone can recount", "Partial", "No", "Yes · in browser"],
+      ["Tamper-evident vote record", "Partial", "No", "Yes · hash chain"],
+      ["Works without internet", "Yes", "No", "Yes · on LAN"]
+    ]
+  },
   "port": 8017,
   "dir": "projects/17-campusvote"
 }

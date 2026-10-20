@@ -62,7 +62,8 @@ a { color: var(--brand); }
 .muted { color: var(--muted); margin: 0 0 .8em; }
 .small { font-size: 13px; }
 .hint { color: var(--muted); font-size: 13px; margin: .6em 0 0; }
-.eyebrow { text-transform: uppercase; letter-spacing: .08em; font-size: 11.5px; font-weight: 700; color: var(--brand); }
+.hint code { word-break: normal; overflow-wrap: anywhere; }
+.eyebrow { text-transform: uppercase; letter-spacing: .08em; font-size: 12px; font-weight: 700; color: var(--brand); }
 
 /* header */
 .top {
@@ -165,6 +166,7 @@ textarea { resize: vertical; font-family: ui-monospace, Menlo, Consolas, monospa
 .explain { background: var(--code); border-radius: 12px; padding: 12px 14px; font-size: 13.5px; }
 .explain ul { margin: 6px 0; padding-left: 18px; }
 .explain code { background: var(--card); }
+.explain small { display: block; font-size: 12.5px; color: var(--muted); margin-top: 4px; }
 .receipt-ok { font-size: 1.4rem; font-weight: 800; color: var(--ok); margin-bottom: 10px; }
 .receipt { border: 2px dashed var(--gold); background: var(--gold-soft); border-radius: 14px; padding: 14px; }
 .receipt-code { font: 700 1.35rem/1.3 ui-monospace, Menlo, Consolas, monospace; letter-spacing: .06em; color: var(--gold-ink); margin: 4px 0 8px; word-break: break-all; }
@@ -188,7 +190,7 @@ textarea { resize: vertical; font-family: ui-monospace, Menlo, Consolas, monospa
 .phone { background: linear-gradient(160deg, var(--brand-soft), var(--card)); }
 .fps { list-style: none; padding: 0; margin: 6px 0 0; }
 .fps li { display: flex; justify-content: space-between; gap: 8px; padding: 5px 0; border-bottom: 1px dashed var(--line); font-size: 13px; }
-.fps code { background: var(--card); }
+.fps code { background: var(--card); white-space: nowrap; word-break: normal; align-self: center; }
 .big-url { font: 700 1.15rem/1.3 ui-monospace, Menlo, Consolas, monospace; color: var(--brand); margin: 8px 0; word-break: break-all; }
 .kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 16px; }
 .kpi { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; box-shadow: var(--shadow); }
@@ -237,12 +239,12 @@ textarea { resize: vertical; font-family: ui-monospace, Menlo, Consolas, monospa
 .entry + .entry::before { content: ""; position: absolute; left: 28px; top: -11px; height: 10px; border-left: 2px solid var(--brand); }
 .entry .sq { font: 700 13px ui-monospace, Menlo, Consolas, monospace; color: var(--muted); }
 .entry .sm { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.entry .hs { font: 11.5px/1.35 ui-monospace, Menlo, Consolas, monospace; color: var(--muted); text-align: right; }
+.entry .hs { font: 12px/1.35 ui-monospace, Menlo, Consolas, monospace; color: var(--muted); text-align: right; }
 .entry .hs b { color: var(--ink); font-weight: 600; }
 .entry.broken { border-color: var(--bad); background: var(--bad-soft); }
-.entry.broken::after { content: "chain breaks here"; position: absolute; right: 10px; top: -9px; background: var(--bad); color: #fff; font-size: 11px; font-weight: 700; padding: 1px 8px; border-radius: 999px; }
+.entry.broken::after { content: "chain breaks here"; position: absolute; right: 10px; top: -9px; background: var(--bad); color: #fff; font-size: 12px; font-weight: 700; padding: 1px 8px; border-radius: 999px; }
 .entry.mine { border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold); }
-.chip { display: inline-block; font-size: 11.5px; font-weight: 700; padding: 3px 8px; border-radius: 999px; text-align: center; background: var(--code); color: var(--muted); }
+.chip { display: inline-block; justify-self: start; font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 999px; text-align: center; background: var(--code); color: var(--muted); }
 .chip.ballot { background: var(--brand-soft); color: var(--brand); }
 .chip.checkpoint { background: var(--gold-soft); color: var(--gold-ink); }
 .chip.issuance { background: #E0F2FE; color: #0369A1; }
@@ -262,7 +264,7 @@ textarea { resize: vertical; font-family: ui-monospace, Menlo, Consolas, monospa
 .attack { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; box-shadow: var(--shadow); display: flex; flex-direction: column; }
 .attack h3 { font-size: 1rem; margin-bottom: 2px; }
 .attack .who { font-size: 12px; font-weight: 700; color: var(--gold-ink); text-transform: uppercase; letter-spacing: .06em; }
-.attack p { font-size: 13.5px; color: var(--muted); margin: 6px 0 10px; }
+.attack p { font-size: 13.5px; color: var(--muted); margin: 6px 0 10px; min-height: 3em; }
 .attack .out { margin-top: 10px; font-size: 13px; border-radius: 10px; padding: 10px 12px; background: var(--code); }
 .attack .out .tag { display: inline-block; font-weight: 800; padding: 2px 9px; border-radius: 999px; color: #fff; background: var(--ok); margin-bottom: 6px; }
 .attack .out .tag.bad { background: var(--bad); }
@@ -283,6 +285,11 @@ textarea { resize: vertical; font-family: ui-monospace, Menlo, Consolas, monospa
 .st.m { color: var(--warn); }
 .st.n { color: var(--bad); }
 .limits li { margin-bottom: 6px; font-size: 14px; }
+.table-wrap + h3 { margin-top: 18px; }
+.card .btn + h3, .card .actions + h3 { margin-top: 22px; }
+#btnNewVoter { margin-top: 12px; }
+.attack .btn:hover, .cand:hover { border-color: var(--brand); }
+.cand:hover:not([aria-checked="true"]) { background: var(--bg); }
 .slips { max-height: 220px; overflow: auto; font: 12.5px ui-monospace, Menlo, Consolas, monospace; background: var(--code); border-radius: 10px; padding: 10px; margin-top: 8px; }
 
 .banner { max-width: 1280px; margin: 12px auto 0; padding: 12px 16px; border-radius: 12px; font-weight: 700; width: calc(100% - 40px); }
@@ -302,10 +309,15 @@ textarea { resize: vertical; font-family: ui-monospace, Menlo, Consolas, monospa
   main { padding: 12px; }
   .grid2, .grid-hero, .attack-grid, .res-grid, .row2, .flow { grid-template-columns: 1fr; }
   .kpis { grid-template-columns: 1fr 1fr; }
+  .kpis > .kpi:last-child:nth-child(odd) { grid-column: 1 / -1; }
   .entry { grid-template-columns: 44px 1fr; }
   .entry .sm { grid-column: 1 / -1; }
   .entry .hs { grid-column: 1 / -1; text-align: left; }
   .toolbar input { width: 100%; }
+  .toolbar .spacer { flex-basis: 100%; height: 0; }
+  .toolbar #receiptLookup { flex: 1; width: auto; min-width: 0; }
+  .verdict { flex-wrap: wrap; gap: 4px 10px; }
+  .verdict span { flex: 1 1 100%; order: 3; font-size: .95rem; }
   .card { padding: 14px; }
 }
 .powers { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }

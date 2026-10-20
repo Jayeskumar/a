@@ -276,10 +276,11 @@
     const posts = S.el.election.posts;
     const opened = f.opening;
     const match = opened && opened.status === 'ok' && posts.every((p) => opened.choices[p.id] === w.choices[p.id]);
+    const waiting = Math.max((S.stats && S.stats.pool) || 0, w.pool || 0);
     const items = [
       ['done', 'Accepted into the anonymity mix (signature checked, token unused)'],
       f.seq !== undefined ? ['done', 'Posted on the bulletin board as entry #' + f.seq + ' (batch ' + f.batch + ', commitment ' + (f.commitOk ? 'matches ✓' : 'MISMATCH') + ')']
-        : ['wait', 'Waiting in the mix for a shuffled batch… (' + Math.max((S.stats && S.stats.pool) || 0, w.pool || 0) + ' ballots waiting)'],
+        : ['wait', 'Waiting in the mix for a shuffled batch… (' + waiting + (waiting === 1 ? ' ballot' : ' ballots') + ' waiting)'],
       f.checkpoint !== undefined && f.checkpoint !== null ? ['done', 'Sealed by signed checkpoint #' + f.checkpoint]
         : ['', 'Sealed by the next signed checkpoint'],
       opened ? [match ? 'done' : 'fail', match ? 'Opened by the trustee and COUNTED exactly as you chose ✓'
@@ -320,6 +321,11 @@
   }
 
   // ------------------------------------------------------------------ DASHBOARD
+  // Size SVG charts to their container so labels stay ~12px on phones instead of shrinking with the viewBox.
+  const fitW = (el, def, min) => {
+    const w = el && el.clientWidth ? el.clientWidth : 0;
+    return w ? Math.max(min || 280, Math.min(Math.round(w), 900)) : def;
+  };
   function hbars(rows, labelW, width) {
     const W = width || 560, rowH = 34, lw = labelW || 120, bw = W - lw - 74;
     const h = rows.length * rowH + 6;
@@ -333,8 +339,8 @@
     });
     return s + '</svg>';
   }
-  function lineChart(pts, total) {
-    const W = 560, H = 220, L = 40, B = 26, T = 24, R = 14;
+  function lineChart(pts, total, width) {
+    const W = width || 560, H = 220, L = 40, B = 26, T = 24, R = 14;
     if (!pts.length) return '<p class="muted">No ballots yet.</p>';
     const t0 = pts[0].t - 60, t1 = Math.max(pts[pts.length - 1].t, t0 + 120);
     const ymax = Math.max(total || 0, pts[pts.length - 1].n, 1);
@@ -386,8 +392,8 @@
       ['Accounts locked (OTP guessing)', esc(st.locked)],
     ].map((r) => '<li><span>' + r[0] + '</span><b>' + r[1] + '</b></li>').join('');
     $('#chartDept').innerHTML = hbars(st.by_dept.map((d) => ({ label: d.dept, value: d.issued, max: d.eligible,
-      right: d.issued + ' / ' + d.eligible })), 70);
-    $('#chartTime').innerHTML = lineChart(st.timeline, st.tokens_issued);
+      right: d.issued + ' / ' + d.eligible })), 70, fitW($('#chartDept'), 560));
+    $('#chartTime').innerHTML = lineChart(st.timeline, st.tokens_issued, fitW($('#chartTime'), 560));
   }
   async function advance() {
     const st = S.stats;
@@ -545,6 +551,7 @@
     try {
       const r = await api('/api/results');
       const t = r.tally, man = r.manifest;
+      const chartRows = [];
       const cards = man.posts.map((p) => {
         const counts = t.counts[p.id], tot = Object.values(counts).reduce((a, b) => a + b, 0) || 1;
         const win = t.winners[p.id] || [];
@@ -552,7 +559,7 @@
           right: counts[c.id] + ' (' + Math.round(100 * counts[c.id] / tot) + '%)', cls: c.id === 'NOTA' ? 'nota' : (win.includes(c.id) ? 'win' : '') }));
         const wn = p.candidates.filter((c) => win.includes(c.id)).map((c) => c.name).join(' & ');
         return '<div class="card"><div class="eyebrow">' + esc(p.title) + '</div><div class="winner">★ ' + esc(wn || 'no winner') + (win.length > 1 ? ' (tie)' : '') + '</div>' +
-          '<div class="chart">' + hbars(rows, 112, 370) + '</div></div>';
+          '<div class="chart" data-rc="' + (chartRows.push(rows) - 1) + '"></div></div>';
       }).join('');
       const turnout = r.eligible ? Math.round(1000 * t.counted / r.eligible) / 10 : 0;
       out.innerHTML = '<div class="kpis"><div class="kpi accent"><div class="l">Ballots counted</div><div class="v">' + t.counted + '</div><div class="s">turnout ' + turnout + '% of ' + r.eligible + '</div></div>' +
@@ -563,6 +570,7 @@
         '<div class="res-grid">' + cards + '</div>' +
         '<div class="card"><div class="toolbar"><h3>Step-by-step verification report</h3><span class="spacer"></span><button class="btn primary" id="btnReverify">Re-verify in my browser</button></div>' +
         renderChecks(r.report, 'server audit') + '<div id="reverifyOut"></div></div>';
+      $$('.res-grid .chart[data-rc]', out).forEach((el) => { el.innerHTML = hbars(chartRows[+el.dataset.rc], 112, fitW(el, 370)); });
       $('#btnReverify').onclick = async (ev) => {
         busy(ev.target, true, 'Recounting…');
         try {

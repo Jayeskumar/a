@@ -85,6 +85,16 @@
     "Weather-aware spray windows (wind, rain) and drift buffers",
     "Export to drone-controller mission formats"
   ],
+  "compare": {
+    "columns": ["Eye scouting + blanket spray", "Cloud imagery platforms", "AgriSky"],
+    "rows": [
+      ["Sprays only where needed", "No", "Partial", "Yes · zone VRA"],
+      ["Early warning of pest spread", "Late, by eye", "Partial", "Yes · m/day trend"],
+      ["Explains each diagnosis", "Expert-dependent", "Partial", "Yes · rule shown"],
+      ["Offline, no subscription", "Yes", "No", "Yes · ₹0 software"],
+      ["Farmer report in Tamil", "Verbal only", "Rare", "Yes · EN + Tamil"]
+    ]
+  },
   "port": 8018,
   "dir": "projects/18-agrisky"
 }

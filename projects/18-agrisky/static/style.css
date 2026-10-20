@@ -92,7 +92,7 @@ a { color: var(--sky-strong); }
   border-radius: 10px; padding: 6px 10px; cursor: pointer; position: relative;
 }
 .flight-chip b { display: block; font-size: .84rem; }
-.flight-chip span { font-size: .74rem; color: var(--muted); }
+.flight-chip span { font-size: .76rem; color: var(--muted); }
 .flight-chip .bar { height: 4px; border-radius: 3px; background: var(--grid); margin-top: 5px; overflow: hidden; }
 .flight-chip .bar i { display: block; height: 100%; background: var(--danger); }
 .flight-chip.active { border-color: var(--lime); box-shadow: 0 0 0 2px color-mix(in srgb, var(--lime) 30%, transparent); }
@@ -119,7 +119,7 @@ a { color: var(--sky-strong); }
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 12px 14px; min-width: 0; }
 .card-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
 .card-head h2 { display: flex; align-items: center; gap: 8px; }
-.badge { font-size: .7rem; font-weight: 700; padding: 2px 7px; border-radius: 999px; background: var(--lime-soft); color: var(--lime-strong); }
+.badge { font-size: .75rem; font-weight: 700; padding: 2px 7px; border-radius: 999px; background: var(--lime-soft); color: var(--lime-strong); }
 .badge.sky { background: var(--sky-soft); color: var(--sky-strong); }
 .span2 { grid-column: span 2; }
 
@@ -153,7 +153,7 @@ a { color: var(--sky-strong); }
 .kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-bottom: 10px; }
 .kpi { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 8px 10px; box-shadow: var(--shadow); }
 .kpi .v { font-size: 1.32rem; font-weight: 800; letter-spacing: -.02em; }
-.kpi .l { font-size: .72rem; color: var(--muted); line-height: 1.25; }
+.kpi .l { font-size: .78rem; color: var(--muted); line-height: 1.25; }
 .kpi.good .v { color: var(--lime-strong); }
 .kpi.bad .v { color: var(--danger); }
 .kpi.sky .v { color: var(--sky-strong); }
@@ -161,8 +161,9 @@ a { color: var(--sky-strong); }
 /* ---------- tables ---------- */
 table { width: 100%; border-collapse: collapse; font-size: .8rem; }
 th, td { text-align: left; padding: 5px 6px; border-bottom: 1px solid var(--grid); vertical-align: top; }
-th { font-size: .7rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); font-weight: 700; }
+th { font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); font-weight: 700; }
 td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+td.num { white-space: nowrap; }
 tr.sel td { background: var(--lime-soft); }
 tbody tr.click { cursor: pointer; }
 tbody tr.click:hover td { background: var(--surface-2); }
@@ -175,8 +176,11 @@ tbody tr.click:hover td { background: var(--surface-2); }
 .why .fail { color: var(--muted); }
 
 /* ---------- forms ---------- */
-.controls { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px 10px; margin-bottom: 8px; }
-.controls label { display: flex; flex-direction: column; gap: 2px; font-size: .72rem; color: var(--muted); font-weight: 600; }
+.controls { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 6px 10px; margin-bottom: 8px; }
+.controls label { grid-column: span 3; }
+/* the two dropdowns get a full half-row so their option text is not clipped */
+.controls label:has(select) { grid-column: span 6; order: -1; }
+.controls label { display: flex; flex-direction: column; gap: 2px; font-size: .78rem; color: var(--muted); font-weight: 600; }
 .controls input, .controls select { padding: 5px 7px; border: 1.5px solid var(--border); border-radius: 8px; background: var(--surface); min-height: 32px; }
 .seg-group { display: inline-flex; border: 1.5px solid var(--border); border-radius: 9px; overflow: hidden; }
 .seg-group button { border: 0; background: transparent; padding: 5px 10px; cursor: pointer; font-weight: 600; font-size: .78rem; min-height: 30px; }
@@ -184,13 +188,21 @@ tbody tr.click:hover td { background: var(--surface-2); }
 @media (prefers-color-scheme: dark) { .seg-group button.active { color: #04121b; } }
 .stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 12px; font-size: .8rem; margin: 6px 0; }
 .stats div { display: flex; justify-content: space-between; gap: 8px; border-bottom: 1px dashed var(--grid); padding: 2px 0; }
-.stats b { font-variant-numeric: tabular-nums; }
+.stats b { font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }
 .compare { display: grid; gap: 6px; margin: 6px 0 4px; }
 .cmp-row { display: grid; grid-template-columns: 92px 1fr 88px; gap: 8px; align-items: center; font-size: .78rem; }
 .cmp-bar { height: 14px; background: var(--grid); border-radius: 7px; overflow: hidden; }
 .cmp-bar i { display: block; height: 100%; border-radius: 7px; }
-.note { font-size: .74rem; color: var(--muted); margin: 6px 0 0; }
+.note { font-size: .78rem; color: var(--muted); margin: 6px 0 0; }
 .chart svg { width: 100%; height: auto; display: block; }
+.chart-key { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: .78rem; color: var(--muted); margin: 2px 0 4px 46px; }
+.chart-key span { display: inline-flex; align-items: center; gap: 5px; }
+.chart-key .dotk { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.chart-key .dotk.ring { border: 1.5px solid var(--muted); width: 10px; height: 10px; }
+.chart-key .linek { width: 16px; border-top: 2.5px solid; display: inline-block; }
+.chart-key .linek.dash { border-top-style: dashed; }
+.tab:hover:not(.active), .seg-group button:hover:not(.active), .flight-chip:hover:not(.active) { border-color: var(--lime); background: var(--surface-2); }
+.tab:focus-visible, .seg-group button:focus-visible, .flight-chip:focus-visible, .btn:focus-visible { outline: 3px solid var(--sky); outline-offset: 2px; }
 .report-lines { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
 .report-lines li { border-left: 3px solid var(--border); padding: 2px 0 2px 9px; font-size: .8rem; }
 .report-lines li .ta { display: block; color: var(--muted); font-size: .78rem; }
@@ -200,14 +212,16 @@ tbody tr.click:hover td { background: var(--surface-2); }
 .report-lines li.action { border-color: var(--sky); }
 .btn-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
 .calc { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
-.calc label { display: flex; flex-direction: column; font-size: .72rem; color: var(--muted); font-weight: 600; gap: 2px; }
+.calc label { display: flex; flex-direction: column; font-size: .78rem; color: var(--muted); font-weight: 600; gap: 2px; }
 .calc input { padding: 5px 6px; border: 1.5px solid var(--border); border-radius: 8px; background: var(--surface); min-width: 0; }
 .calc-out { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; margin-top: 8px; }
 .calc-out div { background: var(--surface-2); border-radius: 8px; padding: 5px 6px; text-align: center; }
 .calc-out b { display: block; font-size: 1rem; }
-.calc-out span { font-size: .68rem; color: var(--muted); }
+.calc-out span { font-size: .76rem; color: var(--muted); }
 .cm td { text-align: center; padding: 3px; font-variant-numeric: tabular-nums; }
-.cm th { text-align: center; padding: 3px; font-size: .62rem; }
+.cm th { text-align: center; padding: 3px; font-size: .74rem; }
+.cm thead th:first-child { white-space: nowrap; }
+#cmBox { overflow-x: auto; }
 
 footer { text-align: center; color: var(--muted); font-size: .8rem; padding: 14px 18px 22px; }
 
@@ -223,10 +237,19 @@ footer { text-align: center; color: var(--muted); font-size: .8rem; padding: 14p
   .layout, .flightbar { padding-left: 12px; padding-right: 12px; }
   .span2 { grid-column: auto; }
   .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .controls { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .controls label { grid-column: span 6; }
+  .controls label:has(select) { grid-column: span 12; }
   .calc { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .calc-out { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .legend .ramp { width: 120px; }
+  .stats { grid-template-columns: 1fr; }
+  th, td { padding: 5px 4px; }
+  .flight-chip { min-width: 132px; }
+  .top-actions { width: 100%; justify-content: flex-start; }
+  .cm thead th:first-child { white-space: normal; }
+  .cm td, .cm th { padding: 3px 2px; }
+  .hud { font-size: .75rem; padding: 3px 8px; left: 6px; top: 6px; max-width: calc(100% - 12px); }
+  .chart-key { margin-left: 0; }
 }
 @media print {
   .topbar, .flightbar, .no-print { display: none !important; }
