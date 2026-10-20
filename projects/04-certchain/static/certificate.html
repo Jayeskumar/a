@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Certificate - CertChain</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2 4 7v8c0 7 5 12.5 12 15 7-2.5 12-8 12-15V7z' fill='%232563EB'/%3E%3C/svg%3E">
+<style>
+  :root { --brand: #2563EB; --ink: #0f172a; --muted: #64748b; --paper: #fffdf7; --bg: #e8ecf4; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #0b1120; } .bar { color: #e5e9f2; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; color: var(--ink); }
+  .bar { max-width: 960px; margin: 18px auto 10px; display: flex; gap: 8px; flex-wrap: wrap; padding: 0 16px; align-items: center; }
+  .bar .sp { flex: 1; }
+  .bar button, .bar a { font: inherit; font-weight: 600; padding: 8px 14px; border-radius: 10px; border: 1px solid #cbd5e1; background: #fff; color: var(--ink); cursor: pointer; text-decoration: none; }
+  .bar .primary { background: var(--brand); color: #fff; border-color: var(--brand); }
+  .status { font-weight: 700; padding: 6px 12px; border-radius: 999px; font-size: 13px; }
+  .status.ok { background: #dcfce7; color: #166534; }
+  .status.bad { background: #fee2e2; color: #991b1b; }
+  .status.warn { background: #fef3c7; color: #92400e; }
+  .paper { max-width: 960px; margin: 0 auto 28px; background: var(--paper); padding: 22px; box-shadow: 0 10px 40px rgba(15,23,42,.18); }
+  .frame { border: 3px double var(--brand); padding: 34px 44px 26px; position: relative; min-height: 560px; }
+  .frame::before { content: ""; position: absolute; inset: 7px; border: 1px solid rgba(37,99,235,.35); pointer-events: none; }
+  .head { text-align: center; }
+  .crest { width: 60px; height: 60px; margin: 0 auto 6px; }
+  .inst { font-size: 26px; font-weight: 800; letter-spacing: .6px; text-transform: uppercase; color: var(--brand); margin: 0; font-family: Georgia, "Times New Roman", serif; }
+  .city { color: var(--muted); margin: 2px 0 0; font-size: 14px; }
+  .ctype { margin: 22px 0 6px; font-size: 30px; font-family: Georgia, "Times New Roman", serif; font-style: italic; }
+  .certify { color: var(--muted); margin: 14px 0 4px; }
+  .name { font-size: 34px; font-weight: 700; font-family: Georgia, "Times New Roman", serif; border-bottom: 1px solid #cbd5e1; display: inline-block; padding: 0 30px 4px; margin: 4px 0 10px; }
+  .body { text-align: center; font-size: 16px; line-height: 1.7; }
+  .body b { color: var(--ink); }
+  .foot { display: grid; grid-template-columns: 1fr auto; gap: 24px; margin-top: 30px; align-items: end; }
+  .meta { font-size: 12.5px; color: var(--muted); line-height: 1.7; }
+  .meta b { color: var(--ink); }
+  .meta code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 11px; color: var(--ink); word-break: break-all; }
+  .qr { text-align: center; font-size: 11px; color: var(--muted); }
+  .qr svg { display: block; width: 150px; height: 150px; margin: 0 auto 4px; }
+  .code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 18px; font-weight: 700; color: var(--ink); letter-spacing: 1px; }
+  .sig { margin-top: 18px; display: flex; justify-content: space-between; gap: 20px; font-size: 12px; color: var(--muted); }
+  .sig div { border-top: 1px solid #94a3b8; padding-top: 4px; min-width: 180px; text-align: center; }
+  .revoked { position: absolute; top: 42%; left: 50%; transform: translate(-50%, -50%) rotate(-18deg); font-size: 80px; font-weight: 900; color: rgba(220,38,38,.25); border: 8px solid rgba(220,38,38,.25); padding: 0 24px; pointer-events: none; }
+  .err { max-width: 600px; margin: 60px auto; background: #fff; padding: 24px; border-radius: 12px; text-align: center; }
+  @media (max-width: 640px) {
+    .frame { padding: 20px 16px; } .inst { font-size: 18px; } .ctype { font-size: 22px; } .name { font-size: 24px; padding: 0 8px; }
+    .foot { grid-template-columns: 1fr; } .sig { flex-direction: column; }
+  }
+  @media print {
+    body { background: #fff; } .bar { display: none; } .paper { box-shadow: none; margin: 0; max-width: none; }
+    @page { size: A4 landscape; margin: 10mm; }
+  }
+</style>
+</head>
+<body>
+<div class="bar">
+  <a href="/">&larr; CertChain</a>
+  <span id="status" class="status">loading...</span>
+  <span class="sp"></span>
+  <button id="dl">Download certificate JSON</button>
+  <a id="verify-link" href="/">Verify online</a>
+  <button class="primary" id="print">Print</button>
+</div>
+<div id="root"></div>
+<script>
+(function () {
+  "use strict";
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  var id = (new URLSearchParams(location.search).get("id") || "").trim();
+  var data = null;
+  document.getElementById("print").onclick = function () { window.print(); };
+  document.getElementById("dl").onclick = function () {
+    if (!data) return;
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(data.bundle, null, 2)], { type: "application/json" }));
+    a.download = id + ".certchain.json";
+    document.body.appendChild(a); a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  };
+  if (!/^[A-Za-z0-9\-]{3,40}$/.test(id)) {
+    document.getElementById("root").innerHTML = '<div class="err">No certificate ID given.</div>';
+    document.getElementById("status").textContent = "no id";
+    return;
+  }
+  fetch("/api/certificate/" + encodeURIComponent(id)).then(function (r) {
+    return r.json().then(function (d) { if (!r.ok) throw new Error(d.error || "error"); return d; });
+  }).then(function (d) {
+    data = d;
+    var b = d.bundle, r = b.record, h = b.block.header;
+    document.title = r.cert_id + " - " + r.student_name;
+    var st = document.getElementById("status");
+    st.textContent = d.status.verdict + " on ledger";
+    st.className = "status " + (d.status.valid ? "ok" : (d.status.verdict === "REVOKED" ? "warn" : "bad"));
+    document.getElementById("verify-link").href = d.verify_url;
+    var grade = r.cgpa && r.cgpa !== "N/A" ? " with a CGPA of <b>" + esc(r.cgpa) + "</b> / 10" : "";
+    var verb = r.cert_type === "Internship Certificate" ? "has successfully completed an internship programme in"
+      : (r.cert_type === "Course Completion Certificate" ? "has successfully completed the course" : "has fulfilled the requirements of");
+    document.getElementById("root").innerHTML =
+      '<div class="paper"><div class="frame">' +
+      (d.status.verdict === "REVOKED" ? '<div class="revoked">REVOKED</div>' : "") +
+      '<div class="head"><svg class="crest" viewBox="0 0 32 32"><path d="M16 2 4 7v8c0 7 5 12.5 12 15 7-2.5 12-8 12-15V7z" fill="#2563EB"/><path d="m10 16 4 4 8-8" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/></svg>' +
+      '<p class="inst">' + esc(b.issuer.name || r.issuer_id) + "</p>" +
+      '<p class="city">Blockchain-anchored credential &middot; ' + esc(r.issuer_id.toUpperCase()) + "</p>" +
+      '<div class="ctype">' + esc(r.cert_type) + "</div></div>" +
+      '<div class="body"><div class="certify">This is to certify that</div>' +
+      '<div class="name">' + esc(r.student_name) + "</div><br>" +
+      "Register No. <b>" + esc(r.register_no) + "</b> " + verb + "<br><b>" + esc(r.programme) + "</b>" + grade + ".<br>" +
+      "Issued on <b>" + esc(r.issue_date) + "</b>.</div>" +
+      '<div class="foot"><div class="meta">' +
+      "Certificate ID: <b>" + esc(r.cert_id) + "</b><br>" +
+      "Ledger block: <b>#" + esc(h.index) + "</b> &middot; mined " + esc(h.timestamp) + "<br>" +
+      "Record hash: <code>" + esc(b.record_hash) + "</code><br>" +
+      "Block hash: <code>" + esc(b.block.hash) + "</code><br>" +
+      "Merkle proof: " + b.merkle_proof.length + " step(s) &middot; Ed25519-signed by issuer<br>" +
+      "Verify at: <code>" + esc(d.verify_url) + "</code></div>" +
+      '<div class="qr">' + d.qr_svg + 'Scan to verify<br>Verification code<div class="code">' + esc(b.verification_code) + "</div></div></div>" +
+      '<div class="sig"><div>Controller of Examinations</div><div>Digitally signed &middot; key ' + esc((b.issuer.public_key || "").slice(0, 16)) + "&hellip;</div><div>Principal</div></div>" +
+      "</div></div>";
+  }).catch(function (e) {
+    document.getElementById("root").innerHTML = '<div class="err">' + esc(e.message) + "</div>";
+    document.getElementById("status").textContent = "not found";
+    document.getElementById("status").className = "status bad";
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+{
+  "name": "CertChain",
+  "tagline": "Tamper-proof academic credentials, verified in seconds",
+  "domain": "Cybersecurity & Blockchain Technology",
+  "color": "#2563EB",
+  "problem": [
+    "Fake degree, marksheet and internship certificates keep fooling recruiters",
+    "A doctored PDF takes minutes; manual college verification takes days to weeks",
+    "Phone/email checks leave no audit trail and can be socially engineered",
+    "Central databases must be trusted blindly - insider edits are invisible"
+  ],
+  "stats": [
+    {"value": "Days-weeks", "label": "manual verification turnaround via the college (approx.)"},
+    {"value": "Minutes", "label": "to doctor a certificate PDF with free tools (approx.)"},
+    {"value": "0", "label": "cryptographic checks on a typical paper certificate"}
+  ],
+  "solution": [
+    "Each college signs certificates with its own Ed25519 key",
+    "Records are Merkle-sealed into a hash-linked, PoW-mined permissioned chain",
+    "Recruiters scan a QR code: VALID / REVOKED / INVALID with 7 explained checks",
+    "Signed on-chain revocations; tampering pinpoints the exact broken block"
+  ],
+  "features": [
+    {"title": "Issue & bulk CSV", "desc": "Form or CSV batch -> one mined, signed block per batch"},
+    {"title": "Printable cert + QR", "desc": "QR code from our own pure-Python encoder, ID and 8-char verify code"},
+    {"title": "Explainable verify", "desc": "Hash, Merkle proof, block hash, PoW, signature, anchoring, revocation"},
+    {"title": "Revocation registry", "desc": "Issuer-signed revocations recorded on-chain; only the issuer can revoke"},
+    {"title": "Tamper demo", "desc": "Edit a CGPA in chain.json and watch the exact block and link break"},
+    {"title": "Block explorer", "desc": "Linked block cards with hashes, nonces, signatures and check status"}
+  ],
+  "architecture": [
+    "Browser SPA (vanilla JS) -> verify, issue, explorer, tamper, security",
+    "app.py ThreadingHTTPServer -> JSON API under /api",
+    "service.py -> issue, bulk, revoke, verify, tamper, restore",
+    "chain.py -> blocks, PoW, full-chain validation, explainable verify",
+    "ed25519.py + merkle.py + qr.py -> crypto from scratch on hashlib",
+    "data/chain.json + keys.json -> atomic JSON persistence"
+  ],
+  "algorithms": [
+    "Ed25519 (RFC 8032) – issuer signatures on blocks and revocations",
+    "SHA-256 canonical-JSON hashing with 128-bit salt – record fingerprint",
+    "Merkle tree + inclusion proofs – verify one cert against a header",
+    "Proof-of-work (4 hex zeros) – cost to rewrite history",
+    "Full-chain validation – links, PoW, roots, signatures, rules",
+    "QR encoding with Reed-Solomon GF(256) – scannable verify link"
+  ],
+  "tech": [
+    "Python 3 stdlib only (hashlib, http.server, json, csv)",
+    "Vanilla HTML/CSS/JS, inline SVG, no CDN",
+    "JSON file ledger, atomic writes",
+    "Runs fully offline on any laptop"
+  ],
+  "innovation": [
+    "All crypto hand-built and checked against RFC 8032 test vectors",
+    "Verification explains which guarantee failed and why it matters",
+    "Self-contained certificate bundle: Merkle proof + signed header",
+    "Two-level attacker demo shows why each security layer exists"
+  ],
+  "results": [
+    {"value": "33 ms", "label": "end-to-end certificate verification (median)"},
+    {"value": "3.4 / 3.8 ms", "label": "Ed25519 sign / verify, pure Python"},
+    {"value": "4 / 4", "label": "RFC 8032 test vectors matched"},
+    {"value": "8 / 8", "label": "tamper scenarios detected in tests"}
+  ],
+  "demo_flow": [
+    "Load demo data -> verify a genuine KSRCE degree: VALID, 7 ticks",
+    "Forged JSON (CGPA edited) -> INVALID at Merkle proof; fake ID -> NOT FOUND",
+    "Issue a certificate -> mined + signed -> printable page with QR",
+    "Bulk issue 5 certificates from CSV in one block",
+    "Tamper: edit CGPA in chain.json -> block 1 Merkle root breaks",
+    "Re-mine attack -> signature + block 2 link break; restore",
+    "Close on the threat model: forgery, tampering, insider, key theft"
+  ],
+  "impact": [
+    "Honest graduates no longer undercut by forged credentials",
+    "Colleges stop answering verification emails one by one",
+    "Recruiters verify instantly and offline, for free",
+    "Tiny energy use: ~40 ms of CPU per block, no public mining"
+  ],
+  "business": [
+    "Free public verification for recruiters drives adoption",
+    "Annual issuance licence per institution, with ERP/CSV integration",
+    "Paid bulk-verification API for job portals and BGV firms",
+    "White-label for skill and bootcamp certificate issuers"
+  ],
+  "future": [
+    "Multi-node replication and BFT consensus across a consortium",
+    "Key rotation, HSM signing and on-chain key-compromise records",
+    "Selective disclosure: prove the degree without revealing CGPA",
+    "W3C Verifiable Credentials and DigiLocker export",
+    "Mobile offline verifier app"
+  ],
+  "port": 8004,
+  "dir": "projects/04-certchain"
+}

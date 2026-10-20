@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CertChain - Tamper-proof academic credentials</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2 4 7v8c0 7 5 12.5 12 15 7-2.5 12-8 12-15V7z' fill='%232563EB'/%3E%3Cpath d='m10 16 4 4 8-8' stroke='white' stroke-width='3' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2 4 7v8c0 7 5 12.5 12 15 7-2.5 12-8 12-15V7z" fill="#2563EB"/><path d="m10 16 4 4 8-8" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div>
+      <h1>CertChain</h1>
+      <p>Tamper-proof academic credentials, verified in seconds</p>
+    </div>
+  </div>
+  <div class="spacer"></div>
+  <span id="integrity" class="pill"><span class="dot"></span><span>checking...</span></span>
+  <button id="btn-demo" class="primary" title="Reset to the deterministic demo ledger and verify a sample certificate">&#9654; Load demo data</button>
+</header>
+
+<main>
+  <section class="stats" id="stats">
+    <div class="stat"><div class="v" id="s-blocks">-</div><div class="l">Blocks</div></div>
+    <div class="stat"><div class="v" id="s-certs">-</div><div class="l">Certificates</div></div>
+    <div class="stat"><div class="v" id="s-revoked">-</div><div class="l">Revoked</div></div>
+    <div class="stat"><div class="v" id="s-inst">-</div><div class="l">Institutions</div></div>
+    <div class="stat"><div class="v" id="s-diff">-</div><div class="l">PoW difficulty</div></div>
+    <div class="stat"><div class="v" id="s-val">-</div><div class="l">Full-chain check</div></div>
+    <div class="stat"><div class="v mono" id="s-tip">-</div><div class="l">Tip hash</div></div>
+  </section>
+  <div class="strip" id="strip" aria-label="Ledger blocks"></div>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-tab="verify" id="tab-verify">Verify (recruiters)</button>
+    <button class="tab" data-tab="issue" id="tab-issue">Issue (institutions)</button>
+    <button class="tab" data-tab="explorer" id="tab-explorer">Block explorer</button>
+    <button class="tab" data-tab="tamper" id="tab-tamper">Tamper demo</button>
+    <button class="tab" data-tab="security" id="tab-security">Security model</button>
+  </nav>
+
+  <!-- VERIFY -->
+  <section class="panel active" id="panel-verify">
+    <div class="grid2">
+      <div>
+        <div class="card">
+          <h2>Verify a certificate</h2>
+          <p class="sub">Public check, no login. Enter the ID printed on the certificate (or scan its QR code).</p>
+          <label for="v-id">Certificate ID</label>
+          <input id="v-id" placeholder="e.g. KSRCE-26-00001" autocomplete="off">
+          <label for="v-code">Verification code on paper (optional)</label>
+          <input id="v-code" placeholder="e.g. ABCD-EFGH" autocomplete="off">
+          <div class="actions"><button class="primary" id="btn-verify">Verify</button></div>
+          <div class="samples" id="v-samples">
+            <button class="small" data-id="KSRCE-26-00001">Genuine degree</button>
+            <button class="small" data-id="KSRCE-26-00004">Revoked one</button>
+            <button class="small" data-id="KSRCE-26-00999">Fake ID</button>
+            <button class="small" id="btn-forge">Forged JSON (CGPA edited)</button>
+          </div>
+          <div class="or">- or verify the certificate file itself -</div>
+          <label for="v-json">Paste certificate JSON</label>
+          <textarea id="v-json" placeholder='{"certchain":"certificate-bundle/v1", ...}'></textarea>
+          <div class="actions">
+            <button id="btn-verify-json">Verify JSON</button>
+            <label class="btn" for="v-file" style="margin:0">Upload .json<input type="file" id="v-file" accept=".json,application/json" hidden></label>
+          </div>
+        </div>
+      </div>
+      <div class="card" id="v-result">
+        <div class="empty">Results appear here with a step-by-step explanation of every check.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ISSUE -->
+  <section class="panel" id="panel-issue">
+    <div class="grid2 even">
+      <div>
+        <div class="card">
+          <h2>Issue a certificate</h2>
+          <p class="sub">The record is hashed (canonical JSON + random salt), sealed in a Merkle tree, mined into a block and signed with the institution's Ed25519 key.</p>
+          <label for="i-issuer">Issuing institution</label>
+          <select id="i-issuer" class="issuer-select"></select>
+          <div class="row">
+            <div><label for="i-name">Student name</label><input id="i-name" placeholder="Lakshmi R."></div>
+            <div><label for="i-reg">Register no.</label><input id="i-reg" placeholder="KSR22CS141"></div>
+          </div>
+          <label for="i-prog">Degree / programme</label>
+          <input id="i-prog" placeholder="B.E. Computer Science and Engineering">
+          <div class="row">
+            <div><label for="i-cgpa">CGPA (0-10)</label><input id="i-cgpa" inputmode="decimal" placeholder="8.91"></div>
+            <div><label for="i-date">Issue date</label><input id="i-date" type="date"></div>
+            <div><label for="i-type">Certificate type</label><select id="i-type"></select></div>
+          </div>
+          <div class="actions">
+            <button class="primary" id="btn-issue">Issue &amp; mine block</button>
+            <button id="btn-fill">Fill sample</button>
+          </div>
+          <div id="i-result"></div>
+        </div>
+        <div class="card">
+          <h2>Revoke a certificate</h2>
+          <p class="sub">Revocations are signed by the issuer and recorded on-chain; only the issuing institution can revoke.</p>
+          <div class="row">
+            <div><label for="r-issuer">Institution</label><select id="r-issuer" class="issuer-select"></select></div>
+            <div><label for="r-id">Certificate ID</label><input id="r-id" placeholder="KSRCE-26-00007"></div>
+          </div>
+          <label for="r-reason">Reason</label>
+          <input id="r-reason" placeholder="Issued in error / academic misconduct">
+          <div class="actions"><button class="danger" id="btn-revoke">Sign &amp; record revocation</button></div>
+          <div id="r-result"></div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <h2>Bulk issue from CSV</h2>
+          <p class="sub">Columns: student_name, register_no, programme, cgpa, issue_date, cert_type. One block per batch; every row is validated first (all-or-nothing).</p>
+          <label for="b-issuer">Institution</label>
+          <select id="b-issuer" class="issuer-select"></select>
+          <label for="b-csv">CSV</label>
+          <textarea id="b-csv" style="min-height:140px"></textarea>
+          <div class="actions">
+            <button class="primary" id="btn-bulk">Issue batch</button>
+            <button id="btn-sample-csv">Load sample CSV</button>
+            <label class="btn" for="b-file" style="margin:0">Upload .csv<input type="file" id="b-file" accept=".csv,text/csv" hidden></label>
+          </div>
+          <div id="b-result"></div>
+        </div>
+        <div class="card">
+          <h2>Issued certificates</h2>
+          <input id="c-search" placeholder="Search by ID, name or register no.">
+          <div class="tablewrap" style="max-height:420px;overflow:auto;margin-top:8px">
+            <table><thead><tr><th>ID</th><th>Student</th><th>Type</th><th>CGPA</th><th>Status</th><th></th></tr></thead>
+            <tbody id="c-table"></tbody></table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPLORER -->
+  <section class="panel" id="panel-explorer">
+    <div class="card">
+      <h2>Block explorer</h2>
+      <p class="sub">Each block stores the previous block's hash, a Merkle root of its records, a proof-of-work nonce and the issuer's Ed25519 signature. Click a certificate chip to verify it.</p>
+      <div id="x-validation"></div>
+    </div>
+    <div class="blocks" id="x-blocks" style="margin-top:16px"></div>
+  </section>
+
+  <!-- TAMPER -->
+  <section class="panel" id="panel-tamper">
+    <div class="grid2">
+      <div>
+        <div class="card">
+          <h2>Tamper demo: be the attacker</h2>
+          <p class="sub">Simulates someone with write access to the ledger file (a compromised server or a corrupt insider) trying to upgrade <b id="t-target">KSRCE-26-00003</b>'s CGPA from 6.84 to 9.91.</p>
+          <label for="t-id">Target certificate</label>
+          <input id="t-id" value="KSRCE-26-00003">
+          <div class="actions">
+            <button class="danger solid" id="btn-tamper-edit">Attack 1: edit CGPA in chain.json</button>
+            <button class="danger" id="btn-tamper-rehash">Attack 2: edit + recompute Merkle + re-mine</button>
+          </div>
+          <div class="actions">
+            <button class="primary" id="btn-restore">Restore chain from backup</button>
+            <button id="btn-validate">Re-run full validation</button>
+          </div>
+          <h3>Attacker's console</h3>
+          <div class="attack-log" id="t-log">$ waiting for an attack...</div>
+        </div>
+        <div class="card" id="t-verify"><div class="empty">The target certificate's verification result appears here.</div></div>
+      </div>
+      <div class="card">
+        <h2>Full-chain validation</h2>
+        <p class="sub">Every block re-checked: index, hash link, recomputed hash, PoW, Merkle root, Ed25519 signature, record rules, timestamps.</p>
+        <div id="t-matrix"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECURITY -->
+  <section class="panel" id="panel-security">
+    <div class="card">
+      <h2>Threat model</h2>
+      <p class="sub">What each mechanism defends against, and what it does not.</p>
+      <div class="threats" id="sec-threats"></div>
+      <h3>Known limits of this prototype</h3>
+      <ul id="sec-limits"></ul>
+      <h3>Registered institutions (permissioned issuers)</h3>
+      <div class="tablewrap"><table><thead><tr><th>ID</th><th>Institution</th><th>City</th><th>Ed25519 public key</th><th class="c">Certificates</th></tr></thead><tbody id="sec-inst"></tbody></table></div>
+    </div>
+  </section>
+</main>
+<footer>Built for QUANTIX 2K26 &middot; KSRCE &middot; Ed25519, SHA-256, Merkle trees and the chain are implemented from scratch in Python stdlib</footer>
+<div class="toast" id="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>

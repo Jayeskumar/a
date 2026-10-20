@@ -1,0 +1,29 @@
+{
+  "note": "DEMO KEYS - deterministic seeds for a reproducible demo. Never store real issuer keys in a file.",
+  "consortium": {
+    "id": "consortium",
+    "code": "ROOT",
+    "name": "CertChain Consortium (demo regulator)",
+    "city": "Chennai",
+    "secret_seed": "c382d2d68724d6a167aeaad336ab11e10bdab478f9e742c9e1a946462f24d4eb",
+    "public_key": "6a6437b17586d6ec89cd61cffe2f6d3719e3805273e9b65815491272e9fdf08d"
+  },
+  "institutions": [
+    {
+      "id": "ksrce",
+      "code": "KSRCE",
+      "name": "K.S.R. College of Engineering",
+      "city": "Tiruchengode",
+      "secret_seed": "04377dc55fdf31f2b5099e06bbf31c3c490a8b123314e008ac1b5bc825afe901",
+      "public_key": "3a6497cf2752b2c2dbe3c736a21fb11fa699d270998c4a2334fedb8d14793926"
+    },
+    {
+      "id": "cvct",
+      "code": "CVCT",
+      "name": "Cauvery Valley College of Technology (demo)",
+      "city": "Erode",
+      "secret_seed": "8d83605e285bfe70c40ff2fe4b9bc4fa29fc0133d1bc567926581d26f3c176b5",
+      "public_key": "33994b5c25de5d12e4a4421a0a1fe7b42a30c04ca13756327707aef1e6df9b63"
+    }
+  ]
+}
