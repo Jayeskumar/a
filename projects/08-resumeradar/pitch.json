@@ -1,0 +1,94 @@
+{
+  "name": "ResumeRadar",
+  "tagline": "Fair, explainable AI resume screening and career coaching",
+  "domain": "Artificial Intelligence & Machine Learning",
+  "color": "#DB2777",
+  "problem": [
+    "Recruiters skim hundreds of resumes in seconds per profile",
+    "Keyword ATS tools reject good candidates for their wording",
+    "Name, gender and college bias creep into screening",
+    "Rejected students never learn why or what to fix"
+  ],
+  "stats": [
+    {"value": "~7 s", "label": "first human scan of a resume (Ladders eye-tracking study 2018, approx.)"},
+    {"value": "~50%", "label": "more callbacks for identical resumes, name changed (Bertrand & Mullainathan 2004, approx.)"},
+    {"value": "#11 → #2", "label": "strong 'ReactJS, JS, TS' resume: keyword ATS vs ResumeRadar (our demo)"}
+  ],
+  "solution": [
+    "Rank resumes against a JD with a transparent weighted score",
+    "231-skill ontology understands synonyms: JS = JavaScript, k8s = Kubernetes",
+    "Blind mode masks identity; a bias check proves the ranking is unchanged",
+    "Students get gaps, a learning plan, bullet rewrites and interview prep"
+  ],
+  "features": [
+    {"title": "Explainable match score", "desc": "Must/nice skills, TF-IDF context, experience, evidence: every point shown"},
+    {"title": "Blind mode + bias check", "desc": "Identity deleted or swapped: blind score change is exactly 0.00"},
+    {"title": "JD bias lint", "desc": "Flags 'IIT/NIT preferred', age limits and gendered wording"},
+    {"title": "Learning path", "desc": "Missing skills plus prerequisites ordered by topological sort"},
+    {"title": "Bullet coach + ATS check", "desc": "Weak bullets rewritten; 9 ATS rules with points and fixes"},
+    {"title": "Interview prep", "desc": "115 questions on claimed skills, gaps and your projects"}
+  ],
+  "architecture": [
+    "Browser UI (vanilla JS + SVG) -> recruiter screen, coach, how it works",
+    "app.py ThreadingHTTPServer -> 14 JSON endpoints, validation",
+    "blind.py -> mask / strip / swap identity spans",
+    "extract.py + jd.py + ontology.py -> skills, roles, requirements",
+    "tfidf.py + scoring.py -> weighted, explained match score",
+    "gaps.py / ats.py / interview.py -> coaching outputs"
+  ],
+  "algorithms": [
+    "Longest-match alias dictionary with case rules – skill extraction",
+    "Sublinear TF-IDF + cosine with skill tokens – context similarity",
+    "Weighted linear score with implied/related credit – ranking",
+    "Interval union of dated roles – relevant experience",
+    "Counterfactual identity swap + Spearman rho – bias check",
+    "Kahn topological sort – prerequisite-ordered learning path"
+  ],
+  "tech": [
+    "Python 3 stdlib only (http.server, re, math, heapq)",
+    "Vanilla HTML/CSS/JS, inline SVG, no CDN",
+    "Fully offline, no API keys, no data leaves the laptop",
+    "unittest: 77 tests"
+  ],
+  "innovation": [
+    "Fairness verified on every batch, not just claimed",
+    "Skill-aware matching: synonyms, implied and related skills",
+    "Proven-in-work evidence beats keyword stuffing",
+    "One model serves recruiters and coaches students"
+  ],
+  "results": [
+    {"value": "0.00", "label": "blind-mode score change after identity swap (standard mode: up to 1.7)"},
+    {"value": "0.84", "label": "mean Spearman vs hand labels (keyword ATS 0.82)"},
+    {"value": "0.99", "label": "skill-extraction F1 on 28 tricky snippets (keyword 0.76)"},
+    {"value": "3.8 ms", "label": "full report per resume; 100 resumes in 0.38 s"}
+  ],
+  "demo_flow": [
+    "Wi-Fi off, click Load demo data: 20 resumes ranked in ~90 ms",
+    "Show JD bias lint: 'IIT/NIT preferred', 'age below 28'",
+    "Open a score breakdown; show synonym and stuffing signals",
+    "Blind view and bias check: 0.00 vs 1.1 pts drift",
+    "Candidate coach: gaps, learning path, bullet rewrites",
+    "How it works: run the live evaluation"
+  ],
+  "impact": [
+    "Skills, not college brand or gender, decide the shortlist",
+    "Every rejected student gets a concrete learning plan",
+    "Placement cells can pre-check every resume for every drive",
+    "CPU-only and offline: negligible energy, full privacy"
+  ],
+  "business": [
+    "Free candidate coach for students and colleges",
+    "Recruiter licence per seat or per hiring drive",
+    "On-premise edition for firms that cannot use SaaS",
+    "Paid domain ontology packs and ATS integrations"
+  ],
+  "future": [
+    "Offline PDF/DOCX import",
+    "Weights learned from recruiter decisions, still explainable",
+    "Tamil and Hindi resume support",
+    "Exportable fairness audit per hiring drive",
+    "Optional embeddings, checked by the same bias test"
+  ],
+  "port": 8008,
+  "dir": "projects/08-resumeradar"
+}

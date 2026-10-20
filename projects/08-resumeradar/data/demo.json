@@ -1,0 +1,251 @@
+{
+  "seed": 2026,
+  "jds": [
+    {
+      "id": "jd-backend",
+      "title": "Python Backend Developer",
+      "text": "Python Backend Developer - Product Engineering (Chennai / Hybrid)\n\nAbout the role\nWe are a SaaS product company building billing and analytics APIs used by 2,000+ businesses. You will design, build and run backend services end to end.\n\nResponsibilities\n- Build and maintain REST APIs and background jobs in Python\n- Design PostgreSQL schemas and write efficient SQL queries\n- Containerise services with Docker and ship them through CI/CD pipelines\n- Write unit tests, review code and improve reliability\n\nMust have\n- 1+ years of professional experience building backend services\n- Strong Python and Django or Flask\n- REST API design and PostgreSQL (or MySQL)\n- Git, Docker and the Linux command line\n- Unit testing with PyTest\n\nNice to have\n- AWS, Redis and Celery\n- CI/CD with GitHub Actions or Jenkins\n- Exposure to Kubernetes\n\nEducation\n- B.E./B.Tech in Computer Science, IT or a related field\n- Candidates from premier institutes like IIT/NIT preferred. Age below 28 years.\n"
+    },
+    {
+      "id": "jd-analyst",
+      "title": "Data Analyst",
+      "text": "Data Analyst - Business Insights Team (Bengaluru)\n\nAbout the role\nTurn raw sales and product data into decisions. You will own weekly dashboards and ad-hoc analysis for the leadership team.\n\nResponsibilities\n- Write SQL to extract and clean data from the warehouse\n- Build dashboards in Tableau or Power BI\n- Analyse A/B tests and explain results to business stakeholders\n\nRequirements\n- 0-2 years of experience (freshers with strong projects welcome)\n- SQL, Excel (pivot tables, VLOOKUP) and Statistics\n- Python with Pandas for data cleaning\n- Tableau or Power BI\n- Good communication and storytelling with data\n\nGood to have\n- A/B testing, Google Analytics, R\n- Basic Machine Learning (regression, clustering)\n\nEducation\n- Bachelor's degree in any discipline (Statistics, Mathematics, Engineering or Commerce preferred)\n"
+    },
+    {
+      "id": "jd-frontend",
+      "title": "Frontend Developer (React)",
+      "text": "Frontend Developer (React) - Consumer Web (Remote, India)\n\nAbout the role\nBuild fast, accessible web apps used by millions of shoppers.\n\nResponsibilities\n- Build responsive UI components in React and TypeScript\n- Integrate REST APIs and manage state with Redux\n- Write tests with Jest and React Testing Library\n- Improve Core Web Vitals and accessibility\n\nMust have\n- 1+ years building production web apps\n- JavaScript (ES6+), React, HTML5 and CSS3\n- TypeScript\n- REST APIs and Git\n- Responsive design\n\nNice to have\n- Next.js, Redux, Tailwind CSS\n- Jest / React Testing Library\n- Web accessibility (WCAG) and web performance\n\nEducation\n- Degree in Computer Science or equivalent practical experience\n"
+    }
+  ],
+  "resumes": [
+    {
+      "id": "R01",
+      "name": "Keerthana Pillai",
+      "archetype": "Backend - strong (4 yrs Django/AWS)",
+      "text": "Keerthana Pillai\nBackend Engineer | Kochi | keerthana.pillai14@mail.example | +91 93658 78778 | linkedin.com/in/keerthana-pillai | github.com/keerthana-pillai\n\nSUMMARY\nBackend engineer with 3+ years of experience building Python/Django services and REST APIs on AWS.\n\nEXPERIENCE\nSoftware Engineer II, Finlytics Pvt Ltd - Jul 2023 - Present\n- Designed and built 25+ REST APIs in Django REST Framework serving 1.2M requests/day with p95 latency under 120 ms\n- Cut PostgreSQL query time by 60% by adding composite indexes and rewriting ORM queries\n- Containerised 6 services with Docker and shipped them via GitHub Actions CI/CD, reducing release time from 2 days to 2 hours\n- Introduced Celery + Redis background jobs for invoice generation, processing 40,000 invoices nightly\nSoftware Engineer, CodeNest Labs - Aug 2022 - Jun 2023\n- Built a Flask microservice for payment webhooks with 99.9% uptime\n- Wrote PyTest suites that raised test coverage from 45% to 85%\n\nPROJECTS\nOpenLedger (Python, FastAPI, PostgreSQL)\n- Open-source double-entry ledger API with 300+ GitHub stars\n\nSKILLS\nLanguages: Python, SQL, Bash\nFrameworks: Django, Django REST Framework, Flask, FastAPI, Celery\nData & Cloud: PostgreSQL, Redis, AWS (EC2, S3, RDS), Docker, Linux, Git, GitHub Actions\nPractices: Unit testing (PyTest), code review, Agile\n\nEDUCATION\nB.Tech, Computer Science and Engineering - SRM Institute of Science and Technology, 2022 - CGPA 8.4/10\n\nCERTIFICATIONS\nAWS Certified Developer - Associate\n",
+      "gender": "female",
+      "college_tier": "mid"
+    },
+    {
+      "id": "R02",
+      "name": "Siddharth Khan",
+      "archetype": "Backend - alias-worded (DRF, Postgres, k8s)",
+      "text": "Siddharth Khan\nsiddharth.khan31@mail.example . +91 90041 80504 . Coimbatore\n\nPROFILE\nPy dev who likes clean APIs. 2 yrs building RESTful services w/ DRF + Postgres.\n\nWORK EXPERIENCE\nAssociate Software Developer - Zentrix Technologies (Oct 2024 - Present)\n* Developed RESTful services in DRF for a logistics platform used by 300 warehouses\n* Migrated legacy MySQL tables to Postgres with zero downtime (2 TB of data)\n* Wrote dockerfiles and k8s manifests; automated deploys with Jenkins pipelines on Ubuntu servers\n* Added pytest tests for 40 endpoints; production bugs fell 35%\nTrainee (Intern) - Zentrix Technologies (Apr 2024 - Sep 2024)\n* Built internal admin dashboards with Django templates\n\nTECHNICAL SKILLS\nPy, DRF, Postgres, MySQL, Redis, docker, k8s, Jenkins, git, Linux (Ubuntu), REST\n\nEDUCATION\nB.E. Information Technology, Sri Ramakrishna Mission Vidyalaya College (2024) - 7.9 CGPA\n",
+      "gender": "male",
+      "college_tier": "local"
+    },
+    {
+      "id": "R03",
+      "name": "Dinesh Sharma",
+      "archetype": "Backend - medium, weak bullets (Flask)",
+      "text": "Dinesh Sharma\nMadurai | +91 96508 32966 | dinesh.sharma27@mail.example\n\nObjective\nTo work in a challenging environment where I can use my skills for the growth of the organisation.\n\nExperience\nPython Developer, Brightwave Solutions, Mar 2025 - Present\n- Responsible for developing APIs using Flask\n- Worked on MySQL database\n- Involved in testing and bug fixing\n- Helped the team in deployment\n\nSkills\nPython, Flask, MySQL, HTML, CSS, Git, Problem solving\n\nEducation\nB.Sc Computer Science, St. Joseph's College, 2024, 72%\n\nPersonal Details\nDate of Birth: 14-02-2003\nGender: Male\nMarital Status: Single\nLanguages Known: English, Tamil\n",
+      "gender": "male",
+      "college_tier": "local"
+    },
+    {
+      "id": "R04",
+      "name": "Varun Raman",
+      "archetype": "Backend - fresher with Django projects",
+      "text": "Varun Raman\nFinal-year B.Tech (CSE) student | varun.raman72@mail.example | +91 98815 38288 | github.com/varun-raman\n\nCAREER OBJECTIVE\nAspiring backend developer. He has built three Django projects and completed a 6-month backend internship.\n\nINTERNSHIP\nBackend Intern, Kovai Startups Hub - Jan 2026 - Jun 2026\n- Built 8 REST APIs with Django REST Framework for a food-delivery MVP\n- Wrote SQL reports in PostgreSQL that the operations team used daily\n- Set up Docker Compose for local development, cutting onboarding time from 1 day to 1 hour\n\nPROJECTS\nCampusConnect - Django, PostgreSQL, Bootstrap\n- Event portal used by 1,500 students across 4 departments\n- Implemented JWT login and role-based access\nLibraryBot - Python, Flask, SQLite\n- Chat bot that answers library queries; handles 200 queries a week\n\nTECHNICAL SKILLS\nPython, Django, Flask, SQL, PostgreSQL, SQLite, Git, Docker, HTML, CSS, Linux\nData Structures and Algorithms (300+ LeetCode problems)\n\nEDUCATION\nB.Tech Computer Science and Engineering, IIT Madras - 2027 (expected), CGPA 8.9/10\n\nCERTIFICATIONS\nNPTEL - Programming, Data Structures and Algorithms using Python (Elite)\n",
+      "gender": "male",
+      "college_tier": "top"
+    },
+    {
+      "id": "R05",
+      "name": "Manoj Joseph",
+      "archetype": "Keyword-stuffed, no evidence",
+      "text": "Manoj Joseph\nmanoj.joseph47@mail.example +91 97554 55340\n\nSKILLS\nPython, Java, C, C++, C#, JavaScript, TypeScript, Go, Rust, Kotlin, Swift, PHP, Ruby, Scala, R, MATLAB, Django, Flask, FastAPI, Spring Boot, Node.js, Express, React, Angular, Vue.js, Next.js, PostgreSQL, MySQL, MongoDB, Redis, Cassandra, AWS, Azure, GCP, Docker, Kubernetes, Terraform, Jenkins, Kafka, Spark, Hadoop, TensorFlow, PyTorch, Machine Learning, Deep Learning, NLP, Blockchain, Linux, Git\n\nEXPERIENCE\nCustomer Support Executive, QuickServe BPO - Jun 2025 - Mar 2026\n- Handled customer calls and emails\n- Maintained records in Excel\n\nEDUCATION\nBCA, BITS Pilani, 2025\n\nPhoto: attached\nAge: 23\n",
+      "gender": "male",
+      "college_tier": "top"
+    },
+    {
+      "id": "R06",
+      "name": "Vignesh Rao",
+      "archetype": "Java backend (Spring Boot), no Python",
+      "text": "Vignesh Rao\nJava Backend Developer - Tiruchengode\nvignesh.rao51@mail.example | +91 98595 33900\n\nSUMMARY\nJava developer with 4 years of experience in Spring Boot microservices for banking clients.\n\nEXPERIENCE\nSenior Software Engineer, Northbridge Banking Software - May 2023 - Present\n- Built 15 Spring Boot microservices handling 3M transactions a month\n- Reduced API response time by 40% through Redis caching\n- Wrote JUnit and Mockito tests, keeping coverage above 80%\n- Deployed services to Kubernetes on Azure with Jenkins pipelines\nSoftware Engineer, Northbridge Banking Software - Jul 2022 - Apr 2023\n- Developed REST APIs with Spring MVC and Hibernate on MySQL\n\nSKILLS\nJava, Spring Boot, Hibernate, MySQL, Oracle, Redis, REST APIs, Microservices, Docker, Kubernetes, Jenkins, Azure, Git, Linux\n\nEDUCATION\nB.E. Electronics and Communication Engineering, Sri Ramakrishna Mission Vidyalaya College, 2022\n",
+      "gender": "male",
+      "college_tier": "local"
+    },
+    {
+      "id": "R07",
+      "name": "Arun Gupta",
+      "archetype": "Senior backend (8 yrs Python/Go)",
+      "text": "Arun Gupta\nStaff Engineer . Distributed Systems . Coimbatore . arun.gupta7@mail.example . +91 98572 87881\n\nSUMMARY\nEngineer with 8 years of experience designing high-scale Python and Go services; led teams of up to 6 engineers.\n\nEXPERIENCE\nStaff Software Engineer, Streamline Commerce - Jan 2022 - Present\n- Led a team of 6 engineers to re-architect the order platform into 30 microservices, cutting infrastructure cost by 28%\n- Designed event-driven pipelines on Kafka processing 50M events a day\n- Mentored 9 engineers; 4 were promoted\nSenior Software Engineer, Streamline Commerce - Jun 2019 - Dec 2021\n- Built Django and FastAPI services on PostgreSQL with 99.95% availability\n- Introduced Kubernetes and Terraform on AWS, reducing deployment failures by 70%\nSoftware Engineer, ByteForge - Jul 2018 - May 2019\n- Developed Flask APIs and Celery workers for report generation\n\nSKILLS\nPython, Go, SQL, Django, FastAPI, Flask, Celery, PostgreSQL, Redis, Kafka, Docker, Kubernetes, Terraform, AWS, Prometheus, Grafana, Git, Linux, System Design, CI/CD\n\nEDUCATION\nM.Tech Computer Science, Sri Vidya Mandir Arts and Science College, 2018\nB.Tech Information Technology, SRM Institute of Science and Technology, 2016\n",
+      "gender": "male",
+      "college_tier": "local"
+    },
+    {
+      "id": "R08",
+      "name": "Kavya Khan",
+      "archetype": "Data analyst - strong (SQL/Tableau/A-B tests)",
+      "text": "Kavya Khan\nData Analyst | kavya.khan16@mail.example | +91 97484 88382 | Erode | linkedin.com/in/kavya-khan\n\nSUMMARY\nData analyst with 2 years of experience turning sales data into decisions using SQL, Python and Tableau.\n\nEXPERIENCE\nData Analyst, RetailPulse Analytics - Sep 2024 - Present\n- Built 12 Tableau dashboards tracking Rs 40 crore of monthly sales, used by 60 managers\n- Wrote SQL (window functions, CTEs) on BigQuery to automate weekly reporting, saving 10 hours a week\n- Analysed 18 A/B tests on checkout flows with hypothesis testing; one change lifted conversion by 4.2%\n- Cleaned 5M-row sales data with Python and Pandas (deduplication, missing values)\nAnalytics Intern, RetailPulse Analytics - Mar 2024 - Aug 2024\n- Automated Excel reports with pivot tables and VLOOKUP, cutting preparation time by 50%\n\nPROJECTS\nChurn Drivers Analysis (Python, Pandas, scikit-learn)\n- Logistic regression model that identified the top 5 churn drivers (AUC 0.81); presented to leadership\n\nSKILLS\nSQL, Python, Pandas, NumPy, Excel, Tableau, Power BI, Statistics, A/B Testing, BigQuery, Matplotlib, Data Storytelling\n\nEDUCATION\nB.Sc Statistics, Sri Vidya Mandir Arts and Science College, 2024 - 86%\n",
+      "gender": "female",
+      "college_tier": "local"
+    },
+    {
+      "id": "R09",
+      "name": "Pooja Joseph",
+      "archetype": "Data analyst - medium (MIS, Excel/Power BI)",
+      "text": "Pooja Joseph\n+91 97846 52684 | pooja.joseph65@mail.example\n\nPROFILE\nMIS executive with 1 year of experience preparing reports in Excel and Power BI.\n\nEXPERIENCE\nMIS Executive, Sunrise Logistics - Aug 2025 - Present\n- Prepared daily MIS reports in Excel\n- Responsible for maintaining Power BI dashboard\n- Worked on data cleaning of shipment data\n\nSKILLS\nMS Excel (VLOOKUP, Pivot Tables), Power BI, SQL (basic), MS Office, Communication\n\nEDUCATION\nB.Com, Sri Ramakrishna Mission Vidyalaya College, 2025, 68%\n\nPERSONAL DETAILS\nFather's Name: Surya Joseph\nAge: 22\nGender: Female\n",
+      "gender": "female",
+      "college_tier": "local"
+    },
+    {
+      "id": "R10",
+      "name": "Arun Iyer",
+      "archetype": "Data analyst - fresher (Statistics, R, Python)",
+      "text": "Arun Iyer\narun.iyer77@mail.example . +91 97507 68536 . github.com/arun-iyer\n\nOBJECTIVE\nStatistics graduate seeking an entry-level data analyst role.\n\nPROJECTS\nCricket Match Outcome Analysis (R, ggplot2)\n- Analysed 1,000+ matches and identified toss and venue effects with chi-square tests\nRestaurant Ratings Insights (Python, Pandas, Matplotlib, Seaborn)\n- Cleaned 50,000 rows of raw data and built a dashboard of rating drivers\n- Built a linear regression model predicting ratings (R-squared 0.64)\n\nSKILLS\nPython, R, SQL, Pandas, Excel, Statistics, Hypothesis Testing, Tableau (basic), Jupyter\n\nEDUCATION\nB.Sc Statistics, SRM Institute of Science and Technology, 2026 - CGPA 8.7/10\n\nCERTIFICATIONS\nGoogle Data Analytics Professional Certificate (Coursera)\n",
+      "gender": "male",
+      "college_tier": "mid"
+    },
+    {
+      "id": "R11",
+      "name": "Janani Banerjee",
+      "archetype": "Career switcher: mechanical engineer to analytics",
+      "text": "Janani Banerjee\nPune | janani.banerjee99@mail.example | +91 98145 56915\n\nSUMMARY\nMechanical engineer moving into analytics. 3 years in production planning, where she built Excel and SQL tools to track plant KPIs.\n\nEXPERIENCE\nProduction Planning Engineer, Apex Auto Components - Jun 2023 - Present\n- Built an SQL + Excel tracker for 120 machines, reducing unplanned downtime by 18%\n- Created a Tableau dashboard for daily OEE reporting used by 3 plant heads\n- Led a Six Sigma project that cut scrap by 12%\n\nPROJECTS\nSupply Delay Prediction (Python, Pandas)\n- Analysed 2 years of supplier data to flag late deliveries 5 days early\n\nSKILLS\nExcel, SQL, Tableau, Python, Pandas, Statistics, Six Sigma, AutoCAD, SolidWorks\n\nEDUCATION\nB.E. Mechanical Engineering, Bharathi Women's College, 2023\n\nCERTIFICATIONS\nGoogle Data Analytics Professional Certificate\n",
+      "gender": "female",
+      "college_tier": "local"
+    },
+    {
+      "id": "R12",
+      "name": "Rohit Banerjee",
+      "archetype": "ML engineer (PyTorch, NLP)",
+      "text": "Rohit Banerjee\nMachine Learning Engineer | rohit.banerjee89@mail.example | +91 98440 33925 | github.com/rohit-banerjee\n\nSUMMARY\nML engineer with 2 years of experience shipping NLP and recommendation models to production.\n\nEXPERIENCE\nML Engineer, Insightly Labs - Jul 2024 - Present\n- Trained and deployed a BERT-based ticket classifier with PyTorch, automating 65% of support triage\n- Built feature pipelines in Python, Pandas and SQL over 20M rows\n- Served models with FastAPI and Docker at 80 ms p95 latency\n- Ran offline A/B evaluations and reported results to product teams\n\nPROJECTS\nMovie Recommender (scikit-learn, Flask)\n- Collaborative filtering recommender; improved precision@10 by 22% over a popularity baseline\n\nSKILLS\nPython, SQL, PyTorch, TensorFlow, scikit-learn, Pandas, NumPy, NLP, Transformers, Docker, FastAPI, Git, Statistics, Machine Learning\n\nEDUCATION\nM.Sc Data Science, IIIT Hyderabad, 2024\n",
+      "gender": "male",
+      "college_tier": "top"
+    },
+    {
+      "id": "R13",
+      "name": "Imran Raman",
+      "archetype": "Weak: B.Com, office skills",
+      "text": "Imran Raman\n+91 91583 25504\n\nCareer Objective: Seeking a job in a reputed company.\n\nEducation: B.Com (Computer Applications), Sri Ramakrishna Mission Vidyalaya College, 2025\n\nSkills: MS Office, Tally ERP, Typing (40 wpm), Excel basics\n\nExperience: Accounts assistant (6 months) - did data entry and billing.\n\nPersonal Details: Age: 21, Marital Status: Unmarried, Nationality: Indian\nDeclaration: I hereby declare that the above information is true.\n",
+      "gender": "male",
+      "college_tier": "local"
+    },
+    {
+      "id": "R14",
+      "name": "Rahul Sharma",
+      "archetype": "Frontend - strong (React/TS/Next.js)",
+      "text": "Rahul Sharma\nFrontend Engineer | Coimbatore | rahul.sharma79@mail.example | +91 93257 32484 | rahul-sharma.dev\n\nSUMMARY\nFrontend engineer with 3 years of experience building fast, accessible React and TypeScript apps.\n\nEXPERIENCE\nFrontend Engineer, ShopSphere - Jun 2023 - Present\n- Rebuilt the product listing page in React, TypeScript and Next.js, improving LCP from 4.1 s to 1.8 s for 2M monthly users\n- Migrated global state to Redux Toolkit, removing 3,000 lines of prop-drilling code\n- Raised Jest and React Testing Library coverage from 30% to 82%\n- Led a WCAG 2.1 AA accessibility audit and fixed 140 issues\nFrontend Developer, PixelCraft Studio - Jul 2022 - May 2023\n- Built 20+ responsive landing pages with Tailwind CSS and integrated REST APIs\n\nSKILLS\nJavaScript (ES6+), TypeScript, React, Next.js, Redux, HTML5, CSS3, Tailwind CSS, Jest, React Testing Library, Webpack, Git, Figma, Web Accessibility, Responsive Design\n\nEDUCATION\nB.E. Computer Science, Government Arts College, 2022\n",
+      "gender": "male",
+      "college_tier": "local"
+    },
+    {
+      "id": "R15",
+      "name": "Aditya Das",
+      "archetype": "Frontend - alias-worded (ReactJS, JS, TS)",
+      "text": "Aditya Das\nUI Developer - aditya.das41@mail.example - +91 99552 75272\n\nABOUT\nUI developer (2 yrs) working with ReactJS, JS/ES6, TS and HTML5/CSS3.\n\nWORK HISTORY\nUI Developer, Webverse Digital | Nov 2024 - Present\n- Built 30+ reusable ReactJS components with TS for a fintech dashboard used by 50k users\n- Hooked up RESTful endpoints with Axios and RTK; page load time fell 35%\n- Wrote unit tests in Jest and set up Storybook for the design system\nJunior Web Developer, Webverse Digital | May 2024 - Oct 2024\n- Converted Figma designs into responsive HTML5/CSS3 pages (mobile-first)\n\nSKILLS\nReactJS, JS (ES6), TS, HTML5, CSS3, SCSS, RTK, Jest, git, Figma, mobile-first design\n\nEDUCATION\nBCA, PSG College of Technology, 2024\n",
+      "gender": "male",
+      "college_tier": "mid"
+    },
+    {
+      "id": "R16",
+      "name": "Imran Gupta",
+      "archetype": "Web developer - jQuery, no React",
+      "text": "Imran Gupta\nWeb Developer | imran.gupta38@mail.example | +91 91383 54759\n\nSUMMARY\nWeb developer with 2 years of experience in HTML, CSS, JavaScript and jQuery for corporate websites.\n\nEXPERIENCE\nWeb Developer, BlueLeaf Infotech - Oct 2024 - Present\n- Worked on company websites using HTML, CSS and jQuery\n- Responsible for making pages responsive using Bootstrap\n- Fixed bugs reported by clients\n\nSKILLS\nHTML, CSS, JavaScript, jQuery, Bootstrap, PHP, MySQL, WordPress\n\nEDUCATION\nDiploma in Computer Engineering, IIT Bombay, 2022\n",
+      "gender": "male",
+      "college_tier": "top"
+    },
+    {
+      "id": "R17",
+      "name": "Sowmya Menon",
+      "archetype": "Angular developer (related framework)",
+      "text": "Sowmya Menon\nAngular Developer . Chennai . sowmya.menon67@mail.example . +91 93222 49283\n\nSUMMARY\nFrontend developer with 3 years of experience building enterprise dashboards in Angular and TypeScript.\n\nEXPERIENCE\nSoftware Engineer (Frontend), Corvus Enterprise Apps - Apr 2023 - Present\n- Built 40+ Angular components and RxJS data streams for an ERP used by 8,000 employees\n- Reduced bundle size by 45% with lazy loading and Webpack tuning\n- Integrated REST APIs and wrote Jasmine/Karma unit tests (75% coverage)\n- Mentored 2 interns on TypeScript best practices\n\nSKILLS\nAngular, TypeScript, RxJS, JavaScript, HTML, CSS, SCSS, REST APIs, Git, Agile, Responsive Design\n\nEDUCATION\nB.Tech Information Technology, Anna University, 2023\n",
+      "gender": "female",
+      "college_tier": "mid"
+    },
+    {
+      "id": "R18",
+      "name": "Karthik Das",
+      "archetype": "Frontend - fresher with React projects",
+      "text": "Karthik Das\nkarthik.das4@mail.example | +91 98362 62393 | github.com/karthik-das\n\nOBJECTIVE\nFinal-year student who enjoys building web apps with React.\n\nINTERNSHIP\nWeb Development Intern, LaunchPad Labs - May 2026 - Jul 2026\n- Built 6 React pages for a startup landing site and connected them to REST APIs\n- Improved the Lighthouse performance score from 62 to 91\n\nPROJECTS\nStudyBuddy (React, JavaScript, Firebase)\n- Group study planner with real-time chat, used by 400 students on campus\nWeatherly (HTML, CSS, JavaScript)\n- Responsive weather app built on a public REST API\n\nSKILLS\nJavaScript, React, HTML, CSS, Firebase, Git, Tailwind CSS, Responsive Design\n\nEDUCATION\nB.E. Computer Science and Engineering, Government Arts College, 2027 (expected) - CGPA 8.1\n\nPERSONAL DETAILS\nDate of Birth: 09-11-2004\nPhoto: attached\n",
+      "gender": "male",
+      "college_tier": "local"
+    },
+    {
+      "id": "R19",
+      "name": "Ananya Khan",
+      "archetype": "Full-stack MERN developer",
+      "text": "Ananya Khan\nFull Stack Developer (MERN) - Kochi - ananya.khan74@mail.example - +91 92797 20170\n\nSUMMARY\nFull-stack developer with 2 years of experience on MongoDB, Express, React and Node.js.\n\nEXPERIENCE\nFull Stack Developer, Craftly Commerce - Sep 2024 - Present\n- Developed a React storefront and Node.js/Express APIs for 120 small merchants\n- Designed MongoDB schemas and cut checkout API latency by 30% with Redis caching\n- Set up GitHub Actions CI and Docker-based deploys on AWS\n\nPROJECTS\nDevChat (React, Node.js, Socket.io)\n- Real-time chat app handling 1,000+ messages a day in beta\n\nSKILLS\nJavaScript, React, Node.js, Express.js, MongoDB, Redis, HTML, CSS, Git, Docker, AWS, REST APIs\n\nEDUCATION\nB.Tech Computer Science, IIIT Hyderabad, 2024\n",
+      "gender": "female",
+      "college_tier": "top"
+    },
+    {
+      "id": "R20",
+      "name": "Aishwarya Banerjee",
+      "archetype": "Unrelated: civil site engineer",
+      "text": "Aishwarya Banerjee\nSite Engineer | +91 91138 71742 | aishwarya.banerjee87@mail.example\n\nSUMMARY\nCivil engineer with 2 years of site execution experience in residential projects.\n\nEXPERIENCE\nSite Engineer, Greenfield Constructions - Jul 2024 - Present\n- Supervised construction of 3 residential towers (240 flats) on schedule\n- Prepared bar bending schedules and quantity estimates in Excel\n- Coordinated with 40+ workers and subcontractors daily\n\nSKILLS\nAutoCAD, STAAD Pro, Excel, Project Management, Quantity Surveying\n\nEDUCATION\nB.E. Civil Engineering, Sri Vidya Mandir Arts and Science College, 2024\n",
+      "gender": "female",
+      "college_tier": "local"
+    }
+  ],
+  "labels": {
+    "jd-backend": {
+      "R01": 3,
+      "R02": 3,
+      "R03": 2,
+      "R04": 2,
+      "R05": 1,
+      "R06": 1,
+      "R07": 3,
+      "R08": 0,
+      "R09": 0,
+      "R10": 0,
+      "R11": 0,
+      "R12": 1,
+      "R13": 0,
+      "R14": 0,
+      "R15": 0,
+      "R16": 0,
+      "R17": 0,
+      "R18": 0,
+      "R19": 1,
+      "R20": 0
+    },
+    "jd-analyst": {
+      "R01": 1,
+      "R02": 0,
+      "R03": 0,
+      "R04": 1,
+      "R05": 0,
+      "R06": 0,
+      "R07": 1,
+      "R08": 3,
+      "R09": 2,
+      "R10": 2,
+      "R11": 2,
+      "R12": 2,
+      "R13": 1,
+      "R14": 0,
+      "R15": 0,
+      "R16": 0,
+      "R17": 0,
+      "R18": 0,
+      "R19": 0,
+      "R20": 0
+    },
+    "jd-frontend": {
+      "R01": 0,
+      "R02": 0,
+      "R03": 0,
+      "R04": 0,
+      "R05": 1,
+      "R06": 0,
+      "R07": 0,
+      "R08": 0,
+      "R09": 0,
+      "R10": 0,
+      "R11": 0,
+      "R12": 0,
+      "R13": 0,
+      "R14": 3,
+      "R15": 3,
+      "R16": 1,
+      "R17": 2,
+      "R18": 2,
+      "R19": 2,
+      "R20": 0
+    }
+  },
+  "note": "Synthetic, fictional data generated by resumeradar/demo.py"
+}

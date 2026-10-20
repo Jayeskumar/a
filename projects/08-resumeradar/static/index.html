@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ResumeRadar - fair, explainable resume screening</title>
+<meta name="description" content="Fair, explainable AI resume screening and career coaching. Runs fully offline.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23DB2777'/%3E%3Ccircle cx='16' cy='16' r='8' fill='none' stroke='white' stroke-width='2.5'/%3E%3Cpath d='M16 16 L27 9' stroke='white' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <svg class="logo" viewBox="0 0 40 40" aria-hidden="true">
+      <circle cx="20" cy="20" r="18" fill="var(--accent)"/>
+      <circle cx="20" cy="20" r="11" fill="none" stroke="#fff" stroke-width="2.2" opacity=".9"/>
+      <circle cx="20" cy="20" r="4.5" fill="none" stroke="#fff" stroke-width="2.2" opacity=".9"/>
+      <path d="M20 20 L33 11" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>
+      <circle cx="28.5" cy="14" r="2.2" fill="#fff"/>
+    </svg>
+    <div>
+      <h1>ResumeRadar</h1>
+      <p class="tagline">Fair, explainable AI resume screening and career coaching</p>
+    </div>
+  </div>
+  <nav class="tabs" role="tablist" aria-label="Views">
+    <button class="tab active" role="tab" data-view="screen" id="tab-screen">Recruiter screen</button>
+    <button class="tab" role="tab" data-view="coach" id="tab-coach">Candidate coach</button>
+    <button class="tab" role="tab" data-view="how" id="tab-how">How it works</button>
+  </nav>
+  <div class="badges">
+    <span class="badge live"><i></i>Offline</span>
+    <span class="badge" id="skill-count">Skill ontology</span>
+  </div>
+</header>
+
+<main>
+  <!-- ============================ RECRUITER SCREEN ============================ -->
+  <section id="view-screen" class="view active" aria-labelledby="tab-screen">
+    <div class="toolbar card">
+      <label class="field">
+        <span>Job description</span>
+        <select id="jd-select" aria-label="Job description"></select>
+      </label>
+      <button id="btn-edit-jd" class="btn ghost" type="button">Edit JD</button>
+      <span class="sep" aria-hidden="true"></span>
+      <button id="btn-demo" class="btn primary" type="button">&#9654; Load demo data</button>
+      <label class="btn ghost file" title="Upload one or more plain-text resumes">Upload .txt
+        <input type="file" id="file-resumes" accept=".txt,text/plain" multiple>
+      </label>
+      <button id="btn-paste" class="btn ghost" type="button">Paste resume</button>
+      <span class="sep" aria-hidden="true"></span>
+      <label class="switch" title="Mask names, gender words, colleges, age, photo and contact before scoring">
+        <input type="checkbox" id="blind-toggle" checked>
+        <span class="slider" aria-hidden="true"></span>
+        <span class="switch-label">Blind mode</span>
+      </label>
+      <button id="btn-screen" class="btn outline" type="button">Run screening</button>
+    </div>
+
+    <div id="jd-editor" class="card hidden">
+      <div class="card-head"><h2>Edit job description</h2><span class="muted">Paste any JD; must-have vs nice-to-have is parsed from headings and cues</span></div>
+      <textarea id="jd-text" rows="10" spellcheck="false" aria-label="Job description text"></textarea>
+      <div class="row-end">
+        <button id="btn-jd-cancel" class="btn ghost" type="button">Close</button>
+        <button id="btn-jd-apply" class="btn primary" type="button">Use this JD</button>
+      </div>
+    </div>
+
+    <div id="paste-panel" class="card hidden">
+      <div class="card-head"><h2>Add a resume</h2><span class="muted">Plain text works best (copy from PDF/Word)</span></div>
+      <input id="paste-name" type="text" placeholder="Label, e.g. Applicant 21" aria-label="Resume label">
+      <textarea id="paste-text" rows="9" spellcheck="false" placeholder="Paste resume text here..." aria-label="Resume text"></textarea>
+      <div class="row-end">
+        <button id="btn-paste-cancel" class="btn ghost" type="button">Close</button>
+        <button id="btn-paste-add" class="btn primary" type="button">Add resume</button>
+      </div>
+    </div>
+
+    <div id="jd-summary" class="card jd-summary"></div>
+    <div id="kpis" class="kpis"></div>
+
+    <div class="grid-main">
+      <div class="col-left">
+        <div class="card">
+          <div class="card-head">
+            <h2>Ranked candidates</h2>
+            <span id="rank-meta" class="muted"></span>
+          </div>
+          <div id="ranking" class="table-wrap"></div>
+          <div class="legend" id="legend"></div>
+        </div>
+        <div class="card" id="bias-card"></div>
+        <div class="card" id="resume-list-card"></div>
+      </div>
+      <aside class="col-right">
+        <div class="card detail" id="detail"></div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============================ CANDIDATE COACH ============================ -->
+  <section id="view-coach" class="view" aria-labelledby="tab-coach">
+    <div class="coach-grid">
+      <div class="card coach-input">
+        <div class="card-head"><h2>Check my resume</h2><span class="muted">Nothing leaves this laptop</span></div>
+        <label class="field wide"><span>Target job</span><select id="coach-jd" aria-label="Target job"></select></label>
+        <div class="row">
+          <label class="field wide"><span>Try a sample</span><select id="coach-sample" aria-label="Sample resume"></select></label>
+          <label class="btn ghost file">Upload .txt<input type="file" id="coach-file" accept=".txt,text/plain"></label>
+        </div>
+        <textarea id="coach-text" rows="18" spellcheck="false" placeholder="Paste your resume as plain text..." aria-label="Your resume"></textarea>
+        <div class="row-end">
+          <label class="switch small"><input type="checkbox" id="coach-blind" checked><span class="slider" aria-hidden="true"></span><span class="switch-label">Score blind</span></label>
+          <button id="btn-coach" class="btn primary" type="button">Analyse my resume</button>
+        </div>
+      </div>
+      <div class="card detail" id="coach-detail"></div>
+    </div>
+  </section>
+
+  <!-- ============================ HOW IT WORKS ============================ -->
+  <section id="view-how" class="view" aria-labelledby="tab-how">
+    <div class="card">
+      <div class="card-head"><h2>Pipeline</h2><span class="muted">Every step is plain Python you can read - no black box, no cloud</span></div>
+      <div class="pipeline" id="pipeline"></div>
+    </div>
+    <div class="how-grid">
+      <div class="card"><div class="card-head"><h2>Score weights</h2><span class="muted">resumeradar/config.py</span></div><div id="weights"></div></div>
+      <div class="card"><div class="card-head"><h2>Skill ontology</h2><span class="muted" id="onto-meta"></span></div><div id="onto-chart"></div>
+        <input id="onto-search" type="search" placeholder="Search a skill or alias, e.g. k8s" aria-label="Search skills"><div id="onto-results" class="onto-results"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h2>Measured results</h2>
+        <button id="btn-eval" class="btn outline small" type="button">Run evaluation</button></div>
+      <div id="eval"><p class="muted">Ranking agreement with hand labels, extraction accuracy, fairness and latency - computed live on this laptop.</p></div>
+    </div>
+  </section>
+</main>
+
+<footer>Built for QUANTIX 2K26 &middot; KSRCE</footer>
+<div id="toast" role="status" aria-live="polite"></div>
+<script src="app.js"></script>
+</body>
+</html>
