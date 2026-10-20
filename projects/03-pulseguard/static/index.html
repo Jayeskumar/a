@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PulseGuard – early warning for patient deterioration</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23E5484D'/%3E%3Cpath d='M4 17h6l3-7 4 13 3-6h8' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <svg width="38" height="38" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#E5484D"/><path d="M4 17h6l3-7 4 13 3-6h8" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div>
+      <h1>Pulse<span>Guard</span></h1>
+      <p>Early warning for patient deterioration, before it's too late</p>
+    </div>
+  </div>
+  <div class="sim" aria-label="Simulation controls">
+    <div class="clock"><b id="clock">--:--</b><small id="clock-sub">General Ward A · 12 beds</small></div>
+    <button class="btn" id="btn-play" title="Play / pause the simulated clock">▶ Play</button>
+    <div class="seg" id="speed" role="group" aria-label="Speed"></div>
+    <button class="btn" id="btn-skip" title="Advance the simulation by one hour">+1 h</button>
+    <button class="btn" id="btn-reset" title="Reset the ward to 08:00">Reset</button>
+    <button class="btn primary" id="btn-demo" title="Reset to 08:00 and play (15 simulated minutes per second)">▶ Run demo</button>
+  </div>
+</header>
+<div class="disclaimer" role="note">
+  <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 21h20L12 3z" fill="none" stroke="#E5484D" stroke-width="2" stroke-linejoin="round"/><path d="M12 10v5M12 18v.5" stroke="#E5484D" stroke-width="2" stroke-linecap="round"/></svg>
+  <div><b>Decision-support prototype – not a medical device.</b> All patients are simulated. NEWS2 supports, and never replaces, clinical judgement and your hospital's escalation policy.</div>
+</div>
+<nav class="tabs" role="tablist">
+  <button class="tab on" data-view="ward" role="tab">Ward dashboard <span class="count" id="tab-alerts" hidden>0</span></button>
+  <button class="tab" data-view="calc" role="tab" id="tab-calc">Bedside NEWS2 calculator</button>
+  <button class="tab" data-view="handover" role="tab" id="tab-handover">Handover</button>
+  <button class="tab" data-view="ref" role="tab" id="tab-ref">NEWS2 chart</button>
+  <button class="tab" data-view="eval" role="tab" id="tab-eval">Evaluation</button>
+</nav>
+<main>
+  <section class="view" id="view-ward">
+    <div class="chips" id="chips"></div>
+    <div class="ward-layout">
+      <div class="tiles" id="tiles" aria-live="polite"></div>
+      <aside class="card feed">
+        <h2>Alert feed <span class="muted" id="feed-count"></span></h2>
+        <div id="alerts"><div class="empty">No alerts yet.</div></div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="view" id="view-calc" hidden>
+    <div class="calc">
+      <form class="card form" id="calc-form" novalidate autocomplete="off">
+        <h2 style="font-size:15px">Enter observations</h2>
+        <div class="examples">
+          <span class="note">Examples:</span>
+          <button type="button" class="btn small" data-ex="normal">Healthy adult</button>
+          <button type="button" class="btn small" data-ex="sepsis">Early sepsis</button>
+          <button type="button" class="btn small" data-ex="copd">COPD on Scale 2</button>
+          <button type="button" class="btn small" data-ex="shock">Shocked</button>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="f-rr">Respiration rate (/min)</label><input type="number" id="f-rr" name="rr" step="1" inputmode="numeric"><span class="err" data-err="rr"></span></div>
+          <div class="field"><label for="f-spo2">SpO2 (%)</label><input type="number" id="f-spo2" name="spo2" step="1" inputmode="numeric"><span class="err" data-err="spo2"></span></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>SpO2 scale</label>
+            <div class="seg" id="f-scale"><button type="button" data-v="1" class="on">Scale 1</button><button type="button" data-v="2" title="Hypercapnic respiratory failure">Scale 2</button></div>
+            <span class="hint">Scale 2 only for confirmed hypercapnic respiratory failure.</span>
+          </div>
+          <div class="field"><label>Air or oxygen?</label>
+            <div class="seg" id="f-o2"><button type="button" data-v="0" class="on">Air</button><button type="button" data-v="1">Oxygen</button></div>
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="f-sbp">Systolic BP (mmHg)</label><input type="number" id="f-sbp" name="sbp" step="1" inputmode="numeric"><span class="err" data-err="sbp"></span></div>
+          <div class="field"><label for="f-hr">Pulse (/min)</label><input type="number" id="f-hr" name="hr" step="1" inputmode="numeric"><span class="err" data-err="hr"></span></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>Consciousness (ACVPU)</label>
+            <div class="seg" id="f-acvpu"><button type="button" data-v="A" class="on" title="Alert">A</button><button type="button" data-v="C" title="New confusion">C</button><button type="button" data-v="V" title="Responds to voice">V</button><button type="button" data-v="P" title="Responds to pain">P</button><button type="button" data-v="U" title="Unresponsive">U</button></div>
+          </div>
+          <div class="field"><label for="f-temp">Temperature (°C)</label><input type="number" id="f-temp" name="temp" step="0.1" inputmode="decimal"><span class="err" data-err="temp"></span></div>
+        </div>
+        <div class="field" style="border-top:1px solid var(--border);padding-top:10px">
+          <label for="f-patient">Save to ward patient (optional)</label>
+          <div class="row2"><select id="f-patient" style="padding:7px;border-radius:8px;border:1px solid var(--border);background:var(--surface)"><option value="">– bedside calculator only –</option></select>
+          <button type="button" class="btn primary" id="btn-save-obs" disabled>Record obs</button></div>
+          <span class="hint" id="save-msg"></span>
+        </div>
+      </form>
+      <div id="calc-result" class="card"><div class="panel muted">Enter all six vital signs – the NEWS2 score is computed instantly on the server as you type.</div></div>
+    </div>
+  </section>
+
+  <section class="view" id="view-handover" hidden>
+    <div class="toolbar">
+      <h2 style="font-size:16px">Shift handover summary</h2>
+      <span class="muted" id="handover-clock"></span>
+      <span style="flex:1"></span>
+      <button class="btn" id="btn-copy">Copy as text</button>
+      <button class="btn primary" id="btn-print">Print</button>
+    </div>
+    <div id="handover-list"></div>
+  </section>
+
+  <section class="view" id="view-ref" hidden>
+    <div class="toolbar"><h2 style="font-size:16px">NEWS2 scoring chart</h2><span class="muted" id="ref-source"></span></div>
+    <div class="ref-grid" id="ref-params"></div>
+    <h2 style="font-size:15px;margin:14px 0 8px">Clinical risk bands &amp; response</h2>
+    <div class="card panel" id="ref-bands"></div>
+  </section>
+
+  <section class="view" id="view-eval" hidden>
+    <div id="eval-body"><div class="card panel muted">Running the evaluation over 30 simulated ward-days and 5 sensitivity settings (about 10 s the first time)…</div></div>
+  </section>
+</main>
+<div class="overlay" id="overlay" hidden></div>
+<aside class="drawer" id="drawer" hidden aria-label="Patient detail"></aside>
+<footer>Built for QUANTIX 2K26 · KSRCE · PulseGuard runs fully offline – Python standard library, no cloud, no black box.</footer>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+{
+ "seeds": 30,
+ "scenario_hours": 24,
+ "deteriorating_episodes": 90,
+ "detected_by_trend_before_threshold": 83,
+ "lead_vs_threshold_h": {
+  "n": 90,
+  "median": 1.25,
+  "mean": 1.26,
+  "min": 0.0,
+  "max": 3.75
+ },
+ "lead_vs_manual_h": {
+  "n": 90,
+  "median": 3.12,
+  "mean": 3.21,
+  "min": 0.75,
+  "max": 7.0
+ },
+ "threshold_vs_manual_h": {
+  "n": 90,
+  "median": 1.75,
+  "mean": 1.94,
+  "min": 0.0,
+  "max": 5.5
+ },
+ "per_patient": {
+  "Ramesh Kumar": {
+   "lead_vs_threshold_h": {
+    "n": 30,
+    "median": 1.5,
+    "mean": 1.51,
+    "min": 0.0,
+    "max": 3.75
+   },
+   "lead_vs_manual_h": {
+    "n": 30,
+    "median": 3.75,
+    "mean": 3.64,
+    "min": 0.75,
+    "max": 7.0
+   }
+  },
+  "Lakshmi Devi": {
+   "lead_vs_threshold_h": {
+    "n": 30,
+    "median": 0.75,
+    "mean": 0.91,
+    "min": 0.0,
+    "max": 3.25
+   },
+   "lead_vs_manual_h": {
+    "n": 30,
+    "median": 2.25,
+    "mean": 2.77,
+    "min": 0.75,
+    "max": 6.0
+   }
+  },
+  "Arjun Reddy": {
+   "lead_vs_threshold_h": {
+    "n": 30,
+    "median": 1.38,
+    "mean": 1.38,
+    "min": 0.25,
+    "max": 3.25
+   },
+   "lead_vs_manual_h": {
+    "n": 30,
+    "median": 3.0,
+    "mean": 3.21,
+    "min": 0.75,
+    "max": 5.25
+   }
+  }
+ },
+ "false_alerts_before_onset": 1,
+ "stable_patient_days": 270.0,
+ "stable_trend_alerts": 7,
+ "stable_threshold_medium_plus_alerts": 58,
+ "stable_only_patient_days": 210.0,
+ "stable_only_trend_alerts": 7,
+ "stable_only_threshold_alerts": 0,
+ "stable_only_threshold_medium_plus_alerts": 0,
+ "improving_trend_alerts": 0,
+ "stable_trend_alerts_per_patient_day": 0.026,
+ "copd_scale1_red_readings": 2903,
+ "copd_scale2_red_readings": 0,
+ "copd_readings": 2910,
+ "demo_ward": [
+  {
+   "id": "P01",
+   "name": "Ramesh Kumar",
+   "kind": "deteriorating",
+   "onset_h": 4.0,
+   "t_threshold": 8.0,
+   "t_red": 8.0,
+   "t_manual": 8.0,
+   "t_trend": 6.25,
+   "t_pulseguard": 6.25,
+   "lead_vs_threshold": 1.75,
+   "lead_vs_manual": 1.75,
+   "threshold_vs_manual": 0.0,
+   "false_alerts_before_onset": 0,
+   "trend_fired_before_threshold": true
+  },
+  {
+   "id": "P02",
+   "name": "Lakshmi Devi",
+   "kind": "deteriorating",
+   "onset_h": 8.0,
+   "t_threshold": 11.25,
+   "t_red": 11.25,
+   "t_manual": 12.0,
+   "t_trend": 11.0,
+   "t_pulseguard": 11.0,
+   "lead_vs_threshold": 0.25,
+   "lead_vs_manual": 1.0,
+   "threshold_vs_manual": 0.75,
+   "false_alerts_before_onset": 0,
+   "trend_fired_before_threshold": true
+  },
+  {
+   "id": "P03",
+   "name": "Arjun Reddy",
+   "kind": "deteriorating",
+   "onset_h": 12.0,
+   "t_threshold": 16.5,
+   "t_red": 16.5,
+   "t_manual": 20.0,
+   "t_trend": 14.25,
+   "t_pulseguard": 14.25,
+   "lead_vs_threshold": 2.25,
+   "lead_vs_manual": 5.75,
+   "threshold_vs_manual": 3.5,
+   "false_alerts_before_onset": 0,
+   "trend_fired_before_threshold": true
+  },
+  {
+   "id": "P04",
+   "name": "Mohammed Ismail",
+   "kind": "stable",
+   "trend_alerts": 0,
+   "threshold_alerts": 0,
+   "threshold_medium_plus": 0,
+   "max_score": 2,
+   "scale1_red_readings": 97,
+   "scale2_red_readings": 0,
+   "readings": 97
+  },
+  {
+   "id": "P05",
+   "name": "Priya Sharma",
+   "kind": "stable",
+   "trend_alerts": 0,
+   "threshold_alerts": 1,
+   "threshold_medium_plus": 0,
+   "max_score": 3
+  },
+  {
+   "id": "P06",
+   "name": "Suresh Babu",
+   "kind": "stable",
+   "trend_alerts": 0,
+   "threshold_alerts": 0,
+   "threshold_medium_plus": 0,
+   "max_score": 1
+  },
+  {
+   "id": "P07",
+   "name": "Kavitha Rajan",
+   "kind": "improving",
+   "trend_alerts": 0,
+   "threshold_alerts": 1,
+   "threshold_medium_plus": 1,
+   "max_score": 5
+  },
+  {
+   "id": "P08",
+   "name": "Venkatesh Iyer",
+   "kind": "stable",
+   "trend_alerts": 0,
+   "threshold_alerts": 0,
+   "threshold_medium_plus": 0,
+   "max_score": 3
+  },
+  {
+   "id": "P09",
+   "name": "Anjali Gupta",
+   "kind": "improving",
+   "trend_alerts": 0,
+   "threshold_alerts": 1,
+   "threshold_medium_plus": 1,
+   "max_score": 6
+  },
+  {
+   "id": "P10",
+   "name": "Rajesh Patel",
+   "kind": "stable",
+   "trend_alerts": 0,
+   "threshold_alerts": 0,
+   "threshold_medium_plus": 0,
+   "max_score": 1
+  },
+  {
+   "id": "P11",
+   "name": "Fatima Begum",
+   "kind": "stable",
+   "trend_alerts": 0,
+   "threshold_alerts": 0,
+   "threshold_medium_plus": 0,
+   "max_score": 1
+  },
+  {
+   "id": "P12",
+   "name": "Deepak Singh",
+   "kind": "stable",
+   "trend_alerts": 0,
+   "threshold_alerts": 0,
+   "threshold_medium_plus": 0,
+   "max_score": 1
+  }
+ ],
+ "latency": {
+  "news2_score_us": 5.27,
+  "score_plus_trend_us": 73.75,
+  "readings_timed": 1164
+ },
+ "sensitivity": [
+  {
+   "label": "Shipped settings",
+   "overrides": {},
+   "lead_vs_threshold_median_h": 1.25,
+   "trend_first": 83,
+   "episodes": 90,
+   "false_trend_alerts": 7,
+   "false_per_patient_day": 0.026
+  },
+  {
+   "label": "Shorter horizon (2 h)",
+   "overrides": {
+    "TREND_HORIZON_H": 2.0
+   },
+   "lead_vs_threshold_median_h": 0.25,
+   "trend_first": 53,
+   "episodes": 90,
+   "false_trend_alerts": 1,
+   "false_per_patient_day": 0.004
+  },
+  {
+   "label": "Looser fit (R2 >= 0.4)",
+   "overrides": {
+    "TREND_MIN_R2": 0.4
+   },
+   "lead_vs_threshold_median_h": 1.5,
+   "trend_first": 87,
+   "episodes": 90,
+   "false_trend_alerts": 25,
+   "false_per_patient_day": 0.093
+  },
+  {
+   "label": "No confirmation (1 reading)",
+   "overrides": {
+    "TREND_CONFIRM_READINGS": 1
+   },
+   "lead_vs_threshold_median_h": 1.5,
+   "trend_first": 89,
+   "episodes": 90,
+   "false_trend_alerts": 27,
+   "false_per_patient_day": 0.1
+  },
+  {
+   "label": "Longer window (16 readings)",
+   "overrides": {
+    "TREND_WINDOW": 16
+   },
+   "lead_vs_threshold_median_h": 0.75,
+   "trend_first": 73,
+   "episodes": 90,
+   "false_trend_alerts": 2,
+   "false_per_patient_day": 0.007
+  }
+ ],
+ "holdout": {
+  "deteriorating_episodes": 90,
+  "detected_by_trend_before_threshold": 76,
+  "lead_vs_threshold_h": {
+   "n": 90,
+   "median": 1.0,
+   "mean": 1.08,
+   "min": 0.0,
+   "max": 3.5
+  },
+  "lead_vs_manual_h": {
+   "n": 90,
+   "median": 3.25,
+   "mean": 3.17,
+   "min": 0.5,
+   "max": 7.75
+  },
+  "false_alerts_before_onset": 0,
+  "stable_patient_days": 270.0,
+  "stable_trend_alerts": 3,
+  "stable_trend_alerts_per_patient_day": 0.011,
+  "stable_only_threshold_medium_plus_alerts": 1,
+  "seeds": "101-130"
+ }
+}

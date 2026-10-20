@@ -1,0 +1,88 @@
+{
+  "name": "PulseGuard",
+  "tagline": "Early warning for patient deterioration, before it's too late",
+  "domain": "HealthTech & Biomedical Innovation",
+  "color": "#E5484D",
+  "problem": [
+    "Ward patients deteriorate silently between manual observation rounds",
+    "Understaffed district hospitals: one nurse, many beds, paper charts",
+    "Paper NEWS2 is a snapshot; nobody plots the trend",
+    "Threshold alarms fire only after the patient has crossed the line"
+  ],
+  "stats": [
+    {"value": "~8 in 10", "label": "in-hospital arrests showed deterioration in prior 8 h (Schein 1990, approx.)"},
+    {"value": "4–6 h", "label": "NEWS2 minimum obs interval for scores 1–4 (RCP 2017)"}
+  ],
+  "solution": [
+    "Exact NEWS2 scoring of every reading, incl. SpO2 Scale 2 for COPD",
+    "From-scratch trend detector projects NEWS2 4 h ahead",
+    "Acuity-sorted ward dashboard with alert feed and escalation steps",
+    "Explainable breakdown, bedside calculator and auto handover"
+  ],
+  "features": [
+    {"title": "NEWS2 engine", "desc": "All 7 parameters, Scale 1/2, red-3 rule, 4 bands, RCP responses"},
+    {"title": "Trend early warning", "desc": "OLS slopes + R² gating flag rising risk before thresholds"},
+    {"title": "Live ward simulator", "desc": "12 seeded patients, server clock, play/pause/speed/reset"},
+    {"title": "Explainability", "desc": "Per-parameter points, zone-shaded charts, rule that fired"},
+    {"title": "Bedside calculator", "desc": "Validated entry, instant score, save to patient chart"},
+    {"title": "Auto handover", "desc": "Printable per-patient summary: score, trend, last change"}
+  ],
+  "architecture": [
+    "Ward simulator / nurse entry -> validated vital-sign readings",
+    "news2.py -> RCP 2017 tables, bands, escalation response",
+    "trend.py -> least-squares slope, R², 4 h projection",
+    "alerts.py -> hysteresis, debounce, cooldown",
+    "app.py ThreadingHTTPServer -> JSON API",
+    "Vanilla JS + inline SVG dashboard, polls every second"
+  ],
+  "algorithms": [
+    "NEWS2 (RCP 2017) – aggregate risk score and clinical response",
+    "Ordinary least squares – per-vital slope and R² over 3 h",
+    "Trend projection – score projected vitals with NEWS2",
+    "Hysteresis state machine – alert without flicker spam",
+    "AR(1) physiological simulator – seeded deterministic vitals"
+  ],
+  "tech": ["Python 3 stdlib", "http.server", "Vanilla HTML/CSS/JS", "Inline SVG charts", "unittest (75 tests)"],
+  "innovation": [
+    "Warns on the trajectory, not just the threshold",
+    "Early warning stated in NEWS2 terms nurses already use",
+    "Scale 2 prevents constant false red alerts in COPD",
+    "Fully offline, explainable, runs on a ₹15k laptop"
+  ],
+  "results": [
+    {"value": "1.0 h", "label": "median extra warning vs NEWS2≥5 alert (held-out sim)"},
+    {"value": "3.25 h", "label": "median earlier than 4-hourly paper rounds (held-out sim)"},
+    {"value": "3 / 270", "label": "false trend alerts per stable patient-days (held-out)"},
+    {"value": "≈6 µs", "label": "NEWS2 scoring latency per reading"}
+  ],
+  "demo_flow": [
+    "Click Run demo: 12-bed ward plays from 08:00",
+    "Bed 1 gets a purple early warning while NEWS2 is still low",
+    "Open patient: per-parameter breakdown, shaded charts, slopes",
+    "Threshold fires 1 h 45 min later; acknowledge alert",
+    "COPD bed: Scale 2 vs Scale 1 comparison",
+    "Bedside calculator: Early sepsis example scores 7",
+    "Handover tab: print the auto-generated summary"
+  ],
+  "impact": [
+    "More time for antibiotics, fluids or ICU transfer",
+    "Points scarce nursing attention at the beds that need it",
+    "No licence, cloud or new hardware needed to start",
+    "Consistent, printable handovers on every shift"
+  ],
+  "business": [
+    "Free bedside calculator to drive adoption",
+    "Per-bed monthly subscription for ward dashboard",
+    "Bundle with low-cost wearables via state health missions/CSR",
+    "Analytics add-on: escalation compliance for quality teams"
+  ],
+  "future": [
+    "Validate on real de-identified vitals, then silent ward pilot",
+    "HL7/FHIR and BLE wearable ingestion",
+    "SMS/WhatsApp escalation with acknowledgement timing",
+    "Patient-specific baselines and calibrated risk",
+    "Tamil/Hindi UI and voice entry"
+  ],
+  "port": 8003,
+  "dir": "projects/03-pulseguard"
+}
