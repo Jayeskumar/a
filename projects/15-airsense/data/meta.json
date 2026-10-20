@@ -1,0 +1,534 @@
+{
+ "seed": 2026,
+ "start": "2026-09-25",
+ "field_hours": 672,
+ "coloc_hours": 168,
+ "sensors": [
+  {
+   "id": "S01",
+   "name": "Govt Hospital (at REF-A)",
+   "x": 6.3,
+   "y": 4.2,
+   "coloc": "REF-A",
+   "gain": 1.421,
+   "offset": 0.03,
+   "kappa": 0.294,
+   "temp_coef": 0.151,
+   "gain10": 1.253,
+   "rh_bias": -1.75
+  },
+  {
+   "id": "S02",
+   "name": "Bus Stand",
+   "x": 6.0,
+   "y": 4.7,
+   "coloc": "REF-A",
+   "gain": 1.043,
+   "offset": 0.71,
+   "kappa": 0.284,
+   "temp_coef": 0.182,
+   "gain10": 0.993,
+   "rh_bias": -0.73
+  },
+  {
+   "id": "S03",
+   "name": "Market Street",
+   "x": 6.6,
+   "y": 5.0,
+   "coloc": "REF-A",
+   "gain": 1.02,
+   "offset": 0.03,
+   "kappa": 0.146,
+   "temp_coef": -0.119,
+   "gain10": 0.89,
+   "rh_bias": -0.36
+  },
+  {
+   "id": "S04",
+   "name": "Car Street",
+   "x": 5.4,
+   "y": 4.3,
+   "coloc": "REF-A",
+   "gain": 0.945,
+   "offset": 2.37,
+   "kappa": 0.197,
+   "temp_coef": 0.115,
+   "gain10": 0.958,
+   "rh_bias": -0.86
+  },
+  {
+   "id": "S05",
+   "name": "Hill Road",
+   "x": 4.3,
+   "y": 3.1,
+   "coloc": "REF-A",
+   "gain": 1.137,
+   "offset": -0.17,
+   "kappa": 0.144,
+   "temp_coef": -0.018,
+   "gain10": 1.087,
+   "rh_bias": -1.02
+  },
+  {
+   "id": "S06",
+   "name": "Temple Foothill",
+   "x": 3.5,
+   "y": 2.3,
+   "coloc": "REF-A",
+   "gain": 1.154,
+   "offset": 4.05,
+   "kappa": 0.171,
+   "temp_coef": -0.257,
+   "gain10": 1.124,
+   "rh_bias": 1.75
+  },
+  {
+   "id": "S07",
+   "name": "Weavers' Colony",
+   "x": 8.2,
+   "y": 2.5,
+   "coloc": "REF-A",
+   "gain": 1.036,
+   "offset": -2.19,
+   "kappa": 0.244,
+   "temp_coef": 0.191,
+   "gain10": 0.946,
+   "rh_bias": -0.51
+  },
+  {
+   "id": "S08",
+   "name": "Railway Gate",
+   "x": 7.6,
+   "y": 3.4,
+   "coloc": "REF-A",
+   "gain": 1.366,
+   "offset": -2.22,
+   "kappa": 0.289,
+   "temp_coef": -0.202,
+   "gain10": 1.462,
+   "rh_bias": 1.38
+  },
+  {
+   "id": "S09",
+   "name": "College Campus",
+   "x": 2.2,
+   "y": 5.6,
+   "coloc": "REF-A",
+   "gain": 1.255,
+   "offset": 0.38,
+   "kappa": 0.242,
+   "temp_coef": -0.185,
+   "gain10": 1.218,
+   "rh_bias": -1.12
+  },
+  {
+   "id": "S10",
+   "name": "Highway Toll Plaza",
+   "x": 1.8,
+   "y": 7.4,
+   "coloc": "REF-A",
+   "gain": 1.116,
+   "offset": 4.24,
+   "kappa": 0.279,
+   "temp_coef": -0.232,
+   "gain10": 1.122,
+   "rh_bias": 0.28
+  },
+  {
+   "id": "S11",
+   "name": "Highway Junction",
+   "x": 4.6,
+   "y": 6.5,
+   "coloc": "REF-A",
+   "gain": 0.974,
+   "offset": 1.47,
+   "kappa": 0.181,
+   "temp_coef": -0.23,
+   "gain10": 1.016,
+   "rh_bias": 1.79
+  },
+  {
+   "id": "S12",
+   "name": "Flyover Site",
+   "x": 5.2,
+   "y": 5.8,
+   "coloc": "REF-A",
+   "gain": 1.238,
+   "offset": -1.47,
+   "kappa": 0.216,
+   "temp_coef": 0.296,
+   "gain10": 1.239,
+   "rh_bias": 0.5
+  },
+  {
+   "id": "S13",
+   "name": "Workshop Row",
+   "x": 8.6,
+   "y": 5.75,
+   "coloc": "REF-A",
+   "gain": 1.134,
+   "offset": 2.13,
+   "kappa": 0.286,
+   "temp_coef": -0.224,
+   "gain10": 1.212,
+   "rh_bias": 0.74
+  },
+  {
+   "id": "S14",
+   "name": "Industrial Estate (at REF-B)",
+   "x": 9.0,
+   "y": 2.9,
+   "coloc": "REF-B",
+   "gain": 0.94,
+   "offset": -2.11,
+   "kappa": 0.181,
+   "temp_coef": 0.113,
+   "gain10": 0.903,
+   "rh_bias": 2.86
+  },
+  {
+   "id": "S15",
+   "name": "Dyeing Units",
+   "x": 10.6,
+   "y": 1.5,
+   "coloc": "REF-B",
+   "gain": 0.807,
+   "offset": -1.46,
+   "kappa": 0.207,
+   "temp_coef": -0.106,
+   "gain10": 0.861,
+   "rh_bias": -2.5
+  },
+  {
+   "id": "S16",
+   "name": "East Bypass",
+   "x": 10.8,
+   "y": 3.4,
+   "coloc": "REF-B",
+   "gain": 1.067,
+   "offset": -1.29,
+   "kappa": 0.169,
+   "temp_coef": -0.166,
+   "gain10": 1.019,
+   "rh_bias": -1.59
+  },
+  {
+   "id": "S17",
+   "name": "Primary School",
+   "x": 7.0,
+   "y": 6.6,
+   "coloc": "REF-B",
+   "gain": 1.34,
+   "offset": -0.86,
+   "kappa": 0.264,
+   "temp_coef": 0.236,
+   "gain10": 1.412,
+   "rh_bias": 0.69
+  },
+  {
+   "id": "S18",
+   "name": "North Residential",
+   "x": 6.4,
+   "y": 7.8,
+   "coloc": "REF-B",
+   "gain": 1.178,
+   "offset": 2.56,
+   "kappa": 0.232,
+   "temp_coef": 0.145,
+   "gain10": 1.114,
+   "rh_bias": 2.86
+  },
+  {
+   "id": "S19",
+   "name": "Lake View",
+   "x": 3.0,
+   "y": 4.2,
+   "coloc": "REF-B",
+   "gain": 1.302,
+   "offset": 0.64,
+   "kappa": 0.286,
+   "temp_coef": -0.328,
+   "gain10": 1.212,
+   "rh_bias": -1.31
+  },
+  {
+   "id": "S20",
+   "name": "Farm Village West",
+   "x": 1.2,
+   "y": 2.4,
+   "coloc": "REF-B",
+   "gain": 1.184,
+   "offset": 3.92,
+   "kappa": 0.21,
+   "temp_coef": -0.163,
+   "gain10": 1.049,
+   "rh_bias": -1.68
+  },
+  {
+   "id": "S21",
+   "name": "Agri Market",
+   "x": 2.4,
+   "y": 3.3,
+   "coloc": "REF-B",
+   "gain": 1.277,
+   "offset": 0.41,
+   "kappa": 0.194,
+   "temp_coef": 0.218,
+   "gain10": 1.191,
+   "rh_bias": 0.43
+  },
+  {
+   "id": "S22",
+   "name": "South Layout",
+   "x": 6.2,
+   "y": 1.5,
+   "coloc": "REF-B",
+   "gain": 1.271,
+   "offset": 4.37,
+   "kappa": 0.251,
+   "temp_coef": 0.152,
+   "gain10": 1.324,
+   "rh_bias": 2.58
+  },
+  {
+   "id": "S23",
+   "name": "East Residential",
+   "x": 8.0,
+   "y": 4.4,
+   "coloc": "REF-B",
+   "gain": 1.392,
+   "offset": 3.25,
+   "kappa": 0.157,
+   "temp_coef": -0.181,
+   "gain10": 1.527,
+   "rh_bias": 0.38
+  },
+  {
+   "id": "S24",
+   "name": "Highway East",
+   "x": 11.0,
+   "y": 4.6,
+   "coloc": "REF-B",
+   "gain": 0.961,
+   "offset": 3.48,
+   "kappa": 0.193,
+   "temp_coef": -0.069,
+   "gain10": 0.995,
+   "rh_bias": 1.24
+  },
+  {
+   "id": "S25",
+   "name": "North-East Colony",
+   "x": 10.2,
+   "y": 7.0,
+   "coloc": "REF-B",
+   "gain": 1.154,
+   "offset": -2.14,
+   "kappa": 0.196,
+   "temp_coef": -0.267,
+   "gain10": 1.05,
+   "rh_bias": 2.65
+  }
+ ],
+ "references": [
+  {
+   "id": "REF-A",
+   "name": "Reference A (Govt Hospital)",
+   "x": 6.3,
+   "y": 4.2
+  },
+  {
+   "id": "REF-B",
+   "name": "Reference B (Industrial Estate)",
+   "x": 9.0,
+   "y": 2.9
+  }
+ ],
+ "faults": [
+  {
+   "sensor": "S05",
+   "type": "drift",
+   "kind": "gain",
+   "start_day": 12,
+   "rate": 0.035,
+   "start_hour": 288,
+   "end_hour": 671
+  },
+  {
+   "sensor": "S17",
+   "type": "drift",
+   "kind": "offset",
+   "start_day": 14,
+   "rate": 3.0,
+   "start_hour": 336,
+   "end_hour": 671
+  },
+  {
+   "sensor": "S21",
+   "type": "drift",
+   "kind": "gain",
+   "start_day": 8,
+   "rate": -0.03,
+   "start_hour": 192,
+   "end_hour": 671
+  },
+  {
+   "sensor": "S09",
+   "type": "stuck",
+   "start_hour": 230,
+   "hours": 30,
+   "end_hour": 259
+  },
+  {
+   "sensor": "S18",
+   "type": "stuck",
+   "start_hour": 507,
+   "hours": 16,
+   "end_hour": 522
+  },
+  {
+   "sensor": "S03",
+   "type": "stuck",
+   "start_hour": 608,
+   "hours": 10,
+   "end_hour": 617
+  },
+  {
+   "sensor": "S02",
+   "type": "spike",
+   "start_hour": 520,
+   "end_hour": 520
+  },
+  {
+   "sensor": "S03",
+   "type": "spike",
+   "start_hour": 163,
+   "end_hour": 163
+  },
+  {
+   "sensor": "S06",
+   "type": "spike",
+   "start_hour": 153,
+   "end_hour": 153
+  },
+  {
+   "sensor": "S06",
+   "type": "spike",
+   "start_hour": 257,
+   "end_hour": 257
+  },
+  {
+   "sensor": "S06",
+   "type": "spike",
+   "start_hour": 354,
+   "end_hour": 354
+  },
+  {
+   "sensor": "S11",
+   "type": "spike",
+   "start_hour": 172,
+   "end_hour": 172
+  },
+  {
+   "sensor": "S12",
+   "type": "spike",
+   "start_hour": 204,
+   "end_hour": 204
+  },
+  {
+   "sensor": "S13",
+   "type": "spike",
+   "start_hour": 91,
+   "end_hour": 91
+  },
+  {
+   "sensor": "S13",
+   "type": "spike",
+   "start_hour": 289,
+   "end_hour": 289
+  },
+  {
+   "sensor": "S14",
+   "type": "spike",
+   "start_hour": 220,
+   "end_hour": 220
+  },
+  {
+   "sensor": "S15",
+   "type": "spike",
+   "start_hour": 223,
+   "end_hour": 223
+  },
+  {
+   "sensor": "S17",
+   "type": "spike",
+   "start_hour": 303,
+   "end_hour": 303
+  },
+  {
+   "sensor": "S24",
+   "type": "spike",
+   "start_hour": 607,
+   "end_hour": 607
+  },
+  {
+   "sensor": "S25",
+   "type": "spike",
+   "start_hour": 528,
+   "end_hour": 528
+  }
+ ],
+ "events": [
+  {
+   "id": "burn4",
+   "name": "Crop-residue burning",
+   "start_hour": 113,
+   "end_hour": 119,
+   "kind": "burning"
+  },
+  {
+   "id": "construction",
+   "name": "Flyover construction starts",
+   "start_hour": 248,
+   "end_hour": 257,
+   "kind": "construction"
+  },
+  {
+   "id": "burn11",
+   "name": "Crop-residue burning",
+   "start_hour": 281,
+   "end_hour": 287,
+   "kind": "burning"
+  },
+  {
+   "id": "rain0",
+   "name": "Monsoon rain washout",
+   "start_hour": 340,
+   "end_hour": 376,
+   "kind": "rain"
+  },
+  {
+   "id": "festival",
+   "name": "Festival fireworks night",
+   "start_hour": 474,
+   "end_hour": 483,
+   "kind": "fireworks"
+  },
+  {
+   "id": "burn23",
+   "name": "Crop-residue burning",
+   "start_hour": 569,
+   "end_hour": 575,
+   "kind": "burning"
+  },
+  {
+   "id": "rain1",
+   "name": "Monsoon rain washout",
+   "start_hour": 614,
+   "end_hour": 622,
+   "kind": "rain"
+  }
+ ],
+ "missing": 82,
+ "note": "Synthetic data. Sensor hardware parameters and faults are ground truth used only for evaluation; models never read them."
+}

@@ -1,0 +1,97 @@
+{
+  "name": "AirSense",
+  "tagline": "Hyperlocal air quality: know before you breathe",
+  "domain": "Sustainability, CleanTech & Green Energy",
+  "color": "#0891B2",
+  "problem": [
+    "One official station often stands in for a whole town",
+    "Homes by highways, industry and burning fields have no local data",
+    "Cheap sensors are noisy, drift and over-read in humid air",
+    "People find out the air was bad only after breathing it"
+  ],
+  "stats": [
+    {"value": "~7 million", "label": "premature deaths a year linked to air pollution (approx., WHO)"},
+    {"value": "~130", "label": "Indian cities in the National Clean Air Programme (approx., NCAP)"},
+    {"value": "42%", "label": "of unhealthy hours the single station missed (our demo town)"}
+  ],
+  "solution": [
+    "Calibrates every low-cost sensor against a reference station",
+    "Catches stuck, spiking and drifting sensors automatically",
+    "CPCB AQI heat map with uncertainty for any spot in town",
+    "24-hour forecast with personal alerts and the best time to run"
+  ],
+  "features": [
+    {"title": "Sensor calibration", "desc": "Humidity-growth fix + regression per sensor: RMSE 43.6 to 2.4 ug/m3"},
+    {"title": "CPCB AQI engine", "desc": "7 pollutants, official breakpoints, 24-h/8-h rules, 3-pollutant check"},
+    {"title": "Live heat map", "desc": "IDW + kriging; click any spot for AQI with a 90% interval"},
+    {"title": "Self-checking network", "desc": "Flags stuck, spiking and drifting sensors and says which rule fired"},
+    {"title": "Forecast & alerts", "desc": "Next 24 h for asthma, children, outdoor workers + best hour to run"},
+    {"title": "Source hints", "desc": "Pollution roses and upwind rays pin the industrial cluster to 0.2 km"}
+  ],
+  "architecture": [
+    "25 PM sensors + 2 reference stations -> hourly CSV",
+    "calibration.py -> kappa-Koehler humidity fix + MLR per sensor",
+    "faults.py -> stuck, spike, drift vs neighbours' median",
+    "aqi.py -> CPCB sub-indices, averaging and validity rules",
+    "interpolate.py / forecast.py / sources.py -> map, 24 h, source hints",
+    "app.py stdlib JSON API -> vanilla JS canvas map + SVG charts"
+  ],
+  "algorithms": [
+    "CPCB piecewise-linear sub-index - India National AQI",
+    "kappa-Koehler growth + multiple linear regression - calibration",
+    "Robust z-scores (median/MAD) - stuck, spike and drift detection",
+    "IDW and ordinary kriging with fitted variogram - heat map + uncertainty",
+    "Seasonal profile + AR + weather regression - 24-hour forecast",
+    "Pollution rose + upwind CWT rays - likely sources"
+  ],
+  "tech": [
+    "Python 3 standard library only",
+    "http.server ThreadingHTTPServer",
+    "Vanilla HTML/CSS/JS",
+    "Canvas heat map, hand-drawn SVG charts",
+    "unittest (65 tests)",
+    "Runs fully offline"
+  ],
+  "innovation": [
+    "Turns ~Rs 5k sensors into near-reference data with explainable maths",
+    "The network checks itself: every flag names the rule that fired",
+    "Every map pixel has an uncertainty, not just a colour",
+    "Forecast-driven personal alerts before exposure, not after"
+  ],
+  "results": [
+    {"value": "-94%", "label": "PM2.5 calibration RMSE vs reference (43.6 to 2.4 ug/m3)"},
+    {"value": "95% / 100%", "label": "fault precision / recall vs 20 injected faults"},
+    {"value": "-63%", "label": "24-h forecast MAE vs persistence (6.0 vs 16.1 ug/m3)"},
+    {"value": "0.2 km", "label": "industrial cluster located from wind data alone"}
+  ],
+  "demo_flow": [
+    "Click Run demo - data regenerated, all models retrained in ~2.5 s",
+    "Festival night playback: hourly AQI turns Severe in the town centre",
+    "Rain spell: raw sensors over-read, calibrated values track the reference",
+    "Click an empty spot: kriging AQI with a 90% interval and its 'why'",
+    "Sensors & QA: a drifting sensor and the rule that flagged it",
+    "Forecast & health: switch to Asthma, read the alert and best run time",
+    "Model report: calibration, faults, forecast and map accuracy"
+  ],
+  "impact": [
+    "Sensitive people get a warning hours before peaks, not after",
+    "Schools can move PE and assembly to the cleanest hours",
+    "Pollution boards see hotspots and likely sources to inspect",
+    "Low-cost networks become trustworthy enough to act on"
+  ],
+  "business": [
+    "Free open-source core for colleges, RWAs and NGOs",
+    "Per-sensor subscription for municipalities: calibration, QA, alerts",
+    "Fence-line monitoring package for industrial estates",
+    "CSR-funded school networks with branded dashboards"
+  ],
+  "future": [
+    "Live ESP32 + PMS sensor firmware with MQTT upload",
+    "Gas sensors (NO2, O3) with their own calibration",
+    "WhatsApp / SMS alerts in Tamil and English",
+    "Satellite and traffic data as forecast inputs",
+    "Automatic re-calibration using the reference as a moving anchor"
+  ],
+  "port": 8015,
+  "dir": "projects/15-airsense"
+}

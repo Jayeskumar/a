@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AirSense</title>
+<meta name="description" content="Hyperlocal air quality: calibrated low-cost sensors, CPCB AQI, heat map, fault detection and 24-hour forecast - offline, standard-library Python.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230891B2'/%3E%3Cpath d='M7 12h12a3 3 0 1 0-3-3M7 17h16a3 3 0 1 1-3 3M7 22h8' stroke='white' stroke-width='2.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8"/><path d="M7 12h12a3 3 0 1 0-3-3M7 17h16a3 3 0 1 1-3 3M7 22h8"/></svg>
+    <div>
+      <h1>AirSense</h1>
+      <p class="tagline">Hyperlocal air quality: know before you breathe</p>
+    </div>
+  </div>
+  <div class="top-actions">
+    <span class="pill" title="All data is synthetic and generated deterministically (seed 2026)">Demo town · 25 sensors · synthetic data</span>
+    <label class="select-wrap" title="Personalise advice and alerts">
+      <span class="sr-only">Profile</span>
+      <select id="profile-select" aria-label="Health profile"></select>
+    </label>
+    <button class="btn primary" id="run-demo" type="button">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z"/></svg>
+      Run demo
+    </button>
+  </div>
+</header>
+
+<nav class="tabs" role="tablist" aria-label="Sections">
+  <button role="tab" class="tab" data-tab="map" aria-selected="true">Live map</button>
+  <button role="tab" class="tab" data-tab="sensor" aria-selected="false">Sensors &amp; QA</button>
+  <button role="tab" class="tab" data-tab="health" aria-selected="false">Forecast &amp; health</button>
+  <button role="tab" class="tab" data-tab="report" aria-selected="false">Model report</button>
+  <button role="tab" class="tab" data-tab="calc" aria-selected="false">AQI calculator</button>
+</nav>
+
+<main>
+  <!-- =========================================================== LIVE MAP -->
+  <section class="panel" id="tab-map" role="tabpanel">
+    <div class="grid-map">
+      <div class="card map-card">
+        <div class="card-head map-head">
+          <h2>Pollution heat map</h2>
+          <div class="map-tools">
+            <div class="seg" id="layer-seg" role="group" aria-label="Layer">
+              <button data-layer="aqi" class="on">AQI 1-h</button>
+              <button data-layer="aqi24">AQI 24-h</button>
+              <button data-layer="pm25">PM2.5</button>
+              <button data-layer="sigma">Uncertainty</button>
+              <button data-layer="sources">Source hints</button>
+            </div>
+            <div class="seg" id="method-seg" role="group" aria-label="Interpolation method">
+              <button data-method="idw" class="on" title="Inverse-distance weighting (fast, used for playback)">IDW</button>
+              <button data-method="kriging" title="Ordinary kriging with fitted variogram (server, paused frames)">Kriging</button>
+            </div>
+          </div>
+        </div>
+        <p class="sub map-sub" id="map-sub">Calibrated sensors interpolated across town. Click anywhere for an estimate with uncertainty.</p>
+        <div class="timebar">
+          <button class="btn icon" id="play" type="button" aria-label="Play">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z"/></svg>
+          </button>
+          <div class="time-main">
+            <div class="time-top">
+              <strong id="time-label">-</strong>
+              <span class="muted" id="time-extra"></span>
+              <span class="speed seg" id="speed-seg" role="group" aria-label="Playback speed">
+                <button data-speed="1" class="on">1x</button><button data-speed="3">3x</button><button data-speed="8">8x</button>
+              </span>
+            </div>
+            <input type="range" id="slider" min="0" max="671" value="671" aria-label="Hour">
+            <canvas id="strip" height="20" aria-label="Town median AQI per hour"></canvas>
+          </div>
+        </div>
+        <div class="map-wrap" id="map-wrap">
+          <canvas id="map" aria-label="Map of the demo town with pollution heat layer and sensors"></canvas>
+          <div class="map-tip" id="map-tip" hidden></div>
+          <div class="wind" id="wind" aria-label="Wind"></div>
+          <div class="map-legend" id="map-legend"></div>
+        </div>
+        <div class="events" id="event-chips" aria-label="Jump to an event"></div>
+      </div>
+
+      <aside class="side">
+        <div class="kpis side-kpis" id="kpis">
+          <div class="kpi skeleton"></div><div class="kpi skeleton"></div><div class="kpi skeleton"></div>
+          <div class="kpi skeleton"></div><div class="kpi skeleton"></div><div class="kpi skeleton"></div>
+        </div>
+        <div class="card spot-card">
+          <div class="card-head tight">
+            <div>
+              <h2 id="spot-title">At this spot</h2>
+              <p class="sub" id="spot-sub">-</p>
+            </div>
+            <button class="btn small ghost" id="spot-open" type="button" hidden>Sensor details</button>
+          </div>
+          <div class="gauge-row">
+            <div id="gauge" class="gauge"></div>
+            <div class="spot-facts" id="spot-facts"></div>
+          </div>
+          <div class="health-box" id="spot-health"></div>
+          <h3 class="mini-h">Why this number</h3>
+          <div id="spot-why" class="why"></div>
+        </div>
+        <div class="card">
+          <div class="card-head tight">
+            <div>
+              <h2>Next 24 hours here</h2>
+              <p class="sub" id="fc-sub">Forecast AQI per hour (bars) with 80% interval</p>
+            </div>
+          </div>
+          <div id="spot-forecast" class="chart small-chart"></div>
+          <div id="spot-run" class="run-box"></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- =========================================================== SENSORS -->
+  <section class="panel" id="tab-sensor" role="tabpanel" hidden>
+    <div class="grid-sensor">
+      <div class="card list-card">
+        <div class="card-head tight"><div><h2>Sensors</h2><p class="sub">Latest hour · click to inspect</p></div></div>
+        <div class="sensor-list" id="sensor-list"></div>
+      </div>
+      <div class="sensor-main">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2 id="sd-title">Sensor</h2>
+              <p class="sub" id="sd-sub"></p>
+            </div>
+            <div class="seg" id="range-seg" role="group" aria-label="Range">
+              <button data-days="7" class="on">7 days</button><button data-days="28">28 days</button>
+            </div>
+          </div>
+          <div class="legend" id="sd-legend"></div>
+          <div class="chart" id="sd-chart"></div>
+          <div class="sd-events" id="sd-events"></div>
+        </div>
+        <div class="grid-three">
+          <div class="card">
+            <h2>Calibration</h2>
+            <p class="sub">Humidity-growth correction + multiple linear regression vs. co-located reference</p>
+            <div id="sd-cal"></div>
+          </div>
+          <div class="card">
+            <h2>Pollution rose</h2>
+            <p class="sub">Mean PM2.5 excess over town background by wind direction (from)</p>
+            <div id="sd-rose" class="rose"></div>
+            <p id="sd-rose-hint" class="hint"></p>
+          </div>
+          <div class="card">
+            <h2>24-hour forecast</h2>
+            <p class="sub">PM2.5 with 80% interval vs. persistence</p>
+            <div id="sd-fc" class="chart small-chart"></div>
+            <div id="sd-fc-why" class="why"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================== HEALTH -->
+  <section class="panel" id="tab-health" role="tabpanel" hidden>
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <h2>Personal forecast &amp; alerts</h2>
+          <p class="sub">Pick who you are and where you are. Alerts fire from the forecast, not after the fact.</p>
+        </div>
+        <label class="select-wrap">
+          <span class="sr-only">Location</span>
+          <select id="health-loc" aria-label="Location"></select>
+        </label>
+      </div>
+      <div class="chips" id="profile-chips" role="group" aria-label="Profile"></div>
+      <div class="grid-two">
+        <div>
+          <div class="chart" id="health-chart"></div>
+          <div class="run-box big" id="health-run"></div>
+        </div>
+        <div>
+          <h3 class="mini-h">Alerts for this profile</h3>
+          <ul class="alerts" id="health-alerts"></ul>
+          <h3 class="mini-h">What to do now</h3>
+          <div class="health-box" id="health-now"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>CPCB AQI categories and advice</h2>
+      <p class="sub">Health impacts are CPCB's official statements; the profile advice is AirSense guidance (not medical advice).</p>
+      <div class="table-wrap"><table class="table" id="cat-table"></table></div>
+    </div>
+  </section>
+
+  <!-- =========================================================== REPORT -->
+  <section class="panel" id="tab-report" role="tabpanel" hidden>
+    <div class="kpis" id="report-kpis"></div>
+    <div class="grid-two">
+      <div class="card">
+        <h2>Calibration: before vs after</h2>
+        <p class="sub">Hold-out co-location days (last 2 of 7). RMSE in &micro;g/m&sup3; per sensor.</p>
+        <div class="legend" id="cal-legend"></div>
+        <div class="chart" id="cal-chart"></div>
+        <div id="cal-notes" class="notes"></div>
+      </div>
+      <div class="card">
+        <h2>Fault detection vs injected faults</h2>
+        <p class="sub">Ground truth is known because the faults were injected into the synthetic data.</p>
+        <div class="table-wrap"><table class="table" id="fault-table"></table></div>
+        <h3 class="mini-h">Spike threshold trade-off</h3>
+        <div class="table-wrap"><table class="table compact" id="sweep-table"></table></div>
+      </div>
+    </div>
+    <div class="grid-two">
+      <div class="card">
+        <h2>Forecast error by horizon</h2>
+        <p class="sub" id="fc-eval-sub">Rolling-origin back-test on the last 7 days</p>
+        <div class="legend" id="fc-legend"></div>
+        <div class="chart" id="fc-chart"></div>
+      </div>
+      <div class="card">
+        <h2>Spatial interpolation (leave-one-sensor-out)</h2>
+        <p class="sub">How well each method predicts a sensor it has not seen</p>
+        <div class="table-wrap"><table class="table" id="interp-table"></table></div>
+        <h3 class="mini-h">Fitted variogram</h3>
+        <div class="chart small-chart" id="vario-chart"></div>
+      </div>
+    </div>
+    <div class="grid-two">
+      <div class="card">
+        <h2>Detected fault events</h2>
+        <p class="sub">Every flag explains the rule that fired</p>
+        <ul class="alerts scroll" id="fault-list"></ul>
+      </div>
+      <div class="card">
+        <h2>Source hints &amp; hidden exposure</h2>
+        <p class="sub">Upwind concentration-weighted rays point back at sources</p>
+        <div class="table-wrap"><table class="table" id="hot-table"></table></div>
+        <div id="hidden-box" class="notes"></div>
+        <div id="timing-box" class="notes"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================== CALCULATOR -->
+  <section class="panel" id="tab-calc" role="tabpanel" hidden>
+    <div class="grid-two">
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h2>India National AQI calculator</h2>
+            <p class="sub">Enter averaged concentrations (24-h, or 8-h for CO and O<sub>3</sub>). Leave blank if not measured.</p>
+          </div>
+        </div>
+        <div class="chips" id="calc-examples"></div>
+        <form id="calc-form" class="calc-form" autocomplete="off"></form>
+        <div class="row-btns">
+          <button class="btn primary" id="calc-go" type="button">Compute AQI</button>
+          <button class="btn ghost" id="calc-clear" type="button">Clear</button>
+        </div>
+        <p class="hint">Rule (CPCB): AQI needs sub-indices for at least 3 pollutants, one of them PM2.5 or PM10. A 24-h value needs at least 16 hourly readings. AQI = the highest sub-index; that pollutant is "prominent".</p>
+      </div>
+      <div class="card">
+        <h2>Result</h2>
+        <div class="gauge-row">
+          <div id="calc-gauge" class="gauge"></div>
+          <div id="calc-facts" class="spot-facts"></div>
+        </div>
+        <div id="calc-bars" class="chart"></div>
+        <div id="calc-health" class="health-box"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>CPCB breakpoint table</h2>
+      <p class="sub" id="bp-source"></p>
+      <div class="table-wrap"><table class="table compact" id="bp-table"></table></div>
+    </div>
+  </section>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<footer class="footer">
+  <span>Built for QUANTIX 2K26 · KSRCE</span>
+  <span class="muted">AirSense · CPCB National AQI · every model written from scratch in Python, runs offline</span>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
