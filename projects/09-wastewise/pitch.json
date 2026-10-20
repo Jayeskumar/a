@@ -1,0 +1,97 @@
+{
+  "name": "WasteWise",
+  "tagline": "Smart bins and optimised collection routes for cleaner cities",
+  "domain": "Sustainability, CleanTech & Green Energy",
+  "color": "#059669",
+  "problem": [
+    "Trucks follow fixed beats, whatever the bins hold",
+    "Half-full bins get emptied while market bins overflow",
+    "Wasted diesel, crew hours and CO2 every single day",
+    "Citizens unsure which bin an item goes in"
+  ],
+  "stats": [
+    {"value": "1.5 lakh+ t/day", "label": "urban solid waste generated in India (CPCB, approx.)"},
+    {"value": "3 streams", "label": "wet / dry / hazardous segregation required by SWM Rules 2016"},
+    {"value": "40%", "label": "avg bin fill at pickup on a fixed beat (our simulation)"}
+  ],
+  "solution": [
+    "Forecast every bin's fill and time-to-full",
+    "Collect only bins that need it, with a stated reason",
+    "Clarke-Wright + 2-opt routes for 3 capacity-limited trucks",
+    "Bilingual bin guide and green-points ward leaderboard"
+  ],
+  "features": [
+    {"title": "Fill forecaster", "desc": "Seasonal smoothing learns weekday and market-day spikes; hours to full"},
+    {"title": "Explainable pickups", "desc": "Rule A: >=75% at pickup. Rule B: overflow guard with +1 sigma margin"},
+    {"title": "Route optimiser", "desc": "Clarke-Wright savings, 2-opt and truck packing in under 1 ms"},
+    {"title": "Live map playback", "desc": "Animated trucks, bins coloured by fill, fixed beat toggle"},
+    {"title": "Day simulator", "desc": "Same waste, two policies: km, diesel, CO2 and overflows side by side"},
+    {"title": "Which bin? EN/TA", "desc": "Naive Bayes on English, Tamil and Tanglish names; green points"}
+  ],
+  "architecture": [
+    "Smart bin sensors (simulated) -> daily fill readings",
+    "Forecaster -> predicted fill at pickup and tomorrow",
+    "Planner rules A/B -> today's bins with reasons",
+    "Clarke-Wright + 2-opt + LPT -> truck trips in shift",
+    "Simulator -> fixed beat vs WasteWise on same waste",
+    "Python stdlib API -> vanilla JS + SVG dashboard"
+  ],
+  "algorithms": [
+    "Seasonal exponential smoothing - per-bin daily fill forecast",
+    "OLS + weekday dummies (Gaussian elimination) - backtest rival",
+    "Clarke-Wright savings - capacitated route construction",
+    "2-opt - uncross each route, never longer",
+    "Longest-trip-first packing - trips onto trucks in shift",
+    "Multinomial Naive Bayes + char 3-grams - EN/TA bin guide"
+  ],
+  "tech": [
+    "Python 3 standard library only",
+    "http.server JSON API",
+    "Vanilla HTML/CSS/JS",
+    "Hand-drawn SVG map and charts",
+    "unittest (45 tests)",
+    "Runs fully offline"
+  ],
+  "innovation": [
+    "Predicts overflow before it happens, not after",
+    "Fair baseline: same trucks, window and waste",
+    "Every pickup, route and answer explained",
+    "Tamil + Tanglish item names out of the box"
+  ],
+  "results": [
+    {"value": "-43%", "label": "truck km and diesel vs fixed beat (30-day sim)"},
+    {"value": "12 -> 1", "label": "overflowing bin-days in the month"},
+    {"value": "0.4 ms", "label": "daily planning time, CW + 2-opt"},
+    {"value": "78%", "label": "bin-guide accuracy on unseen item names"}
+  ],
+  "demo_flow": [
+    "Run demo: trucks animate, 30 km vs 61.5 km today",
+    "Toggle fixed beat: 36 half-full pickups, 4 bins left",
+    "Route card: fixed order 45 -> CW 30.5 -> 2-opt 30 km",
+    "Click market bin: Wednesday spike, rule B fires",
+    "Next day: fixed beat overflows, WasteWise none",
+    "Run to day 30: -43% km, overflows 12 -> 1",
+    "Ask Tamil 'thengai odu', earn green points, see Impact"
+  ],
+  "impact": [
+    "~3,650 L diesel and ~9.8 t CO2 a year per 40 bins (sim)",
+    "~Rs 3.3 lakh diesel a year per 40 bins at Rs 90/L",
+    "Fewer overflowing bins near markets and bus stands",
+    "~1,480 crew truck-hours a year freed for sweeping"
+  ],
+  "business": [
+    "SaaS per bin per month for municipalities",
+    "Sensor + software bundle via local integrators",
+    "Segregation analytics for compost and recyclers",
+    "Free campus tier as a showcase"
+  ],
+  "future": [
+    "Real road network distances and time windows",
+    "Multi-depot, mixed fleet, inter-route moves",
+    "Festival and rain effects in the forecaster",
+    "Driver phone app and Tamil WhatsApp reporting bot",
+    "Photo-based contamination check at the bin"
+  ],
+  "port": 8009,
+  "dir": "projects/09-wastewise"
+}

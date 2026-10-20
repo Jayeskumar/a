@@ -1,0 +1,604 @@
+{
+ "wards": [
+  {
+   "id": "W1",
+   "name": "Hill Temple",
+   "zone": "temple",
+   "rect": [
+    0.0,
+    2.0,
+    2.0,
+    4.0
+   ],
+   "households": 1800
+  },
+  {
+   "id": "W2",
+   "name": "Bus Stand",
+   "zone": "commercial",
+   "rect": [
+    2.0,
+    2.0,
+    4.0,
+    4.0
+   ],
+   "households": 1500
+  },
+  {
+   "id": "W3",
+   "name": "College Road",
+   "zone": "institutional",
+   "rect": [
+    4.0,
+    2.0,
+    6.0,
+    4.0
+   ],
+   "households": 1300
+  },
+  {
+   "id": "W4",
+   "name": "Weavers' Colony",
+   "zone": "residential",
+   "rect": [
+    0.0,
+    0.0,
+    2.0,
+    2.0
+   ],
+   "households": 2400
+  },
+  {
+   "id": "W5",
+   "name": "Santhai Market",
+   "zone": "market",
+   "rect": [
+    2.0,
+    0.0,
+    4.0,
+    2.0
+   ],
+   "households": 1700
+  },
+  {
+   "id": "W6",
+   "name": "Lake View",
+   "zone": "residential",
+   "rect": [
+    4.0,
+    0.0,
+    6.0,
+    2.0
+   ],
+   "households": 2100
+  }
+ ],
+ "depot": {
+  "id": "DEPOT",
+  "name": "Transfer station",
+  "x": 3.25,
+  "y": -0.75
+ },
+ "bins": [
+  {
+   "id": "B01",
+   "ward": "W1",
+   "zone": "temple",
+   "x": 1.0,
+   "y": 3.75,
+   "capacity": 660,
+   "type": "recyclable",
+   "base_rate": 0.293
+  },
+  {
+   "id": "B02",
+   "ward": "W1",
+   "zone": "temple",
+   "x": 0.5,
+   "y": 3.5,
+   "capacity": 240,
+   "type": "recyclable",
+   "base_rate": 0.417
+  },
+  {
+   "id": "B03",
+   "ward": "W1",
+   "zone": "residential",
+   "x": 1.75,
+   "y": 3.25,
+   "capacity": 660,
+   "type": "wet",
+   "base_rate": 0.278
+  },
+  {
+   "id": "B04",
+   "ward": "W1",
+   "zone": "temple",
+   "x": 0.5,
+   "y": 2.75,
+   "capacity": 660,
+   "type": "recyclable",
+   "base_rate": 0.37
+  },
+  {
+   "id": "B05",
+   "ward": "W1",
+   "zone": "temple",
+   "x": 1.25,
+   "y": 2.75,
+   "capacity": 660,
+   "type": "dry",
+   "base_rate": 0.368
+  },
+  {
+   "id": "B06",
+   "ward": "W1",
+   "zone": "residential",
+   "x": 1.75,
+   "y": 2.5,
+   "capacity": 1100,
+   "type": "wet",
+   "base_rate": 0.365
+  },
+  {
+   "id": "B07",
+   "ward": "W2",
+   "zone": "commercial",
+   "x": 2.75,
+   "y": 3.75,
+   "capacity": 1100,
+   "type": "wet",
+   "base_rate": 0.322
+  },
+  {
+   "id": "B08",
+   "ward": "W2",
+   "zone": "commercial",
+   "x": 2.25,
+   "y": 3.25,
+   "capacity": 1100,
+   "type": "wet",
+   "base_rate": 0.436
+  },
+  {
+   "id": "B09",
+   "ward": "W2",
+   "zone": "residential",
+   "x": 3.0,
+   "y": 3.0,
+   "capacity": 240,
+   "type": "dry",
+   "base_rate": 0.381
+  },
+  {
+   "id": "B10",
+   "ward": "W2",
+   "zone": "commercial",
+   "x": 3.75,
+   "y": 3.0,
+   "capacity": 1100,
+   "type": "dry",
+   "base_rate": 0.365
+  },
+  {
+   "id": "B11",
+   "ward": "W2",
+   "zone": "commercial",
+   "x": 3.5,
+   "y": 2.5,
+   "capacity": 660,
+   "type": "recyclable",
+   "base_rate": 0.347
+  },
+  {
+   "id": "B12",
+   "ward": "W2",
+   "zone": "residential",
+   "x": 2.25,
+   "y": 2.25,
+   "capacity": 660,
+   "type": "recyclable",
+   "base_rate": 0.315
+  },
+  {
+   "id": "B13",
+   "ward": "W2",
+   "zone": "commercial",
+   "x": 3.0,
+   "y": 2.25,
+   "capacity": 660,
+   "type": "wet",
+   "base_rate": 0.406
+  },
+  {
+   "id": "B14",
+   "ward": "W3",
+   "zone": "institutional",
+   "x": 5.25,
+   "y": 3.75,
+   "capacity": 660,
+   "type": "wet",
+   "base_rate": 0.38
+  },
+  {
+   "id": "B15",
+   "ward": "W3",
+   "zone": "institutional",
+   "x": 4.5,
+   "y": 3.25,
+   "capacity": 240,
+   "type": "wet",
+   "base_rate": 0.387
+  },
+  {
+   "id": "B16",
+   "ward": "W3",
+   "zone": "residential",
+   "x": 5.5,
+   "y": 3.25,
+   "capacity": 1100,
+   "type": "wet",
+   "base_rate": 0.211
+  },
+  {
+   "id": "B17",
+   "ward": "W3",
+   "zone": "institutional",
+   "x": 5.0,
+   "y": 2.75,
+   "capacity": 660,
+   "type": "dry",
+   "base_rate": 0.397
+  },
+  {
+   "id": "B18",
+   "ward": "W3",
+   "zone": "institutional",
+   "x": 5.75,
+   "y": 2.75,
+   "capacity": 1100,
+   "type": "wet",
+   "base_rate": 0.382
+  },
+  {
+   "id": "B19",
+   "ward": "W3",
+   "zone": "residential",
+   "x": 5.25,
+   "y": 2.25,
+   "capacity": 1100,
+   "type": "wet",
+   "base_rate": 0.386
+  },
+  {
+   "id": "B20",
+   "ward": "W4",
+   "zone": "residential",
+   "x": 0.75,
+   "y": 1.75,
+   "capacity": 1100,
+   "type": "wet",
+   "base_rate": 0.366
+  },
+  {
+   "id": "B21",
+   "ward": "W4",
+   "zone": "residential",
+   "x": 1.5,
+   "y": 1.75,
+   "capacity": 1100,
+   "type": "dry",
+   "base_rate": 0.202
+  },
+  {
+   "id": "B22",
+   "ward": "W4",
+   "zone": "residential",
+   "x": 0.25,
+   "y": 1.5,
+   "capacity": 660,
+   "type": "wet",
+   "base_rate": 0.221
+  },
+  {
+   "id": "B23",
+   "ward": "W4",
+   "zone": "residential",
+   "x": 1.0,
+   "y": 1.0,
+   "capacity": 1100,
+   "type": "wet",
+   "base_rate": 0.348
+  },
+  {
+   "id": "B24",
+   "ward": "W4",
+   "zone": "residential",
+   "x": 1.5,
+   "y": 0.75,
+   "capacity": 1100,
+   "type": "dry",
+   "base_rate": 0.342
+  },
+  {
+   "id": "B25",
+   "ward": "W4",
+   "zone": "residential",
+   "x": 0.25,
+   "y": 0.5,
+   "capacity": 660,
+   "type": "dry",
+   "base_rate": 0.273
+  },
+  {
+   "id": "B26",
+   "ward": "W4",
+   "zone": "residential",
+   "x": 1.0,
+   "y": 0.25,
+   "capacity": 660,
+   "type": "wet",
+   "base_rate": 0.285
+  },
+  {
+   "id": "B27",
+   "ward": "W5",
+   "zone": "market",
+   "x": 3.25,
+   "y": 1.75,
+   "capacity": 1100,
+   "type": "dry",
+   "base_rate": 0.387
+  },
+  {
+   "id": "B28",
+   "ward": "W5",
+   "zone": "market",
+   "x": 2.5,
+   "y": 1.5,
+   "capacity": 660,
+   "type": "wet",
+   "base_rate": 0.399
+  },
+  {
+   "id": "B29",
+   "ward": "W5",
+   "zone": "residential",
+   "x": 3.75,
+   "y": 1.5,
+   "capacity": 240,
+   "type": "dry",
+   "base_rate": 0.417
+  },
+  {
+   "id": "B30",
+   "ward": "W5",
+   "zone": "market",
+   "x": 2.25,
+   "y": 1.0,
+   "capacity": 1100,
+   "type": "wet",
+   "base_rate": 0.443
+  },
+  {
+   "id": "B31",
+   "ward": "W5",
+   "zone": "market",
+   "x": 3.25,
+   "y": 1.0,
+   "capacity": 1100,
+   "type": "recyclable",
+   "base_rate": 0.416
+  },
+  {
+   "id": "B32",
+   "ward": "W5",
+   "zone": "residential",
+   "x": 3.75,
+   "y": 0.75,
+   "capacity": 660,
+   "type": "dry",
+   "base_rate": 0.386
+  },
+  {
+   "id": "B33",
+   "ward": "W5",
+   "zone": "market",
+   "x": 2.5,
+   "y": 0.5,
+   "capacity": 1100,
+   "type": "recyclable",
+   "base_rate": 0.363
+  },
+  {
+   "id": "B34",
+   "ward": "W5",
+   "zone": "market",
+   "x": 3.0,
+   "y": 0.25,
+   "capacity": 1100,
+   "type": "dry",
+   "base_rate": 0.41
+  },
+  {
+   "id": "B35",
+   "ward": "W6",
+   "zone": "residential",
+   "x": 4.5,
+   "y": 1.75,
+   "capacity": 1100,
+   "type": "wet",
+   "base_rate": 0.298
+  },
+  {
+   "id": "B36",
+   "ward": "W6",
+   "zone": "residential",
+   "x": 5.5,
+   "y": 1.75,
+   "capacity": 660,
+   "type": "wet",
+   "base_rate": 0.259
+  },
+  {
+   "id": "B37",
+   "ward": "W6",
+   "zone": "residential",
+   "x": 4.75,
+   "y": 1.25,
+   "capacity": 1100,
+   "type": "dry",
+   "base_rate": 0.343
+  },
+  {
+   "id": "B38",
+   "ward": "W6",
+   "zone": "residential",
+   "x": 4.25,
+   "y": 1.0,
+   "capacity": 1100,
+   "type": "wet",
+   "base_rate": 0.36
+  },
+  {
+   "id": "B39",
+   "ward": "W6",
+   "zone": "residential",
+   "x": 5.25,
+   "y": 0.75,
+   "capacity": 1100,
+   "type": "recyclable",
+   "base_rate": 0.264
+  },
+  {
+   "id": "B40",
+   "ward": "W6",
+   "zone": "residential",
+   "x": 5.0,
+   "y": 0.25,
+   "capacity": 660,
+   "type": "wet",
+   "base_rate": 0.329
+  }
+ ],
+ "trucks": [
+  {
+   "id": "T1",
+   "name": "Truck 1",
+   "color": "#059669",
+   "capacity": 6000,
+   "beat": [
+    "B01",
+    "B02",
+    "B03",
+    "B04",
+    "B05",
+    "B06",
+    "B20",
+    "B21",
+    "B22",
+    "B23",
+    "B24",
+    "B25",
+    "B26"
+   ]
+  },
+  {
+   "id": "T2",
+   "name": "Truck 2",
+   "color": "#d97706",
+   "capacity": 6000,
+   "beat": [
+    "B07",
+    "B08",
+    "B09",
+    "B10",
+    "B11",
+    "B12",
+    "B13",
+    "B27",
+    "B28",
+    "B29",
+    "B30",
+    "B31",
+    "B32",
+    "B33",
+    "B34"
+   ]
+  },
+  {
+   "id": "T3",
+   "name": "Truck 3",
+   "color": "#6366f1",
+   "capacity": 6000,
+   "beat": [
+    "B14",
+    "B15",
+    "B16",
+    "B17",
+    "B18",
+    "B19",
+    "B35",
+    "B36",
+    "B37",
+    "B38",
+    "B39",
+    "B40"
+   ]
+  }
+ ],
+ "bounds": {
+  "w": 6.0,
+  "h": 4.0,
+  "street": 0.25
+ },
+ "start_date": "2026-10-27",
+ "market_weekday": 2,
+ "profiles": {
+  "residential": [
+   1.0624,
+   0.9176,
+   0.9634,
+   0.9176,
+   0.9176,
+   1.0141,
+   1.2073
+  ],
+  "commercial": [
+   0.978,
+   0.978,
+   1.2715,
+   0.978,
+   1.0246,
+   1.1178,
+   0.652
+  ],
+  "market": [
+   0.8383,
+   0.8383,
+   1.7605,
+   1.0479,
+   0.8383,
+   0.8383,
+   0.8383
+  ],
+  "institutional": [
+   1.2105,
+   1.2105,
+   1.2105,
+   1.2105,
+   1.1579,
+   0.6316,
+   0.3684
+  ],
+  "temple": [
+   0.8041,
+   0.8514,
+   0.8041,
+   0.8514,
+   1.3716,
+   0.9932,
+   1.3243
+  ]
+ }
+}

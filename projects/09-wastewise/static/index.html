@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WasteWise</title>
+<meta name="description" content="Smart bins and optimised collection routes for cleaner cities - offline, explainable, standard-library Python.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23059669'/%3E%3Cpath d='M10 12h12l-1.3 13H11.3z' fill='white'/%3E%3Cpath d='M9 10h14' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M16 21c-2.2 0-3-1.6-3-3.2 2.4 0 4.2.6 5 2.4' fill='%23f59e0b'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <svg class="logo" viewBox="0 0 40 40" aria-hidden="true">
+      <rect width="40" height="40" rx="11" fill="#059669"/>
+      <path d="M12 15h16l-1.6 16.2a2 2 0 0 1-2 1.8h-8.8a2 2 0 0 1-2-1.8z" fill="#fff"/>
+      <path d="M10.5 12.5h19" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
+      <path d="M17 12.3v-2h6v2" stroke="#fff" stroke-width="2" fill="none"/>
+      <path d="M20 28.5c-3.4 0-4.6-2.6-4.4-5.4 3.6-.2 6.4 1 7.4 3.8-.6 1-1.6 1.6-3 1.6z" fill="#f59e0b"/>
+      <path d="M17.5 25.5c1.6.6 3 1.6 3.9 3" stroke="#059669" stroke-width="1.2" fill="none"/>
+    </svg>
+    <div>
+      <h1>Waste<span>Wise</span></h1>
+      <p class="tagline">Smart bins and optimised collection routes for cleaner cities</p>
+    </div>
+  </div>
+  <div class="daybox">
+    <span class="daychip" title="Simulated day (all data synthetic, seed 2026)">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+      <span id="day-label">Day 0</span>
+    </span>
+    <span class="badge warm" id="market-badge" hidden>Market day</span>
+    <span class="badge" id="tomorrow-badge" hidden>Tomorrow: market day</span>
+  </div>
+  <div class="top-actions">
+    <button class="btn primary" id="run-demo" type="button" title="Reset to day 0 with demo data and play today's routes">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z"/></svg>Run demo
+    </button>
+    <button class="btn" id="next-day" type="button" title="Run today's collection and move to the next day">Next day
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l6 5-6 5z"/></svg>
+    </button>
+    <button class="btn ghost" id="reset" type="button" title="Back to day 0">Reset</button>
+  </div>
+</header>
+
+<nav class="tabs" role="tablist" aria-label="Sections">
+  <button role="tab" class="tab" data-tab="routes" aria-selected="true">Today's routes</button>
+  <button role="tab" class="tab" data-tab="sim" aria-selected="false">Day simulator</button>
+  <button role="tab" class="tab" data-tab="forecast" aria-selected="false">Fill forecast</button>
+  <button role="tab" class="tab" data-tab="seg" aria-selected="false">Segregation &amp; leaderboard</button>
+  <button role="tab" class="tab" data-tab="impact" aria-selected="false">Impact</button>
+</nav>
+
+<main>
+  <!-- ======================================================= ROUTES -->
+  <section class="panel active" id="tab-routes" role="tabpanel">
+    <div class="kpis" id="kpis"></div>
+    <div class="grid-routes">
+      <div class="card">
+        <div class="card-head">
+          <h2>Town map <span class="sub" id="map-sub"></span></h2>
+          <div class="seg" id="mode-seg" role="group" aria-label="Which plan to show">
+            <button type="button" data-mode="smart" aria-pressed="true">WasteWise routes</button>
+            <button type="button" data-mode="fixed" aria-pressed="false">Fixed beat</button>
+          </div>
+        </div>
+        <div class="map-wrap" id="map-wrap">
+          <svg class="map" id="map" role="img" aria-label="Map of bins and truck routes"></svg>
+          <div class="tooltip" id="tip"></div>
+        </div>
+        <div class="playbar">
+          <button class="btn primary" id="play" type="button"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z"/></svg><span>Play routes</span></button>
+          <input type="range" id="scrub" min="0" max="210" step="1" value="0" aria-label="Time of day">
+          <span class="clock" id="clock">06:00</span>
+          <select id="speed" aria-label="Playback speed">
+            <option value="8">1x</option>
+            <option value="16" selected>2x</option>
+            <option value="32">4x</option>
+          </select>
+        </div>
+        <div class="legend" id="map-legend"></div>
+      </div>
+      <div class="side">
+        <div class="card">
+          <div class="card-head"><h2>WasteWise vs fixed beat - today</h2><span class="sub">same trucks, same 3.5 h window</span></div>
+          <table class="cmp" id="compare"></table>
+          <p class="note" id="naive-note"></p>
+        </div>
+        <div class="card">
+          <div class="card-head"><h2>How today's route was built</h2><span class="sub" id="algo-ms"></span></div>
+          <div id="algo"></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h2>Trucks</h2><span class="sub" id="truck-sub"></span></div>
+          <div id="trucks"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:14px">
+      <div class="card-head">
+        <h2>Why these bins? <span class="sub">forecast-driven decision for every bin - click a row for its forecast</span></h2>
+        <div class="seg" id="dec-seg" role="group" aria-label="Filter decisions">
+          <button type="button" data-f="pick" aria-pressed="true">Collected today</button>
+          <button type="button" data-f="all" aria-pressed="false">All 40 bins</button>
+        </div>
+      </div>
+      <div class="table-wrap"><table class="dec" id="decisions"></table></div>
+    </div>
+  </section>
+
+  <!-- ======================================================= SIMULATOR -->
+  <section class="panel" id="tab-sim" role="tabpanel">
+    <div class="toolbar">
+      <button class="btn primary" id="sim-next" type="button">Next day <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l6 5-6 5z"/></svg></button>
+      <button class="btn" id="sim-week" type="button">+7 days</button>
+      <button class="btn" id="sim-month" type="button">Run to day 30</button>
+      <button class="btn ghost" id="sim-reset" type="button">Reset</button>
+      <span class="spacer"></span>
+      <span class="muted small" id="sim-status"></span>
+    </div>
+    <div class="grid-sim">
+      <div>
+        <div class="card">
+          <div class="card-head"><h2>Running totals <span class="sub" id="sim-days"></span></h2></div>
+          <table class="cmp" id="sim-compare"></table>
+        </div>
+        <div class="card">
+          <div class="card-head"><h2>Event log</h2><span class="sub">overflows per day</span></div>
+          <ul class="events" id="events"></ul>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="card-head"><h2>Bin levels this morning</h2><span class="sub">pulsing ring = overflowing</span></div>
+          <div class="grid-2">
+            <div><div class="world-title"><span class="key" style="background:var(--fixed)"></span>Fixed beat world</div><svg class="map" id="map-fixed" role="img" aria-label="Bin levels under fixed beat"></svg></div>
+            <div><div class="world-title"><span class="key" style="background:var(--smart)"></span>WasteWise world</div><svg class="map" id="map-smart" role="img" aria-label="Bin levels under WasteWise"></svg></div>
+          </div>
+          <p class="note">WasteWise deliberately lets bins fill to 70-100% before a pickup (fewer, fuller trips); what matters is the pulsing red rings - bins already spilling onto the street.</p>
+        </div>
+        <div class="card">
+          <div class="card-head"><h2>Distance driven per day</h2><span class="sub">km, shaded = market day</span></div>
+          <div class="map-wrap"><svg class="chart" id="chart-km"></svg><div class="tooltip" id="tip-km"></div></div>
+          <div class="legend"><span class="item"><span class="line" style="background:var(--fixed)"></span>Fixed beat</span><span class="item"><span class="line" style="background:var(--smart)"></span>WasteWise</span></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h2>Overflowing bins per day</h2><span class="sub">bins that spilled waste on the street</span></div>
+          <div class="map-wrap"><svg class="chart" id="chart-ovf"></svg><div class="tooltip" id="tip-ovf"></div></div>
+          <div class="legend"><span class="item"><span class="sw" style="background:var(--fixed)"></span>Fixed beat</span><span class="item"><span class="sw" style="background:var(--smart)"></span>WasteWise</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================= FORECAST -->
+  <section class="panel" id="tab-forecast" role="tabpanel">
+    <div class="card">
+      <div class="picker">
+        <label for="bin-select" class="small muted">Bin</label>
+        <select id="bin-select"></select>
+        <span class="small muted" style="margin-left:6px">Most urgent today:</span>
+        <div class="chips" id="urgent-chips"></div>
+      </div>
+    </div>
+    <div class="grid-fc" style="margin-top:14px">
+      <div>
+        <div class="card">
+          <div class="card-head"><h2>Daily fill <span class="sub">% of capacity added per day - 6 weeks of sensor history + 7-day forecast</span></h2></div>
+          <div class="map-wrap"><svg class="chart" id="chart-fc"></svg><div class="tooltip" id="tip-fc"></div></div>
+          <div class="legend" id="fc-legend"></div>
+        </div>
+        <div class="grid-2" style="margin-top:14px">
+          <div class="card">
+            <div class="card-head"><h2>If not collected</h2><span class="sub">projected level, next 7 days</span></div>
+            <div class="map-wrap"><svg class="chart" id="chart-proj"></svg><div class="tooltip" id="tip-proj"></div></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h2>Weekday pattern learned</h2><span class="sub">seasonal index (1.0 = average day)</span></div>
+            <div class="map-wrap"><svg class="chart" id="chart-season"></svg><div class="tooltip" id="tip-season"></div></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card" id="fc-info"></div>
+        <div class="card">
+          <div class="card-head"><h2>Backtest - this bin</h2><span class="sub">MAE, last 14 days, one-step-ahead</span></div>
+          <table class="cmp" id="fc-backtest"></table>
+          <p class="note" id="fc-overall"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================= SEGREGATION -->
+  <section class="panel" id="tab-seg" role="tabpanel">
+    <div class="grid-seg">
+      <div>
+        <div class="card">
+          <div class="card-head"><h2>Which bin does it go in?</h2><span class="sub">English / தமிழ் / Tanglish</span></div>
+          <form class="ask" id="ask-form">
+            <input type="text" id="ask-input" maxlength="80" placeholder="e.g. banana peel, தேங்காய் ஓடு, battery" aria-label="Waste item" autocomplete="off">
+            <button class="btn primary" type="submit">Check</button>
+          </form>
+          <div class="chips" id="ask-chips" style="margin-top:10px"></div>
+          <div id="verdict"></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h2>Report a disposal - earn green points</h2><span class="sub" id="pts-rule"></span></div>
+          <form id="report-form" class="form-grid">
+            <label>Ward<select id="rep-ward"></select></label>
+            <label>Household ID<input type="text" id="rep-hh" maxlength="20" placeholder="W3-021"></label>
+            <label class="full">Item thrown<input type="text" id="rep-item" maxlength="80" placeholder="plastic bottle"></label>
+            <div class="full">
+              <div class="small muted" style="font-weight:600;margin-bottom:4px">Bin used</div>
+              <div class="bins-choice" id="rep-bins"></div>
+            </div>
+            <div class="full" style="display:flex;gap:10px;align-items:center">
+              <button class="btn primary" type="submit">Submit report</button>
+              <span class="small" id="rep-result"></span>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="card-head"><h2>Ward leaderboard</h2><span class="sub" id="lb-sub"></span></div>
+          <div id="leaderboard"></div>
+          <p class="note">Score = green points x (0.5 + 0.5 x compliance), so spamming wrong reports never wins.</p>
+        </div>
+        <div class="grid-2" style="margin-top:14px">
+          <div class="card">
+            <div class="card-head"><h2>Green champions</h2></div>
+            <ul class="feed" id="champions"></ul>
+          </div>
+          <div class="card">
+            <div class="card-head"><h2>Latest reports</h2></div>
+            <ul class="feed" id="feed"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================= IMPACT -->
+  <section class="panel" id="tab-impact" role="tabpanel">
+    <div class="card">
+      <div class="card-head"><h2>Projected annual savings <span class="sub" id="imp-sub"></span></h2></div>
+      <div class="impact-hero" id="imp-hero"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h2>Tune the assumptions</h2><span class="sub">recomputed by the server from the simulated month</span></div>
+      <div class="sliders">
+        <label>Diesel price (INR/L) <output id="o-diesel">90</output><input type="range" id="s-diesel" min="60" max="150" step="1" value="90"></label>
+        <label>Smart bins in the town <output id="o-bins">40</output><input type="range" id="s-bins" min="40" max="2000" step="20" value="40"></label>
+        <label>Truck mileage (km/L) <output id="o-kmpl">4.0</output><input type="range" id="s-kmpl" min="2" max="8" step="0.5" value="4"></label>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h2>Simulated month - fixed beat vs WasteWise</h2><span class="sub" id="month-sub"></span></div>
+      <div class="mini-grid" id="month-minis"></div>
+    </div>
+    <div class="grid-2" style="margin-top:14px">
+      <div class="card">
+        <div class="card-head"><h2>Assumptions (named constants)</h2><span class="sub">wastewise/config.py</span></div>
+        <table class="assume" id="assume"></table>
+        <div id="formulas"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h2>Measured on this build</h2><span class="sub">honest numbers from the code</span></div>
+        <div id="evaluation"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>Built for <b>QUANTIX 2K26 · KSRCE</b> &nbsp;·&nbsp; WasteWise runs fully offline - Python standard library, all algorithms from scratch, synthetic data (seed 2026).</footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="app.js"></script>
+</body>
+</html>
