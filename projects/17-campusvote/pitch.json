@@ -1,0 +1,95 @@
+{
+  "name": "CampusVote",
+  "tagline": "Verifiable, anonymous e-voting for student elections",
+  "domain": "Cybersecurity & Blockchain Technology",
+  "color": "#9333EA",
+  "problem": [
+    "Paper ballots: hours of manual counting, disputed recounts",
+    "Google Forms: admins see who voted what and can edit rows",
+    "Shared form links and proxy logins allow double voting",
+    "Losing candidates have no way to check the result"
+  ],
+  "stats": [
+    {"value": "0", "label": "ways for a voter to check a Google Forms tally"},
+    {"value": "Hours", "label": "to hand-count a few thousand paper ballots (approx.)"},
+    {"value": "1 admin", "label": "can silently edit a spreadsheet of votes"}
+  ],
+  "solution": [
+    "Chaum blind signatures: eligible, yet unlinkable to the voter",
+    "SHA-256 commitments hide choices until voting closes",
+    "Hash-chained public bulletin board with signed checkpoints",
+    "Receipts + full recount by anyone, even in the browser"
+  ],
+  "features": [
+    {"title": "Phone voting", "desc": "Mobile-first ballot over campus Wi-Fi, large buttons, no app"},
+    {"title": "Blind-signed tokens", "desc": "Authority signs a token it never sees; one per register number"},
+    {"title": "Public bulletin board", "desc": "Hash chain + RSA-signed checkpoints, download and verify anywhere"},
+    {"title": "Voter receipts", "desc": "Check on your own phone that your ballot was counted as cast"},
+    {"title": "Attack lab", "desc": "12 live attacks: double vote, forgery, replay, tampering, stuffing"},
+    {"title": "Explained audit", "desc": "10-step verification report with the reason each check matters"}
+  ],
+  "architecture": [
+    "Phone/browser (vanilla JS) -> SHA-256, RSA blinding, sealing, audit",
+    "app.py ThreadingHTTPServer -> JSON API, no IPs logged on cast",
+    "election.py -> roster, OTP login, issuance, mix pool, phases, tally",
+    "blind.py + rsa.py + numtheory.py -> Miller-Rabin, RSA-FDH, Chaum",
+    "board.py + audit.py -> hash chain, checkpoints, universal recount",
+    "data/board.json -> the only file an auditor needs"
+  ],
+  "algorithms": [
+    "Miller-Rabin (40 rounds) - 2048-bit RSA key generation",
+    "RSA-FDH + CRT - signatures with Bellcore fault check",
+    "Chaum blind signatures - eligibility without identity",
+    "SHA-256 hash commitments - hiding and binding ballots",
+    "RSA-KEM + SHA-256 CTR + HMAC - sealed openings for the trustee",
+    "Hash chain + signed checkpoints - tamper-evident board"
+  ],
+  "tech": [
+    "Python 3 stdlib only (hashlib, hmac, secrets, http.server)",
+    "Vanilla HTML/CSS/JS with BigInt crypto, inline SVG charts",
+    "JSON files with atomic writes",
+    "Fully offline: one laptop + campus Wi-Fi"
+  ],
+  "innovation": [
+    "Admin can run the election but cannot see, link or alter votes",
+    "Browser re-verifies the whole board: no trust in our server",
+    "Perfect unlinkability shown live: every pairing is consistent",
+    "Honest threat model, incl. coercion and stuffing limits"
+  ],
+  "results": [
+    {"value": "~9 ms", "label": "blind signature per voter, 2048-bit, pure Python"},
+    {"value": "0.2 ms", "label": "ballot signature verification"},
+    {"value": "<2 s", "label": "independent recount of 2,000 ballots"},
+    {"value": "12 / 12", "label": "attack demos rejected or detected"}
+  ],
+  "demo_flow": [
+    "Phone: demo voter signs in, gets a blind-signed token",
+    "Choose candidates, cast anonymously, get a receipt",
+    "Attack lab: double vote, forgery, replay all rejected",
+    "Edit board.json: chain breaks at the exact entry; restore",
+    "Close voting: trustee opens ballots, signed result posted",
+    "Results + 10-step audit; browser recount matches",
+    "Phone re-checks receipt: counted exactly as cast"
+  ],
+  "impact": [
+    "Results in minutes, not an evening of counting",
+    "Disputes settled by recounting a public file",
+    "Students can vote from hostels and labs on their phones",
+    "No paper ballots to print for every election"
+  ],
+  "business": [
+    "Free for student clubs on one laptop",
+    "Annual college licence: council, hostel, club and alumni polls",
+    "Paid audit/observer support for university-wide elections",
+    "Extend to RWAs, cooperatives and union ballots"
+  ],
+  "future": [
+    "Split trustee and signing keys across 3 faculty (threshold RSA)",
+    "Real mix-net / separate relay so the server never sees ballot IPs",
+    "Homomorphic ElGamal tally with zero-knowledge ballot proofs",
+    "Anchor checkpoint hashes on a public chain or notice board QR",
+    "Ranked-choice and multi-seat posts"
+  ],
+  "port": 8017,
+  "dir": "projects/17-campusvote"
+}

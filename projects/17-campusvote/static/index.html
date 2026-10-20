@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#9333EA">
+<title>CampusVote</title>
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <img src="logo.svg" alt="" width="40" height="40">
+    <div>
+      <h1>CampusVote</h1>
+      <p class="tagline">Verifiable, anonymous e-voting for student elections</p>
+    </div>
+  </div>
+  <div class="top-right">
+    <span class="pill" id="phasePill">loading...</span>
+    <span class="pill subtle" id="integrityPill" title="Bulletin board integrity">board</span>
+  </div>
+</header>
+
+<nav class="tabs" role="tablist" aria-label="Sections">
+  <a href="#vote" data-view="vote" role="tab" id="tab-vote">Vote</a>
+  <a href="#dashboard" data-view="dashboard" role="tab" id="tab-dashboard">Dashboard</a>
+  <a href="#board" data-view="board" role="tab" id="tab-board">Bulletin board</a>
+  <a href="#results" data-view="results" role="tab" id="tab-results">Results</a>
+  <a href="#attacks" data-view="attacks" role="tab" id="tab-attacks">Attack lab</a>
+  <a href="#admin" data-view="admin" role="tab" id="tab-admin">Admin</a>
+</nav>
+
+<div id="halted" class="banner bad hidden"></div>
+
+<main>
+<!-- ============================================================ VOTE -->
+<section id="view-vote" class="view">
+  <div class="vote-wrap">
+    <div class="card vote-head">
+      <div class="eyebrow" id="voteEid">Election</div>
+      <h2 id="voteTitle">Student Council Election</h2>
+      <p class="muted" id="voteWindow"></p>
+      <ol class="stepper" id="voteStepper">
+        <li data-step="login"><span>1</span>Sign in</li>
+        <li data-step="token"><span>2</span>Token</li>
+        <li data-step="choose"><span>3</span>Choose</li>
+        <li data-step="review"><span>4</span>Cast</li>
+        <li data-step="receipt"><span>5</span>Receipt</li>
+      </ol>
+    </div>
+
+    <div class="card vstep" id="step-login">
+      <h3>Sign in to get your ballot token</h3>
+      <p class="muted">Use the register number and one-time code from the slip given by the election officer.</p>
+      <label class="field">Register number
+        <input id="regNo" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="e.g. 24CSE007" maxlength="20">
+      </label>
+      <label class="field">One-time code
+        <input id="otp" inputmode="numeric" autocomplete="one-time-code" placeholder="6 digits" maxlength="6">
+      </label>
+      <button class="btn primary big" id="btnLogin">Sign in</button>
+      <button class="btn gold big" id="btnDemoVoter">Use a demo voter</button>
+      <p class="msg" id="loginMsg" role="status"></p>
+      <p class="hint">5 wrong codes lock the account. Signing in only proves you are eligible &mdash; your vote is never attached to your name.</p>
+    </div>
+
+    <div class="card vstep hidden" id="step-token">
+      <h3 id="hello">Hello</h3>
+      <p class="muted">Your phone now obtains a <b>blind signature</b>: the election authority signs your ballot token without ever seeing it.</p>
+      <ol class="crypto-steps" id="tokenSteps">
+        <li data-k="gen"><b>Secret token created on this phone</b><code id="tToken">-</code><small>never sent until you vote</small></li>
+        <li data-k="blind"><b>Blinded: m' = H(t) &middot; r<sup>e</sup> mod n</b><code id="tBlinded">-</code><small>this is ALL the authority sees</small></li>
+        <li data-k="sign"><b>Authority signed blindly: s' = m'<sup>d</sup> mod n</b><code id="tBlindSig">-</code><small>after checking you have not had a token</small></li>
+        <li data-k="unblind"><b>Unblinded: s = s' &middot; r<sup>-1</sup> mod n, and s<sup>e</sup> = H(t) verified</b><code id="tSig">-</code><small>a valid signature the authority has never seen</small></li>
+      </ol>
+      <button class="btn primary big" id="btnGetToken">Get my anonymous ballot token</button>
+      <p class="msg" id="tokenMsg" role="status"></p>
+      <button class="btn primary big hidden" id="btnToBallot">Continue to the ballot</button>
+    </div>
+
+    <div class="card vstep hidden" id="step-choose">
+      <div class="anon-badge">Signed out &middot; this phone now holds only an anonymous token</div>
+      <div id="ballotPosts"></div>
+      <button class="btn primary big" id="btnReview" disabled>Review my ballot</button>
+    </div>
+
+    <div class="card vstep hidden" id="step-review">
+      <h3>Review and cast</h3>
+      <ul class="review-list" id="reviewList"></ul>
+      <div class="explain">
+        <b>What your phone sends</b>
+        <ul>
+          <li>token + authority signature (proves eligibility, not identity)</li>
+          <li>commitment <code id="rvCommit">-</code> = SHA-256(choices, random nonce) &mdash; hides your choices until the count</li>
+          <li>your choices + nonce sealed to the trustee key (RSA-KEM), opened only after voting closes</li>
+        </ul>
+        <small>No cookie, no login, no register number. It waits in a mix pool and is posted in a shuffled batch.</small>
+      </div>
+      <button class="btn primary big" id="btnCast">Cast my vote anonymously</button>
+      <button class="btn ghost big" id="btnBackChoose">Change my choices</button>
+      <p class="msg" id="castMsg" role="status"></p>
+    </div>
+
+    <div class="card vstep hidden" id="step-receipt">
+      <div class="receipt-ok" id="receiptHead">Ballot cast</div>
+      <div class="receipt">
+        <div class="eyebrow">Your receipt code</div>
+        <div class="receipt-code" id="receiptCode">-</div>
+        <ol class="timeline" id="receiptTimeline"></ol>
+      </div>
+      <button class="btn primary big" id="btnCheckReceipt">Check my receipt on the board</button>
+      <p class="msg" id="receiptMsg" role="status"></p>
+      <p class="hint">The check downloads the whole public board and searches it <b>on this phone</b>, so the server never learns which ballot you looked for. Keep the code private: after the count it can prove how you voted.</p>
+      <button class="btn ghost" id="btnNewVoter">Start over (next demo voter on this device)</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ DASHBOARD -->
+<section id="view-dashboard" class="view">
+  <div class="grid-hero">
+    <div class="card">
+      <div class="eyebrow" id="dEid">-</div>
+      <h2 id="dTitle">-</h2>
+      <p class="muted" id="dWindow"></p>
+      <ol class="phases" id="phaseBar">
+        <li data-p="setup">Setup</li><li data-p="registration">Registration</li><li data-p="voting">Voting</li><li data-p="tally">Tally</li>
+      </ol>
+      <div class="actions">
+        <button class="btn gold" id="btnDemoReset">Load demo data</button>
+        <button class="btn" id="btnSim">Simulate 10 voters</button>
+        <button class="btn" id="btnFlush">Flush mix now</button>
+        <button class="btn primary" id="btnAdvance">Close voting &amp; tally</button>
+      </div>
+      <p class="msg" id="dashMsg" role="status"></p>
+      <ul class="live" id="dLive"></ul>
+    </div>
+    <div class="card phone">
+      <div class="eyebrow">Vote from your phone</div>
+      <div class="big-url" id="voteUrl">-</div>
+      <p class="muted small" id="voteUrlHint">Same Wi-Fi as this laptop. Large buttons, works on any phone browser, no app.</p>
+      <div class="eyebrow">Published key fingerprints</div>
+      <ul class="fps" id="keyFps"></ul>
+      <p class="hint">Print these on the notice board: a fake bulletin board would need different keys.</p>
+    </div>
+  </div>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>Tokens issued by department</h3>
+      <div id="chartDept" class="chart"></div>
+      <p class="hint">Only <i>who obtained a token</i> is known. Which department a <i>ballot</i> came from is unknowable &mdash; ballots are anonymous.</p>
+    </div>
+    <div class="card">
+      <h3>Ballots posted to the board over time</h3>
+      <div id="chartTime" class="chart"></div>
+      <p class="hint">Each step is one shuffled mix batch, posted with a single shared timestamp.</p>
+    </div>
+  </div>
+
+  <div class="card how">
+    <h3>How one vote stays both secret and checkable</h3>
+    <div class="flow">
+      <div><b>1. Eligibility</b><span>Register no. + one-time code &rarr; authority blind-signs a token it cannot see (Chaum RSA).</span></div>
+      <div><b>2. Anonymity</b><span>Token + signature + commitment go through a mix with no login; batches are shuffled.</span></div>
+      <div><b>3. Integrity</b><span>Every entry is hash-chained; RSA-signed checkpoints pin the head.</span></div>
+      <div><b>4. Secrecy</b><span>Choices hide inside SHA-256 commitments until the trustee opens them after close.</span></div>
+      <div><b>5. Verifiability</b><span>Voters check receipts; anyone recounts board.json, even in this browser.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ BOARD -->
+<section id="view-board" class="view">
+  <div class="card">
+    <div class="toolbar">
+      <button class="btn primary" id="btnVerifyBrowser">Verify in my browser</button>
+      <button class="btn" id="btnVerifyServer">Verify on server</button>
+      <a class="btn" id="btnDownload" href="/api/board?download=1" download>Download board.json</a>
+      <select id="boardFilter" aria-label="Filter entries">
+        <option value="">All entries</option><option value="ballot">Ballots</option><option value="issuance">Token issuances</option>
+        <option value="checkpoint">Checkpoints</option><option value="opening">Openings</option><option value="phase">Phases</option>
+      </select>
+      <span class="spacer"></span>
+      <input id="receiptLookup" placeholder="receipt code" maxlength="64" spellcheck="false" aria-label="Receipt code">
+      <button class="btn" id="btnLookup">Find</button>
+    </div>
+    <div id="verifyOut"></div>
+  </div>
+  <div class="card">
+    <h3 id="boardHead">Bulletin board</h3>
+    <p class="hint">Append-only log: <code>hash = SHA-256(seq, type, time, data, prev)</code>. Edit any entry and the chain breaks exactly there.</p>
+    <div id="boardList" class="chain"></div>
+    <button class="btn ghost" id="btnMoreBoard">Show all entries</button>
+  </div>
+</section>
+
+<!-- ============================================================ RESULTS -->
+<section id="view-results" class="view">
+  <div id="resultsOut"></div>
+</section>
+
+<!-- ============================================================ ATTACKS -->
+<section id="view-attacks" class="view">
+  <div class="card">
+    <h2>Attack lab</h2>
+    <p class="muted">Every button runs a real attack through the same code the voting endpoints use, then explains what stopped it. Tampering edits <code>data/board.json</code> on disk, like an insider with a text editor.</p>
+  </div>
+  <div class="attack-grid" id="attackGrid"></div>
+  <div class="card">
+    <h3>Threat model</h3>
+    <div class="table-wrap"><table class="threats" id="threatTable"></table></div>
+    <h3>Honest limits</h3>
+    <ul id="limitsList" class="limits"></ul>
+  </div>
+</section>
+
+<!-- ============================================================ ADMIN -->
+<section id="view-admin" class="view">
+  <div class="grid2">
+    <div class="card">
+      <h3>Election officer</h3>
+      <label class="field">Admin key <input id="adminKey" type="password" autocomplete="off"></label>
+      <p class="hint" id="adminKeyHint">Admin can run phases but can never see or change votes.</p>
+      <div class="actions">
+        <button class="btn" data-phase="registration">Open registration</button>
+        <button class="btn" data-phase="voting">Open voting</button>
+        <button class="btn primary" data-phase="tally">Close voting &amp; tally</button>
+      </div>
+      <div class="actions">
+        <label class="inline">Simulate <input id="simCount" type="number" min="1" max="500" value="10"> voters</label>
+        <button class="btn" id="btnSim2">Run</button>
+      </div>
+      <div class="actions">
+        <label class="inline">Unlock <input id="unlockReg" placeholder="reg no" maxlength="20"></label>
+        <button class="btn" id="btnUnlock">Unlock</button>
+      </div>
+      <p class="msg" id="adminMsg" role="status"></p>
+      <div class="powers">
+        <div><b>The admin CAN</b><ul><li>create the election and upload the roster</li><li>open and close phases</li><li>see <i>who</i> has taken a token (turnout)</li></ul></div>
+        <div><b>The admin CANNOT</b><ul><li>read any vote before voting closes</li><li>link a ballot to a student</li><li>edit, drop or add a ballot without the audit failing</li></ul></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>1. Create an election</h3>
+      <label class="field">Title <input id="elTitle" value="Hostel Committee Election 2026" maxlength="80"></label>
+      <label class="field">Posts and candidates <small>(one post per line: <code>Post: Name (DEPT) | Name (DEPT)</code>; NOTA is added)</small>
+        <textarea id="elPosts" rows="4">Hostel Secretary: Arun K (CSE) | Sneha M (ECE)
+Mess Secretary: Gokul R (MECH) | Lavanya S (IT) | Imran A (EEE)</textarea></label>
+      <div class="row2">
+        <label class="field">Voting opens <input id="elOpens" type="datetime-local"></label>
+        <label class="field">Voting closes <input id="elCloses" type="datetime-local"></label>
+      </div>
+      <button class="btn primary" id="btnCreate">Create election (setup phase)</button>
+      <h3>2. Upload roster (CSV)</h3>
+      <label class="field">reg_no,name,dept,year <textarea id="rosterCsv" rows="4" spellcheck="false" placeholder="reg_no,name,dept,year"></textarea></label>
+      <div class="actions">
+        <input type="file" id="rosterFile" accept=".csv,text/csv" aria-label="Roster CSV file">
+        <button class="btn" id="btnSampleRoster">Use sample roster</button>
+        <button class="btn primary" id="btnRoster">Upload roster</button>
+      </div>
+      <div id="rosterOut"></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>Built for QUANTIX 2K26 &middot; KSRCE &middot; <span id="footProto">pure-Python crypto, no CDN, works offline</span></footer>
+<div id="toast" class="toast hidden" role="status"></div>
+<script src="crypto.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
