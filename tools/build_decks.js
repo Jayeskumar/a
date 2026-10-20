@@ -116,11 +116,13 @@ async function buildDeck(pitchPath, outDir, team) {
 
   const shotPath = path.join(projDir, "docs", "screenshot.png");
   const hasShot = fs.existsSync(shotPath);
+  // JPEG keeps decks small: the screenshot is placed on three slides
+  const shotData = hasShot ? "image/jpeg;base64," + (await sharp(shotPath).jpeg({ quality: 82 }).toBuffer()).toString("base64") : null;
   function screenshot(slide, x, y, w, name) {
     const h = w / 1.6;
     slide.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: x - 0.06, y: y - 0.06, w: w + 0.12, h: h + 0.12, rectRadius: 0.08, fill: { color: C.background1 }, line: { color: C.background2, width: 1 }, shadow: shadow(), objectName: name + " frame" });
     if (hasShot) {
-      slide.addImage({ path: shotPath, x, y, w, h, objectName: name, altText: `${pitch.name} screenshot` });
+      slide.addImage({ data: shotData, x, y, w, h, objectName: name, altText: `${pitch.name} screenshot` });
     } else {
       slide.addText("Screenshot: run the app and capture docs/screenshot.png", { x, y, w, h, align: "center", valign: "middle", fontSize: 14, color: C.accent4, fill: { color: C.background2 }, isTextBox: true, objectName: name });
     }

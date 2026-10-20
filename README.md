@@ -10,6 +10,8 @@ Every project is **offline-first and zero-install**: Python 3.9+ standard librar
 HTML/JS with hand-drawn SVG charts, and no CDNs or network calls. Every ML, statistics and crypto
 algorithm is written from scratch, unit-tested and measured.
 
+![Showcase hub: python run_all.py starts all 19 demos plus this page on :8000](docs/hub.png)
+
 > **Read [`docs/STRATEGY.md`](docs/STRATEGY.md) first.** It covers the event rules (including
 > asking the organisers whether pre-built code is allowed), which project to pitch for each domain,
 > a 24-hour game plan, demo-day and submission checklists, and Q&A prep.
