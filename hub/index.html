@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QUANTIX 2K26 Showcase</title>
+<style>
+  :root {
+    --bg: #f5f6fb; --surface: #ffffff; --surface-2: #eef0f7; --ink: #141b34; --muted: #5b6478;
+    --line: #e2e5ef; --hero: #0b1026; --hero-ink: #ffffff; --hero-muted: #b9c0e0; --accent: #7c5cff;
+    --ok: #16a34a; --off: #9aa3b5; --shadow: 0 1px 2px rgba(16,24,40,.06), 0 8px 24px rgba(16,24,40,.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0a0d1a; --surface: #121731; --surface-2: #1a2042; --ink: #e8ebf7; --muted: #9aa3c2;
+      --line: #252c52; --hero: #060816; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0a0d1a; --surface: #121731; --surface-2: #1a2042; --ink: #e8ebf7; --muted: #9aa3c2;
+    --line: #252c52; --hero: #060816; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  a { color: inherit; }
+  .hero { background: var(--hero); color: var(--hero-ink); padding: 40px 16px 32px; }
+  .wrap { max-width: 1240px; margin: 0 auto; }
+  .eyebrow { color: var(--hero-muted); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; }
+  h1 { font-size: clamp(30px, 5vw, 48px); line-height: 1.1; margin: 8px 0 10px; }
+  .lede { color: var(--hero-muted); max-width: 760px; margin: 0; font-size: 16px; }
+  .stats { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+  .stat { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); border-radius: 12px; padding: 10px 16px; min-width: 120px; }
+  .stat b { display: block; font-size: 24px; }
+  .stat span { color: var(--hero-muted); font-size: 12px; }
+  .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 20px 16px 4px; }
+  .chip { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 6px 14px; font: inherit; font-size: 13px; cursor: pointer; }
+  .chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .spacer { flex: 1; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; padding: 16px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); display: flex; flex-direction: column; }
+  .shot { aspect-ratio: 16 / 10; background: var(--surface-2); display: block; width: 100%; object-fit: cover; object-position: top left; border-bottom: 1px solid var(--line); }
+  .body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+  .top { display: flex; align-items: center; gap: 10px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--off); flex: none; }
+  .dot.live { background: var(--ok); box-shadow: 0 0 0 4px color-mix(in srgb, var(--ok) 20%, transparent); }
+  .name { font-size: 19px; font-weight: 700; margin: 0; }
+  .num { margin-left: auto; color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+  .domain { font-size: 12px; font-weight: 600; letter-spacing: .02em; }
+  .tagline { margin: 0; color: var(--muted); }
+  .results { display: flex; flex-wrap: wrap; gap: 6px; }
+  .res { background: var(--surface-2); border-radius: 8px; padding: 4px 8px; font-size: 12px; color: var(--muted); }
+  .res b { color: var(--ink); }
+  .actions { display: flex; gap: 8px; margin-top: auto; padding-top: 4px; flex-wrap: wrap; }
+  .btn { text-decoration: none; border-radius: 10px; padding: 8px 14px; font-size: 13px; font-weight: 600; border: 1px solid var(--line); background: var(--surface); }
+  .btn.primary { color: #fff; border-color: transparent; }
+  .btn[aria-disabled="true"] { opacity: .55; pointer-events: none; }
+  footer { color: var(--muted); font-size: 13px; text-align: center; padding: 24px 16px 40px; }
+  @media (max-width: 420px) { .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">QUANTIX 2K26 · K.S.R. College of Engineering</div>
+    <h1>Real ideas. Real code. Real impact.</h1>
+    <p class="lede">Working prototypes across all six hackathon domains. Every one runs offline on a laptop with plain Python, and every algorithm is written from scratch and explainable.</p>
+    <div class="stats" id="stats"></div>
+  </div>
+</header>
+<main class="wrap">
+  <div class="bar" id="filters" role="toolbar" aria-label="Filter by domain"></div>
+  <div class="grid" id="grid"></div>
+</main>
+<footer>Built for QUANTIX 2K26 · KSRCE · start everything with <code>python run_all.py</code></footer>
+<script>
+const DOMAIN_SHORT = {
+  "Artificial": "AI & ML", "Sustainability": "Sustainability", "HealthTech": "HealthTech",
+  "Cybersecurity": "Cyber & Blockchain", "Smart": "AgriTech", "Data": "Data Science",
+};
+const short = (d) => DOMAIN_SHORT[(d || "").split(" ")[0].replace(/[^A-Za-z]/g, "")] || d;
+let projects = [];
+let filter = "All";
+
+function el(tag, attrs = {}, ...kids) {
+  const n = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === "style") Object.assign(n.style, v);
+    else if (k.startsWith("on")) n.addEventListener(k.slice(2), v);
+    else n.setAttribute(k, v);
+  }
+  for (const k of kids) n.append(k);
+  return n;
+}
+
+function render() {
+  const live = projects.filter((p) => p.live).length;
+  const domains = new Set(projects.map((p) => short(p.domain)));
+  document.getElementById("stats").replaceChildren(
+    ...[[projects.length, "prototypes"], [domains.size, "domains"], [live, "running now"], ["0", "pip installs"]]
+      .map(([v, l]) => el("div", { class: "stat" }, el("b", {}, String(v)), el("span", {}, l))));
+
+  const names = ["All", ...[...domains]];
+  document.getElementById("filters").replaceChildren(...names.map((n) =>
+    el("button", { class: "chip", "aria-pressed": String(n === filter), onclick: () => { filter = n; render(); } }, n)));
+
+  const host = location.hostname || "127.0.0.1";
+  const shown = projects.filter((p) => filter === "All" || short(p.domain) === filter);
+  document.getElementById("grid").replaceChildren(...shown.map((p) => {
+    const url = `http://${host}:${p.port}/`;
+    const open = el("a", { class: "btn primary", href: url, target: "_blank", rel: "noopener",
+      style: { background: p.color }, "aria-disabled": String(!p.live) }, p.live ? "Open demo" : "Not running");
+    return el("article", { class: "card" },
+      p.shot ? el("img", { class: "shot", src: `/shots/${p.dir_name}.png`, alt: `${p.name} screenshot`, loading: "lazy" }) : el("div", { class: "shot" }),
+      el("div", { class: "body" },
+        el("div", { class: "top" }, el("span", { class: "dot" + (p.live ? " live" : ""), title: p.live ? "running" : "not running" }),
+          el("h2", { class: "name" }, p.name), el("span", { class: "num" }, `#${p.num} · :${p.port}`)),
+        el("div", { class: "domain", style: { color: p.color } }, short(p.domain)),
+        el("p", { class: "tagline" }, p.tagline),
+        el("div", { class: "results" }, ...(p.results || []).slice(0, 3).map((r) =>
+          el("span", { class: "res" }, el("b", {}, r.value), " " + r.label))),
+        el("div", { class: "actions" }, open,
+          el("a", { class: "btn", href: `/report/${p.dir_name}`, target: "_blank" }, "Report"))));
+  }));
+}
+
+async function load() {
+  try {
+    const r = await fetch("/api/projects");
+    projects = (await r.json()).projects;
+  } catch (e) {
+    projects = [];
+  }
+  render();
+}
+load();
+setInterval(load, 5000);
+</script>
+</body>
+</html>
