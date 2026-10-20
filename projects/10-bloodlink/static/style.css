@@ -386,3 +386,38 @@ svg.chart { width: 100%; height: auto; display: block; overflow: visible; }
   .form-grid { grid-template-columns: minmax(0, 1fr); }
   .brand p { display: none; }
 }
+
+/* ---------- polish ---------- */
+/* stat-tile footnotes wrap instead of being cut off with an ellipsis */
+.kpi .sub { white-space: normal; overflow: visible; text-overflow: clip; }
+/* town names: readable contrast + halo so dots, icons and arrows never hide them */
+.map .town { fill: var(--muted); paint-order: stroke; stroke: var(--map-bg); stroke-width: 3px; stroke-linejoin: round; }
+.map .ring-label { paint-order: stroke; stroke: var(--map-bg); stroke-width: 3px; stroke-linejoin: round; }
+#simMap .town { font-size: 12.5px; }
+#simMap .ring-label { font-size: 12px; }
+.rank-head { font-size: 11.5px; }
+.inv .c { font-size: 11.5px; white-space: nowrap; }
+.inv td.cell .ic { font-size: 10.5px; letter-spacing: .2px; }
+.comp .pts { white-space: nowrap; }
+/* amber text on the pale amber wash needs a deeper shade to stay readable on a projector */
+.st.low, .inv td.cell.low .ic { color: #8a5a0f; }
+@media (prefers-color-scheme: dark) {
+  .st.low, .inv td.cell.low .ic { color: var(--warn); }
+  .inv td.cell.expiry-risk .ic { color: var(--serious); }
+  .inv td.cell.short .ic { color: #f87171; }
+}
+#mcTable td.n, #mcTable td:first-child { white-space: nowrap; }
+#exTable td:last-child { min-width: 240px; }
+@media (max-width: 600px) {
+  /* region maps are drawn at ~60% scale on a phone: enlarge their labels in map units */
+  #matchMap .town, #netMap .town { font-size: 18px; stroke-width: 4px; }
+  #matchMap .ring-label { font-size: 16px; }
+  #simChart .tick { font-size: 19px; }
+  #simChart .lbl-end { font-size: 19px; stroke-width: 6px; }
+  .cmp th, .cmp td { padding: 6px 3px; font-size: 12px; }
+  .cmp td:first-child { min-width: 84px; }
+  .cmp th .sw-line { display: block; margin: 0 0 4px auto; }
+  .cmp td.n { white-space: nowrap; }
+  /* the month tiles are 4-up via an inline style; two per row keeps "115 -> 18" on one line */
+  #monthKpis { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+}

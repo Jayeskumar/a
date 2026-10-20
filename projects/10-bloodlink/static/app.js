@@ -87,7 +87,9 @@ function baseMap() {
   for (const t of S.meta.towns) {
     const [x, y] = P(t.lat, t.lon);
     if (x < 0 || y < 0 || x > MW || y > MH) continue;
-    g += `<text class="town" x="${(x + 10).toFixed(1)}" y="${(y - 10).toFixed(1)}">${esc(t.name.toUpperCase())}</text>`;
+    // phones use larger map labels: flip names near the right edge to the left of the town so they are not cut off
+    const flip = window.innerWidth <= 600 && x + 10 + t.name.length * 12 > MW;
+    g += `<text class="town" x="${(flip ? x - 10 : x + 10).toFixed(1)}" y="${(y - 10).toFixed(1)}"${flip ? ' text-anchor="end"' : ""}>${esc(t.name.toUpperCase())}</text>`;
   }
   // scale bar 10 km
   g += `<g transform="translate(${MW - 92},${MH - 16})"><line x1="0" x2="${(10 * KM_PX).toFixed(1)}" y1="0" y2="0" stroke="var(--muted)" stroke-width="2"/><text class="town" x="0" y="-5">10 KM</text></g>`;
@@ -324,15 +326,19 @@ function lineChart(svg, o) {
     if (s.marker && s.marker[0] <= clip) labels.push({ x: X(s.marker[0]), y: Y(s.marker[1]), color: s.color, text: s.marker[2] });
   }
   labels.sort((a, b) => a.x - b.x);
-  let prevX = -999, drop = 0;
-  for (const l of labels) {
-    drop = l.x - prevX < (o.labelGap || 74) ? drop + 15 : 0;
-    prevX = l.x;
-    const right = l.x > W - m.r - 70;
-    const ly = o.labelsBelow ? l.y + 16 + drop : l.y - 9 - drop;
+  // end labels: when the next marker is close, put this label on the left of its marker so the two
+  // never overlap or sit on top of the neighbouring step line; otherwise stack them vertically
+  const narrow = window.innerWidth <= 600, gap = o.labelGap || (narrow ? 130 : 74), room = narrow ? 115 : 70;
+  let prev = null;
+  labels.forEach((l, i) => {
+    const next = labels[i + 1];
+    l.left = l.x > W - m.r - room || (!!next && next.x - l.x < gap && l.x - m.l > room);
+    l.drop = prev && !prev.left && !l.left && l.x - prev.x < gap ? prev.drop + (narrow ? 22 : 15) : 0;
+    prev = l;
+    const ly = o.labelsBelow ? l.y + (narrow ? 24 : 16) + l.drop : l.y - 9 - l.drop;
     g += `<circle cx="${l.x.toFixed(1)}" cy="${l.y.toFixed(1)}" r="4.5" fill="${l.color}" stroke="var(--card)" stroke-width="2"/>`;
-    g += `<text class="lbl-end" x="${(l.x + (right ? -7 : 7)).toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="${right ? "end" : "start"}">${esc(l.text)}</text>`;
-  }
+    g += `<text class="lbl-end" x="${(l.x + (l.left ? -7 : 7)).toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="${l.left ? "end" : "start"}">${esc(l.text)}</text>`;
+  });
   if (o.clipX != null && o.clipX < xMax) g += `<line class="playhead" x1="${X(o.clipX).toFixed(1)}" x2="${X(o.clipX).toFixed(1)}" y1="${m.t}" y2="${m.t + ih}"/>`;
   g += `<line class="cross" id="${svg.id}-x" x1="0" x2="0" y1="${m.t}" y2="${m.t + ih}" style="display:none"/>`;
   g += `<rect x="${m.l}" y="${m.t}" width="${iw}" height="${ih}" fill="transparent" class="hover"/>`;
@@ -696,6 +702,8 @@ async function loadDonors() {
   try { S.donors = (await api("donors?limit=300")).donors; } catch (e) { toast("Donor list failed: " + e.message); return; }
   renderDonorList();
   if (!S.donorSel && S.donors.length) selectDonor(S.donors[0].id);
+  // show a worked self-check with the pre-filled sample answers instead of an empty card
+  if (!$("#scResult").innerHTML.trim()) $("#scBtn").click();
 }
 function renderDonorList() {
   const q = $("#dq").value.trim().toLowerCase();
@@ -732,7 +740,7 @@ async function selectDonor(id) {
       <label class="toggle small" style="margin-top:6px"><input type="checkbox" id="dAvail" ${d.available ? "checked" : ""}> Available for emergency alerts</label></div>${ring}</div>
     ${verdictHtml(el)}
     ${checksHtml(el)}
-    <div class="mini-stats"><div><b>${d.donations}</b><span>donations</span></div><div><b>up to ${r.lives_helped_upto}</b><span>patients helped*</span></div><div><b>${Math.round(d.response_rate * 100)}%</b><span>response (${d.alerts_accepted}/${d.alerts_received})</span></div></div>
+    <div class="mini-stats"><div><b>${d.donations}</b><span>donations</span></div><div><b>up to ${r.lives_helped_upto}</b><span>patients helped*</span></div><div><b>${Math.round(d.response_rate * 100)}%</b><span>${d.alerts_received ? `response (${d.alerts_accepted}/${d.alerts_received})` : "prior (no alerts yet)"}</span></div></div>
     <h3 style="margin-top:14px">Badges</h3>
     <div class="badges">${r.badges.map((b) => `<div class="badge ${b.earned ? "" : "off"}"${tipAttr(esc(b.desc))}>${BADGE_ICON(b.earned)}<b>${esc(b.name)}</b></div>`).join("")}</div>
     <p class="muted small" style="margin:10px 0 0">* one whole-blood donation separated into components can help up to 3 patients (commonly cited). Last donation: ${d.last_donation || "never"}; last alerted: ${d.last_contacted ? d.last_contacted.replace("T", " ") : "never"}.</p>`;

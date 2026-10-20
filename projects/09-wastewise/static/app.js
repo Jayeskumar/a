@@ -176,7 +176,8 @@ function renderMap(el, opt) {
   if (!small) {
     town.wards.forEach((w) => {
       const t = svg('text', { x: MX(w.rect[0]) + 8, y: MY(w.rect[3]) + 17, class: 'ward-label' }, el);
-      t.textContent = w.id + ' · ' + w.name;
+      // phones: the map is drawn at ~50% scale with larger text, so the ward id is dropped to fit
+      t.textContent = window.innerWidth <= 600 ? w.name : w.id + ' · ' + w.name;
     });
   }
   // trucks
@@ -341,7 +342,11 @@ function cmpTable(el, f, s, rows, heads) {
     const higherBetter = kind === 'pct';
     let ch = '';
     if (isPct) ch = (b - a >= 0 ? '+' : '−') + Math.abs(Math.round((b - a) * 100)) + ' pts';
-    else if (a) ch = (b <= a ? '−' : '+') + Math.abs(Math.round(100 * (1 - b / a))) + '%';
+    else if (a) {
+      // never show "−100%" while something is still left (e.g. 616 L -> 3 L spilled is −99.5%)
+      const red = Math.abs(100 * (1 - b / a)), r0 = Math.round(red);
+      ch = (b <= a ? '−' : '+') + (r0 === 100 && b !== 0 ? fmt(Math.min(red, 99.9), 1) : r0) + '%';
+    }
     else ch = b === 0 ? '–' : '+' + show(b);
     const sWins = higherBetter ? b > a : b < a;
     const fWins = higherBetter ? a > b : a < b;
@@ -660,7 +665,9 @@ function renderForecast() {
     const W3 = 320, H3 = 190, m3 = { l: 32, r: 8, t: 16, b: 24 };
     const vals = f.season.map((s) => s.index);
     const ym = niceMax(Math.max(...vals) * 1.15);
-    const fr = chartFrame(se, W3, H3, m3, ym, (v) => fmt(v, 1));
+    // pick a tick count that lands on round values (1.5 -> 0, 0.5, 1.0, 1.5 instead of 0.4, 0.8, 1.1)
+    const tk = [3, 4, 5].find((k) => Math.abs(ym / k * 10 - Math.round(ym / k * 10)) < 1e-9) || 4;
+    const fr = chartFrame(se, W3, H3, m3, ym, (v) => fmt(v, 1), tk);
     const band = (W3 - m3.l - m3.r) / 7, bw = Math.min(22, band - 8);
     const imax = vals.indexOf(Math.max(...vals));
     f.season.forEach((s, i) => {

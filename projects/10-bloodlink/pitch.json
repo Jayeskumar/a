@@ -93,5 +93,15 @@
     "SMS/IVR alerts in Tamil and English"
   ],
   "port": 8010,
-  "dir": "projects/10-bloodlink"
+  "dir": "projects/10-bloodlink",
+  "compare": {
+    "columns": ["WhatsApp broadcast appeals", "Donor registry apps", "BloodLink"],
+    "rows": [
+      ["Alerts only eligible donors", "No", "Partial", "Yes"],
+      ["Explains donor ranking", "No", "No", "Yes"],
+      ["Median time to fulfil (sim)", "96 min", "Not measured", "58 min"],
+      ["Balances stock across banks", "No", "No", "Yes"],
+      ["Works offline", "No", "No", "Yes"]
+    ]
+  }
 }

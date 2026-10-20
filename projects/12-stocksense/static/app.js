@@ -179,7 +179,9 @@ function lineChart(el, cfg) {
     if (v.i < 0 || v.i >= n) return;
     const x = xs(v.i);
     svgEl('line', { x1: x, x2: x, y1: m.t, y2: m.t + ih, stroke: v.color || cMuted, 'stroke-width': 1, opacity: 0.7 }, svg);
-    const tx = svgEl('text', { x: x + (v.anchor === 'end' ? -4 : 4), y: m.t + (v.y || 24), fill: v.color || cMuted, 'font-size': 11, 'text-anchor': v.anchor || 'start', 'font-weight': 600 }, svg);
+    // keep the label inside the plot: flip it to the left of its line when it would run past the right edge
+    const anchor = v.anchor === 'end' || x + 4 + String(v.label).length * 6.4 > W - 2 ? 'end' : 'start';
+    const tx = svgEl('text', { x: x + (anchor === 'end' ? -4 : 4), y: m.t + (v.y || 24), fill: v.color || cMuted, 'font-size': 11, 'text-anchor': anchor, 'font-weight': 600 }, svg);
     tx.textContent = v.label;
   });
   (cfg.hlines || []).forEach(h => {
@@ -502,7 +504,8 @@ function renderWhatif() {
       { name: 'Expected lost margin', values: pts.map(p => p.stockout_cost), color: cS, fmt: fmtINRFull },
       { name: 'Total', values: pts.map(p => p.total_cost), color: cT, width: 2.4, fmt: fmtINRFull },
     ],
-    vlines: [{ i: at, label: 'you ' + fmtPct(state.service), y: 12 }, ...(opt !== at ? [{ i: opt, label: 'optimum', y: 28, color: cssVar('--good-text') }] : [])],
+    // the two markers are often one step apart: label the left one leftwards so neither text sits on the other's line
+    vlines: [{ i: at, label: 'you ' + fmtPct(state.service), y: 12, anchor: opt > at ? 'end' : 'start' }, ...(opt !== at ? [{ i: opt, label: 'optimum', y: 28, color: cssVar('--good-text'), anchor: opt < at ? 'end' : 'start' }] : [])],
     dots: opt >= 0 ? [{ i: opt, v: pts[opt].total_cost, color: cssVar('--good') }] : [],
     yFormat: v => '₹' + fmtCompact(v), xFormat: v => (v * 100).toFixed(v >= 0.99 ? 1 : 0) + '%', yMin: 0,
     xTickIdx: x.map((v, i) => i).filter(i => [0.8, 0.85, 0.9, 0.95, 0.999].some(s => Math.abs(x[i] - s) < 1e-6)),

@@ -93,5 +93,15 @@
     "Photo-based contamination check at the bin"
   ],
   "port": 8009,
-  "dir": "projects/09-wastewise"
+  "dir": "projects/09-wastewise",
+  "compare": {
+    "columns": ["Fixed daily garbage beat", "GPS fleet trackers", "WasteWise"],
+    "rows": [
+      ["Picks bins by forecast fill", "No", "No", "Yes"],
+      ["Explains every pickup", "No", "No", "Yes (rule A/B)"],
+      ["Optimises truck routes", "No", "Partial", "Yes (CW + 2-opt)"],
+      ["Tamil bin guide for citizens", "No", "No", "Yes"],
+      ["Works offline", "Yes", "Cloud + SIM", "Yes"]
+    ]
+  }
 }

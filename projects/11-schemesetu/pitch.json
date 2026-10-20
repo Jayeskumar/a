@@ -83,5 +83,15 @@
     "SMS reminders for deadlines such as PMFBY cut-offs"
   ],
   "port": 8011,
-  "dir": "projects/11-schemesetu"
+  "dir": "projects/11-schemesetu",
+  "compare": {
+    "columns": ["Office visits / middlemen", "Online scheme portals", "SchemeSetu"],
+    "rows": [
+      ["Works without internet", "Yes (travel)", "No", "Yes"],
+      ["Tamil + English interface", "Yes", "Partial", "Yes"],
+      ["Explains why eligible / not", "Rarely", "Partial", "Per condition"],
+      ["Effort to screen 22 schemes", "Many visits", "Form per scheme", "~15 questions"],
+      ["Village unclaimed-benefit view", "No", "No", "Yes"]
+    ]
+  }
 }

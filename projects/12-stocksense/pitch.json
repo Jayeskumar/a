@@ -94,5 +94,15 @@
     "Regional festival calendars and Tamil/Hindi UI"
   ],
   "port": 8012,
-  "dir": "projects/12-stocksense"
+  "dir": "projects/12-stocksense",
+  "compare": {
+    "columns": ["Gut-feel reordering", "Enterprise forecasting suites", "StockSense"],
+    "rows": [
+      ["Stock-out SKU-days (90-day sim)", "309", "Not measured", "17"],
+      ["Explains every order", "No", "Partial", "Yes"],
+      ["Festival-aware forecasts", "Memory only", "Yes", "Yes"],
+      ["Setup effort", "None", "High", "Upload one CSV"],
+      ["Cost / connectivity", "₹0", "Licence + cloud", "₹0 / offline"]
+    ]
+  }
 }

@@ -12,7 +12,7 @@
   --surface-2: #eff4f1;
   --text: #0c1a15;
   --text-2: #4a5a54;
-  --muted: #74837d;
+  --muted: #65746e;
   --grid: #e1e8e4;
   --axis: #c3cfc9;
   --street: #e4ebe7;
@@ -405,4 +405,30 @@ footer b { color: var(--text-2); }
   .card { padding: 12px; }
   .playbar input[type=range] { order: 3; flex-basis: 100%; }
   .mini-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+}
+
+/* ------------------------------------------------------------ polish */
+/* cards placed side by side in a grid must not inherit the stacked-card top margin */
+.grid-2 > .card + .card, .grid-3 > .card + .card { margin-top: 0; }
+/* empty-state rows in comparison tables wrap instead of overflowing the card */
+.cmp td.empty { white-space: normal; text-align: left; line-height: 1.5; }
+.rule { font-size: 11.5px; }
+.truck-dot { font-size: 12px; }
+.steps .t small, .pairs span, .lb-row .name small { font-size: 12px; }
+.lb-row .pts small { font-size: 12px; }
+.dec td:last-child { min-width: 300px; }
+/* keep the town map in view while the side column scrolls (tall screens only) */
+@media (min-width: 1181px) and (min-height: 860px) {
+  .grid-routes > .card { position: sticky; top: 78px; }
+}
+/* phones: SVGs are scaled to ~50%, so enlarge their text in user units to stay readable */
+@media (max-width: 600px) {
+  .map .ward-label { font-size: 22px; stroke-width: 6px; }
+  .map .depot text { font-size: 21px; stroke-width: 6px; }
+  .map .truck circle { r: 16px; }
+  .map .truck text { font-size: 18px; }
+  #chart-km text, #chart-ovf text, #chart-fc text { font-size: 20px; }
+  #month-minis .chart text { font-size: 19px; }
+  #month-minis .chart text.axis { font-size: 17px; }
+  #month-minis h3 { min-height: 2.6em; }
 }

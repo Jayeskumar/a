@@ -387,7 +387,7 @@
     var b = ev.benefits;
     var cover = b.max_health_cover;
     var html = [
-      kpi('k-green', ev.counts.eligible, t('kpi_eligible'), ev.counts.not_eligible + ' × ' + t('st_not').toLowerCase()),
+      kpi('k-green', ev.counts.eligible, t('kpi_eligible'), ev.counts.not_eligible + ' ' + t('st_not').toLowerCase()),
       kpi('k-amber', ev.counts.possibly, t('kpi_possibly'), t('kpi_possibly_s')),
       kpi('k-brand', inr(b.annual_total), t('kpi_annual'), b.conditional_total ? t('kpi_if_selected', { v: inr(b.conditional_total) }) : t('kpi_fixed')),
       kpi('', inr(b.one_time_total), t('kpi_onetime'), t('kpi_fixed')),
@@ -656,7 +656,9 @@
   }
 
   function villageChart(rows) {
-    var W = 680, rowH = 30, left = 190, right = 46, top = 6;
+    // phones: a narrower drawing keeps labels ~11px instead of shrinking a 680-wide chart to half size
+    var narrow = window.innerWidth <= 600;
+    var W = narrow ? 400 : 680, rowH = 30, left = narrow ? 138 : 190, right = narrow ? 30 : 46, top = 6;
     var H = top + rows.length * rowH + 22;
     var max = Math.max.apply(null, rows.map(function (r) { return r.eligible; }).concat([1]));
     var step = niceStep(max / 4);
@@ -671,20 +673,21 @@
     for (var v = 0; v <= max; v += step) {
       var x = left + v * scale;
       svg += '<line x1="' + x + '" y1="' + top + '" x2="' + x + '" y2="' + (H - 18) + '" stroke="' + cLine + '" stroke-width="1"/>' +
-        '<text class="axis" x="' + x + '" y="' + (H - 4) + '" font-size="11" text-anchor="middle">' + v + '</text>';
+        '<text class="axis" x="' + x + '" y="' + (H - 4) + '" font-size="' + (narrow ? 12.5 : 11) + '" text-anchor="middle">' + v + '</text>';
     }
     rows.forEach(function (r, i) {
       var y = top + i * rowH + 5, h = rowH - 10, x = left;
       var name = L(r.name);
-      var short = r.short.length > 26 ? r.short.slice(0, 25) + '…' : r.short;
-      svg += '<text x="' + (left - 8) + '" y="' + (y + h / 2 + 4) + '" font-size="12.5" text-anchor="end"><title>' + esc(name) + '</title>' + esc(short) + '</text>';
+      var maxLen = narrow ? 18 : 26;
+      var short = r.short.length > maxLen ? r.short.slice(0, maxLen - 1) + '…' : r.short;
+      svg += '<text x="' + (left - 8) + '" y="' + (y + h / 2 + 4) + '" font-size="' + (narrow ? 13 : 12.5) + '" text-anchor="end"><title>' + esc(name) + '</title>' + esc(short) + '</text>';
       [[r.received, cGreen], [r.applied + r.pending, cAmber], [r.unclaimed, cBrand]].forEach(function (seg) {
         if (!seg[0]) return;
         var w = seg[0] * scale;
         svg += '<rect x="' + x + '" y="' + y + '" width="' + Math.max(1, w - 1) + '" height="' + h + '" rx="3" fill="' + seg[1] + '"/>';
         x += w;
       });
-      svg += '<text x="' + (x + 6) + '" y="' + (y + h / 2 + 4) + '" font-size="12" font-weight="700" fill="' + cBrand + '">' + r.unclaimed + '</text>';
+      svg += '<text x="' + (x + 6) + '" y="' + (y + h / 2 + 4) + '" font-size="' + (narrow ? 13 : 12) + '" font-weight="700" fill="' + cBrand + '">' + r.unclaimed + '</text>';
     });
     return svg + '</svg>';
   }
@@ -696,7 +699,8 @@
   }
 
   function curveChart(rows) {
-    var W = 520, H = 200, l = 36, r = 10, tp = 12, b = 42;
+    var narrow = window.innerWidth <= 600, fs = narrow ? 12 : 10.5;
+    var W = narrow ? 340 : 520, H = 200, l = 36, r = 10, tp = 12, b = 42;
     var css = getComputedStyle(document.documentElement);
     var cBrand = css.getPropertyValue('--brand').trim() || '#7C3AED';
     var cAmber = css.getPropertyValue('--saffron').trim() || '#F59E0B';
@@ -707,17 +711,17 @@
     var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(t('curve_title')) + '">';
     [0, 0.25, 0.5, 0.75, 1].forEach(function (v) {
       svg += '<line x1="' + l + '" x2="' + (W - r) + '" y1="' + Y(v) + '" y2="' + Y(v) + '" stroke="' + cLine + '"/>' +
-        '<text class="axis" x="' + (l - 6) + '" y="' + (Y(v) + 4) + '" font-size="10.5" text-anchor="end">' + Math.round(v * 100) + '%</text>';
+        '<text class="axis" x="' + (l - 6) + '" y="' + (Y(v) + 4) + '" font-size="' + fs + '" text-anchor="end">' + Math.round(v * 100) + '%</text>';
     });
     var pts = [{ k: 0, decided: 0, eligible_confirmed: 0 }].concat(rows);
     [['eligible_confirmed', cBrand], ['decided', cAmber]].forEach(function (s) {
       svg += '<polyline fill="none" stroke="' + s[1] + '" stroke-width="2.5" points="' + pts.map(function (p) { return X(p.k) + ',' + Y(p[s[0]]); }).join(' ') + '"/>';
       pts.slice(1).forEach(function (p) { svg += '<circle cx="' + X(p.k) + '" cy="' + Y(p[s[0]]) + '" r="3.2" fill="' + s[1] + '"/>'; });
     });
-    rows.forEach(function (p) {
-      svg += '<text class="axis" x="' + X(p.k) + '" y="' + (H - b + 16) + '" font-size="10.5" text-anchor="middle">' + p.k + '</text>';
+    pts.forEach(function (p) {
+      svg += '<text class="axis" x="' + X(p.k) + '" y="' + (H - b + 16) + '" font-size="' + fs + '" text-anchor="middle">' + p.k + '</text>';
     });
-    svg += '<text class="axis" x="' + ((W + l) / 2) + '" y="' + (H - 1) + '" font-size="10.5" text-anchor="middle">' + esc(t('curve_x')) + '</text>';
+    svg += '<text class="axis" x="' + ((W + l) / 2) + '" y="' + (H - 8) + '" font-size="' + fs + '" text-anchor="middle">' + esc(t('curve_x')) + '</text>';
     return svg + '</svg><div class="legend"><span><i style="background:' + cBrand + '"></i>' + esc(t('curve_elig')) + '</span><span><i style="background:' + cAmber + '"></i>' + esc(t('curve_dec')) + '</span></div>';
   }
 

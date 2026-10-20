@@ -350,3 +350,24 @@ footer b { color: var(--brand-600); }
   #print-area td, #print-area th { border: 1px solid #999; padding: 5pt; text-align: left; vertical-align: top; }
   #print-area .box { display: inline-block; width: 12pt; height: 12pt; border: 1.5px solid #000; }
 }
+
+/* ------------------------------------------------------------ polish */
+/* dark mode: the light lavender brand is for text/borders; solid buttons keep a deep purple so white text stays readable */
+@media (prefers-color-scheme: dark) {
+  .btn:not(.ghost):not(.danger), .chip.on { background: #7C3AED; border-color: #7C3AED; }
+  .btn:not(.ghost):not(.danger):hover { background: #6D28D9; }
+}
+@media (prefers-color-scheme: light) {
+  .pill.eligible { color: #15803D; }
+}
+/* scheme cards in a row stretch to equal height: pin the "verify" footer to the bottom so footers line up */
+.scheme .verify { margin-top: auto; }
+.tag { font-size: 11px; }
+/* desktop: show the full answer and scheme lists (no half-cut row inside a small scroll box) */
+@media (min-width: 861px) {
+  .answer-list, .pick-list { max-height: none; }
+}
+@media (max-width: 600px) {
+  .tbl th, .tbl td { padding: 7px 3px; }
+  .tbl th { letter-spacing: 0; }
+}

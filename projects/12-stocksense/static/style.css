@@ -12,7 +12,7 @@
   --border: rgba(20, 20, 20, 0.09);
   --text: #15171a;
   --text-2: #4a4f57;
-  --muted: #80858d;
+  --muted: #6e737b;
   --grid: #ebe9e4;
   --axis: #c9c6bf;
   --good: #0ca30c;
@@ -390,4 +390,19 @@ select { min-width: 260px; }
   .mcell { min-height: 96px; padding: 7px; }
   .mcell .skus { display: none; }
   .hbar { grid-template-columns: 90px minmax(0, 1fr) 56px; }
+}
+
+/* ---------- polish */
+/* longest label ("Stock-out SKU-days") fits without an ellipsis */
+.hbar { grid-template-columns: 124px minmax(0, 1fr) 64px; }
+@media (max-width: 560px) { .hbar { grid-template-columns: 118px minmax(0, 1fr) 56px; } }
+.mcell .skus span { font-size: 11.5px; }
+/* dark theme: the bright orange is kept for lines and text; solid fills carrying white text use the deeper orange */
+:root[data-theme="dark"] .btn.primary, :root[data-theme="dark"] .topbar .btn.primary, :root[data-theme="dark"] .pill { background: #c2410c; border-color: #c2410c; }
+:root[data-theme="dark"] .btn.primary:hover, :root[data-theme="dark"] .topbar .btn.primary:hover { background: #9a3412; }
+:root[data-theme="dark"] .mcell.dark-ink { color: #1c0f07; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .btn.primary, :root:not([data-theme="light"]) .topbar .btn.primary, :root:not([data-theme="light"]) .pill { background: #c2410c; border-color: #c2410c; }
+  :root:not([data-theme="light"]) .btn.primary:hover, :root:not([data-theme="light"]) .topbar .btn.primary:hover { background: #9a3412; }
+  :root:not([data-theme="light"]) .mcell.dark-ink { color: #1c0f07; }
 }
