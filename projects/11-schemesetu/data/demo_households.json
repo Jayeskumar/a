@@ -1,0 +1,149 @@
+{
+ "_comment": "Hand-written demo personas (see schemesetu/synth.py).",
+ "households": [
+  {
+   "id": "demo-farmer",
+   "name": {
+    "en": "Murugan & Kavitha",
+    "ta": "முருகன் & கவிதா"
+   },
+   "persona": {
+    "en": "Small farmer, 2 acres, son in Class 9",
+    "ta": "சிறு விவசாயி, 2 ஏக்கர், மகன் 9-ஆம் வகுப்பு"
+   },
+   "village": "Pudhur (demo)",
+   "profile": {
+    "rural": true,
+    "land_ha": 1,
+    "cultivates_land": true,
+    "income_tax_payer": false,
+    "govt_employee": false,
+    "annual_income": 120000,
+    "ration_card": "PHH",
+    "social_category": "OBC",
+    "house_type": "SEMI",
+    "has_toilet": true,
+    "has_lpg": true,
+    "adult_woman": true,
+    "woman_head": true,
+    "oldest_age": 59,
+    "widow_age": 0,
+    "severe_disability": false,
+    "pregnant_or_lactating": false,
+    "applicant_age": 40,
+    "govt_school_girl_in_college": false,
+    "govt_school_child_8to12": true,
+    "post_matric_student": false,
+    "willing_manual_work": false
+   }
+  },
+  {
+   "id": "demo-labourer",
+   "name": {
+    "en": "Selvi",
+    "ta": "செல்வி"
+   },
+   "persona": {
+    "en": "Landless farm labourer, hut, daughter-in-law expecting",
+    "ta": "நிலமற்ற விவசாயத் தொழிலாளி, குடிசை வீடு, மருமகள் கர்ப்பிணி"
+   },
+   "village": "Pudhur (demo)",
+   "profile": {
+    "rural": true,
+    "land_ha": 0,
+    "cultivates_land": false,
+    "income_tax_payer": false,
+    "govt_employee": false,
+    "annual_income": 120000,
+    "ration_card": "AAY",
+    "social_category": "SC",
+    "house_type": "KUTCHA",
+    "has_toilet": false,
+    "has_lpg": false,
+    "adult_woman": true,
+    "woman_head": true,
+    "oldest_age": 59,
+    "widow_age": 0,
+    "severe_disability": false,
+    "pregnant_or_lactating": true,
+    "applicant_age": 40,
+    "govt_school_girl_in_college": false,
+    "govt_school_child_8to12": false,
+    "post_matric_student": false,
+    "willing_manual_work": true
+   }
+  },
+  {
+   "id": "demo-widow",
+   "name": {
+    "en": "Lakshmi Ammal",
+    "ta": "லட்சுமி அம்மாள்"
+   },
+   "persona": {
+    "en": "Widow, 66, lives alone",
+    "ta": "கைம்பெண், 66 வயது, தனியாக வசிக்கிறார்"
+   },
+   "village": "Pudhur (demo)",
+   "profile": {
+    "rural": true,
+    "land_ha": 0,
+    "cultivates_land": false,
+    "income_tax_payer": false,
+    "govt_employee": false,
+    "annual_income": 120000,
+    "ration_card": "PHH",
+    "social_category": "OBC",
+    "house_type": "SEMI",
+    "has_toilet": true,
+    "has_lpg": true,
+    "adult_woman": true,
+    "woman_head": true,
+    "oldest_age": 69,
+    "widow_age": 79,
+    "severe_disability": false,
+    "pregnant_or_lactating": false,
+    "applicant_age": 70,
+    "govt_school_girl_in_college": false,
+    "govt_school_child_8to12": false,
+    "post_matric_student": false,
+    "willing_manual_work": false
+   }
+  },
+  {
+   "id": "demo-students",
+   "name": {
+    "en": "Ravi & Meena",
+    "ta": "ரவி & மீனா"
+   },
+   "persona": {
+    "en": "Tenant farmer; daughter in college, son in Class 10",
+    "ta": "குத்தகை விவசாயி; மகள் கல்லூரியில், மகன் 10-ஆம் வகுப்பு"
+   },
+   "village": "Pudhur (demo)",
+   "profile": {
+    "rural": true,
+    "land_ha": 0,
+    "cultivates_land": true,
+    "income_tax_payer": false,
+    "govt_employee": false,
+    "annual_income": 250000,
+    "ration_card": "PHH",
+    "social_category": "SC",
+    "house_type": "SEMI",
+    "has_toilet": true,
+    "has_lpg": true,
+    "adult_woman": true,
+    "woman_head": true,
+    "oldest_age": 59,
+    "widow_age": 0,
+    "severe_disability": false,
+    "pregnant_or_lactating": false,
+    "applicant_age": 50,
+    "govt_school_girl_in_college": true,
+    "govt_school_child_8to12": true,
+    "post_matric_student": true,
+    "willing_manual_work": false
+   }
+  }
+ ]
+}

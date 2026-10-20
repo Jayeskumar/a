@@ -1,0 +1,28 @@
+{
+  "_comment": "Bilingual concept map for search. Each concept is a canonical token; any listed English word, Tamil word or transliteration (single words or phrases) in a query or scheme text adds that concept token. Matching is done after the same light stemming on both sides.",
+  "concepts": {
+    "crop": ["crop", "crops", "harvest", "kharif", "rabi", "paddy", "yield", "பயிர்", "பயிர்கள்", "அறுவடை", "நெல்", "மகசூல்", "payir"],
+    "insurance": ["insurance", "insure", "insured", "bima", "beema", "cover", "காப்பீடு", "காப்பீட்டு", "காப்பீட்டுத்", "kaapeedu", "kappeedu"],
+    "pension": ["pension", "pensioner", "ஓய்வூதியம்", "ஓய்வூதிய", "oyvoothiyam", "maandhan"],
+    "widow": ["widow", "widowed", "widows", "husband died", "husband dead", "destitute", "விதவை", "கைம்பெண்", "கணவரை இழந்த", "vidhavai"],
+    "elderly": ["old", "old age", "elderly", "senior", "senior citizen", "aged", "முதியோர்", "முதியவர்", "வயதானவர்", "மூத்த குடிமக்கள்", "muthiyor"],
+    "house": ["house", "houses", "housing", "home", "hut", "roof", "awas", "awaas", "shelter", "வீடு", "வீட்டு", "குடிசை", "veedu", "kanavu illam"],
+    "toilet": ["toilet", "latrine", "sanitation", "swachh", "கழிப்பறை", "சுகாதாரம்", "kazhipparai"],
+    "gas": ["gas", "lpg", "cylinder", "cooking", "ujjwala", "stove", "எரிவாயு", "சிலிண்டர்", "சமையல்", "அடுப்பு", "கேஸ்"],
+    "health": ["health", "hospital", "treatment", "medical", "surgery", "operation", "ayushman", "doctor", "மருத்துவ", "மருத்துவம்", "மருத்துவமனை", "சிகிச்சை", "ஆரோக்கிய", "அறுவைச்", "maruthuvam"],
+    "farmer": ["farmer", "farmers", "farming", "agriculture", "agricultural", "kisan", "cultivator", "tenant farmer", "விவசாயி", "விவசாயிகள்", "விவசாய", "விவசாயம்", "உழவர்", "வேளாண்மை", "vivasayi"],
+    "loan": ["loan", "loans", "credit", "kcc", "borrow", "interest", "கடன்", "வட்டி", "kadan"],
+    "soil": ["soil", "fertiliser", "fertilizer", "nutrient", "மண்", "உரம்", "mann"],
+    "scholarship": ["scholarship", "scholarships", "education", "student", "students", "study", "studies", "fees", "உதவித்தொகை", "கல்வி", "மாணவர்", "மாணவர்கள்", "படிப்பு", "கட்டணம்", "kalvi"],
+    "college": ["college", "degree", "diploma", "iti", "higher education", "university", "கல்லூரி", "உயர்கல்வி", "பட்டப்படிப்பு", "பட்டயம்"],
+    "school": ["school", "class", "schoolchild", "பள்ளி", "வகுப்பு"],
+    "women": ["women", "woman", "female", "lady", "ladies", "girl", "girls", "mother", "பெண்", "பெண்கள்", "மகளிர்", "மாணவி", "தாய்", "penn", "magalir"],
+    "pregnant": ["pregnant", "pregnancy", "maternity", "delivery", "newborn", "baby", "கர்ப்பிணி", "மகப்பேறு", "பிரசவம்", "குழந்தை"],
+    "work": ["work", "job", "jobs", "employment", "wage", "wages", "labour", "labor", "labourer", "100 days", "100 day", "nrega", "வேலை", "கூலி", "தொழிலாளர்", "100 நாள்", "velai"],
+    "disability": ["disability", "disabled", "handicapped", "differently abled", "blind", "மாற்றுத்திறனாளி", "ஊனமுற்றோர்", "மாற்றுத்திறன்"],
+    "accident": ["accident", "accidental", "injury", "விபத்து", "vibathu"],
+    "life": ["life", "death", "jeevan", "ஆயுள்", "உயிர்", "மரணம்"],
+    "shg": ["shg", "self help group", "self-help group", "group", "livelihood", "small business", "சுய உதவிக் குழு", "மகளிர் குழு", "வாழ்வாதாரம்", "குழு"],
+    "cash": ["cash", "money", "income support", "monthly", "assistance", "grant", "நிதி", "பணம்", "உதவித் தொகை", "தொகை", "மாதம்", "உரிமைத் தொகை"]
+  }
+}

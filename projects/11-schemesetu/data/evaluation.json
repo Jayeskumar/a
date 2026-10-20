@@ -1,0 +1,457 @@
+{
+ "generated": "2026-10-20 05:24",
+ "catalogue": {
+  "schemes": 22,
+  "full_form": 22,
+  "gates": 4,
+  "inferences": 5,
+  "per_scheme_fields": 54
+ },
+ "questionnaire": {
+  "households": 304,
+  "full_form": 22,
+  "per_scheme_fields": 54,
+  "population_note": "4 demo families + 300 synthetic households (seed 2026); answer priors learnt from a separate population (seed 7, n=2000).",
+  "strategies": [
+   {
+    "strategy": "ig",
+    "label": "Greedy information gain",
+    "mean": 15.23,
+    "median": 15.0,
+    "min": 10,
+    "max": 23,
+    "accuracy": 1.0,
+    "saving_vs_full_form": 0.308
+   },
+   {
+    "strategy": "resolve",
+    "label": "Greedy expected-resolved",
+    "mean": 15.43,
+    "median": 15.0,
+    "min": 11,
+    "max": 23,
+    "accuracy": 1.0,
+    "saving_vs_full_form": 0.299
+   },
+   {
+    "strategy": "static",
+    "label": "Fixed order + skip logic",
+    "mean": 18.39,
+    "median": 19.0,
+    "min": 12,
+    "max": 22,
+    "accuracy": 1.0,
+    "saving_vs_full_form": 0.164
+   }
+  ],
+  "demo": [
+   {
+    "id": "demo-farmer",
+    "questions": 17,
+    "eligible": 12
+   },
+   {
+    "id": "demo-labourer",
+    "questions": 19,
+    "eligible": 11
+   },
+   {
+    "id": "demo-widow",
+    "questions": 17,
+    "eligible": 7
+   },
+   {
+    "id": "demo-students",
+    "questions": 17,
+    "eligible": 11
+   }
+  ],
+  "discovery_curve": [
+   {
+    "k": 4,
+    "decided": 0.445,
+    "eligible_confirmed": 0.613
+   },
+   {
+    "k": 6,
+    "decided": 0.569,
+    "eligible_confirmed": 0.687
+   },
+   {
+    "k": 8,
+    "decided": 0.701,
+    "eligible_confirmed": 0.702
+   },
+   {
+    "k": 10,
+    "decided": 0.783,
+    "eligible_confirmed": 0.779
+   },
+   {
+    "k": 12,
+    "decided": 0.859,
+    "eligible_confirmed": 0.848
+   },
+   {
+    "k": 15,
+    "decided": 0.948,
+    "eligible_confirmed": 0.957
+   }
+  ],
+  "avg_eligible_schemes": 7.22
+ },
+ "search": {
+  "queries": 24,
+  "hit_at_1": 1.0,
+  "hit_at_3": 1.0,
+  "rows": [
+   {
+    "query": "பயிர் காப்பீடு",
+    "expected": [
+     "pmfby"
+    ],
+    "got": [
+     "pmfby",
+     "pmjjby",
+     "pmsby"
+    ],
+    "hit1": true
+   },
+   {
+    "query": "pension for widow",
+    "expected": [
+     "ignwps"
+    ],
+    "got": [
+     "ignwps",
+     "igndps",
+     "pm_kmy"
+    ],
+    "hit1": true
+   },
+   {
+    "query": "house",
+    "expected": [
+     "pmay_g"
+    ],
+    "got": [
+     "pmay_g",
+     "sbm_g",
+     "pm_kisan"
+    ],
+    "hit1": true
+   },
+   {
+    "query": "கழிப்பறை",
+    "expected": [
+     "sbm_g"
+    ],
+    "got": [
+     "sbm_g",
+     "pmay_g"
+    ],
+    "hit1": true
+   },
+   {
+    "query": "gas cylinder",
+    "expected": [
+     "ujjwala"
+    ],
+    "got": [
+     "ujjwala"
+    ],
+    "hit1": true
+   },
+   {
+    "query": "scholarship for college girl",
+    "expected": [
+     "pudhumai_penn"
+    ],
+    "got": [
+     "pudhumai_penn",
+     "post_matric_scst",
+     "nmmss"
+    ],
+    "hit1": true
+   },
+   {
+    "query": "முதியோர் ஓய்வூதியம்",
+    "expected": [
+     "ignoaps"
+    ],
+    "got": [
+     "ignoaps",
+     "pm_kmy",
+     "ignwps"
+    ],
+    "hit1": true
+   },
+   {
+    "query": "crop loan",
+    "expected": [
+     "kcc"
+    ],
+    "got": [
+     "kcc",
+     "pmfby",
+     "nrlm_shg"
+    ],
+    "hit1": true
+   },
+   {
+    "query": "hospital treatment",
+    "expected": [
+     "pm_jay",
+     "cmchis"
+    ],
+    "got": [
+     "pm_jay",
+     "cmchis",
+     "soil_health_card"
+    ],
+    "hit1": true
+   },
+   {
+    "query": "100 days work",
+    "expected": [
+     "mgnrega"
+    ],
+    "got": [
+     "mgnrega",
+     "pmay_g",
+     "kmut"
+    ],
+    "hit1": true
+   },
+   {
+    "query": "கர்ப்பிணி பெண்",
+    "expected": [
+     "pmmvy"
+    ],
+    "got": [
+     "pmmvy",
+     "kmut",
+     "pudhumai_penn"
+    ],
+    "hit1": true
+   },
+   {
+    "query": "விபத்துக் காப்பீடு",
+    "expected": [
+     "pmsby"
+    ],
+    "got": [
+     "pmsby",
+     "pmjjby",
+     "cmchis"
+    ],
+    "hit1": true
+   },
+   {
+    "query": "soil test",
+    "expected": [
+     "soil_health_card"
+    ],
+    "got": [
+     "soil_health_card",
+     "kcc"
+    ],
+    "hit1": true
+   },
+   {
+    "query": "மகளிர் உரிமைத் தொகை",
+    "expected": [
+     "kmut"
+    ],
+    "got": [
+     "kmut",
+     "nrlm_shg",
+     "pmmvy"
+    ],
+    "hit1": true
+   },
+   {
+    "query": "self help group loan",
+    "expected": [
+     "nrlm_shg"
+    ],
+    "got": [
+     "nrlm_shg",
+     "kcc"
+    ],
+    "hit1": true
+   },
+   {
+    "query": "farmer pension",
+    "expected": [
+     "pm_kmy"
+    ],
+    "got": [
+     "pm_kmy",
+     "igndps",
+     "ignwps"
+    ],
+    "hit1": true
+   },
+   {
+    "query": "life insurance",
+    "expected": [
+     "pmjjby"
+    ],
+    "got": [
+     "pmjjby",
+     "pmsby",
+     "cmchis"
+    ],
+    "hit1": true
+   },
+   {
+    "query": "disabled pension",
+    "expected": [
+     "igndps"
+    ],
+    "got": [
+     "igndps",
+     "pm_kmy",
+     "ignwps"
+    ],
+    "hit1": true
+   },
+   {
+    "query": "விவசாயி நிதி உதவி",
+    "expected": [
+     "pm_kisan"
+    ],
+    "got": [
+     "pm_kisan",
+     "pm_kmy",
+     "pmfby"
+    ],
+    "hit1": true
+   },
+   {
+    "query": "வீடு கட்ட உதவி",
+    "expected": [
+     "pmay_g"
+    ],
+    "got": [
+     "pmay_g",
+     "sbm_g",
+     "pm_kisan"
+    ],
+    "hit1": true
+   },
+   {
+    "query": "கைம்பெண் ஓய்வூதியம்",
+    "expected": [
+     "ignwps"
+    ],
+    "got": [
+     "ignwps",
+     "pm_kmy",
+     "ignoaps"
+    ],
+    "hit1": true
+   },
+   {
+    "query": "மருத்துவக் காப்பீடு",
+    "expected": [
+     "pm_jay",
+     "cmchis"
+    ],
+    "got": [
+     "cmchis",
+     "pm_jay",
+     "pmjjby"
+    ],
+    "hit1": true
+   },
+   {
+    "query": "எரிவாயு இணைப்பு",
+    "expected": [
+     "ujjwala"
+    ],
+    "got": [
+     "ujjwala"
+    ],
+    "hit1": true
+   },
+   {
+    "query": "கல்வி உதவித்தொகை கல்லூரி",
+    "expected": [
+     "post_matric_scst",
+     "pudhumai_penn",
+     "nmmss"
+    ],
+    "got": [
+     "post_matric_scst",
+     "pudhumai_penn",
+     "nmmss"
+    ],
+    "hit1": true
+   }
+  ]
+ },
+ "latency": {
+  "evaluate_ms": {
+   "mean": 0.36,
+   "p95": 0.43,
+   "max": 0.6
+  },
+  "next_question_ms": {
+   "mean": 1.41,
+   "p95": 1.88,
+   "max": 1.94
+  },
+  "search_ms": {
+   "mean": 0.06,
+   "p95": 0.08,
+   "max": 0.29
+  },
+  "simulate_household_ms": {
+   "mean": 12.29,
+   "p95": 14.98,
+   "max": 16.62
+  },
+  "village_dashboard_ms": {
+   "mean": 2.03,
+   "p95": 2.12,
+   "max": 2.48
+  },
+  "village_households": 36
+ },
+ "engine_startup_ms": 72.3,
+ "http": {
+  "GET /api/health": {
+   "mean": 1.36,
+   "p95": 1.33,
+   "max": 22.16
+  },
+  "POST /api/next (empty)": {
+   "mean": 4.47,
+   "p95": 7.48,
+   "max": 9.45
+  },
+  "POST /api/evaluate": {
+   "mean": 2.15,
+   "p95": 2.68,
+   "max": 2.85
+  },
+  "GET /api/search": {
+   "mean": 1.1,
+   "p95": 1.41,
+   "max": 1.87
+  },
+  "POST /api/simulate (demo)": {
+   "mean": 19.77,
+   "p95": 25.81,
+   "max": 25.81
+  },
+  "GET /api/village": {
+   "mean": 3.63,
+   "p95": 4.89,
+   "max": 6.05
+  }
+ },
+ "eval_seconds": 14.96
+}

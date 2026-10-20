@@ -1,0 +1,87 @@
+{
+  "name": "SchemeSetu",
+  "tagline": "Every rural family, matched to the welfare schemes they deserve",
+  "domain": "Smart Agriculture & Rural Development (AgriTech)",
+  "color": "#7C3AED",
+  "problem": [
+    "Rural families miss crop insurance, pensions, housing, scholarships",
+    "Eligibility rules are complex, scattered and mostly online",
+    "Offices are far away; middlemen charge fees to find and fill schemes",
+    "Field workers can't see which eligible families haven't applied"
+  ],
+  "stats": [
+    {"value": "~69%", "label": "Indians living in rural areas (Census 2011)"},
+    {"value": "~86%", "label": "farm holdings small / marginal (Agri Census 2015-16, approx.)"},
+    {"value": "54", "label": "fields to check our 22 schemes one by one (measured)"}
+  ],
+  "solution": [
+    "Adaptive Tamil / English questionnaire with big buttons",
+    "Explainable rules: eligible / possibly / not, per condition",
+    "One deduplicated document checklist + application tracker",
+    "Village dashboard of eligible-but-unclaimed benefits"
+  ],
+  "features": [
+    {"title": "Explainable eligibility", "desc": "JSON rule trees with 3-valued logic; pass / fail / unknown per condition"},
+    {"title": "Smart questionnaire", "desc": "Greedy information gain: 15 questions vs a 22-field form, same decisions"},
+    {"title": "Benefit estimator", "desc": "Adds fixed ₹ amounts only; insurance cover and loans shown separately"},
+    {"title": "Document checklist", "desc": "Union of required documents, deduplicated, printable, tracked"},
+    {"title": "Bilingual search", "desc": "TF-IDF + concept map: 'பயிர் காப்பீடு' finds crop insurance"},
+    {"title": "Field-worker mode", "desc": "Register households; see unclaimed benefits per scheme and family"}
+  ],
+  "architecture": [
+    "Browser UI (vanilla JS, EN/TA, SVG) -> JSON API",
+    "app.py ThreadingHTTPServer -> validation + routes",
+    "rules.py -> 3-valued rule engine with full trace",
+    "questionnaire.py -> information-gain question choice",
+    "search.py -> Tamil-aware TF-IDF + concept map",
+    "store.py -> households + tracker in data/state.json"
+  ],
+  "algorithms": [
+    "Kleene 3-valued logic – eligible / possibly / not, with reasons",
+    "Expected information gain – picks the next best question",
+    "TF-IDF + bilingual concept map – Tamil / English search",
+    "Alias normalisation – document checklist deduplication"
+  ],
+  "tech": ["Python 3 stdlib", "Vanilla JS + inline SVG", "JSON rules & storage", "Web Speech API (optional)"],
+  "innovation": [
+    "Says 'possibly eligible – need X' instead of silently rejecting",
+    "Explains why each question is asked (bits of information)",
+    "Rules are data: officers edit JSON, not code",
+    "Offline last-mile tool with a village unclaimed-benefit view"
+  ],
+  "results": [
+    {"value": "15.2", "label": "avg questions vs 22-field form (304 households)"},
+    {"value": "100%", "label": "decisions identical to the full form"},
+    {"value": "70%", "label": "eligible schemes confirmed after 8 questions"},
+    {"value": "1.4 ms", "label": "to choose the next question"}
+  ],
+  "demo_flow": [
+    "Load demo farmer: 17 questions, 12 schemes, ₹18,000/yr",
+    "Open 'Why?' on PM-KISAN to show the condition tree",
+    "Answer live; tap 'Don't know' -> possibly eligible",
+    "Switch to Tamil; search 'பயிர் காப்பீடு'",
+    "Print the checklist; mark an application Applied",
+    "Field worker: village dashboard of unclaimed benefits"
+  ],
+  "impact": [
+    "Entitlements found in ~5 minutes, in Tamil, no middleman",
+    "Demo village: ₹1.57 lakh/yr unclaimed cash surfaced (synthetic)",
+    "One checklist: 43 document mentions -> 10 documents",
+    "Widows, elderly and women heads of family surfaced explicitly"
+  ],
+  "business": [
+    "Free for families, always",
+    "Deployment for CSCs, Panchayats and SHG federations",
+    "CSR / NGO programmes measuring benefit uptake",
+    "Offline companion for state welfare departments"
+  ],
+  "future": [
+    "Sync field-worker devices to a block server",
+    "Offline Tamil voice input for low-literacy users",
+    "Import official scheme data; per-district rules",
+    "OCR of ration card / patta to pre-fill answers",
+    "SMS reminders for deadlines such as PMFBY cut-offs"
+  ],
+  "port": 8011,
+  "dir": "projects/11-schemesetu"
+}

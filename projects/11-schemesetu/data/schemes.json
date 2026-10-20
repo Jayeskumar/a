@@ -1,0 +1,439 @@
+{
+  "_comment": "SchemeSetu scheme catalogue. Rules are SIMPLIFIED for a hackathon prototype and must be verified on each official portal. Rule language: {all:[..]}, {any:[..]}, {not:..}, {fact, op, value} with op in == != < <= > >= in not_in between. A value may be {param: NAME} to reference the named constants below.",
+  "version": "2026.10",
+  "verify_note": {
+    "en": "Rules are simplified for this prototype — verify on the official portal.",
+    "ta": "இந்த முன்மாதிரியில் விதிகள் எளிமைப்படுத்தப்பட்டுள்ளன — அதிகாரப்பூர்வ இணையதளத்தில் சரிபார்க்கவும்."
+  },
+  "params": {
+    "SMALL_MARGINAL_MAX_HA": {"value": 2, "note": "Small (1–2 ha) + marginal (<1 ha) farmer definition used by GoI schemes such as PM-KMY."},
+    "KMUT_INCOME_LIMIT": {"value": 250000, "note": "approx. — family income ceiling announced for Kalaignar Magalir Urimai Thogai (2023). Verify current rule."},
+    "CMCHIS_INCOME_LIMIT": {"value": 120000, "note": "approx. — CMCHIS family income ceiling after the 2021 revision. Verify with the district enrolment centre."},
+    "NMMSS_INCOME_LIMIT": {"value": 350000, "note": "NMMSS guideline: parental income up to ₹3.5 lakh a year."},
+    "POST_MATRIC_INCOME_LIMIT": {"value": 250000, "note": "Central post-matric scholarship for SC students: family income up to ₹2.5 lakh a year."}
+  },
+  "categories": {
+    "agriculture": {"en": "Agriculture", "ta": "வேளாண்மை", "color": "#16A34A"},
+    "insurance": {"en": "Insurance", "ta": "காப்பீடு", "color": "#2563EB"},
+    "pension": {"en": "Pension", "ta": "ஓய்வூதியம்", "color": "#D97706"},
+    "housing": {"en": "Housing & sanitation", "ta": "வீடு & சுகாதாரம்", "color": "#B45309"},
+    "health": {"en": "Health", "ta": "மருத்துவம்", "color": "#DC2626"},
+    "education": {"en": "Education", "ta": "கல்வி", "color": "#4F46E5"},
+    "women": {"en": "Women & SHG", "ta": "மகளிர் & சுய உதவிக் குழு", "color": "#DB2777"},
+    "livelihood": {"en": "Livelihood", "ta": "வாழ்வாதாரம்", "color": "#0D9488"}
+  },
+  "documents": {
+    "aadhaar": {"en": "Aadhaar card", "ta": "ஆதார் அட்டை", "aliases": ["aadhaar card", "aadhar", "aadhar card", "uid"]},
+    "ration_card": {"en": "Ration card (family card)", "ta": "குடும்ப அட்டை (ரேஷன் அட்டை)", "aliases": ["family card", "smart card", "ration"]},
+    "bank_passbook": {"en": "Bank / post-office passbook (Aadhaar-linked)", "ta": "வங்கி / அஞ்சலகக் கணக்குப் புத்தகம் (ஆதார் இணைக்கப்பட்டது)", "aliases": ["bank passbook", "passbook", "bank account details", "bank account"]},
+    "land_records": {"en": "Land records (Patta / Chitta / Adangal)", "ta": "நில ஆவணங்கள் (பட்டா / சிட்டா / அடங்கல்)", "aliases": ["patta", "chitta", "land record", "land documents"]},
+    "sowing_proof": {"en": "Sowing / tenancy certificate (from VAO)", "ta": "விதைப்பு / குத்தகைச் சான்று (கிராம நிர்வாக அலுவலர்)", "aliases": ["sowing certificate", "tenancy certificate"]},
+    "photo": {"en": "Passport-size photograph", "ta": "பாஸ்போர்ட் அளவுப் புகைப்படம்", "aliases": ["photograph", "passport photo"]},
+    "mobile": {"en": "Mobile number (for OTP)", "ta": "கைபேசி எண் (OTP-க்காக)", "aliases": ["mobile number", "phone number"]},
+    "income_certificate": {"en": "Income certificate (VAO / Tahsildar)", "ta": "வருமானச் சான்றிதழ் (கிராம நிர்வாக அலுவலர் / வட்டாட்சியர்)", "aliases": ["income proof"]},
+    "community_certificate": {"en": "Community (caste) certificate", "ta": "சாதிச் சான்றிதழ்", "aliases": ["caste certificate"]},
+    "age_proof": {"en": "Age proof (birth / school certificate)", "ta": "வயதுச் சான்று (பிறப்பு / பள்ளிச் சான்றிதழ்)", "aliases": ["birth certificate", "age certificate"]},
+    "death_certificate": {"en": "Husband's death certificate", "ta": "கணவரின் இறப்புச் சான்றிதழ்", "aliases": ["death certificate of husband"]},
+    "disability_certificate": {"en": "Disability certificate / UDID card", "ta": "மாற்றுத்திறனாளி அடையாள அட்டை / UDID", "aliases": ["udid", "udid card", "disability id"]},
+    "mcp_card": {"en": "Mother & Child Protection (MCP) card", "ta": "தாய்-சேய் பாதுகாப்பு அட்டை (MCP)", "aliases": ["mcp", "mother and child protection card"]},
+    "job_card": {"en": "MGNREGA job card", "ta": "100 நாள் வேலை அட்டை", "aliases": ["nrega job card", "job card number"]},
+    "kyc_declaration": {"en": "LPG KYC form & self-declaration", "ta": "எரிவாயு KYC படிவம் & சுய அறிவிப்பு", "aliases": ["kyc form"]},
+    "school_certificate": {"en": "School study certificate", "ta": "பள்ளிப் படிப்புச் சான்றிதழ்", "aliases": ["study certificate", "school tc", "transfer certificate"]},
+    "marksheet": {"en": "Latest mark sheet", "ta": "சமீபத்திய மதிப்பெண் சான்றிதழ்", "aliases": ["mark sheet", "marks card"]},
+    "college_bonafide": {"en": "College / institution bonafide certificate", "ta": "கல்வி நிறுவன உண்மைச் சான்றிதழ் (Bonafide)", "aliases": ["bonafide certificate", "bonafide"]},
+    "fee_receipt": {"en": "Fee receipt", "ta": "கட்டண ரசீது", "aliases": ["fees receipt"]}
+  },
+  "schemes": [
+    {
+      "id": "pm_kisan", "short": "PM-KISAN", "level": "central", "category": "agriculture",
+      "name": {"en": "PM Kisan Samman Nidhi (PM-KISAN)", "ta": "பிரதமர் கிசான் சம்மான் நிதி (PM-KISAN)"},
+      "summary": {"en": "₹6,000 a year income support, paid in three instalments of ₹2,000 straight to the bank account.", "ta": "ஆண்டுக்கு ₹6,000 வருமான உதவி — ₹2,000 வீதம் மூன்று தவணைகளாக நேரடியாக வங்கிக் கணக்கில்."},
+      "description": {"en": "Central income support for landholding farmer families to meet farm input and household needs. Direct benefit transfer cash for farmers.", "ta": "நிலம் வைத்திருக்கும் விவசாயக் குடும்பங்களுக்கு விவசாய இடுபொருள் மற்றும் வீட்டுச் செலவுகளுக்கான மத்திய அரசின் வருமான உதவி. விவசாயிகளுக்கு நேரடிப் பணப் பரிமாற்றம்."},
+      "keywords": ["kisan", "farmer", "income support", "cash", "6000", "விவசாயி", "உழவர்", "நிதி உதவி"],
+      "benefit": {"kind": "annual", "amount": 6000, "label": {"en": "₹6,000 / year", "ta": "ஆண்டுக்கு ₹6,000"}},
+      "rule": {"all": [
+        {"fact": "land_ha", "op": ">", "value": 0, "label": {"en": "Owns farmland in the family's name", "ta": "குடும்பப் பெயரில் விவசாய நிலம் உண்டு"}},
+        {"fact": "income_tax_payer", "op": "==", "value": false},
+        {"fact": "govt_employee", "op": "==", "value": false}
+      ]},
+      "documents": ["aadhaar", "land_records", "bank_passbook", "mobile"],
+      "apply": {"en": "Self-register on the PM-KISAN portal, or visit a Common Service Centre (CSC) or the block agriculture office. Complete e-KYC.", "ta": "PM-KISAN இணையதளத்தில் சுயமாகப் பதிவு செய்யலாம், அல்லது பொது சேவை மையம் (CSC) / வட்டார வேளாண்மை அலுவலகத்தை அணுகலாம். e-KYC முடிக்க வேண்டும்."},
+      "portal": "pmkisan.gov.in",
+      "caveats": {"en": "Also excludes institutional landholders, constitutional post holders, some professionals and higher-pension retirees.", "ta": "நிறுவன நில உரிமையாளர்கள், அரசியலமைப்புப் பதவி வகிப்போர், சில தொழில்முறை வல்லுநர்கள், அதிக ஓய்வூதியம் பெறுவோர் விலக்கப்படுவர்."},
+      "verify_note": {"en": "Rules are simplified for this prototype — verify on the official portal.", "ta": "இந்த முன்மாதிரியில் விதிகள் எளிமைப்படுத்தப்பட்டுள்ளன — அதிகாரப்பூர்வ இணையதளத்தில் சரிபார்க்கவும்."}
+    },
+    {
+      "id": "pmfby", "short": "PMFBY", "level": "central", "category": "insurance",
+      "name": {"en": "PM Fasal Bima Yojana (PMFBY) – crop insurance", "ta": "பிரதமர் பயிர் காப்பீட்டுத் திட்டம் (PMFBY)"},
+      "summary": {"en": "Insurance for notified crops against drought, flood, pests and other losses. Farmer premium is low (about 2% kharif, 1.5% rabi, 5% commercial / horticulture crops).", "ta": "வறட்சி, வெள்ளம், பூச்சித் தாக்குதல் போன்ற இழப்புகளுக்கு அறிவிக்கப்பட்ட பயிர்களுக்குக் காப்பீடு. விவசாயி பிரீமியம் குறைவு (காரீப் சுமார் 2%, ராபி 1.5%, வணிக / தோட்டப் பயிர்கள் 5%)."},
+      "description": {"en": "Crop insurance scheme protecting farmers' income from crop failure and yield loss. Covers owner, tenant and sharecropper farmers.", "ta": "பயிர் சேதம் மற்றும் மகசூல் இழப்பிலிருந்து விவசாயிகளின் வருமானத்தைப் பாதுகாக்கும் பயிர் காப்பீட்டுத் திட்டம். சொந்த நில, குத்தகை மற்றும் வார விவசாயிகளுக்கும் பொருந்தும்."},
+      "keywords": ["crop insurance", "fasal bima", "drought", "flood", "pest", "பயிர் காப்பீடு", "வறட்சி", "வெள்ளம்"],
+      "benefit": {"kind": "varies", "label": {"en": "Claim depends on crop loss & sum insured", "ta": "இழப்பீடு பயிர் இழப்பு மற்றும் காப்பீட்டுத் தொகையைப் பொறுத்தது"}},
+      "rule": {"all": [
+        {"fact": "cultivates_land", "op": "==", "value": true}
+      ]},
+      "documents": ["aadhaar", "land_records", "sowing_proof", "bank_passbook"],
+      "apply": {"en": "Enrol every season before the cut-off date through your bank, a CSC, the PMFBY portal or the crop insurance app. Loanee and non-loanee farmers can join.", "ta": "ஒவ்வொரு பருவத்திலும் கடைசி தேதிக்கு முன் வங்கி, பொது சேவை மையம், PMFBY இணையதளம் அல்லது பயிர் காப்பீட்டுச் செயலி வழியாகப் பதிவு செய்யவும். கடன் பெற்றவர், பெறாதவர் இருவரும் சேரலாம்."},
+      "portal": "pmfby.gov.in",
+      "caveats": {"en": "Only notified crops in notified areas; enrolment windows close on season-specific dates.", "ta": "அறிவிக்கப்பட்ட பகுதிகளில் அறிவிக்கப்பட்ட பயிர்களுக்கு மட்டும்; பருவ வாரியான கடைசி தேதிகள் உண்டு."},
+      "verify_note": {"en": "Rules are simplified for this prototype — verify on the official portal.", "ta": "இந்த முன்மாதிரியில் விதிகள் எளிமைப்படுத்தப்பட்டுள்ளன — அதிகாரப்பூர்வ இணையதளத்தில் சரிபார்க்கவும்."}
+    },
+    {
+      "id": "kcc", "short": "KCC", "level": "central", "category": "agriculture",
+      "name": {"en": "Kisan Credit Card (KCC)", "ta": "கிசான் கடன் அட்டை (KCC)"},
+      "summary": {"en": "Short-term crop loans at concessional interest; prompt repayment brings the effective rate to about 4% a year on loans up to ₹3 lakh.", "ta": "சலுகை வட்டியில் குறுகியகாலப் பயிர்க் கடன்; உரிய நேரத்தில் திருப்பிச் செலுத்தினால் ₹3 லட்சம் வரையான கடனுக்கு ஆண்டு வட்டி சுமார் 4%."},
+      "description": {"en": "Revolving credit card for farmers to buy seeds, fertiliser and inputs, and for animal husbandry and fisheries working capital. Low interest farm loan.", "ta": "விதை, உரம், இடுபொருள் வாங்கவும், கால்நடை மற்றும் மீன்வள நடைமுறை மூலதனத்திற்கும் விவசாயிகளுக்கான சுழல் கடன் அட்டை. குறைந்த வட்டி விவசாயக் கடன்."},
+      "keywords": ["loan", "credit", "kisan credit card", "crop loan", "கடன்", "பயிர்க் கடன்", "வங்கிக் கடன்"],
+      "benefit": {"kind": "varies", "label": {"en": "Credit (loan), not a grant", "ta": "கடன் வசதி — மானியம் அல்ல"}},
+      "rule": {"all": [
+        {"fact": "cultivates_land", "op": "==", "value": true}
+      ]},
+      "documents": ["aadhaar", "land_records", "photo", "bank_passbook"],
+      "apply": {"en": "Apply at any commercial bank, regional rural bank or primary agricultural cooperative society with the KCC form.", "ta": "எந்த வணிக வங்கி, மண்டல ஊரக வங்கி அல்லது தொடக்க வேளாண்மைக் கூட்டுறவுச் சங்கத்திலும் KCC படிவத்துடன் விண்ணப்பிக்கலாம்."},
+      "portal": "Your bank branch (KCC form also on pmkisan.gov.in)",
+      "caveats": {"en": "Tenant farmers, sharecroppers and SHG / JLG groups can apply; loan limit is fixed by the bank.", "ta": "குத்தகை, வார விவசாயிகள் மற்றும் சுய உதவி / கூட்டுப் பொறுப்புக் குழுக்களும் விண்ணப்பிக்கலாம்; கடன் வரம்பை வங்கி நிர்ணயிக்கும்."},
+      "verify_note": {"en": "Rules are simplified for this prototype — verify on the official portal.", "ta": "இந்த முன்மாதிரியில் விதிகள் எளிமைப்படுத்தப்பட்டுள்ளன — அதிகாரப்பூர்வ இணையதளத்தில் சரிபார்க்கவும்."}
+    },
+    {
+      "id": "soil_health_card", "short": "Soil Health Card", "level": "central", "category": "agriculture",
+      "name": {"en": "Soil Health Card", "ta": "மண் வள அட்டை"},
+      "summary": {"en": "Free soil test of your field and a card with nutrient status and fertiliser recommendations.", "ta": "உங்கள் வயலின் மண் இலவசமாகப் பரிசோதிக்கப்பட்டு, சத்து நிலை மற்றும் உரப் பரிந்துரைகளுடன் அட்டை வழங்கப்படும்."},
+      "description": {"en": "Soil testing service so farmers use the right fertiliser dose, cut input cost and improve yield.", "ta": "சரியான அளவு உரம் பயன்படுத்தி, இடுபொருள் செலவைக் குறைத்து மகசூலை உயர்த்த மண் பரிசோதனைச் சேவை."},
+      "keywords": ["soil test", "fertiliser", "fertilizer", "nutrient", "மண் பரிசோதனை", "உரம்"],
+      "benefit": {"kind": "varies", "label": {"en": "Free soil test & advice", "ta": "இலவச மண் பரிசோதனை & ஆலோசனை"}},
+      "rule": {"all": [
+        {"fact": "cultivates_land", "op": "==", "value": true}
+      ]},
+      "documents": ["aadhaar", "land_records", "mobile"],
+      "apply": {"en": "Contact the village agriculture officer, the block agriculture office or the nearest soil testing laboratory.", "ta": "கிராம வேளாண்மை அலுவலர், வட்டார வேளாண்மை அலுவலகம் அல்லது அருகிலுள்ள மண் பரிசோதனை நிலையத்தை அணுகவும்."},
+      "portal": "soilhealth.dac.gov.in",
+      "caveats": {"en": "Samples are collected in campaigns — ask the agriculture office about the next round.", "ta": "மண் மாதிரிகள் முகாம்களாகச் சேகரிக்கப்படும் — அடுத்த சுற்று பற்றி வேளாண்மை அலுவலகத்தில் கேட்கவும்."},
+      "verify_note": {"en": "Rules are simplified for this prototype — verify on the official portal.", "ta": "இந்த முன்மாதிரியில் விதிகள் எளிமைப்படுத்தப்பட்டுள்ளன — அதிகாரப்பூர்வ இணையதளத்தில் சரிபார்க்கவும்."}
+    },
+    {
+      "id": "pm_kmy", "short": "PM-KMY", "level": "central", "category": "pension",
+      "name": {"en": "PM Kisan Maan-Dhan Yojana (PM-KMY) – farmer pension", "ta": "பிரதமர் கிசான் மான்-தன் யோஜனா – விவசாயிகள் ஓய்வூதியம்"},
+      "summary": {"en": "Voluntary pension: pay ₹55–200 a month (by entry age), the Centre matches it, and get ₹3,000 a month after age 60.", "ta": "தன்னார்வ ஓய்வூதியம்: சேரும் வயதைப் பொறுத்து மாதம் ₹55–200 செலுத்தினால் அதே அளவு மத்திய அரசும் செலுத்தும்; 60 வயதுக்குப் பின் மாதம் ₹3,000."},
+      "description": {"en": "Old age pension security for small and marginal farmers through a matched monthly contribution.", "ta": "சிறு, குறு விவசாயிகளுக்குச் சம பங்களிப்பு மூலம் முதுமைக் கால ஓய்வூதியப் பாதுகாப்பு."},
+      "keywords": ["farmer pension", "maandhan", "old age", "விவசாயிகள் ஓய்வூதியம்"],
+      "benefit": {"kind": "future", "amount": 36000, "label": {"en": "₹3,000 / month after age 60", "ta": "60 வயதுக்குப் பின் மாதம் ₹3,000"}},
+      "rule": {"all": [
+        {"fact": "land_ha", "op": ">", "value": 0, "label": {"en": "Owns farmland", "ta": "சொந்த விவசாய நிலம் உண்டு"}},
+        {"fact": "land_ha", "op": "<=", "value": {"param": "SMALL_MARGINAL_MAX_HA"}, "label": {"en": "Small or marginal farmer (up to 2 ha)", "ta": "சிறு / குறு விவசாயி (2 ஹெக்டேர் வரை)"}},
+        {"fact": "applicant_age", "op": "between", "value": [18, 40], "label": {"en": "Applicant aged 18–40", "ta": "விண்ணப்பதாரர் வயது 18–40"}},
+        {"fact": "income_tax_payer", "op": "==", "value": false},
+        {"fact": "govt_employee", "op": "==", "value": false}
+      ]},
+      "documents": ["aadhaar", "land_records", "bank_passbook", "mobile"],
+      "apply": {"en": "Enrol at a Common Service Centre (CSC) with Aadhaar and bank details; later contributions are auto-debited.", "ta": "ஆதார் மற்றும் வங்கி விவரங்களுடன் பொது சேவை மையத்தில் (CSC) பதிவு செய்யவும்; அடுத்தடுத்த பங்களிப்புகள் தானாகப் பிடித்தம் செய்யப்படும்."},
+      "portal": "maandhan.in",
+      "caveats": {"en": "Those covered by NPS, ESIC or EPFO, and income-tax payers, are excluded.", "ta": "NPS, ESIC, EPFO ஆகியவற்றில் உள்ளவர்கள் மற்றும் வருமான வரி செலுத்துவோர் விலக்கப்படுவர்."},
+      "verify_note": {"en": "Rules are simplified for this prototype — verify on the official portal.", "ta": "இந்த முன்மாதிரியில் விதிகள் எளிமைப்படுத்தப்பட்டுள்ளன — அதிகாரப்பூர்வ இணையதளத்தில் சரிபார்க்கவும்."}
+    },
+    {
+      "id": "mgnrega", "short": "MGNREGA", "level": "central", "category": "livelihood",
+      "name": {"en": "MGNREGA job card (100-day rural work)", "ta": "மகாத்மா காந்தி தேசிய ஊரக வேலை உறுதித் திட்டம் (100 நாள் வேலை)"},
+      "summary": {"en": "Guaranteed wage work of up to 100 days a year per rural household, paid into the bank account at the notified wage rate.", "ta": "ஒவ்வொரு ஊரகக் குடும்பத்திற்கும் ஆண்டுக்கு 100 நாள் வரை உறுதியான கூலி வேலை; அறிவிக்கப்பட்ட கூலி வங்கிக் கணக்கில் செலுத்தப்படும்."},
+      "description": {"en": "Employment guarantee for rural households — job card, wage employment, labour on village works such as ponds and roads.", "ta": "ஊரகக் குடும்பங்களுக்கான வேலை உறுதி — வேலை அட்டை, கூலி வேலை, குளம், சாலை போன்ற கிராமப் பணிகள்."},
+      "keywords": ["100 days", "job card", "nrega", "wage", "employment", "labour", "100 நாள் வேலை", "கூலி", "வேலை அட்டை"],
+      "benefit": {"kind": "varies", "label": {"en": "Up to 100 days' wages (state wage rate)", "ta": "100 நாள் வரை கூலி (மாநிலக் கூலி விகிதம்)"}},
+      "rule": {"all": [
+        {"fact": "rural", "op": "==", "value": true},
+        {"fact": "willing_manual_work", "op": "==", "value": true}
+      ]},
+      "documents": ["aadhaar", "photo", "bank_passbook", "ration_card"],
+      "apply": {"en": "Ask the Gram Panchayat office for a job card (written or oral request), then apply for work — it must be given within 15 days.", "ta": "கிராம ஊராட்சி அலுவலகத்தில் வேலை அட்டை கோரவும் (எழுத்து அல்லது வாய்மொழி); பின்னர் வேலை கோரலாம் — 15 நாட்களுக்குள் வேலை வழங்கப்பட வேண்டும்."},
+      "portal": "nrega.nic.in",
+      "caveats": {"en": "Every adult member can work; wage rates differ by state and year.", "ta": "குடும்பத்தின் அனைத்து வயது வந்தோரும் வேலை செய்யலாம்; கூலி விகிதம் மாநிலம், ஆண்டு வாரியாக மாறும்."},
+      "verify_note": {"en": "Rules are simplified for this prototype — verify on the official portal.", "ta": "இந்த முன்மாதிரியில் விதிகள் எளிமைப்படுத்தப்பட்டுள்ளன — அதிகாரப்பூர்வ இணையதளத்தில் சரிபார்க்கவும்."}
+    },
+    {
+      "id": "pmay_g", "short": "PMAY-G", "level": "central", "category": "housing",
+      "name": {"en": "PM Awas Yojana – Gramin (PMAY-G)", "ta": "பிரதமர் வீட்டு வசதித் திட்டம் – ஊரகம் (PMAY-G)"},
+      "summary": {"en": "₹1.20 lakh (₹1.30 lakh in hilly / difficult areas) to build a pucca house, with toilet and MGNREGA labour-day convergence.", "ta": "கான்கிரீட் வீடு கட்ட ₹1.20 லட்சம் (மலை / கடினப் பகுதிகளில் ₹1.30 லட்சம்); கழிப்பறை மற்றும் 100 நாள் வேலை நாட்களும் இணைந்து கிடைக்கும்."},
+      "description": {"en": "Rural housing scheme for houseless families and families living in kutcha or dilapidated houses.", "ta": "வீடற்ற குடும்பங்கள் மற்றும் குடிசை / பழுதடைந்த வீடுகளில் வசிக்கும் குடும்பங்களுக்கான ஊரக வீட்டு வசதித் திட்டம்."},
+      "keywords": ["house", "housing", "home", "awas", "hut", "pucca house", "வீடு", "குடிசை", "வீட்டு வசதி"],
+      "benefit": {"kind": "one_time", "amount": 120000, "label": {"en": "₹1.20 lakh one-time (plains)", "ta": "ஒருமுறை ₹1.20 லட்சம் (சமவெளி)"}},
+      "rule": {"all": [
+        {"fact": "rural", "op": "==", "value": true},
+        {"fact": "house_type", "op": "in", "value": ["HOUSELESS", "KUTCHA"], "label": {"en": "Houseless or living in a kutcha house", "ta": "வீடற்றவர் அல்லது குடிசை வீட்டில் வசிப்பவர்"}},
+        {"fact": "income_tax_payer", "op": "==", "value": false},
+        {"fact": "govt_employee", "op": "==", "value": false}
+      ]},
+      "documents": ["aadhaar", "bank_passbook", "job_card", "ration_card"],
+      "apply": {"en": "Beneficiaries come from the SECC 2011 / Awaas+ survey lists approved by the Gram Sabha. Ask the Block Development Office or Panchayat secretary to check the list.", "ta": "SECC 2011 / ஆவாஸ்+ கணக்கெடுப்புப் பட்டியலிலிருந்து கிராம சபை ஒப்புதலுடன் பயனாளிகள் தேர்வு. பட்டியலைச் சரிபார்க்க வட்டார வளர்ச்சி அலுவலகம் அல்லது ஊராட்சிச் செயலரை அணுகவும்."},
+      "portal": "pmayg.nic.in",
+      "caveats": {"en": "Families with a motor vehicle, mechanised farm equipment, high income or a pucca house are excluded.", "ta": "மோட்டார் வாகனம், இயந்திர விவசாயக் கருவி, அதிக வருமானம் அல்லது கான்கிரீட் வீடு உள்ள குடும்பங்கள் விலக்கப்படும்."},
+      "verify_note": {"en": "Rules are simplified for this prototype — verify on the official portal.", "ta": "இந்த முன்மாதிரியில் விதிகள் எளிமைப்படுத்தப்பட்டுள்ளன — அதிகாரப்பூர்வ இணையதளத்தில் சரிபார்க்கவும்."}
+    },
+    {
+      "id": "sbm_g", "short": "SBM-G toilet", "level": "central", "category": "housing",
+      "name": {"en": "Swachh Bharat Mission (Gramin) – household toilet incentive", "ta": "தூய்மை இந்தியா இயக்கம் (ஊரகம்) – வீட்டுக் கழிப்பறை ஊக்கத்தொகை"},
+      "summary": {"en": "₹12,000 incentive to build an individual household toilet.", "ta": "தனிநபர் வீட்டுக் கழிப்பறை கட்ட ₹12,000 ஊக்கத்தொகை."},
+      "description": {"en": "Sanitation support for rural households without a toilet — build a latrine and end open defecation.", "ta": "கழிப்பறை இல்லாத ஊரகக் குடும்பங்களுக்கான சுகாதார உதவி — கழிப்பறை கட்டி திறந்தவெளி மலம் கழிப்பதை ஒழித்தல்."},
+      "keywords": ["toilet", "latrine", "sanitation", "swachh", "கழிப்பறை", "சுகாதாரம்"],
+      "benefit": {"kind": "one_time", "amount": 12000, "label": {"en": "₹12,000 one-time", "ta": "ஒருமுறை ₹12,000"}},
+      "rule": {"all": [
+        {"fact": "rural", "op": "==", "value": true},
+        {"fact": "has_toilet", "op": "==", "value": false},
+        {"any": [
+          {"fact": "ration_card", "op": "in", "value": ["AAY", "PHH"], "label": {"en": "Priority / BPL ration card", "ta": "முன்னுரிமை / வறுமைக்கோட்டு அட்டை"}},
+          {"fact": "social_category", "op": "in", "value": ["SC", "ST"]},
+          {"fact": "land_ha", "op": "<=", "value": {"param": "SMALL_MARGINAL_MAX_HA"}, "label": {"en": "Small / marginal farmer or landless", "ta": "சிறு / குறு விவசாயி அல்லது நிலமற்றவர்"}},
+          {"fact": "severe_disability", "op": "==", "value": true},
+          {"fact": "woman_head", "op": "==", "value": true}
+        ]}
+      ]},
+      "documents": ["aadhaar", "bank_passbook", "photo", "ration_card"],
+      "apply": {"en": "Apply through the Gram Panchayat / Block Development Office or the SBM-G portal; the incentive is paid after the toilet is built and verified.", "ta": "கிராம ஊராட்சி / வட்டார வளர்ச்சி அலுவலகம் அல்லது SBM-G இணையதளம் வழியாக விண்ணப்பிக்கவும்; கழிப்பறை கட்டி சரிபார்த்த பின் தொகை வழங்கப்படும்."},
+      "portal": "sbm.gov.in",
+      "caveats": {"en": "Covers BPL households and identified APL groups (SC/ST, small & marginal farmers, landless labourers, persons with disability, women-headed households).", "ta": "வறுமைக்கோட்டுக் குடும்பங்கள் மற்றும் அடையாளம் காணப்பட்ட பிரிவுகள் (SC/ST, சிறு, குறு விவசாயிகள், நிலமற்ற தொழிலாளர்கள், மாற்றுத்திறனாளிகள், பெண் தலைமைக் குடும்பங்கள்)."},
+      "verify_note": {"en": "Rules are simplified for this prototype — verify on the official portal.", "ta": "இந்த முன்மாதிரியில் விதிகள் எளிமைப்படுத்தப்பட்டுள்ளன — அதிகாரப்பூர்வ இணையதளத்தில் சரிபார்க்கவும்."}
+    },
+    {
+      "id": "pm_jay", "short": "PM-JAY", "level": "central", "category": "health",
+      "name": {"en": "Ayushman Bharat – PM Jan Arogya Yojana (PM-JAY)", "ta": "ஆயுஷ்மான் பாரத் – பிரதமர் மக்கள் ஆரோக்கியத் திட்டம் (PM-JAY)"},
+      "summary": {"en": "Cashless hospital treatment cover of up to ₹5 lakh per family per year at empanelled hospitals; all citizens aged 70+ are covered regardless of income.", "ta": "பட்டியலிடப்பட்ட மருத்துவமனைகளில் குடும்பத்திற்கு ஆண்டுக்கு ₹5 லட்சம் வரை பணமில்லா சிகிச்சைக் காப்பீடு; 70 வயதுக்கு மேற்பட்ட அனைவருக்கும் வருமான வேறுபாடின்றி."},
+      "description": {"en": "Health insurance for hospitalisation, surgery and treatment of poor and vulnerable families. Ayushman card.", "ta": "ஏழை மற்றும் பாதிக்கப்படக்கூடிய குடும்பங்களுக்கு மருத்துவமனை அனுமதி, அறுவைச் சிகிச்சைக்கான மருத்துவக் காப்பீடு. ஆயுஷ்மான் அட்டை."},
+      "keywords": ["health insurance", "hospital", "ayushman", "treatment", "surgery", "மருத்துவக் காப்பீடு", "மருத்துவமனை", "சிகிச்சை"],
+      "benefit": {"kind": "cover", "amount": 500000, "label": {"en": "Cover up to ₹5 lakh / family / year", "ta": "குடும்பத்திற்கு ஆண்டுக்கு ₹5 லட்சம் வரை காப்பீடு"}},
+      "rule": {"any": [
+        {"fact": "ration_card", "op": "in", "value": ["AAY", "PHH"], "label": {"en": "Priority ration card (proxy for SECC 2011 lists)", "ta": "முன்னுரிமை அட்டை (SECC 2011 பட்டியலுக்கான மாற்று அளவீடு)"}},
+        {"fact": "oldest_age", "op": ">=", "value": 70, "label": {"en": "A member aged 70 or above", "ta": "70 வயது அல்லது அதற்கு மேற்பட்ட உறுப்பினர்"}}
+      ]},
+      "documents": ["aadhaar", "ration_card", "mobile"],
+      "apply": {"en": "Check your name and get the Ayushman card at a CSC, an empanelled hospital's Arogya Mitra desk, or the Ayushman app. In Tamil Nadu it runs together with CMCHIS.", "ta": "பொது சேவை மையம், மருத்துவமனையின் ஆரோக்கிய மித்ரா மேசை அல்லது ஆயுஷ்மான் செயலியில் பெயரைச் சரிபார்த்து அட்டை பெறலாம். தமிழ்நாட்டில் இது முதலமைச்சர் காப்பீட்டுத் திட்டத்துடன் இணைந்து செயல்படுகிறது."},
+      "portal": "pmjay.gov.in",
+      "caveats": {"en": "Real eligibility is checked against SECC 2011 and state beneficiary lists; ration card type is only a proxy here.", "ta": "உண்மையான தகுதி SECC 2011 மற்றும் மாநிலப் பட்டியல்களில் சரிபார்க்கப்படும்; இங்கே குடும்ப அட்டை வகை ஒரு மாற்று அளவீடு மட்டுமே."},
+      "verify_note": {"en": "Rules are simplified for this prototype — verify on the official portal.", "ta": "இந்த முன்மாதிரியில் விதிகள் எளிமைப்படுத்தப்பட்டுள்ளன — அதிகாரப்பூர்வ இணையதளத்தில் சரிபார்க்கவும்."}
+    },
+    {
+      "id": "cmchis", "short": "CMCHIS (TN)", "level": "tamil_nadu", "category": "health",
+      "name": {"en": "Chief Minister's Comprehensive Health Insurance Scheme (CMCHIS), Tamil Nadu", "ta": "முதலமைச்சரின் விரிவான மருத்துவக் காப்பீட்டுத் திட்டம் (தமிழ்நாடு)"},
+      "summary": {"en": "Free treatment for listed procedures at government and empanelled private hospitals for low-income families (approx. ₹5 lakh per family per year).", "ta": "குறைந்த வருமானக் குடும்பங்களுக்கு அரசு மற்றும் பட்டியலிடப்பட்ட தனியார் மருத்துவமனைகளில் குறிப்பிட்ட சிகிச்சைகள் இலவசம் (குடும்பத்திற்கு ஆண்டுக்கு சுமார் ₹5 லட்சம்)."},
+      "description": {"en": "Tamil Nadu state health insurance for hospital treatment and surgery of low-income families.", "ta": "குறைந்த வருமானக் குடும்பங்களின் மருத்துவமனை சிகிச்சை, அறுவைச் சிகிச்சைக்கான தமிழ்நாடு அரசின் மருத்துவக் காப்பீடு."},
+      "keywords": ["health insurance", "hospital", "chief minister insurance", "cmchis", "மருத்துவக் காப்பீடு", "முதலமைச்சர் காப்பீடு"],
+      "benefit": {"kind": "cover", "amount": 500000, "label": {"en": "Cover approx. ₹5 lakh / family / year", "ta": "குடும்பத்திற்கு ஆண்டுக்கு சுமார் ₹5 லட்சம் காப்பீடு"}},
+      "rule": {"all": [
+        {"fact": "annual_income", "op": "<=", "value": {"param": "CMCHIS_INCOME_LIMIT"}, "label": {"en": "Family income within the state limit", "ta": "குடும்ப வருமானம் மாநில வரம்புக்குள்"}}
+      ]},
+      "documents": ["ration_card", "income_certificate", "aadhaar"],
+      "apply": {"en": "Enrol at the CMCHIS enrolment centre (district collectorate or government hospital) with the family card and an income certificate.", "ta": "குடும்ப அட்டை மற்றும் வருமானச் சான்றிதழுடன் காப்பீட்டுப் பதிவு மையத்தில் (மாவட்ட ஆட்சியர் அலுவலகம் அல்லது அரசு மருத்துவமனை) பதிவு செய்யவும்."},
+      "portal": "cmchistn.com",
+      "caveats": {"en": "The income limit used here is approximate — check the current limit at the enrolment centre.", "ta": "இங்குள்ள வருமான வரம்பு தோராயமானது — தற்போதைய வரம்பைப் பதிவு மையத்தில் சரிபார்க்கவும்."},
+      "verify_note": {"en": "Rules are simplified for this prototype — verify on the official portal.", "ta": "இந்த முன்மாதிரியில் விதிகள் எளிமைப்படுத்தப்பட்டுள்ளன — அதிகாரப்பூர்வ இணையதளத்தில் சரிபார்க்கவும்."}
+    },
+    {
+      "id": "pmmvy", "short": "PMMVY", "level": "central", "category": "health",
+      "name": {"en": "PM Matru Vandana Yojana (PMMVY) – maternity benefit", "ta": "பிரதமர் மாத்ரு வந்தனா யோஜனா – மகப்பேறு உதவி"},
+      "summary": {"en": "₹5,000 for the first child (in instalments) and ₹6,000 for a second child if it is a girl, for nutrition and rest.", "ta": "முதல் குழந்தைக்கு ₹5,000 (தவணைகளாக), இரண்டாவது குழந்தை பெண்ணாக இருந்தால் ₹6,000 — ஊட்டச்சத்து மற்றும் ஓய்வுக்கு."},
+      "description": {"en": "Maternity cash benefit for pregnant women and lactating mothers, delivery and child nutrition support.", "ta": "கர்ப்பிணிகள் மற்றும் பாலூட்டும் தாய்மார்களுக்கான மகப்பேறு பண உதவி, பிரசவம் மற்றும் குழந்தை ஊட்டச்சத்து ஆதரவு."},
+      "keywords": ["pregnant", "maternity", "mother", "delivery", "baby", "கர்ப்பிணி", "மகப்பேறு", "தாய்", "பிரசவம்"],
+      "benefit": {"kind": "one_time", "amount": 5000, "label": {"en": "₹5,000 (first child)", "ta": "₹5,000 (முதல் குழந்தை)"}},
+      "rule": {"all": [
+        {"fact": "pregnant_or_lactating", "op": "==", "value": true},
+        {"fact": "govt_employee", "op": "==", "value": false}
+      ]},
+      "documents": ["aadhaar", "mcp_card", "bank_passbook", "mobile"],
+      "apply": {"en": "Register at the Anganwadi centre or with the ASHA / ANM worker during pregnancy.", "ta": "கர்ப்ப காலத்தில் அங்கன்வாடி மையம் அல்லது ASHA / கிராம சுகாதாரச் செவிலியரிடம் பதிவு செய்யவும்."},
+      "portal": "pmmvy.wcd.gov.in",
+      "caveats": {"en": "Women in regular government / PSU jobs with paid maternity leave are excluded. Tamil Nadu also runs its own maternity benefit scheme.", "ta": "ஊதியத்துடன் மகப்பேறு விடுப்பு பெறும் அரசு / பொதுத்துறை ஊழியர்கள் விலக்கப்படுவர். தமிழ்நாடு அரசும் தனி மகப்பேறு உதவித் திட்டம் நடத்துகிறது."},
+      "verify_note": {"en": "Rules are simplified for this prototype — verify on the official portal.", "ta": "இந்த முன்மாதிரியில் விதிகள் எளிமைப்படுத்தப்பட்டுள்ளன — அதிகாரப்பூர்வ இணையதளத்தில் சரிபார்க்கவும்."}
+    },
+    {
+      "id": "ujjwala", "short": "PM Ujjwala", "level": "central", "category": "women",
+      "name": {"en": "PM Ujjwala Yojana (PMUY) – free LPG connection", "ta": "பிரதமர் உஜ்வாலா யோஜனா – இலவச எரிவாயு இணைப்பு"},
+      "summary": {"en": "Deposit-free LPG connection in the name of an adult woman of a poor household; Ujjwala 2.0 adds the first refill and a stove.", "ta": "ஏழைக் குடும்பத்தின் வயது வந்த பெண்ணின் பெயரில் வைப்புத்தொகை இல்லா எரிவாயு இணைப்பு; உஜ்வாலா 2.0-இல் முதல் சிலிண்டர், அடுப்பும் இலவசம்."},
+      "description": {"en": "Clean cooking gas for women of poor households, replacing firewood smoke in the kitchen.", "ta": "விறகுப் புகைக்குப் பதிலாக ஏழைக் குடும்பப் பெண்களுக்குத் தூய சமையல் எரிவாயு."},
+      "keywords": ["gas", "lpg", "cylinder", "cooking", "ujjwala", "எரிவாயு", "சிலிண்டர்", "சமையல் எரிவாயு"],
+      "benefit": {"kind": "varies", "label": {"en": "Free connection; refill subsidy as notified", "ta": "இலவச இணைப்பு; மறுநிரப்பு மானியம் அறிவிப்பின்படி"}},
+      "rule": {"all": [
+        {"fact": "adult_woman", "op": "==", "value": true},
+        {"fact": "has_lpg", "op": "==", "value": false},
+        {"any": [
+          {"fact": "ration_card", "op": "in", "value": ["AAY", "PHH"], "label": {"en": "Priority / BPL ration card", "ta": "முன்னுரிமை / வறுமைக்கோட்டு அட்டை"}},
+          {"fact": "social_category", "op": "in", "value": ["SC", "ST"]},
+          {"fact": "house_type", "op": "in", "value": ["HOUSELESS", "KUTCHA"], "label": {"en": "Houseless or kutcha house", "ta": "வீடற்றவர் / குடிசை வீடு"}}
+        ]}
+      ]},
+      "documents": ["aadhaar", "ration_card", "bank_passbook", "kyc_declaration"],
+      "apply": {"en": "Apply at the nearest LPG distributor (Indane, Bharat Gas or HP Gas) or on the PMUY portal.", "ta": "அருகிலுள்ள எரிவாயு விநியோகஸ்தர் (இண்டேன், பாரத் கேஸ், HP கேஸ்) அல்லது PMUY இணையதளத்தில் விண்ணப்பிக்கவும்."},
+      "portal": "pmuy.gov.in",
+      "caveats": {"en": "No existing LPG connection may be in the household's name.", "ta": "குடும்பத்தின் பெயரில் ஏற்கனவே எரிவாயு இணைப்பு இருக்கக் கூடாது."},
+      "verify_note": {"en": "Rules are simplified for this prototype — verify on the official portal.", "ta": "இந்த முன்மாதிரியில் விதிகள் எளிமைப்படுத்தப்பட்டுள்ளன — அதிகாரப்பூர்வ இணையதளத்தில் சரிபார்க்கவும்."}
+    },
+    {
+      "id": "ignoaps", "short": "Old-age pension", "level": "central", "category": "pension", "exclusive_group": "social_pension",
+      "name": {"en": "Indira Gandhi National Old Age Pension (IGNOAPS)", "ta": "இந்திரா காந்தி தேசிய முதியோர் ஓய்வூதியம்"},
+      "summary": {"en": "Monthly pension for elders aged 60+ from poor households. Central share ₹200/month (₹500 from age 80); Tamil Nadu adds a state top-up.", "ta": "ஏழைக் குடும்பங்களின் 60 வயதுக்கு மேற்பட்டோருக்கு மாதாந்திர ஓய்வூதியம். மத்திய பங்கு மாதம் ₹200 (80 வயது முதல் ₹500); தமிழ்நாடு அரசு கூடுதல் தொகை சேர்க்கிறது."},
+      "description": {"en": "Social security old age pension for elderly, senior citizens and aged persons below the poverty line.", "ta": "வறுமைக்கோட்டுக்குக் கீழுள்ள முதியோர், மூத்த குடிமக்களுக்கான சமூகப் பாதுகாப்பு முதியோர் ஓய்வூதியம்."},
+      "keywords": ["old age pension", "elderly", "senior citizen", "aged", "முதியோர் ஓய்வூதியம்", "முதியவர்", "வயதானவர்"],
+      "benefit": {"kind": "annual", "amount": 2400, "tiers": [
+        {"when": {"fact": "oldest_age", "op": ">=", "value": 80}, "amount": 6000}
+      ], "label": {"en": "Central share ₹2,400–6,000 / year (+ state top-up)", "ta": "மத்திய பங்கு ஆண்டுக்கு ₹2,400–6,000 (+ மாநிலத் தொகை)"}},
+      "rule": {"all": [
+        {"fact": "oldest_age", "op": ">=", "value": 60, "label": {"en": "A member aged 60 or above", "ta": "60 வயது அல்லது அதற்கு மேற்பட்ட உறுப்பினர்"}},
+        {"fact": "ration_card", "op": "in", "value": ["AAY", "PHH"], "label": {"en": "Poor (priority / BPL) household", "ta": "ஏழை (முன்னுரிமை / வறுமைக்கோட்டு) குடும்பம்"}}
+      ]},
+      "documents": ["aadhaar", "age_proof", "ration_card", "bank_passbook", "photo"],
+      "apply": {"en": "Apply to the Tahsildar (Social Security Scheme) through the VAO, an e-Sevai centre or a CSC.", "ta": "கிராம நிர்வாக அலுவலர், இ-சேவை மையம் அல்லது பொது சேவை மையம் வழியாக வட்டாட்சியர் (சமூகப் பாதுகாப்புத் திட்டம்) அலுவலகத்திற்கு விண்ணப்பிக்கவும்."},
+      "portal": "nsap.nic.in",
+      "caveats": {"en": "Only one social-security pension is paid per person.", "ta": "ஒருவருக்கு ஒரு சமூகப் பாதுகாப்பு ஓய்வூதியம் மட்டுமே வழங்கப்படும்."},
+      "verify_note": {"en": "Rules are simplified for this prototype — verify on the official portal.", "ta": "இந்த முன்மாதிரியில் விதிகள் எளிமைப்படுத்தப்பட்டுள்ளன — அதிகாரப்பூர்வ இணையதளத்தில் சரிபார்க்கவும்."}
+    },
+    {
+      "id": "ignwps", "short": "Widow pension", "level": "central", "category": "pension", "exclusive_group": "social_pension",
+      "name": {"en": "Indira Gandhi National Widow Pension (IGNWPS)", "ta": "இந்திரா காந்தி தேசிய கைம்பெண் ஓய்வூதியம்"},
+      "summary": {"en": "Monthly pension for widows aged 40–79 from poor households. Central share ₹300/month; Tamil Nadu adds a state top-up.", "ta": "ஏழைக் குடும்பங்களைச் சேர்ந்த 40–79 வயதுக் கைம்பெண்களுக்கு மாதாந்திர ஓய்வூதியம். மத்திய பங்கு மாதம் ₹300; தமிழ்நாடு அரசு கூடுதல் தொகை சேர்க்கிறது."},
+      "description": {"en": "Social security pension for widows and destitute women who lost their husband.", "ta": "கணவரை இழந்த கைம்பெண்கள் மற்றும் ஆதரவற்ற பெண்களுக்கான சமூகப் பாதுகாப்பு ஓய்வூதியம்."},
+      "keywords": ["widow pension", "widow", "husband died", "destitute", "விதவை", "கைம்பெண்", "கைம்பெண் ஓய்வூதியம்"],
+      "benefit": {"kind": "annual", "amount": 3600, "label": {"en": "Central share ₹3,600 / year (+ state top-up)", "ta": "மத்திய பங்கு ஆண்டுக்கு ₹3,600 (+ மாநிலத் தொகை)"}},
+      "rule": {"all": [
+        {"fact": "widow_age", "op": "between", "value": [40, 79], "label": {"en": "Widow aged 40–79", "ta": "40–79 வயதுக் கைம்பெண்"}},
+        {"fact": "ration_card", "op": "in", "value": ["AAY", "PHH"], "label": {"en": "Poor (priority / BPL) household", "ta": "ஏழை (முன்னுரிமை / வறுமைக்கோட்டு) குடும்பம்"}}
+      ]},
+      "documents": ["aadhaar", "death_certificate", "age_proof", "ration_card", "bank_passbook"],
+      "apply": {"en": "Apply to the Tahsildar (Social Security Scheme) through the VAO, an e-Sevai centre or a CSC.", "ta": "கிராம நிர்வாக அலுவலர், இ-சேவை மையம் அல்லது பொது சேவை மையம் வழியாக வட்டாட்சியர் (சமூகப் பாதுகாப்புத் திட்டம்) அலுவலகத்திற்கு விண்ணப்பிக்கவும்."},
+      "portal": "nsap.nic.in",
+      "caveats": {"en": "Tamil Nadu's own destitute-widow pension has separate conditions — ask the Tahsildar. One social-security pension per person.", "ta": "தமிழ்நாட்டின் ஆதரவற்ற கைம்பெண் ஓய்வூதியத்திற்குத் தனி நிபந்தனைகள் உண்டு — வட்டாட்சியரிடம் கேட்கவும். ஒருவருக்கு ஒரு ஓய்வூதியம்."},
+      "verify_note": {"en": "Rules are simplified for this prototype — verify on the official portal.", "ta": "இந்த முன்மாதிரியில் விதிகள் எளிமைப்படுத்தப்பட்டுள்ளன — அதிகாரப்பூர்வ இணையதளத்தில் சரிபார்க்கவும்."}
+    },
+    {
+      "id": "igndps", "short": "Disability pension", "level": "central", "category": "pension",
+      "name": {"en": "Indira Gandhi National Disability Pension (IGNDPS)", "ta": "இந்திரா காந்தி தேசிய மாற்றுத்திறனாளி ஓய்வூதியம்"},
+      "summary": {"en": "Monthly pension for persons aged 18–79 with severe or multiple disability (80%+) from poor households. Central share ₹300/month; state top-up extra.", "ta": "ஏழைக் குடும்பங்களைச் சேர்ந்த, 80% அல்லது அதற்கு மேல் மாற்றுத்திறன் உள்ள 18–79 வயதினருக்கு மாதாந்திர ஓய்வூதியம். மத்திய பங்கு மாதம் ₹300; மாநிலத் தொகை கூடுதல்."},
+      "description": {"en": "Social security pension for persons with disabilities, handicapped and differently abled members.", "ta": "மாற்றுத்திறனாளிகளுக்கான சமூகப் பாதுகாப்பு ஓய்வூதியம்."},
+      "keywords": ["disability pension", "disabled", "handicapped", "differently abled", "மாற்றுத்திறனாளி", "ஊனமுற்றோர்"],
+      "benefit": {"kind": "annual", "amount": 3600, "label": {"en": "Central share ₹3,600 / year (+ state top-up)", "ta": "மத்திய பங்கு ஆண்டுக்கு ₹3,600 (+ மாநிலத் தொகை)"}},
+      "rule": {"all": [
+        {"fact": "severe_disability", "op": "==", "value": true},
+        {"fact": "ration_card", "op": "in", "value": ["AAY", "PHH"], "label": {"en": "Poor (priority / BPL) household", "ta": "ஏழை (முன்னுரிமை / வறுமைக்கோட்டு) குடும்பம்"}}
+      ]},
+      "documents": ["aadhaar", "disability_certificate", "ration_card", "bank_passbook", "photo"],
+      "apply": {"en": "Apply to the Tahsildar through the VAO or an e-Sevai centre; the District Differently Abled Welfare Office can help.", "ta": "கிராம நிர்வாக அலுவலர் அல்லது இ-சேவை மையம் வழியாக வட்டாட்சியருக்கு விண்ணப்பிக்கவும்; மாவட்ட மாற்றுத்திறனாளிகள் நல அலுவலகம் உதவும்."},
+      "portal": "nsap.nic.in",
+      "caveats": {"en": "The disabled member must be 18–79 (not asked here).", "ta": "மாற்றுத்திறனாளி உறுப்பினரின் வயது 18–79 ஆக இருக்க வேண்டும் (இங்கு கேட்கப்படவில்லை)."},
+      "verify_note": {"en": "Rules are simplified for this prototype — verify on the official portal.", "ta": "இந்த முன்மாதிரியில் விதிகள் எளிமைப்படுத்தப்பட்டுள்ளன — அதிகாரப்பூர்வ இணையதளத்தில் சரிபார்க்கவும்."}
+    },
+    {
+      "id": "pmsby", "short": "PMSBY", "level": "central", "category": "insurance",
+      "name": {"en": "PM Suraksha Bima Yojana (PMSBY) – accident insurance", "ta": "பிரதமர் சுரக்ஷா பீமா யோஜனா – விபத்துக் காப்பீடு"},
+      "summary": {"en": "₹2 lakh cover for accidental death or full disability (₹1 lakh partial) for a premium of ₹20 a year, auto-debited from the bank account.", "ta": "ஆண்டுக்கு ₹20 பிரீமியத்தில் விபத்து மரணம் / முழு ஊனத்திற்கு ₹2 லட்சம் (பகுதி ஊனத்திற்கு ₹1 லட்சம்) காப்பீடு; வங்கிக் கணக்கிலிருந்து தானாகப் பிடித்தம்."},
+      "description": {"en": "Low-cost personal accident insurance for adults with a savings bank or post office account.", "ta": "வங்கிக் கணக்கு வைத்திருப்போருக்கான குறைந்த செலவு விபத்துக் காப்பீடு."},
+      "keywords": ["accident insurance", "accident", "suraksha", "விபத்துக் காப்பீடு", "விபத்து"],
+      "benefit": {"kind": "cover", "amount": 200000, "label": {"en": "₹2 lakh accident cover for ₹20 / year", "ta": "ஆண்டுக்கு ₹20-க்கு ₹2 லட்சம் விபத்துக் காப்பீடு"}},
+      "rule": {"all": [
+        {"fact": "applicant_age", "op": "between", "value": [18, 70], "label": {"en": "Applicant aged 18–70", "ta": "விண்ணப்பதாரர் வயது 18–70"}}
+      ]},
+      "documents": ["aadhaar", "bank_passbook", "mobile"],
+      "apply": {"en": "Fill the one-page consent form at your bank or post office, or enrol through net banking. No account? Open a zero-balance Jan Dhan account first.", "ta": "வங்கி அல்லது அஞ்சலகத்தில் ஒரு பக்க ஒப்புதல் படிவத்தை நிரப்பவும், அல்லது இணைய வங்கி மூலம் சேரவும். கணக்கு இல்லையெனில் முதலில் ஜன் தன் கணக்கு தொடங்கவும்."},
+      "portal": "jansuraksha.gov.in",
+      "caveats": {"en": "Cover runs June to May and must be renewed every year.", "ta": "காப்பீடு ஜூன் முதல் மே வரை; ஒவ்வொரு ஆண்டும் புதுப்பிக்க வேண்டும்."},
+      "verify_note": {"en": "Rules are simplified for this prototype — verify on the official portal.", "ta": "இந்த முன்மாதிரியில் விதிகள் எளிமைப்படுத்தப்பட்டுள்ளன — அதிகாரப்பூர்வ இணையதளத்தில் சரிபார்க்கவும்."}
+    },
+    {
+      "id": "pmjjby", "short": "PMJJBY", "level": "central", "category": "insurance",
+      "name": {"en": "PM Jeevan Jyoti Bima Yojana (PMJJBY) – life insurance", "ta": "பிரதமர் ஜீவன் ஜோதி பீமா யோஜனா – ஆயுள் காப்பீடு"},
+      "summary": {"en": "₹2 lakh life cover for death due to any cause, for a premium of ₹436 a year.", "ta": "ஆண்டுக்கு ₹436 பிரீமியத்தில் எந்தக் காரணத்தால் மரணம் ஏற்பட்டாலும் ₹2 லட்சம் ஆயுள் காப்பீடு."},
+      "description": {"en": "Low-cost term life insurance for bank account holders to protect the family.", "ta": "குடும்பத்தைப் பாதுகாக்க வங்கிக் கணக்கு வைத்திருப்போருக்கான குறைந்த செலவு ஆயுள் காப்பீடு."},
+      "keywords": ["life insurance", "jeevan jyoti", "death cover", "ஆயுள் காப்பீடு", "உயிர்க் காப்பீடு"],
+      "benefit": {"kind": "cover", "amount": 200000, "label": {"en": "₹2 lakh life cover for ₹436 / year", "ta": "ஆண்டுக்கு ₹436-க்கு ₹2 லட்சம் ஆயுள் காப்பீடு"}},
+      "rule": {"all": [
+        {"fact": "applicant_age", "op": "between", "value": [18, 50], "label": {"en": "Applicant aged 18–50", "ta": "விண்ணப்பதாரர் வயது 18–50"}}
+      ]},
+      "documents": ["aadhaar", "bank_passbook", "mobile"],
+      "apply": {"en": "Fill the consent form at your bank or post office, or enrol through net banking. No account? Open a zero-balance Jan Dhan account first.", "ta": "வங்கி அல்லது அஞ்சலகத்தில் ஒப்புதல் படிவத்தை நிரப்பவும், அல்லது இணைய வங்கி மூலம் சேரவும். கணக்கு இல்லையெனில் முதலில் ஜன் தன் கணக்கு தொடங்கவும்."},
+      "portal": "jansuraksha.gov.in",
+      "caveats": {"en": "Cannot join after age 50; cover can continue to 55 if renewed every year.", "ta": "50 வயதுக்குப் பின் சேர முடியாது; ஆண்டுதோறும் புதுப்பித்தால் 55 வரை தொடரலாம்."},
+      "verify_note": {"en": "Rules are simplified for this prototype — verify on the official portal.", "ta": "இந்த முன்மாதிரியில் விதிகள் எளிமைப்படுத்தப்பட்டுள்ளன — அதிகாரப்பூர்வ இணையதளத்தில் சரிபார்க்கவும்."}
+    },
+    {
+      "id": "nmmss", "short": "NMMS scholarship", "level": "central", "category": "education", "conditional": true,
+      "name": {"en": "National Means-cum-Merit Scholarship (NMMSS)", "ta": "தேசிய வருவாய் வழி மற்றும் திறன் படிப்பு உதவித்தொகை (NMMS)"},
+      "summary": {"en": "₹12,000 a year in Class 9–12 for government / aided school students selected through the NMMS exam held in Class 8.", "ta": "8-ஆம் வகுப்பில் நடக்கும் NMMS தேர்வில் தேர்வாகும் அரசு / அரசு உதவி பெறும் பள்ளி மாணவர்களுக்கு 9–12 வகுப்பு வரை ஆண்டுக்கு ₹12,000."},
+      "description": {"en": "Merit scholarship for school students from low-income families to prevent drop-out after Class 8.", "ta": "8-ஆம் வகுப்புக்குப் பின் படிப்பு இடைநிற்றலைத் தடுக்கக் குறைந்த வருமானக் குடும்ப மாணவர்களுக்கான திறன் உதவித்தொகை."},
+      "keywords": ["scholarship", "school student", "nmms", "merit", "உதவித்தொகை", "பள்ளி மாணவர்", "கல்வி உதவித்தொகை"],
+      "benefit": {"kind": "annual", "amount": 12000, "label": {"en": "₹12,000 / year if selected in the exam", "ta": "தேர்வில் தேர்வானால் ஆண்டுக்கு ₹12,000"}},
+      "rule": {"all": [
+        {"fact": "govt_school_child_8to12", "op": "==", "value": true},
+        {"fact": "annual_income", "op": "<=", "value": {"param": "NMMSS_INCOME_LIMIT"}, "label": {"en": "Family income up to ₹3.5 lakh", "ta": "குடும்ப வருமானம் ₹3.5 லட்சம் வரை"}}
+      ]},
+      "documents": ["aadhaar", "income_certificate", "school_certificate", "marksheet", "bank_passbook"],
+      "apply": {"en": "The headmaster registers Class 8 students for the state NMMS exam; selected students renew every year on the National Scholarship Portal.", "ta": "தலைமை ஆசிரியர் 8-ஆம் வகுப்பு மாணவர்களை மாநில NMMS தேர்வுக்குப் பதிவு செய்வார்; தேர்வானவர்கள் ஒவ்வொரு ஆண்டும் தேசிய உதவித்தொகை இணையதளத்தில் புதுப்பிக்க வேண்டும்."},
+      "portal": "scholarships.gov.in",
+      "caveats": {"en": "Needs about 55% in Class 7 (relaxed for SC/ST) and good marks to renew each year.", "ta": "7-ஆம் வகுப்பில் சுமார் 55% மதிப்பெண் (SC/ST-க்குத் தளர்வு) மற்றும் புதுப்பிக்க நல்ல மதிப்பெண் தேவை."},
+      "verify_note": {"en": "Rules are simplified for this prototype — verify on the official portal.", "ta": "இந்த முன்மாதிரியில் விதிகள் எளிமைப்படுத்தப்பட்டுள்ளன — அதிகாரப்பூர்வ இணையதளத்தில் சரிபார்க்கவும்."}
+    },
+    {
+      "id": "post_matric_scst", "short": "Post-matric (SC/ST)", "level": "central", "category": "education",
+      "name": {"en": "Post-Matric Scholarship for SC / ST students", "ta": "ஆதிதிராவிடர் / பழங்குடியின மாணவர்களுக்கான மெட்ரிக் பிந்தைய கல்வி உதவித்தொகை"},
+      "summary": {"en": "Compulsory fees plus a maintenance allowance for SC / ST students in Class 11 and above, including college, ITI and diploma.", "ta": "11-ஆம் வகுப்பு மற்றும் அதற்கு மேல் (கல்லூரி, ஐ.டி.ஐ, பட்டயம் உட்பட) படிக்கும் SC / ST மாணவர்களுக்குக் கட்டாயக் கட்டணங்கள் மற்றும் பராமரிப்புத் தொகை."},
+      "description": {"en": "Scholarship for higher education — college, degree, diploma, ITI — for Scheduled Caste and Scheduled Tribe students.", "ta": "ஆதிதிராவிடர் மற்றும் பழங்குடியின மாணவர்களின் உயர்கல்விக்கு — கல்லூரி, பட்டப்படிப்பு, பட்டயம், ஐ.டி.ஐ — கல்வி உதவித்தொகை."},
+      "keywords": ["scholarship", "college", "sc st", "fees", "higher education", "கல்வி உதவித்தொகை", "கல்லூரி", "கட்டணம்"],
+      "benefit": {"kind": "varies", "label": {"en": "Fees + maintenance allowance (varies by course)", "ta": "கட்டணம் + பராமரிப்புத் தொகை (படிப்பைப் பொறுத்தது)"}},
+      "rule": {"all": [
+        {"fact": "post_matric_student", "op": "==", "value": true},
+        {"fact": "social_category", "op": "in", "value": ["SC", "ST"]},
+        {"fact": "annual_income", "op": "<=", "value": {"param": "POST_MATRIC_INCOME_LIMIT"}, "label": {"en": "Family income up to ₹2.5 lakh", "ta": "குடும்ப வருமானம் ₹2.5 லட்சம் வரை"}}
+      ]},
+      "documents": ["aadhaar", "community_certificate", "income_certificate", "marksheet", "college_bonafide", "fee_receipt", "bank_passbook"],
+      "apply": {"en": "Apply through your school or college on the state scholarship portal or the National Scholarship Portal before the deadline.", "ta": "கடைசி தேதிக்கு முன் பள்ளி / கல்லூரி வழியாக மாநில உதவித்தொகை இணையதளம் அல்லது தேசிய உதவித்தொகை இணையதளத்தில் விண்ணப்பிக்கவும்."},
+      "portal": "scholarships.gov.in",
+      "caveats": {"en": "Income limit is the central guideline; states may add their own top-ups and rules.", "ta": "வருமான வரம்பு மத்திய வழிகாட்டுதல்; மாநிலங்கள் கூடுதல் விதிகளைச் சேர்க்கலாம்."},
+      "verify_note": {"en": "Rules are simplified for this prototype — verify on the official portal.", "ta": "இந்த முன்மாதிரியில் விதிகள் எளிமைப்படுத்தப்பட்டுள்ளன — அதிகாரப்பூர்வ இணையதளத்தில் சரிபார்க்கவும்."}
+    },
+    {
+      "id": "pudhumai_penn", "short": "Pudhumai Penn (TN)", "level": "tamil_nadu", "category": "education",
+      "name": {"en": "Pudhumai Penn – Moovalur Ramamirtham Ammaiyar Higher Education Assurance Scheme", "ta": "புதுமைப் பெண் – மூவலூர் இராமாமிர்தம் அம்மையார் உயர்கல்வி உறுதித் திட்டம்"},
+      "summary": {"en": "₹1,000 a month to girls who studied Class 6–12 in government schools, for the duration of their degree, diploma or ITI course.", "ta": "அரசுப் பள்ளிகளில் 6 முதல் 12 வகுப்பு வரை படித்த மாணவிகளுக்கு, பட்டப்படிப்பு / பட்டயம் / ஐ.டி.ஐ முடியும் வரை மாதம் ₹1,000."},
+      "description": {"en": "Tamil Nadu scheme encouraging girl students from government schools to continue higher education in college.", "ta": "அரசுப் பள்ளி மாணவிகள் கல்லூரியில் உயர்கல்வியைத் தொடர ஊக்குவிக்கும் தமிழ்நாடு அரசுத் திட்டம்."},
+      "keywords": ["girl student", "college", "higher education", "pudhumai penn", "மாணவி", "புதுமைப் பெண்", "உயர்கல்வி", "கல்லூரி"],
+      "benefit": {"kind": "annual", "amount": 12000, "label": {"en": "₹1,000 / month while studying", "ta": "படிக்கும் வரை மாதம் ₹1,000"}},
+      "rule": {"all": [
+        {"fact": "govt_school_girl_in_college", "op": "==", "value": true}
+      ]},
+      "documents": ["aadhaar", "school_certificate", "college_bonafide", "bank_passbook"],
+      "apply": {"en": "The college registers eligible students on the scheme portal; confirm with the college's nodal officer.", "ta": "கல்லூரியே தகுதியான மாணவிகளைத் திட்ட இணையதளத்தில் பதிவு செய்யும்; கல்லூரியின் பொறுப்பு அலுவலரிடம் உறுதி செய்யவும்."},
+      "portal": "Via the college (TN Social Welfare Department)",
+      "caveats": {"en": "Paid to the student's own bank account while she continues her course.", "ta": "படிப்பைத் தொடரும் வரை மாணவியின் சொந்த வங்கிக் கணக்கில் செலுத்தப்படும்."},
+      "verify_note": {"en": "Rules are simplified for this prototype — verify on the official portal.", "ta": "இந்த முன்மாதிரியில் விதிகள் எளிமைப்படுத்தப்பட்டுள்ளன — அதிகாரப்பூர்வ இணையதளத்தில் சரிபார்க்கவும்."}
+    },
+    {
+      "id": "kmut", "short": "Magalir Urimai Thogai (TN)", "level": "tamil_nadu", "category": "women",
+      "name": {"en": "Kalaignar Magalir Urimai Thogai (women's entitlement grant)", "ta": "கலைஞர் மகளிர் உரிமைத் தொகை"},
+      "summary": {"en": "₹1,000 a month paid to the woman head of eligible families in Tamil Nadu.", "ta": "தமிழ்நாட்டில் தகுதியான குடும்பங்களின் பெண் குடும்பத் தலைவருக்கு மாதம் ₹1,000."},
+      "description": {"en": "Tamil Nadu monthly cash assistance recognising the unpaid work of women who head families.", "ta": "குடும்பத்தை நடத்தும் பெண்களின் ஊதியமில்லா உழைப்பை அங்கீகரிக்கும் தமிழ்நாடு அரசின் மாதாந்திர உதவித் தொகை."},
+      "keywords": ["women", "monthly assistance", "1000", "cash", "magalir urimai", "மகளிர் உரிமைத் தொகை", "பெண்கள்", "மாதம் 1000"],
+      "benefit": {"kind": "annual", "amount": 12000, "label": {"en": "₹1,000 / month", "ta": "மாதம் ₹1,000"}},
+      "rule": {"all": [
+        {"fact": "woman_head", "op": "==", "value": true},
+        {"fact": "annual_income", "op": "<=", "value": {"param": "KMUT_INCOME_LIMIT"}, "label": {"en": "Family income up to ₹2.5 lakh (approx.)", "ta": "குடும்ப வருமானம் ₹2.5 லட்சம் வரை (தோராயம்)"}},
+        {"fact": "income_tax_payer", "op": "==", "value": false},
+        {"fact": "govt_employee", "op": "==", "value": false}
+      ]},
+      "documents": ["aadhaar", "ration_card", "bank_passbook", "mobile"],
+      "apply": {"en": "Applications are taken at camps announced by the district administration (often at ration shops); status can be checked at an e-Sevai centre.", "ta": "மாவட்ட நிர்வாகம் அறிவிக்கும் முகாம்களில் (பெரும்பாலும் நியாய விலைக் கடைகளில்) விண்ணப்பம் பெறப்படும்; நிலையை இ-சேவை மையத்தில் அறியலாம்."},
+      "portal": "District camps / e-Sevai centres",
+      "caveats": {"en": "Also has limits on land holding and household electricity use; families of government employees and tax payers are excluded.", "ta": "நில உடைமை மற்றும் மின் பயன்பாட்டு வரம்புகளும் உண்டு; அரசு ஊழியர், வரி செலுத்துவோர் குடும்பங்கள் விலக்கப்படும்."},
+      "verify_note": {"en": "Rules are simplified for this prototype — verify on the official portal.", "ta": "இந்த முன்மாதிரியில் விதிகள் எளிமைப்படுத்தப்பட்டுள்ளன — அதிகாரப்பூர்வ இணையதளத்தில் சரிபார்க்கவும்."}
+    },
+    {
+      "id": "nrlm_shg", "short": "Women SHG (NRLM)", "level": "central", "category": "women",
+      "name": {"en": "Women's Self-Help Groups – DAY-NRLM (Mahalir Thittam / TNSRLM)", "ta": "மகளிர் சுய உதவிக் குழுக்கள் – தேசிய ஊரக வாழ்வாதார இயக்கம் (மகளிர் திட்டம்)"},
+      "summary": {"en": "Join or form a women's self-help group to get a revolving fund, community investment support and low-interest bank loans for livelihoods.", "ta": "மகளிர் சுய உதவிக் குழுவில் சேர்ந்து சுழல் நிதி, சமுதாய முதலீட்டு உதவி மற்றும் வாழ்வாதாரத்திற்கான குறைந்த வட்டி வங்கிக் கடன் பெறலாம்."},
+      "description": {"en": "Livelihood mission organising rural poor women into self help groups for savings, credit and small business.", "ta": "சேமிப்பு, கடன், சிறு தொழிலுக்காக ஊரக ஏழைப் பெண்களைச் சுய உதவிக் குழுக்களாக ஒருங்கிணைக்கும் வாழ்வாதார இயக்கம்."},
+      "keywords": ["shg", "self help group", "women group", "livelihood", "small business", "சுய உதவிக் குழு", "மகளிர் குழு", "வாழ்வாதாரம்"],
+      "benefit": {"kind": "varies", "label": {"en": "Revolving fund + bank linkage (varies)", "ta": "சுழல் நிதி + வங்கி இணைப்புக் கடன் (மாறுபடும்)"}},
+      "rule": {"all": [
+        {"fact": "rural", "op": "==", "value": true},
+        {"fact": "adult_woman", "op": "==", "value": true},
+        {"fact": "ration_card", "op": "in", "value": ["AAY", "PHH"], "label": {"en": "Poor household (priority card) — SHGs prioritise poor families", "ta": "ஏழைக் குடும்பம் (முன்னுரிமை அட்டை) — குழுக்கள் ஏழைக் குடும்பங்களுக்கு முன்னுரிமை"}}
+      ]},
+      "documents": ["aadhaar", "bank_passbook", "photo"],
+      "apply": {"en": "Contact the Panchayat Level Federation (PLF) or the block Mahalir Thittam / TNSRLM office to join a group.", "ta": "குழுவில் சேர ஊராட்சி அளவிலான கூட்டமைப்பு (PLF) அல்லது வட்டார மகளிர் திட்ட அலுவலகத்தை அணுகவும்."},
+      "portal": "nrlm.gov.in",
+      "caveats": {"en": "Support flows through the group, not to individuals directly.", "ta": "உதவி குழு வழியாகவே கிடைக்கும், தனிநபருக்கு நேரடியாக அல்ல."},
+      "verify_note": {"en": "Rules are simplified for this prototype — verify on the official portal.", "ta": "இந்த முன்மாதிரியில் விதிகள் எளிமைப்படுத்தப்பட்டுள்ளன — அதிகாரப்பூர்வ இணையதளத்தில் சரிபார்க்கவும்."}
+    }
+  ]
+}

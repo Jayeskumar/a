@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SchemeSetu – welfare scheme matcher</title>
+  <meta name="description" content="Every rural family, matched to the welfare schemes they deserve. Offline, bilingual (English / Tamil), explainable.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%237C3AED'/%3E%3Cpath d='M6 21c4-7 16-7 20 0' stroke='%23fff' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='16' cy='11' r='3' fill='%23F59E0B'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true">
+        <rect width="40" height="40" rx="11" fill="#7C3AED"/>
+        <path d="M7 27c5.5-9.5 20.5-9.5 26 0" stroke="#fff" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+        <path d="M11 27v-4M16 27v-6.5M24 27v-6.5M29 27v-4" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+        <circle cx="20" cy="12" r="3.6" fill="#F59E0B"/>
+        <path d="M5 30h30" stroke="#22C55E" stroke-width="2.4" stroke-linecap="round"/>
+      </svg>
+      <div>
+        <h1>Scheme<span>Setu</span></h1>
+        <p data-i18n="tagline">Every rural family, matched to the welfare schemes they deserve</p>
+      </div>
+    </div>
+    <div class="controls">
+      <div class="seg" id="lang-seg" role="group" aria-label="Language">
+        <button data-lang="en" class="on">English</button>
+        <button data-lang="ta" lang="ta">தமிழ்</button>
+      </div>
+      <div class="seg" id="mode-seg" role="group" aria-label="Mode">
+        <button data-mode="family" class="on" data-i18n="mode_family">Family</button>
+        <button data-mode="worker" data-i18n="mode_worker">Field worker</button>
+      </div>
+      <button class="icon-btn" id="speak-toggle" aria-pressed="false" title="Read questions aloud">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+        <span data-i18n="read_aloud">Read aloud</span>
+      </button>
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <button data-tab="find" class="on" data-i18n="tab_find">Find my schemes</button>
+    <button data-tab="search" data-i18n="tab_search">Search</button>
+    <button data-tab="check"><span data-i18n="tab_check">Documents &amp; tracker</span><span class="badge" id="check-badge">0</span></button>
+    <button data-tab="village" data-i18n="tab_village">Village dashboard</button>
+    <button data-tab="about" data-i18n="tab_about">How it works</button>
+  </nav>
+
+  <main>
+    <!-- ======================================================== FIND -->
+    <section class="tab on" id="tab-find">
+      <div class="find-grid">
+        <div class="left-col">
+          <div class="card">
+            <h2 data-i18n="demo_title">Load demo family</h2>
+            <div class="demo-row" id="demo-row"></div>
+            <p class="small muted" style="margin:8px 0 0" data-i18n="demo_hint">One tap answers the smart questionnaire for a sample family.</p>
+          </div>
+
+          <div class="card qcard" id="qcard">
+            <div class="qmeta"><span id="q-num">Question 1</span><span id="q-open"></span></div>
+            <div class="progress"><i id="q-progress"></i></div>
+            <div id="q-body"></div>
+          </div>
+
+          <div class="card" id="answers-card">
+            <div class="toolbar" style="margin-bottom:6px">
+              <h2 style="margin:0" data-i18n="your_answers">Your answers</h2>
+              <span class="spacer"></span>
+              <span class="small muted" id="answers-count"></span>
+            </div>
+            <ul class="answer-list" id="answer-list"></ul>
+            <div class="toolbar" style="margin:10px 0 0">
+              <button class="btn ghost" id="save-family-btn" data-i18n="save_family">Save this family</button>
+              <span class="small muted" id="saved-as"></span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="banner hidden" id="find-banner"></div>
+          <div class="kpis" id="kpis"></div>
+          <div class="toolbar" id="filters">
+            <button class="chip on" data-filter="all" data-i18n="filter_all">All</button>
+            <button class="chip" data-filter="eligible" data-i18n="st_eligible">Eligible</button>
+            <button class="chip" data-filter="possibly" data-i18n="st_possibly">Possibly eligible</button>
+            <button class="chip" data-filter="not_eligible" data-i18n="st_not">Not eligible</button>
+            <span class="spacer"></span>
+            <button class="mini" id="speak-results"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg> <span data-i18n="read_results">Read my results</span></button>
+          </div>
+          <div class="results" id="results"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== SEARCH -->
+    <section class="tab" id="tab-search">
+      <div class="search-layout">
+        <div>
+          <div class="card">
+            <form class="search-box" id="search-form" autocomplete="off">
+              <input id="search-input" type="search" maxlength="200" aria-label="Search schemes">
+              <button class="btn" type="submit" data-i18n="search_btn">Search</button>
+            </form>
+            <div class="examples" id="examples"></div>
+            <div class="concepts" id="concepts"></div>
+          </div>
+          <div class="results" id="search-results" style="margin-top:14px"></div>
+        </div>
+        <div class="card">
+          <h2 data-i18n="search_how">How search works</h2>
+          <p class="small" data-i18n="search_how_body">Your words are split into tokens (Tamil vowel signs kept), lightly stemmed, mapped through a bilingual concept dictionary (பயிர் → crop, காப்பீடு → insurance) and ranked by TF-IDF cosine similarity against every scheme's English and Tamil description. No internet needed.</p>
+          <p class="small muted" id="search-stats"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== CHECKLIST -->
+    <section class="tab" id="tab-check">
+      <div class="check-grid">
+        <div class="card">
+          <h2 data-i18n="chosen_schemes">Schemes to apply for</h2>
+          <ul class="pick-list" id="pick-list"></ul>
+        </div>
+        <div class="card">
+          <div class="toolbar" style="margin-bottom:4px">
+            <h2 style="margin:0" data-i18n="checklist_title">Document checklist</h2>
+            <span class="spacer"></span>
+            <button class="mini" id="print-btn" data-i18n="print">Print checklist</button>
+          </div>
+          <p class="small muted" id="checklist-sub"></p>
+          <ul class="doc-list" id="doc-list"></ul>
+        </div>
+        <div class="card">
+          <h2 data-i18n="tracker">Application tracker</h2>
+          <div id="save-form">
+            <div class="form-row"><label for="fam-name" data-i18n="family_name">Family name</label><input id="fam-name" maxlength="80"></div>
+            <div class="form-row"><label for="fam-village" data-i18n="village">Village</label><input id="fam-village" maxlength="60"></div>
+            <button class="btn" id="save-btn" data-i18n="save_family">Save this family</button>
+            <p class="small muted" data-i18n="tracker_hint">Save the family to track applications. Saved to data/state.json on this laptop.</p>
+          </div>
+          <div id="tracker"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== VILLAGE -->
+    <section class="tab" id="tab-village">
+      <div class="toolbar">
+        <select class="sel" id="village-select" aria-label="Village"></select>
+        <button class="btn ghost" id="load-village" data-i18n="load_village">Load demo village</button>
+        <button class="btn danger" id="clear-all" data-i18n="clear_all">Clear all</button>
+        <span class="spacer"></span>
+        <span class="small muted" id="village-stats"></span>
+      </div>
+      <div class="kpis" id="village-kpis"></div>
+      <div class="village-grid">
+        <div class="card chart">
+          <h2 data-i18n="chart_title">Schemes with the most eligible-but-not-applied families</h2>
+          <div id="village-chart"></div>
+          <div class="legend">
+            <span><i style="background:var(--green)"></i><span data-i18n="app_received">Received</span></span>
+            <span><i style="background:var(--saffron)"></i><span data-i18n="in_progress">Applied / pending</span></span>
+            <span><i style="background:var(--brand)"></i><span data-i18n="unclaimed">Eligible, not applied</span></span>
+          </div>
+        </div>
+        <div class="card">
+          <h2 data-i18n="priority_families">Families to visit first</h2>
+          <div class="tbl-wrap"><table class="tbl" id="hh-table"></table></div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <h2 data-i18n="scheme_table">Scheme-wise uptake</h2>
+        <div class="tbl-wrap"><table class="tbl" id="scheme-table"></table></div>
+      </div>
+    </section>
+
+    <!-- ======================================================== ABOUT -->
+    <section class="tab" id="tab-about">
+      <div class="about-grid" id="about"></div>
+    </section>
+  </main>
+
+  <footer>
+    <div><b>Built for QUANTIX 2K26 · KSRCE</b> · SchemeSetu</div>
+    <div data-i18n="footer_note">Prototype: scheme rules are simplified. Always verify eligibility on the official portal before applying. Runs fully offline.</div>
+  </footer>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+  <div id="print-area"></div>
+  <script src="app.js"></script>
+</body>
+</html>

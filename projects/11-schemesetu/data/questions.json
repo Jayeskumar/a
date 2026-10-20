@@ -1,0 +1,674 @@
+{
+ "_comment": "Household question bank. Every rule in schemes.json refers to the atomic fact ids here. Number questions carry preset band options; the stored value is the band's upper bound so '<=' thresholds on band edges resolve correctly. Questions with a 'gate' are optional screening shortcuts: one answer (gate.on) fills several atomic facts at once. 'inferences' are logical implications applied to every profile (explicit answers always win).",
+ "questions": [
+  {
+   "id": "rural",
+   "type": "bool",
+   "text": {
+    "en": "Does your family live in a village (rural area)?",
+    "ta": "உங்கள் குடும்பம் கிராமத்தில் (ஊரகப் பகுதியில்) வசிக்கிறதா?"
+   },
+   "short": {
+    "en": "Lives in a village",
+    "ta": "கிராமத்தில் வசிப்பு"
+   }
+  },
+  {
+   "id": "land_ha",
+   "type": "number",
+   "unit": "ha",
+   "text": {
+    "en": "How much farmland does the family own (in its name)?",
+    "ta": "உங்கள் குடும்பத்தின் பெயரில் எவ்வளவு விவசாய நிலம் உள்ளது?"
+   },
+   "short": {
+    "en": "Farmland owned",
+    "ta": "சொந்த விவசாய நிலம்"
+   },
+   "options": [
+    {
+     "value": 0,
+     "label": {
+      "en": "No land",
+      "ta": "நிலம் இல்லை"
+     }
+    },
+    {
+     "value": 1,
+     "label": {
+      "en": "Up to 2.5 acres (1 ha)",
+      "ta": "2.5 ஏக்கர் வரை (1 ஹெக்டேர்)"
+     }
+    },
+    {
+     "value": 2,
+     "label": {
+      "en": "2.5 – 5 acres (1–2 ha)",
+      "ta": "2.5 – 5 ஏக்கர் (1–2 ஹெக்டேர்)"
+     }
+    },
+    {
+     "value": 5,
+     "label": {
+      "en": "More than 5 acres",
+      "ta": "5 ஏக்கருக்கு மேல்"
+     }
+    }
+   ]
+  },
+  {
+   "id": "cultivates_land",
+   "type": "bool",
+   "text": {
+    "en": "Does the family farm any land — own, leased or sharecropped?",
+    "ta": "உங்கள் குடும்பம் ஏதேனும் நிலத்தில் விவசாயம் செய்கிறதா — சொந்தம், குத்தகை அல்லது வாரம்?"
+   },
+   "short": {
+    "en": "Cultivates land",
+    "ta": "விவசாயம் செய்கிறது"
+   }
+  },
+  {
+   "id": "income_tax_payer",
+   "type": "bool",
+   "text": {
+    "en": "Does anyone in the family pay income tax?",
+    "ta": "குடும்பத்தில் யாராவது வருமான வரி செலுத்துகிறார்களா?"
+   },
+   "short": {
+    "en": "Someone pays income tax",
+    "ta": "வருமான வரி செலுத்துபவர் உண்டு"
+   },
+   "short_no": {
+    "en": "No one in the family pays income tax",
+    "ta": "குடும்பத்தில் யாரும் வருமான வரி செலுத்துவதில்லை"
+   }
+  },
+  {
+   "id": "govt_employee",
+   "type": "bool",
+   "text": {
+    "en": "Is anyone in the family a regular government employee or a government pensioner?",
+    "ta": "குடும்பத்தில் யாராவது நிரந்தர அரசு ஊழியர் அல்லது அரசு ஓய்வூதியதாரரா?"
+   },
+   "short": {
+    "en": "Govt. employee / pensioner in family",
+    "ta": "குடும்பத்தில் அரசு ஊழியர் / ஓய்வூதியர்"
+   },
+   "short_no": {
+    "en": "No govt. employee / pensioner in family",
+    "ta": "குடும்பத்தில் அரசு ஊழியர் / ஓய்வூதியர் இல்லை"
+   }
+  },
+  {
+   "id": "annual_income",
+   "type": "number",
+   "unit": "inr",
+   "text": {
+    "en": "What is the family's total yearly income?",
+    "ta": "குடும்பத்தின் மொத்த ஆண்டு வருமானம் எவ்வளவு?"
+   },
+   "short": {
+    "en": "Yearly family income",
+    "ta": "குடும்ப ஆண்டு வருமானம்"
+   },
+   "options": [
+    {
+     "value": 120000,
+     "label": {
+      "en": "Up to ₹1.2 lakh",
+      "ta": "₹1.2 லட்சம் வரை"
+     }
+    },
+    {
+     "value": 250000,
+     "label": {
+      "en": "₹1.2 – 2.5 lakh",
+      "ta": "₹1.2 – 2.5 லட்சம்"
+     }
+    },
+    {
+     "value": 350000,
+     "label": {
+      "en": "₹2.5 – 3.5 lakh",
+      "ta": "₹2.5 – 3.5 லட்சம்"
+     }
+    },
+    {
+     "value": 500000,
+     "label": {
+      "en": "₹3.5 – 5 lakh",
+      "ta": "₹3.5 – 5 லட்சம்"
+     }
+    },
+    {
+     "value": 1000000,
+     "label": {
+      "en": "Above ₹5 lakh",
+      "ta": "₹5 லட்சத்திற்கு மேல்"
+     }
+    }
+   ]
+  },
+  {
+   "id": "ration_card",
+   "type": "choice",
+   "text": {
+    "en": "Which ration (family) card does the family hold?",
+    "ta": "உங்களிடம் எந்த வகை குடும்ப அட்டை (ரேஷன் அட்டை) உள்ளது?"
+   },
+   "short": {
+    "en": "Ration card type",
+    "ta": "குடும்ப அட்டை வகை"
+   },
+   "options": [
+    {
+     "value": "AAY",
+     "label": {
+      "en": "Antyodaya (AAY)",
+      "ta": "அந்தியோதயா (AAY)"
+     }
+    },
+    {
+     "value": "PHH",
+     "label": {
+      "en": "Priority household (PHH)",
+      "ta": "முன்னுரிமைக் குடும்பம் (PHH)"
+     }
+    },
+    {
+     "value": "NPHH",
+     "label": {
+      "en": "Non-priority (NPHH)",
+      "ta": "முன்னுரிமையற்ற குடும்பம் (NPHH)"
+     }
+    },
+    {
+     "value": "NONE",
+     "label": {
+      "en": "No card",
+      "ta": "அட்டை இல்லை"
+     }
+    }
+   ]
+  },
+  {
+   "id": "social_category",
+   "type": "choice",
+   "text": {
+    "en": "Which community category does the family belong to?",
+    "ta": "குடும்பம் எந்தச் சமூகப் பிரிவைச் சேர்ந்தது?"
+   },
+   "short": {
+    "en": "Community category",
+    "ta": "சமூகப் பிரிவு"
+   },
+   "options": [
+    {
+     "value": "SC",
+     "label": {
+      "en": "Scheduled Caste (SC)",
+      "ta": "ஆதிதிராவிடர் (SC)"
+     }
+    },
+    {
+     "value": "ST",
+     "label": {
+      "en": "Scheduled Tribe (ST)",
+      "ta": "பழங்குடியினர் (ST)"
+     }
+    },
+    {
+     "value": "OBC",
+     "label": {
+      "en": "BC / MBC / OBC",
+      "ta": "பிற்படுத்தப்பட்டோர் / மிகவும் பிற்படுத்தப்பட்டோர்"
+     }
+    },
+    {
+     "value": "GEN",
+     "label": {
+      "en": "General / Other",
+      "ta": "பொது / பிற"
+     }
+    }
+   ]
+  },
+  {
+   "id": "house_type",
+   "type": "choice",
+   "text": {
+    "en": "What kind of house does the family live in?",
+    "ta": "குடும்பம் எந்த வகை வீட்டில் வசிக்கிறது?"
+   },
+   "short": {
+    "en": "House type",
+    "ta": "வீட்டின் வகை"
+   },
+   "options": [
+    {
+     "value": "HOUSELESS",
+     "label": {
+      "en": "No house of our own",
+      "ta": "சொந்த வீடு இல்லை"
+     }
+    },
+    {
+     "value": "KUTCHA",
+     "label": {
+      "en": "Hut / mud house (kutcha)",
+      "ta": "குடிசை / மண் வீடு"
+     }
+    },
+    {
+     "value": "SEMI",
+     "label": {
+      "en": "Partly concrete (semi-pucca)",
+      "ta": "பகுதி கான்கிரீட் வீடு"
+     }
+    },
+    {
+     "value": "PUCCA",
+     "label": {
+      "en": "Concrete house (pucca)",
+      "ta": "கான்கிரீட் வீடு"
+     }
+    }
+   ]
+  },
+  {
+   "id": "has_toilet",
+   "type": "bool",
+   "text": {
+    "en": "Does the house have its own toilet?",
+    "ta": "வீட்டில் சொந்தக் கழிப்பறை உள்ளதா?"
+   },
+   "short": {
+    "en": "Has own toilet",
+    "ta": "சொந்தக் கழிப்பறை உண்டு"
+   },
+   "short_no": {
+    "en": "No toilet at home yet",
+    "ta": "வீட்டில் இன்னும் கழிப்பறை இல்லை"
+   }
+  },
+  {
+   "id": "has_lpg",
+   "type": "bool",
+   "text": {
+    "en": "Does the family have an LPG cooking-gas connection?",
+    "ta": "குடும்பத்திற்குச் சமையல் எரிவாயு (LPG) இணைப்பு உள்ளதா?"
+   },
+   "short": {
+    "en": "Has LPG connection",
+    "ta": "எரிவாயு இணைப்பு உண்டு"
+   },
+   "short_no": {
+    "en": "No LPG connection yet",
+    "ta": "இன்னும் எரிவாயு இணைப்பு இல்லை"
+   }
+  },
+  {
+   "id": "adult_woman",
+   "type": "bool",
+   "text": {
+    "en": "Is there a woman aged 18 or above in the family?",
+    "ta": "குடும்பத்தில் 18 வயது அல்லது அதற்கு மேற்பட்ட பெண் இருக்கிறாரா?"
+   },
+   "short": {
+    "en": "Adult woman in family",
+    "ta": "குடும்பத்தில் வயது வந்த பெண்"
+   }
+  },
+  {
+   "id": "woman_head",
+   "type": "bool",
+   "text": {
+    "en": "Is a woman the head of the family on the ration card?",
+    "ta": "குடும்ப அட்டையில் குடும்பத் தலைவர் ஒரு பெண்ணா?"
+   },
+   "short": {
+    "en": "Woman is head of family",
+    "ta": "குடும்பத் தலைவர் பெண்"
+   }
+  },
+  {
+   "id": "oldest_age",
+   "type": "number",
+   "unit": "years",
+   "text": {
+    "en": "What is the age of the oldest family member?",
+    "ta": "குடும்பத்தில் மிக வயதானவரின் வயது என்ன?"
+   },
+   "short": {
+    "en": "Oldest member's age",
+    "ta": "மூத்தவரின் வயது"
+   },
+   "options": [
+    {
+     "value": 59,
+     "label": {
+      "en": "Below 60",
+      "ta": "60-க்குக் கீழ்"
+     }
+    },
+    {
+     "value": 69,
+     "label": {
+      "en": "60 – 69",
+      "ta": "60 – 69"
+     }
+    },
+    {
+     "value": 79,
+     "label": {
+      "en": "70 – 79",
+      "ta": "70 – 79"
+     }
+    },
+    {
+     "value": 85,
+     "label": {
+      "en": "80 or above",
+      "ta": "80 அல்லது அதற்கு மேல்"
+     }
+    }
+   ]
+  },
+  {
+   "id": "widow_age",
+   "type": "number",
+   "unit": "years",
+   "text": {
+    "en": "Is there a widow in the family? If yes, what is her age?",
+    "ta": "குடும்பத்தில் கைம்பெண் (விதவை) இருக்கிறாரா? இருந்தால் அவரது வயது?"
+   },
+   "short": {
+    "en": "Widow's age",
+    "ta": "கைம்பெண்ணின் வயது"
+   },
+   "options": [
+    {
+     "value": 0,
+     "label": {
+      "en": "No widow",
+      "ta": "இல்லை"
+     }
+    },
+    {
+     "value": 39,
+     "label": {
+      "en": "Yes, below 40",
+      "ta": "ஆம், 40-க்குக் கீழ்"
+     }
+    },
+    {
+     "value": 59,
+     "label": {
+      "en": "Yes, 40 – 59",
+      "ta": "ஆம், 40 – 59"
+     }
+    },
+    {
+     "value": 79,
+     "label": {
+      "en": "Yes, 60 – 79",
+      "ta": "ஆம், 60 – 79"
+     }
+    },
+    {
+     "value": 85,
+     "label": {
+      "en": "Yes, 80 or above",
+      "ta": "ஆம், 80 அல்லது மேல்"
+     }
+    }
+   ]
+  },
+  {
+   "id": "severe_disability",
+   "type": "bool",
+   "text": {
+    "en": "Does any member have a severe disability (80% or more, with certificate)?",
+    "ta": "குடும்பத்தில் யாருக்காவது கடுமையான மாற்றுத்திறன் (80% அல்லது அதற்கு மேல், சான்றிதழுடன்) உள்ளதா?"
+   },
+   "short": {
+    "en": "Member with severe disability",
+    "ta": "கடும் மாற்றுத்திறன் உள்ளவர்"
+   }
+  },
+  {
+   "id": "pregnant_or_lactating",
+   "type": "bool",
+   "text": {
+    "en": "Is any woman in the family pregnant, or the mother of a baby under 1 year?",
+    "ta": "குடும்பத்தில் யாராவது கர்ப்பிணியா அல்லது ஒரு வயதுக்குட்பட்ட குழந்தையின் தாயா?"
+   },
+   "short": {
+    "en": "Pregnant woman / new mother",
+    "ta": "கர்ப்பிணி / பாலூட்டும் தாய்"
+   }
+  },
+  {
+   "id": "applicant_age",
+   "type": "number",
+   "unit": "years",
+   "text": {
+    "en": "What is the age of the main earning member?",
+    "ta": "குடும்பத்தின் முக்கிய வருமானம் ஈட்டுபவரின் வயது என்ன?"
+   },
+   "short": {
+    "en": "Main earner's age",
+    "ta": "முக்கிய வருமானம் ஈட்டுபவரின் வயது"
+   },
+   "options": [
+    {
+     "value": 40,
+     "label": {
+      "en": "18 – 40",
+      "ta": "18 – 40"
+     }
+    },
+    {
+     "value": 50,
+     "label": {
+      "en": "41 – 50",
+      "ta": "41 – 50"
+     }
+    },
+    {
+     "value": 70,
+     "label": {
+      "en": "51 – 70",
+      "ta": "51 – 70"
+     }
+    },
+    {
+     "value": 75,
+     "label": {
+      "en": "Above 70",
+      "ta": "70-க்கு மேல்"
+     }
+    }
+   ]
+  },
+  {
+   "id": "govt_school_girl_in_college",
+   "type": "bool",
+   "text": {
+    "en": "Is there a girl who studied Class 6–12 in a government school and is now in college, diploma or ITI?",
+    "ta": "அரசுப் பள்ளியில் 6 முதல் 12 வகுப்பு வரை படித்து, தற்போது கல்லூரி / பட்டயம் / ஐ.டி.ஐ-யில் படிக்கும் மாணவி இருக்கிறாரா?"
+   },
+   "short": {
+    "en": "Govt-school girl now in higher studies",
+    "ta": "உயர்கல்வி பயிலும் அரசுப் பள்ளி மாணவி"
+   }
+  },
+  {
+   "id": "govt_school_child_8to12",
+   "type": "bool",
+   "text": {
+    "en": "Is there a child in Class 8–12 at a government or government-aided school?",
+    "ta": "அரசு அல்லது அரசு உதவி பெறும் பள்ளியில் 8 முதல் 12 வகுப்பு படிக்கும் குழந்தை இருக்கிறதா?"
+   },
+   "short": {
+    "en": "Child in Class 8–12, govt school",
+    "ta": "அரசுப் பள்ளியில் 8–12 வகுப்பு மாணவர்"
+   }
+  },
+  {
+   "id": "post_matric_student",
+   "type": "bool",
+   "text": {
+    "en": "Is anyone studying in Class 11 or above (school, college, ITI, diploma)?",
+    "ta": "குடும்பத்தில் யாராவது 11-ஆம் வகுப்பு அல்லது அதற்கு மேல் (கல்லூரி, ஐ.டி.ஐ, பட்டயம்) படிக்கிறார்களா?"
+   },
+   "short": {
+    "en": "Student in Class 11 or above",
+    "ta": "11-ஆம் வகுப்பு அல்லது மேல் படிப்பவர்"
+   }
+  },
+  {
+   "id": "willing_manual_work",
+   "type": "bool",
+   "text": {
+    "en": "Is an adult member willing to do unskilled manual work (100-day work)?",
+    "ta": "வயது வந்த உறுப்பினர் யாராவது உடல் உழைப்பு வேலை (100 நாள் வேலை) செய்ய விரும்புகிறாரா?"
+   },
+   "short": {
+    "en": "Adult willing to do manual work",
+    "ta": "உடல் உழைப்பு வேலைக்குத் தயார்"
+   }
+  },
+  {
+   "id": "gate_exclusion",
+   "type": "bool",
+   "text": {
+    "en": "Does anyone in the family pay income tax, or have a regular government job or government pension?",
+    "ta": "குடும்பத்தில் யாராவது வருமான வரி செலுத்துகிறார்களா, அல்லது நிரந்தர அரசு வேலை / அரசு ஓய்வூதியம் பெறுகிறார்களா?"
+   },
+   "short": {
+    "en": "Tax payer or govt. job in family",
+    "ta": "வரி செலுத்துபவர் / அரசுப் பணி உண்டு"
+   },
+   "gate": {
+    "on": false,
+    "sets": {
+     "income_tax_payer": false,
+     "govt_employee": false
+    }
+   }
+  },
+  {
+   "id": "gate_special",
+   "type": "bool",
+   "text": {
+    "en": "Is anyone in the family a widow, a person with severe disability, or a pregnant woman / mother of a baby under 1?",
+    "ta": "குடும்பத்தில் கைம்பெண், கடும் மாற்றுத்திறனாளி, அல்லது கர்ப்பிணி / ஒரு வயதுக்குட்பட்ட குழந்தையின் தாய் யாராவது இருக்கிறார்களா?"
+   },
+   "short": {
+    "en": "Widow, disability or pregnancy in family",
+    "ta": "கைம்பெண் / மாற்றுத்திறன் / கர்ப்பிணி உண்டு"
+   },
+   "gate": {
+    "on": false,
+    "sets": {
+     "widow_age": 0,
+     "severe_disability": false,
+     "pregnant_or_lactating": false
+    }
+   }
+  },
+  {
+   "id": "gate_students",
+   "type": "bool",
+   "text": {
+    "en": "Is anyone in the family studying in Class 8 or above (school, college, ITI)?",
+    "ta": "குடும்பத்தில் யாராவது 8-ஆம் வகுப்பு அல்லது அதற்கு மேல் (பள்ளி, கல்லூரி, ஐ.டி.ஐ) படிக்கிறார்களா?"
+   },
+   "short": {
+    "en": "Student in Class 8 or above",
+    "ta": "8-ஆம் வகுப்பு அல்லது மேல் படிப்பவர் உண்டு"
+   },
+   "gate": {
+    "on": false,
+    "sets": {
+     "govt_school_child_8to12": false,
+     "post_matric_student": false,
+     "govt_school_girl_in_college": false
+    }
+   }
+  },
+  {
+   "id": "gate_home",
+   "type": "bool",
+   "text": {
+    "en": "Does your home already have its own toilet AND an LPG gas connection?",
+    "ta": "உங்கள் வீட்டில் ஏற்கனவே சொந்தக் கழிப்பறையும் எரிவாயு இணைப்பும் உள்ளதா?"
+   },
+   "short": {
+    "en": "Home has toilet and LPG",
+    "ta": "வீட்டில் கழிப்பறையும் எரிவாயுவும் உண்டு"
+   },
+   "gate": {
+    "on": true,
+    "sets": {
+     "has_toilet": true,
+     "has_lpg": true
+    }
+   }
+  }
+ ],
+ "inferences": [
+  {
+   "if": {
+    "fact": "woman_head",
+    "op": "==",
+    "value": true
+   },
+   "then": {
+    "adult_woman": true
+   }
+  },
+  {
+   "if": {
+    "fact": "widow_age",
+    "op": ">",
+    "value": 0
+   },
+   "then": {
+    "adult_woman": true
+   }
+  },
+  {
+   "if": {
+    "fact": "pregnant_or_lactating",
+    "op": "==",
+    "value": true
+   },
+   "then": {
+    "adult_woman": true
+   }
+  },
+  {
+   "if": {
+    "fact": "govt_school_girl_in_college",
+    "op": "==",
+    "value": true
+   },
+   "then": {
+    "post_matric_student": true
+   }
+  },
+  {
+   "if": {
+    "fact": "post_matric_student",
+    "op": "==",
+    "value": false
+   },
+   "then": {
+    "govt_school_girl_in_college": false
+   }
+  }
+ ]
+}
