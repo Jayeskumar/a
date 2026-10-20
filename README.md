@@ -95,7 +95,7 @@ NODE_PATH="$(npm root -g)" node tools/qa_sweep.js       # clicks every demo butt
 projects/NN-name/     app.py · <package>/ (pure logic) · static/ · data/ · tests/ · docs/screenshot.png
                       README.md · REPORT.md (15-section hackathon report) · pitch.json (deck content)
 decks/                one generated .pptx pitch deck per project (12 slides, with speaker notes)
-hub/                  showcase page served on :8000 by run_all.py
+hub/                  showcase page on :8000 (run_all.py) with each REPORT.md rendered as a page
 docs/STRATEGY.md      how to win: rules, domain picks, 24 h plan, checklists, Q&A
 docs/PORTFOLIO.md     generated summary of every project and its measured results
 docs/BUILD_SPEC.md    the conventions every project follows

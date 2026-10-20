@@ -19,6 +19,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 PROJECTS = ROOT / "projects"
 HUB_PORT = 8000
+MERMAID_JS = ROOT / "tools" / "node_modules" / "mermaid" / "dist" / "mermaid.min.js"  # optional, for report diagrams
+ASSET_TYPES = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".gif": "image/gif", ".svg": "image/svg+xml"}
+
+sys.path.insert(0, str(ROOT / "hub"))
+from report_view import report_page  # noqa: E402
 
 
 def lan_ip():
@@ -87,10 +92,27 @@ class HubHandler(BaseHTTPRequestHandler):
             if shot and shot.exists():
                 return self._send(200, shot.read_bytes(), "image/png")
         if path.startswith("/report/"):
-            d = known.get(path[len("/report/"):])
-            if d and (d / "REPORT.md").exists():
-                return self._send(200, (d / "REPORT.md").read_bytes(), "text/plain; charset=utf-8")
+            # /report/<dir> renders REPORT.md; /report/<dir>/<file> serves images or renders other .md files
+            name, _, rel = path[len("/report/"):].partition("/")
+            d = known.get(name)
+            target = (d / (rel or "REPORT.md")).resolve() if d else None
+            if target and target.is_file() and d.resolve() in target.parents:
+                if target.suffix.lower() == ".md":
+                    return self._report(d, target)
+                if target.suffix.lower() in ASSET_TYPES:
+                    return self._send(200, target.read_bytes(), ASSET_TYPES[target.suffix.lower()])
+        if path == "/vendor/mermaid.min.js" and MERMAID_JS.exists():
+            return self._send(200, MERMAID_JS.read_bytes(), "application/javascript; charset=utf-8")
         self._send(404, b'{"error": "not found"}', "application/json")
+
+    def _report(self, d, md_file):
+        pitch = read_pitch(d)
+        base = md_file.parent.relative_to(d).as_posix()
+        prefix = "/report/%s/%s" % (d.name, base + "/" if base != "." else "")
+        host = (self.headers.get("Host") or "127.0.0.1").rsplit(":", 1)[0]
+        demo = "http://%s:%s/" % (host, pitch["port"]) if pitch.get("port") else None
+        page = report_page(pitch, md_file.read_text(encoding="utf-8"), lambda p: prefix + p, demo, MERMAID_JS.exists())
+        self._send(200, page.encode("utf-8"), "text/html; charset=utf-8")
 
 
 def main(argv):
