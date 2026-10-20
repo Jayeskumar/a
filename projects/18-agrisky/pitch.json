@@ -1,0 +1,90 @@
+{
+  "name": "AgriSky",
+  "tagline": "Drone crop-health maps and spray only where the crop needs it",
+  "domain": "Smart Agriculture & Rural Development (AgriTech)",
+  "color": "#65A30D",
+  "problem": [
+    "Pesticide and urea are sprayed over the whole field, though stress is patchy",
+    "Wasted chemical costs money and harms soil, water and the sprayer's health",
+    "Stress shows from above days before the eye sees it",
+    "Imagery analytics tools are costly, online-only black boxes"
+  ],
+  "stats": [
+    {"value": "~86%", "label": "Indian farm holdings small/marginal (Agri Census 2015-16, approx.)"},
+    {"value": "₹266.50", "label": "MRP of a 45-kg bag of subsidised urea (approx.)"},
+    {"value": "10 L", "label": "typical agri-drone tank class (approx.)"}
+  ],
+  "solution": [
+    "Multispectral flights → NDVI/NDRE/NDWI maps and management zones",
+    "Explainable rules diagnose water stress, nitrogen deficiency or pest",
+    "Change detection warns when a pest patch starts spreading",
+    "Prescription + drone mission sprays only the zones that need it"
+  ],
+  "features": [
+    {"title": "Crop-health maps", "desc": "NDVI, NDRE, GNDVI, SAVI, NDWI, colour-IR and ΔNDVI heat maps"},
+    {"title": "Zones + diagnosis", "desc": "k-means zones, rule trace per zone, 98.6% accuracy on unseen fields"},
+    {"title": "Early warning", "desc": "Pest front speed, √area trend and days until it covers 10% of crop"},
+    {"title": "Variable-rate Rx", "desc": "Spot spray + urea by NDRE deficit: ~89% pesticide saved, ₹ shown"},
+    {"title": "Spray mission", "desc": "Boustrophedon lanes, fewest turns, tank/battery sorties, animated"},
+    {"title": "Farmer report", "desc": "Printable English + Tamil report, CSV and GeoJSON export"}
+  ],
+  "architecture": [
+    "Browser UI -> vanilla JS, canvas maps, SVG charts, path animation",
+    "app.py -> stdlib ThreadingHTTPServer, JSON API, validation",
+    "field.py -> seeded 4-band field generator with ground truth",
+    "analysis -> indices, masks, k-means, mode filter, components",
+    "classify / change -> rule list, ΔNDVI, spread trend, alert",
+    "prescription / planner -> VRA doses, coverage path, sorties"
+  ],
+  "algorithms": [
+    "NDVI / GNDVI / NDRE / SAVI / NDWI – vegetation and water indices",
+    "k-means++ with restarts – management zones on crop cells",
+    "Mode filter + connected components – clean, contiguous zones",
+    "Ordered rule list vs reference canopy – explainable diagnosis",
+    "ΔNDVI + p90 front advance + OLS on √area – spread rate, warning",
+    "Boustrophedon coverage + orientation search – fewest turns, sorties"
+  ],
+  "tech": ["Python 3 stdlib only", "Vanilla HTML/CSS/JS", "Canvas + inline SVG", "No CDN, no internet", "unittest (77 tests)"],
+  "innovation": [
+    "Diagnosis explains itself: every rule, value and threshold shown",
+    "Plans the drone path from the prescription, not just a map",
+    "Warns on spread speed, not only on today's damage",
+    "Fully offline on a ₹15k laptop, Tamil farmer report"
+  ],
+  "results": [
+    {"value": "98.6%", "label": "zone accuracy vs truth, 20 unseen fields × 5 flights"},
+    {"value": "89%", "label": "pesticide saved vs blanket spray (urea 86%)"},
+    {"value": "100%", "label": "target cells sprayed exactly once, every field"},
+    {"value": "6.9%", "label": "error of pest front-speed estimate"}
+  ],
+  "demo_flow": [
+    "Open dashboard on phone + projector, Wi-Fi off",
+    "Play Weeks: pest patch grows from the corner",
+    "Flight 5: red early warning, 0.9 m/day, 10% in ~4 days",
+    "Click the pest zone: read the rule trace",
+    "Prescription: 91% less pesticide, ₹766 saved",
+    "Run demo: drone flies 1 sortie vs 2 for whole field",
+    "Print the English + Tamil farmer report"
+  ],
+  "impact": [
+    "Less pesticide and urea per spray round lowers input cost",
+    "Less chemical reaching soil, channels and groundwater",
+    "Less operator exposure: drone sprays only small patches",
+    "Earlier pest action can limit crop loss (illustrative)"
+  ],
+  "business": [
+    "Per-acre service for drone operators and custom hiring centres",
+    "SaaS for FPOs / agri-input dealers to plan spray rounds",
+    "B2G: crop-health monitoring for KVKs and agriculture departments",
+    "Add-on prescription export for drone and sprayer makers"
+  ],
+  "future": [
+    "Real multispectral imagery (orthomosaic import, calibration panels)",
+    "Train the rules / a Naive Bayes on field-scouted labels",
+    "Nozzle-section control to cut edge overspray",
+    "Weather-aware spray windows (wind, rain) and drift buffers",
+    "Export to drone-controller mission formats"
+  ],
+  "port": 8018,
+  "dir": "projects/18-agrisky"
+}

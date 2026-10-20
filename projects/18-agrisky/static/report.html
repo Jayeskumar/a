@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>AgriSky · Farmer field report</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+<style>
+  :root { color-scheme: light; }
+  body { background: #eef2ea; color: #1a2414; }
+  .sheet { max-width: 880px; margin: 18px auto; background: #fff; color: #1a2414; border-radius: 12px; padding: 26px 30px; box-shadow: 0 6px 24px rgba(0,0,0,.08); }
+  .sheet h1 { color: #4d7c0f; font-size: 1.45rem; }
+  .sheet h1 small { color: #0369a1; font-size: .9rem; font-weight: 600; margin-left: 8px; }
+  .sheet h2 { margin: 18px 0 8px; font-size: 1rem; border-bottom: 2px solid #ecfccb; padding-bottom: 4px; }
+  .meta { display: flex; gap: 18px; flex-wrap: wrap; color: #5d6b55; font-size: .85rem; margin-top: 4px; }
+  .maps { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .maps figure { margin: 0; }
+  .maps canvas { width: 100%; height: auto; border-radius: 8px; image-rendering: pixelated; display: block; }
+  .maps figcaption { font-size: .78rem; color: #5d6b55; margin-top: 4px; }
+  .lines { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+  .lines li { border-left: 4px solid #dde6d4; padding: 3px 0 3px 10px; font-size: .9rem; }
+  .lines li .ta { display: block; color: #3f4a39; font-size: .9rem; margin-top: 2px; }
+  .lines li.danger { border-color: #dc2626; } .lines li.warn { border-color: #d97706; }
+  .lines li.ok { border-color: #65A30D; } .lines li.action { border-color: #0284c7; }
+  .sheet table { font-size: .82rem; }
+  .sheet th, .sheet td { border-bottom: 1px solid #e8eee2; color: #1a2414; }
+  .totals { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .totals div { background: #f1f5ec; border-radius: 8px; padding: 8px 10px; }
+  .totals b { display: block; font-size: 1.15rem; color: #4d7c0f; }
+  .totals span { font-size: .74rem; color: #5d6b55; }
+  .sign { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 30px; font-size: .82rem; color: #5d6b55; }
+  .sign div { border-top: 1px solid #9fae94; padding-top: 4px; }
+  .toolbar { max-width: 880px; margin: 14px auto 0; display: flex; gap: 8px; justify-content: flex-end; padding: 0 8px; }
+  .alert-box { border-radius: 10px; padding: 8px 12px; margin-top: 12px; font-size: .88rem; border: 1.5px solid #dde6d4; }
+  .alert-box.red { background: #fee2e2; border-color: #dc2626; } .alert-box.amber { background: #fef3c7; border-color: #d97706; }
+  .alert-box.green { background: #ecfccb; border-color: #65A30D; }
+  @media (max-width: 700px) { .maps, .totals { grid-template-columns: 1fr 1fr; } .sheet { padding: 16px; margin: 8px; } }
+  @media print {
+    body { background: #fff; }
+    .toolbar { display: none; }
+    .sheet { box-shadow: none; margin: 0; max-width: none; padding: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <a class="btn sm" href="/">← Dashboard</a>
+  <button id="printBtn" class="btn sm primary" type="button">Print / save as PDF</button>
+</div>
+<article class="sheet">
+  <h1 id="title">AgriSky field report <small id="titleTa"></small></h1>
+  <div class="meta" id="meta">Loading…</div>
+  <div id="alert" class="alert-box"></div>
+  <h2>Maps</h2>
+  <div class="maps">
+    <figure><canvas id="mapStress" width="480" height="320"></canvas><figcaption>Crop condition by management zone</figcaption></figure>
+    <figure><canvas id="mapRx" width="480" height="320"></canvas><figcaption>Prescription: purple = pesticide spot spray, amber = urea</figcaption></figure>
+  </div>
+  <div id="legend" class="legend" style="margin-top:6px"></div>
+  <h2>What to do / என்ன செய்ய வேண்டும்</h2>
+  <ul id="lines" class="lines"></ul>
+  <h2>Totals for this round</h2>
+  <div id="totals" class="totals"></div>
+  <h2>Zones</h2>
+  <table><thead><tr><th>Zone</th><th>Condition</th><th class="num">Area m²</th><th class="num">NDVI</th><th>Reason</th></tr></thead><tbody id="zones"></tbody></table>
+  <p class="note">Generated offline by AgriSky from drone multispectral imagery (synthetic demo field). Doses and prices are illustrative; always follow the product label and local agricultural officer's advice. Built for QUANTIX 2K26 · KSRCE.</p>
+  <div class="sign"><div>Farmer / விவசாயி</div><div>Drone operator / ட்ரோன் இயக்குநர்</div></div>
+</article>
+<script src="report.js"></script>
+</body>
+</html>
