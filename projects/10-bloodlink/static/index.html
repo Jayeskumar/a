@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BloodLink</title>
+<meta name="description" content="Find the right blood donor in minutes, not hours - explainable donor matching, broadcast simulation and blood bank stock balancing.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2C16 2 6 14 6 20a10 10 0 0 0 20 0C26 14 16 2 16 2z' fill='%23B91C1C'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <svg viewBox="0 0 34 34" aria-hidden="true">
+      <rect width="34" height="34" rx="9" fill="#B91C1C"/>
+      <path d="M17 6c0 0-7.5 8.6-7.5 13.2a7.5 7.5 0 0 0 15 0C24.5 14.6 17 6 17 6z" fill="#fff"/>
+      <path d="M13.2 20.2h2.4v-2.4h2.8v2.4h2.4V23h-2.4v2.4h-2.8V23h-2.4z" fill="#B91C1C"/>
+    </svg>
+    <div>
+      <h1>BloodLink</h1>
+      <p>Find the right blood donor in minutes, not hours</p>
+    </div>
+  </div>
+  <nav class="tabs" role="tablist">
+    <button class="tab-btn active" data-tab="match" role="tab">Emergency match</button>
+    <button class="tab-btn" data-tab="sim" role="tab">Broadcast sim</button>
+    <button class="tab-btn" data-tab="network" role="tab">Bank network</button>
+    <button class="tab-btn" data-tab="donor" role="tab">Donor app</button>
+    <button class="tab-btn" data-tab="method" role="tab">Method &amp; safety</button>
+  </nav>
+  <div class="spacer"></div>
+  <span class="pill" id="demoDate"><span class="dot" style="color:var(--good)"></span>23 Oct 2026, 10:00</span>
+  <button class="ghost sm" id="resetBtn" title="Restore the original synthetic registry and stock">Reset</button>
+  <button class="primary" id="runDemo">
+    <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5v11l9-5.5z" fill="currentColor"/></svg>
+    Run demo
+  </button>
+</header>
+<div class="disclaimer">
+  <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1 15 14H1z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6v3.5M8 11.3v.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+  <span id="disclaimerText"><b>Prototype, synthetic data.</b> BloodLink finds and alerts donors; actual transfusion decisions follow grouping and cross-matching by blood bank staff.</span>
+</div>
+
+<main>
+  <!-- ======================= EMERGENCY MATCH ======================= -->
+  <section class="tab active" id="tab-match">
+    <div class="card">
+      <form class="req-form" id="reqForm" onsubmit="return false">
+        <div class="field">
+          <label for="hospital">Hospital</label>
+          <select id="hospital"></select>
+        </div>
+        <div class="field">
+          <span class="lbl">Patient blood group</span>
+          <div class="seg groups" id="groupSeg"></div>
+        </div>
+        <div class="field">
+          <span class="lbl">Units</span>
+          <div class="stepper"><button type="button" id="uMinus" aria-label="fewer units">-</button><span id="units">2</span><button type="button" id="uPlus" aria-label="more units">+</button></div>
+        </div>
+        <div class="field">
+          <span class="lbl">Urgency</span>
+          <div class="seg" id="urgSeg"></div>
+        </div>
+        <div class="spacer"></div>
+        <button class="primary" id="findBtn" type="button">Find donors</button>
+      </form>
+    </div>
+
+    <div class="kpis" id="kpis"></div>
+
+    <div class="grid-2 grid-match">
+      <div class="card map-card">
+        <h3>Donor map <small id="mapSub">Salem - Erode - Namakkal (approx. coordinates)</small></h3>
+        <div class="map-wrap"><svg class="map" id="matchMap" role="img" aria-label="Map of donors, hospitals and blood banks"></svg></div>
+        <div class="map-legend" id="matchLegend"></div>
+      </div>
+      <div class="card rank-card">
+        <h3>Ranked donors <small id="rankSub">click a donor for the full score breakdown</small></h3>
+        <div class="legend" id="compLegend" style="margin-bottom:8px"></div>
+        <div class="rank-head"><span>#</span><span>Donor</span><span>Distance</span><span>Score parts</span><span style="text-align:right">Score</span></div>
+        <div class="rank-list" id="rankList"><div class="empty">Press <b>Run demo</b> or <b>Find donors</b>.</div></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <h3>Excluded donors and why <small>hard gates run before scoring - nobody ineligible is ever called</small></h3>
+      <div class="chips" id="exChips"></div>
+      <div class="scroll" style="max-height:260px"><table class="tbl" id="exTable"></table></div>
+    </div>
+  </section>
+
+  <!-- ======================= SIMULATION ======================= -->
+  <section class="tab" id="tab-sim">
+    <div class="card">
+      <div class="row">
+        <div><div class="lbl">Request</div><div id="simReq" style="font-weight:700">-</div></div>
+        <div class="field"><label for="seed">Scenario seed</label><input type="number" id="seed" value="3" min="0" max="999" style="width:90px"></div>
+        <div class="spacer"></div>
+        <button id="playBtn" class="primary">
+          <svg width="12" height="12" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5v11l9-5.5z" fill="currentColor"/></svg> Play live timeline</button>
+        <button id="skipBtn">Skip to end</button>
+        <button id="commitBtn" title="Send the BloodLink wave plan for real (demo): updates last-contacted, response history and donation dates">Send wave plan &amp; update registry</button>
+      </div>
+    </div>
+    <div class="grid-sim">
+      <div class="stack">
+        <div class="card">
+          <div class="row" style="justify-content:space-between">
+            <div><div class="lbl">Simulated clock</div><div class="clock" id="clock">0:00</div></div>
+            <div style="text-align:right"><div class="lbl">Units collected (BloodLink)</div><div class="clock" id="unitsDone">0 / 0</div></div>
+          </div>
+          <div class="progress" style="margin-top:8px"><i id="progBar"></i></div>
+        </div>
+        <div class="card">
+          <h3>Live timeline <small>BloodLink waves</small></h3>
+          <div class="timeline" id="timeline"><div class="empty">Press <b>Play live timeline</b>.</div></div>
+        </div>
+      </div>
+      <div class="stack">
+        <div class="card">
+          <h3>Units collected over time <small>same donors, same dice - only the strategy differs</small></h3>
+          <div class="legend" id="simLegend"></div>
+          <svg class="chart" id="simChart" viewBox="0 0 640 250" role="img" aria-label="Units collected over time per strategy"></svg>
+        </div>
+        <div class="grid-2 sim-sub" style="margin-top:0">
+          <div class="card">
+            <h3>This request <small>seeded scenario</small></h3>
+            <div class="scroll"><table class="tbl cmp" id="cmpTable"></table></div>
+          </div>
+          <div class="card">
+            <h3>Wave map <small>donor states at the playhead</small></h3>
+            <svg class="map" id="simMap" role="img" aria-label="Map of alerted donors"></svg>
+            <div class="map-legend" id="simMapLegend"></div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Across <span id="mcN">300</span> random requests <small id="mcSub">Monte Carlo, synthetic registry</small></h3>
+          <div class="row" style="margin-bottom:8px">
+            <span class="muted small">Broadcast response factor (bystander effect assumption):</span>
+            <div class="seg" id="factorSeg"><button data-f="" class="on">0.6 (default)</button><button data-f="1.0">1.0 (none)</button></div>
+          </div>
+          <div class="scroll"><table class="tbl" id="mcTable"><tr><td class="empty">Loading...</td></tr></table></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= NETWORK ======================= -->
+  <section class="tab" id="tab-network">
+    <div class="kpis" id="netKpis" style="margin-top:0"></div>
+    <div class="card" style="margin-top:14px">
+      <h3>Stock by bank and group <small>units in stock - days of cover at the forecast rate (7-day moving average)</small></h3>
+      <div class="scroll"><table class="tbl inv" id="invTable"></table></div>
+      <div class="legend" style="margin-top:8px">
+        <span><span class="st short">short</span> &lt; 2 days cover</span>
+        <span><span class="st low">low</span> &lt; 3 days</span>
+        <span><span class="st expiry-risk">expiry risk</span> units projected to expire unused (FEFO)</span>
+        <span><span class="st ok">ok</span></span>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Transfer suggestions <small>greedy: most urgent unit first, nearest bank that can use it</small></h3>
+        <div class="row" style="margin-bottom:6px"><span class="muted small" id="trSummary"></span><div class="spacer"></div><button class="primary sm" id="applyTr">Apply transfers</button></div>
+        <div id="trList" class="scroll" style="max-height:430px"></div>
+      </div>
+      <div class="card">
+        <h3>Network map <small>arrows = suggested transfers</small></h3>
+        <svg class="map" id="netMap" role="img" aria-label="Map of blood banks and transfers"></svg>
+        <div class="map-legend" id="netLegend"></div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <h3>FEFO issue <small>first-expiry-first-out, then compatible substitutes</small></h3>
+        <div class="row">
+          <select id="fBank"></select>
+          <select id="fGroup"></select>
+          <input type="number" id="fUnits" value="3" min="1" max="20" style="width:70px" aria-label="units">
+          <label class="toggle small"><input type="checkbox" id="fSub" checked> allow substitutes</label>
+          <button class="primary sm" id="fIssue">Issue units</button>
+        </div>
+        <div id="fResult" style="margin-top:10px"><div class="muted small">Pick a bank and group, then issue - the units expiring soonest leave first.</div></div>
+      </div>
+      <div class="card">
+        <h3>A simulated month: with vs without transfers <small id="monthSub"></small></h3>
+        <div class="kpis" id="monthKpis" style="grid-template-columns:repeat(4,minmax(0,1fr));margin-top:0"></div>
+        <div class="grid-2" style="margin-top:10px">
+          <div><div class="lbl">Expired units (cumulative)</div><svg class="chart" id="monthExp" viewBox="0 0 320 170"></svg></div>
+          <div><div class="lbl">Unmet demand (cumulative)</div><svg class="chart" id="monthUnmet" viewBox="0 0 320 170"></svg></div>
+        </div>
+        <div class="legend" id="monthLegend" style="margin-top:6px"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= DONOR APP ======================= -->
+  <section class="tab" id="tab-donor">
+    <div class="donor-grid">
+      <div class="card">
+        <h3>Find your donor card</h3>
+        <input type="search" id="dq" placeholder="Name, ID or town" style="width:100%">
+        <div class="donor-search" id="dList" style="margin-top:8px"></div>
+      </div>
+      <div class="card" id="dProfile"><div class="empty">Select a donor.</div></div>
+      <div class="card">
+        <h3>Eligibility self-check <small>uses today's real date</small></h3>
+        <div class="form-grid">
+          <div class="field"><label for="scAge">Age</label><input type="number" id="scAge" value="24" min="10" max="99"></div>
+          <div class="field"><label for="scSex">Sex</label><select id="scSex"><option value="M">Male</option><option value="F">Female</option><option value="O">Other / prefer not</option></select></div>
+          <div class="field"><label for="scW">Weight (kg)</label><input type="number" id="scW" value="62" min="20" max="250"></div>
+          <div class="field"><label for="scLast">Last donation (optional)</label><input type="date" id="scLast"></div>
+          <div class="field"><label for="scHb">Hb g/dL (optional)</label><input type="number" id="scHb" step="0.1" min="3" max="25" placeholder="e.g. 13.4"></div>
+          <div class="field" style="justify-content:flex-end"><label class="toggle"><input type="checkbox" id="scUnwell"> I feel unwell today</label></div>
+        </div>
+        <button class="primary" id="scBtn" style="margin-top:12px">Check my eligibility</button>
+        <div id="scResult"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= METHOD ======================= -->
+  <section class="tab" id="tab-method">
+    <div class="grid-2" style="margin-top:0">
+      <div class="card">
+        <h3>ABO/Rh compatibility <small id="mxSub">red cells: rows = patient, columns = donor</small></h3>
+        <div class="seg" id="mxSeg" style="margin-bottom:10px"><button data-p="red" class="on">Red cells</button><button data-p="plasma">Plasma</button></div>
+        <div class="scroll"><table class="matrix" id="matrix"></table></div>
+        <ul class="small muted" id="mxNotes"></ul>
+      </div>
+      <div class="card">
+        <h3>How a donor is scored</h3>
+        <div class="formula">score = 0.30 x compatibility + 0.30 x proximity
+      + 0.25 x response + 0.15 x fairness
+
+compatibility = 1.0 exact; -0.25 Rh- to Rh+; -0.25 other ABO
+proximity     = exp(-travel_min / tau)   tau: critical 25, urgent 45, planned 90
+travel_min    = 10 + haversine_km x 1.3 / 35 km/h x 60
+response      = (accepted + 2) / (alerts + 4)      Beta(2,2) prior
+fairness      = min(1, days since last alert / 14)
+
+Hard gates (excluded, reason shown): incompatible, unavailable,
+interval (90 d men / 120 d women), age 18-65, weight &gt;= 45 kg, deferral</div>
+        <h3 style="margin-top:14px">Assumptions and sources</h3>
+        <div class="scroll" style="max-height:330px"><table class="tbl" id="constTable"></table></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:14px">
+      <h3>Safety</h3>
+      <p id="safetyText" class="muted" style="margin:0"></p>
+    </div>
+  </section>
+</main>
+
+<footer>Built for QUANTIX 2K26 · KSRCE</footer>
+<div id="tip" role="tooltip"></div>
+<div class="toast" id="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>

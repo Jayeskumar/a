@@ -1,0 +1,97 @@
+{
+  "name": "BloodLink",
+  "tagline": "Find the right blood donor in minutes, not hours",
+  "domain": "HealthTech & Biomedical Innovation",
+  "color": "#B91C1C",
+  "problem": [
+    "Families forward WhatsApp pleas to everyone and wait for hours",
+    "Nobody knows who is eligible: recent donors reply and travel for nothing",
+    "Scarce groups (O-, Rh-negative) get used when a common group would do",
+    "One bank's units expire while a bank 40 km away is short"
+  ],
+  "stats": [
+    {"value": "35-42 days", "label": "red-cell shelf life (CPDA-1 / SAGM)"},
+    {"value": "~5%", "label": "of Indians are Rh-negative (approx.)"},
+    {"value": "up to 3", "label": "patients helped per donation (commonly cited)"}
+  ],
+  "solution": [
+    "Rank only eligible, compatible donors with a transparent score",
+    "Alert in small waves; stand donors down once units are drawn",
+    "Balance stock across blood banks before units expire",
+    "Donor app: self-check, next eligible date, badges"
+  ],
+  "features": [
+    {"title": "Correct compatibility", "desc": "ABO/Rh red-cell + plasma rules from antigens, all 64 pairs tested"},
+    {"title": "Safety gates", "desc": "90/120-day interval, age, weight, deferral - reason and next date shown"},
+    {"title": "Explainable ranking", "desc": "Compatibility + travel time + response + fairness, every point shown"},
+    {"title": "Live wave timeline", "desc": "Simulated alerts vs broadcast-all and phone list on the same dice"},
+    {"title": "Bank network", "desc": "FEFO, moving-average forecast, expiry risk, greedy transfers"},
+    {"title": "Offline map", "desc": "SVG map of donors, hospitals and banks - no tiles, no internet"}
+  ],
+  "architecture": [
+    "Browser UI -> vanilla JS tabs, SVG maps and charts",
+    "app.py -> stdlib ThreadingHTTPServer, JSON API, validation",
+    "ranking.py -> gates + weighted, explained donor score",
+    "simulation.py -> event-driven wave vs baseline simulator",
+    "inventory.py -> FEFO, forecast, transfers, month simulation",
+    "dataset.py -> seeded synthetic donors and 5-bank network"
+  ],
+  "algorithms": [
+    "Antigen-subset ABO/Rh rule – red-cell and plasma compatibility",
+    "Haversine + circuity factor – distance and travel time",
+    "Weighted score with Beta(2,2) prior – explainable ranking",
+    "Discrete-event simulation – wave broadcast vs baselines",
+    "FEFO + moving average – issue order and demand forecast",
+    "Greedy expiry-risk matching – inter-bank transfers"
+  ],
+  "tech": [
+    "Python 3 stdlib only",
+    "http.server + JSON API",
+    "Vanilla HTML/CSS/JS",
+    "Hand-drawn SVG maps and charts",
+    "unittest (91 tests)",
+    "Runs offline on any laptop"
+  ],
+  "innovation": [
+    "Nobody ineligible is ever alerted",
+    "Every rank, exclusion and transfer is explained",
+    "Fairness term spreads load across donors",
+    "One engine for donors and blood bank stock"
+  ],
+  "results": [
+    {"value": "58 vs 96 min", "label": "median time to fulfil vs broadcast (sim, 300 requests)"},
+    {"value": "6x fewer", "label": "alerts than broadcast-to-everyone (12 vs 76)"},
+    {"value": "-85%", "label": "expired units per month with transfers (sim, 20 months)"},
+    {"value": "-91%", "label": "unmet demand with transfers (sim)"}
+  ],
+  "demo_flow": [
+    "Run demo: 3 units A+ critical at Tiruchengode",
+    "Show safety gates and excluded donors with reasons",
+    "Open donor #1 score breakdown and the map",
+    "Play the live wave timeline vs baselines",
+    "Send wave plan: fairness and interval update",
+    "Bank network: apply transfers, month result",
+    "Donor app self-check and compatibility matrix"
+  ],
+  "impact": [
+    "Families get donors faster: 88% within 2 h in simulation",
+    "No wasted trips by ineligible donors",
+    "Fewer expired units and fewer local shortages",
+    "Donors are not spammed - load is shared"
+  ],
+  "business": [
+    "Free for donors and families",
+    "SaaS for private hospital and blood bank networks",
+    "CSR / public-health funding for government banks",
+    "District pilot with college donor registries"
+  ],
+  "future": [
+    "Learn weights from real accept/decline outcomes",
+    "Min-cost-flow transfers with vehicle capacity",
+    "Platelet and plasma component inventory",
+    "Seasonal demand forecast and camp planning",
+    "SMS/IVR alerts in Tamil and English"
+  ],
+  "port": 8010,
+  "dir": "projects/10-bloodlink"
+}
