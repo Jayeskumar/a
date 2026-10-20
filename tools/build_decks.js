@@ -129,19 +129,33 @@ async function buildDeck(pitchPath, outDir, team) {
     slideNumber: { x: W - M - 0.6, y: H - 0.5, w: 0.6, h: 0.3, fontSize: 10, color: C.accent4, align: "right" },
   });
 
+  // Screens: docs/screenshot.png (hero) plus the per-view captures from tools/capture_tabs.js
+  // (docs/shots/shots.json), so the title, solution and demo slides each show a different view.
+  // Everything is embedded as JPEG to keep decks small.
   const shotPath = path.join(projDir, "docs", "screenshot.png");
-  const hasShot = fs.existsSync(shotPath);
-  // JPEG keeps decks small: the screenshot is placed on three slides
-  const shotData = hasShot ? "image/jpeg;base64," + (await sharp(shotPath).jpeg({ quality: 82 }).toBuffer()).toString("base64") : null;
-  function screenshot(slide, x, y, w, name) {
+  const hero = fs.existsSync(shotPath) ? { data: "image/jpeg;base64," + (await sharp(shotPath).jpeg({ quality: 82 }).toBuffer()).toString("base64"), label: "" } : null;
+  const shotsDir = path.join(projDir, "docs", "shots");
+  const views = fs.existsSync(path.join(shotsDir, "shots.json"))
+    ? JSON.parse(fs.readFileSync(path.join(shotsDir, "shots.json"), "utf8"))
+        .filter((v) => fs.existsSync(path.join(shotsDir, v.file)))
+        .map((v) => ({ data: "image/jpeg;base64," + fs.readFileSync(path.join(shotsDir, v.file)).toString("base64"), label: v.label }))
+    : [];
+  // pitch.deck_views = {"solution": n, "demo": m} picks shots by number (1-based); default: views 2 and 3
+  const dv = pitch.deck_views || {};
+  const pick = (want, ...i) => (want && views[want - 1]) || i.map((k) => views[k]).find(Boolean) || hero || views[0] || null;
+  function screenshot(slide, x, y, w, name, img) {
     const h = w / 1.6;
     slide.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: x - 0.06, y: y - 0.06, w: w + 0.12, h: h + 0.12, rectRadius: 0.08, fill: { color: C.background1 }, line: { color: C.background2, width: 1 }, shadow: shadow(), objectName: name + " frame" });
-    if (hasShot) {
-      slide.addImage({ data: shotData, x, y, w, h, objectName: name, altText: `${pitch.name} screenshot` });
+    if (img) {
+      slide.addImage({ data: img.data, x, y, w, h, objectName: name, altText: `${pitch.name} screenshot${img.label ? ": " + img.label : ""}` });
     } else {
       slide.addText("Screenshot: run the app and capture docs/screenshot.png", { x, y, w, h, align: "center", valign: "middle", fontSize: 14, color: C.accent4, fill: { color: C.background2 }, isTextBox: true, objectName: name });
     }
     return h;
+  }
+  function viewCaption(slide, img, x, y, w, name) {
+    if (!img || !img.label) return;
+    slide.addText([{ text: "▸ ", options: { color: C.accent1 } }, { text: img.label, options: { color: C.accent4 } }], { x, y, w, h: 0.3, fontSize: 12, align: "center", margin: 0, isTextBox: true, objectName: name + " caption" });
   }
   function bullets(items) {
     return items.map((t, i) => ({ text: t, options: { bullet: { indent: 18 }, breakLine: i < items.length - 1, paraSpaceAfter: 10 } }));
@@ -173,7 +187,7 @@ async function buildDeck(pitchPath, outDir, team) {
     { text: teamLine, options: { breakLine: true, bold: true } },
     { text: "QUANTIX 2K26 · 24-hour hackathon · K.S.R. College of Engineering" },
   ], { x: M, y: 5.6, w: 6.2, h: 0.8, fontSize: 14, color: C.accent6, margin: 0, valign: "bottom", isTextBox: true, objectName: "Team" });
-  screenshot(s, 7.3, 1.9, 5.4, "Hero screenshot");
+  screenshot(s, 7.3, 1.9, 5.4, "Hero screenshot", hero || views[0]);
   s.addNotes(`Open with the one-line promise: ${pitch.tagline}. Introduce the team, then go straight to the problem.`);
 
   // 2. Problem
@@ -199,7 +213,9 @@ async function buildDeck(pitchPath, outDir, team) {
   s.addText(`Our solution: ${pitch.name}`, { placeholder: "title" });
   iconCircle(s, icons.solution, M, 1.45 + 2.1, 0.6, "Solution");
   s.addText(bullets(pitch.solution), { x: M + 0.85, y: 1.45, w: 5.2, h: 4.8, fontSize: 20, color: C.text1, valign: "middle", margin: 0, isTextBox: true, objectName: "Solution bullets" });
-  screenshot(s, 7.05, 1.75, 5.65, "Solution screenshot");
+  const solutionImg = pick(dv.solution, 1, 0);
+  const solH = screenshot(s, 7.05, 1.75, 5.65, "Solution screenshot", solutionImg);
+  viewCaption(s, solutionImg, 7.05, 1.75 + solH + 0.18, 5.65, "Solution screenshot");
   s.addNotes("Solution: " + pitch.solution.join(" "));
 
   // 4. Features grid
@@ -287,7 +303,38 @@ async function buildDeck(pitchPath, outDir, team) {
   });
   s.addNotes("Differentiators: " + inn.join(" "));
 
-  // 8. Results
+  // 8. Comparison with the status quo and existing tools (pitch.compare)
+  const cmp = pitch.compare;
+  if (cmp && Array.isArray(cmp.columns) && Array.isArray(cmp.rows) && cmp.rows.length) {
+    s = pres.addSlide({ masterName: "Content", sectionTitle: "Why us" });
+    s.addText("How we compare", { placeholder: "title" });
+    const ncol = cmp.columns.length;
+    const firstW = 4.1;
+    const otherW = (W - 2 * M - firstW) / ncol;
+    const mark = (v, ours) => {
+      const t = String(v).trim();
+      const base = { align: "center", valign: "middle", bold: ours, fill: { color: ours ? C.accent2 : C.background1 } };
+      if (/^yes\b/i.test(t)) return { text: "✓  " + t, options: { ...base, color: "2E7D32" } };
+      if (/^no\b/i.test(t)) return { text: "✗  " + t, options: { ...base, color: "9AA0AE" } };
+      if (/^partial\b/i.test(t)) return { text: "◐  " + t, options: { ...base, color: "B26A00" } };
+      return { text: t, options: { ...base, color: ours ? C.accent3 : C.text1 } };
+    };
+    const header = [{ text: "", options: { fill: { color: C.background1 } } }].concat(cmp.columns.map((c, i) => ({
+      text: c,
+      options: { bold: true, align: "center", valign: "middle", color: C.background1, fill: { color: i === ncol - 1 ? C.accent1 : C.text2 } },
+    })));
+    const body = cmp.rows.slice(0, 6).map((r) => [{ text: r[0], options: { bold: true, color: C.text1, valign: "middle", fill: { color: C.background2 } } }]
+      .concat(r.slice(1, ncol + 1).map((v, i) => mark(v, i === ncol - 1))));
+    const rowH = Math.min(0.78, 4.9 / (body.length + 1));
+    s.addTable([header, ...body], {
+      x: M, y: 1.55, w: W - 2 * M, colW: [firstW, ...Array(ncol).fill(otherW)], rowH,
+      fontSize: 15, fontFace: THEME.bodyFontFace, margin: [0.04, 0.14, 0.04, 0.14],
+      border: { type: "solid", pt: 1, color: "E2E4F0" }, objectName: "Comparison table",
+    });
+    s.addNotes(`Compare: ${cmp.columns.join(" vs ")}. ` + cmp.rows.map((r) => `${r[0]}: ${r.slice(1).join(" / ")}`).join(". ") + ".");
+  }
+
+  // 9. Results
   s = pres.addSlide({ masterName: "Content", sectionTitle: "Why us" });
   s.addText("Measured results", { placeholder: "title" });
   const res = (pitch.results || []).slice(0, 4);
@@ -308,7 +355,7 @@ async function buildDeck(pitchPath, outDir, team) {
   s.addText([{ text: "Impact  ", options: { bold: true, color: C.accent3 } }, { text: imp.join("  ·  "), options: { color: C.text1 } }], { x: M + 1.3, y: 5.2, w: W - 2 * M - 1.6, h: 1.5, fontSize: 15, valign: "middle", margin: 0, isTextBox: true, objectName: "Impact text" });
   s.addNotes("Results: " + res.map((r) => `${r.value} ${r.label}`).join("; ") + ". Impact: " + imp.join(" "));
 
-  // 9. Live demo flow
+  // 10. Live demo flow
   pres.addSection({ title: "Demo" });
   s = pres.addSlide({ masterName: "Content", sectionTitle: "Demo" });
   s.addText("Live demo in 3 minutes", { placeholder: "title" });
@@ -320,11 +367,13 @@ async function buildDeck(pitchPath, outDir, team) {
     s.addText(String(i + 1), { x: M, y: y + (sh - 0.5) / 2, w: 0.5, h: 0.5, fontSize: 16, bold: true, color: C.background1, align: "center", valign: "middle", margin: 0, isTextBox: true, objectName: `Step ${i + 1} number` });
     s.addText(t, { x: M + 0.75, y, w: 5.6, h: sh, fontSize: 16, color: C.text1, valign: "middle", margin: 0, isTextBox: true, objectName: `Step ${i + 1} text` });
   });
-  screenshot(s, 7.2, 1.75, 5.5, "Demo screenshot");
-  s.addText(`python app.py  →  http://localhost:${pitch.port}`, { x: 7.2, y: 5.4 + 0.1, w: 5.5, h: 0.5, fontSize: 14, fontFace: "Courier New", color: C.accent3, align: "center", margin: 0, isTextBox: true, objectName: "Run command" });
+  const demoImg = pick(dv.demo, 2, 3, 0);
+  const demoH = screenshot(s, 7.2, 1.75, 5.5, "Demo screenshot", demoImg);
+  viewCaption(s, demoImg, 7.2, 1.75 + demoH + 0.15, 5.5, "Demo screenshot");
+  s.addText(`python app.py  →  http://localhost:${pitch.port}`, { x: 7.2, y: 1.75 + demoH + 0.55, w: 5.5, h: 0.45, fontSize: 14, fontFace: "Courier New", color: C.accent3, align: "center", margin: 0, isTextBox: true, objectName: "Run command" });
   s.addNotes("Switch to the browser now. " + steps.map((t, i) => `${i + 1}. ${t}`).join(" "));
 
-  // 10. Business & scale
+  // 11. Business & scale
   pres.addSection({ title: "Roadmap" });
   s = pres.addSlide({ masterName: "Content", sectionTitle: "Roadmap" });
   s.addText("Feasibility, business model & roadmap", { placeholder: "title" });
@@ -340,7 +389,7 @@ async function buildDeck(pitchPath, outDir, team) {
   });
   s.addNotes("Business: " + (pitch.business || []).join(" ") + " Next: " + (pitch.future || []).join(" "));
 
-  // 11. Thank you
+  // 12. Thank you
   s = pres.addSlide({ masterName: "Dark", sectionTitle: "Roadmap" });
   s.addText("Thank you", { x: M, y: 1.6, w: 7, h: 1.2, fontSize: 60, bold: true, color: C.background1, margin: 0, isTextBox: true, objectName: "Thanks" });
   s.addText(`${pitch.name} · ${pitch.tagline}`, { x: M, y: 2.9, w: 7, h: 0.9, fontSize: 20, color: C.accent6, margin: 0, valign: "top", isTextBox: true, objectName: "Thanks tagline" });

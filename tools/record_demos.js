@@ -12,23 +12,12 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const { chromium } = require('playwright');
 
-const ROOT = path.resolve(__dirname, '..');
+const { ROOT, DEMO_RE, projects, visibleTabs, groupTabs, tabLocator } = require('./lib/demo_nav.js');
+
 const SIZE = { width: 1280, height: 720 };
-const TAB_SELECTOR = [
-  '[role="tab"]', 'nav button', 'nav a[href^="#"]', '.tabs button', '.tab', '.tabs a',
-  'button[data-tab]', 'a[data-tab]', '[data-view]', 'header nav a',
-].join(',');
-const DEMO_RE = /^(▶\s*)?(run demo|load demo|load demo data|load demo notes|load demo farm|demo)$/i;
 const MAX_TABS = 6;
 
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-
-function projects() {
-  return fs.readdirSync(path.join(ROOT, 'projects')).sort()
-    .map((d) => path.join(ROOT, 'projects', d, 'pitch.json'))
-    .filter((f) => fs.existsSync(f))
-    .map((f) => ({ ...JSON.parse(fs.readFileSync(f, 'utf8')), dir: path.basename(path.dirname(f)) }));
-}
 
 async function card(page, html, color, ms) {
   await page.evaluate(({ html, color }) => {
@@ -103,30 +92,6 @@ function firstStep(flow) {
   return t && t[0].toUpperCase() + t.slice(1);
 }
 
-// Visible tab-like controls as {name (to find it again), label (caption text without badge counters)}.
-async function visibleTabs(page) {
-  const tabs = await page.$$eval(TAB_SELECTOR, (els) => els
-    .filter((e) => e.offsetParent !== null && (e.innerText || '').trim().length > 0 && (e.innerText || '').trim().length < 40)
-    .map((e) => {
-      const name = (e.innerText || '').trim().split('\n')[0];
-      const badge = [...e.querySelectorAll('*')].map((k) => k.textContent.trim()).find((t) => /^\(?\d+\)?$/.test(t));
-      return { name, label: badge && name.endsWith(badge) ? name.slice(0, -badge.length).trim() : name };
-    }));
-  const seen = new Set();
-  return tabs.filter((t) => !seen.has(t.name) && seen.add(t.name));
-}
-
-// Group numbered runs of tabs ("Flight 1" .. "Flight 5") so they are stepped through as one tour stop.
-function groupTabs(tabs) {
-  const stem = (s) => (s.match(/^(.*\S)\s+\d+$/) || [])[1];
-  const groups = [];
-  for (const t of tabs) {
-    const g = groups[groups.length - 1], st = stem(t.label);
-    if (st && g && g.stem === st) g.items.push(t); else groups.push({ stem: st, items: [t] });
-  }
-  return groups.slice(0, MAX_TABS);
-}
-
 async function record(browser, p, outDir) {
   const tmp = fs.mkdtempSync(path.join(outDir, '.rec-'));
   const ctx = await browser.newContext({ viewport: SIZE, recordVideo: { dir: tmp, size: SIZE }, colorScheme: 'light' });
@@ -158,8 +123,8 @@ async function record(browser, p, outDir) {
     await tour(page, 6);
   }
   const used = new Set();
-  const tabEl = (t) => page.locator(TAB_SELECTOR).filter({ hasText: t.name }).first();
-  for (const g of groupTabs(tabs)) {
+  const tabEl = (t) => tabLocator(page, t);
+  for (const g of groupTabs(tabs, MAX_TABS)) {
     if (g.items.length > 1) { // a numbered sequence: click through it in place, then scroll once
       for (const t of g.items) {
         const el = tabEl(t);

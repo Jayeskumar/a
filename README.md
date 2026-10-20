@@ -45,7 +45,7 @@ Measured results for every project are in [`docs/PORTFOLIO.md`](docs/PORTFOLIO.m
 | What | Where |
 |---|---|
 | **Complete report (PDF, A4, ~180 pages)**: cover, strategy playbook, portfolio overview and all 19 project reports with screenshots and architecture diagrams | [`docs/QUANTIX2K26_Report.pdf`](docs/QUANTIX2K26_Report.pdf) |
-| **Pitch decks**: 19 × 11-slide PowerPoint decks with speaker notes and a scan-to-code QR on the closing slide | [`decks/`](decks/) |
+| **Pitch decks**: 19 × 12-slide PowerPoint decks with speaker notes, real screenshots of different views, a comparison table and a scan-to-code QR | [`decks/`](decks/) |
 | **Demo videos**: a ~45 s captioned walkthrough per project (title card, live demo, every tab, results card), ready to upload as the "demo link" | `node tools/record_demos.js` → `build/videos/*.mp4` + an offline `index.html` that plays them all |
 | **Per-project reports**: problem, architecture, algorithms, results, demo script, judges' Q&A | `projects/NN-name/REPORT.md` |
 | **Strategy playbook**: rules, domain picks, 24-hour plan, checklists | [`docs/STRATEGY.md`](docs/STRATEGY.md) |
@@ -73,6 +73,14 @@ python tools/run_tests.py                       # every project's unit tests
 python tools/smoke_test.py                      # start every server once and check it answers
 ```
 
+New problem statement that none of the 19 fits? Scaffold a working, presentable app in one second
+and start adapting it. The decks, report, videos, smoke test and CI pick it up automatically:
+
+```bash
+python tools/new_project.py "FloodWatch" --domain sustain --color "#0EA5E9" \
+    --tagline "Village flood alerts from river-level sensors"     # → projects/20-floodwatch on :8020
+```
+
 Browser QA (needs Node 18+ and Playwright, with the demos running via `python run_all.py`):
 
 ```bash
@@ -86,13 +94,13 @@ NODE_PATH="$(npm root -g)" node tools/qa_sweep.js       # clicks every demo butt
 ```
 projects/NN-name/     app.py · <package>/ (pure logic) · static/ · data/ · tests/ · docs/screenshot.png
                       README.md · REPORT.md (15-section hackathon report) · pitch.json (deck content)
-decks/                one generated .pptx pitch deck per project (11 slides, with speaker notes)
+decks/                one generated .pptx pitch deck per project (12 slides, with speaker notes)
 hub/                  showcase page served on :8000 by run_all.py
 docs/STRATEGY.md      how to win: rules, domain picks, 24 h plan, checklists, Q&A
 docs/PORTFOLIO.md     generated summary of every project and its measured results
 docs/BUILD_SPEC.md    the conventions every project follows
-tools/                build_decks.js (pptx) · build_report.py (PDF) · build_portfolio.py · record_demos.js (MP4)
-                      run_tests.py · smoke_test.py · qa_sweep.js · screenshot.js
+tools/                new_project.py (scaffold) · build_decks.js (pptx) · capture_tabs.js · build_report.py (PDF) · build_portfolio.py
+                      record_demos.js (MP4) · run_tests.py · smoke_test.py · qa_sweep.js · screenshot.js
 team.json             team name, members and GitHub link, used on the title and closing slides
 ```
 
@@ -100,7 +108,8 @@ team.json             team name, members and GitHub link, used on the title and 
 
 ```bash
 # 1. Put your team's details in team.json
-# 2. Pitch decks (needs Node 18+):
+# 2. Pitch decks (needs Node 18+). Screens of each view first, with the demos running:
+NODE_PATH="$(npm root -g)" node tools/capture_tabs.js    # → projects/*/docs/shots/*.jpg
 cd tools && npm install && node build_decks.js          # → decks/*.pptx
 # 3. Portfolio summary:
 python tools/build_portfolio.py                          # → docs/PORTFOLIO.md

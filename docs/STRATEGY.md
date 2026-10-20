@@ -92,7 +92,7 @@ batches, and StockSense's forecaster works for hospital consumables.
 | Technical depth | Real algorithms, not a CRUD form | All ML and crypto written from scratch, with unit tests and measured metrics |
 | Working demo | It runs, live, without excuses | `python app.py`, no installs or internet, "Run demo" buttons |
 | Impact & feasibility | Who pays, how it scales, costs | Section 12 of each report; business slide |
-| Presentation | Clear story, on time, confident Q&A | 11-slide decks with speaker notes; Q&A prep in Section 14 of each report |
+| Presentation | Clear story, on time, confident Q&A | 12-slide decks with speaker notes; Q&A prep in Section 14 of each report |
 
 Judges often ask "is this ChatGPT?". The honest answer is the selling point: these are classical,
 explainable algorithms (TextRank, BM25, Naive Bayes, Random Forest, logistic regression, Ed25519,
@@ -110,6 +110,16 @@ Clarke-Wright, Holt-Winters…) written in plain Python. You can open the file a
 | H18–H21 | | Freeze features; fix bugs only | Screenshots, `--lan` phone test | Rehearse the 3-minute demo twice, timed |
 | H21–H23 | Final rehearsal with Q&A drill (Section 14 of the report) | Tag a release on GitHub | Record a 2-minute backup demo video | Submit PPT + GitHub + demo link **early** |
 | H23–H24 | Buffer. Do not start new features. | | | |
+
+**If no project fits the announced problem**, don't start from an empty folder. Run
+`python tools/new_project.py "Name" --domain <ai|sustain|health|cyber|agri|data> --color "#RRGGBB" --tagline "..."`
+in the first hour. It creates a working app in the house style: a stdlib server with a JSON API and
+validation, a dashboard with a Run demo button, KPI tiles, a chart, a ranked table with "why" bars, a
+try-it form, light/dark and phone layouts, 9 passing tests, and pitch.json/REPORT.md with TODOs.
+Builder 1 then replaces the example model in `<pkg>/core.py`, Builder 2 renames the inputs and tabs,
+and the presenter fills the TODOs in pitch.json. The deck (`node tools/build_decks.js`), PDF report,
+videos and CI all pick the new folder up with no extra wiring. The scaffold is generic boilerplate,
+like a framework's starter app, but check it against the rules in Section 2 like everything else.
 
 ## 6. Demo-day checklist
 
@@ -129,15 +139,16 @@ The decks in `decks/` follow this order. Each slide has speaker notes.
 
 1. Title: product, tagline, team
 2. The problem: 3–4 bullets plus 2–3 honest statistics
-3. Our solution, with a screenshot
+3. Our solution, with a screenshot of the product
 4. Key features (6 cards)
 5. System architecture plus tech stack
 6. Algorithms built from scratch
 7. What makes it different
-8. Measured results plus impact
-9. Live demo flow, then **switch to the browser**
-10. Business model and roadmap
-11. Thank you, code link, run command, questions
+8. How we compare: the status quo and existing tools against ours, criterion by criterion
+9. Measured results plus impact
+10. Live demo flow, with a screenshot of a second view, then **switch to the browser**
+11. Business model and roadmap
+12. Thank you, code link, QR code, run command, questions
 
 Rules of thumb: one message per slide, never read the slide aloud, demo before minute 4, and end on impact.
 

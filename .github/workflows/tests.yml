@@ -21,3 +21,5 @@ jobs:
         run: python tools/run_tests.py
       - name: Start every server and check it responds
         run: python tools/smoke_test.py
+      - name: Check the new-project scaffold generates a working app
+        run: python tools/new_project.py --selftest

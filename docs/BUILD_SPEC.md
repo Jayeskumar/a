@@ -107,3 +107,11 @@ pitch.json        # structured pitch content consumed by tools/build_decks.py (s
 ```
 
 `stats` has 2–3 items, `features` 4–6, `results` 2–4. Keep every string short — they go on slides.
+
+Optional keys:
+
+- `"compare": {"columns": ["Status quo", "Typical existing tool", "ProductName"], "rows": [["Criterion", "No", "Partial", "Yes"], ...]}`
+  becomes the "How we compare" slide (up to 6 rows; cells starting with Yes / No / Partial get a ✓ / ✗ / ◐ mark).
+  Use generic categories, not named products, and claim only what the app actually does.
+- `"deck_views": {"solution": 3, "demo": 2}` picks which capture in `docs/shots/` (1-based, from
+  `tools/capture_tabs.js`) appears on the solution and demo slides; the default is views 2 and 3.
