@@ -1,0 +1,15 @@
+{
+  "name": "quantix-tools",
+  "private": true,
+  "description": "Pitch deck generator and screenshot helper for the QUANTIX 2K26 projects",
+  "scripts": {
+    "decks": "node build_decks.js"
+  },
+  "dependencies": {
+    "pptxgenjs": "^4.0.1",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-icons": "^5.5.0",
+    "sharp": "^0.34.4"
+  }
+}
