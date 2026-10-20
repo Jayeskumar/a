@@ -1,0 +1,94 @@
+{
+  "name": "StudyPilot",
+  "tagline": "Your offline AI study companion",
+  "domain": "Artificial Intelligence & Machine Learning",
+  "color": "#6C4CF1",
+  "problem": [
+    "Students drown in pages of notes before exams",
+    "Re-reading is slow; without review, material fades in days",
+    "AI chatbots need internet and paid keys, and can hallucinate",
+    "Tier-2/3 colleges often have weak Wi-Fi and costly mobile data"
+  ],
+  "stats": [
+    {"value": "~4.3 crore", "label": "students in Indian higher education (AISHE 2021-22, approx.)"},
+    {"value": "Days", "label": "for unreviewed material to fade (Ebbinghaus forgetting curve, approx.)"},
+    {"value": "₹0", "label": "StudyPilot cost per query: no API key, no data plan"}
+  ],
+  "solution": [
+    "Paste or upload notes and get a full revision kit in ~6 ms",
+    "Summary, concepts, quiz, flashcards and Q&A from your own notes",
+    "Everything extractive and explained, so nothing is made up",
+    "Pure Python on any laptop, 100% offline and private"
+  ],
+  "features": [
+    {"title": "TextRank summary", "desc": "Adjustable length, per-sentence scores and a similarity graph"},
+    {"title": "Key concepts", "desc": "RAKE keyphrases as weighted chips with highlighted evidence"},
+    {"title": "Auto quiz", "desc": "Cloze and MCQ with similar-type distractors and typo-tolerant grading"},
+    {"title": "SM-2 flashcards", "desc": "Auto-made cards, Again/Hard/Good/Easy, schedule saved locally"},
+    {"title": "Ask your notes", "desc": "BM25 answers with highlights, confidence and term breakdown"},
+    {"title": "Exam readiness", "desc": "Mastery per concept from quiz and card history, plus study-next"}
+  ],
+  "architecture": [
+    "Browser UI (vanilla JS + SVG) -> tabs, readiness sidebar",
+    "app.py ThreadingHTTPServer -> JSON API, validation, cache",
+    "text.py -> tokenizer, sentence splitter, stop words, stemmer",
+    "textrank / keyphrases / bm25 -> summary, concepts, retrieval",
+    "quiz / flashcards / srs -> cloze, MCQ, SM-2 scheduling",
+    "mastery + store -> readiness score, data/state.json"
+  ],
+  "algorithms": [
+    "TextRank (PageRank power iteration) – extractive summary",
+    "RAKE + occurrence boost – key-concept extraction",
+    "Type-similarity ranking – MCQ distractor selection",
+    "Okapi BM25 + definition bonus – question answering",
+    "SM-2 – spaced-repetition scheduling",
+    "Laplace-smoothed mastery – exam-readiness score"
+  ],
+  "tech": [
+    "Python 3 stdlib only (http.server, re, math, json)",
+    "Vanilla HTML/CSS/JS, inline SVG, no CDN",
+    "JSON file persistence with atomic writes",
+    "unittest: 34 tests"
+  ],
+  "innovation": [
+    "Hallucination-free: every output is a sentence from your notes",
+    "Explains every decision: scores, links, distractors, SM-2 changes",
+    "Closed loop: summary to recall to spaced review to readiness",
+    "Runs on a ₹15k laptop with Wi-Fi off"
+  ],
+  "results": [
+    {"value": "0.526", "label": "ROUGE-1 F1 vs reference (Lead-6: 0.465)"},
+    {"value": "100%", "label": "QA top-3 hit rate on 31 questions (top-1 80.6%)"},
+    {"value": "~6 ms", "label": "full analysis of a 780-word note set"},
+    {"value": "~1 ms", "label": "Ask-your-notes HTTP round trip"}
+  ],
+  "demo_flow": [
+    "Turn Wi-Fi off and click Load demo notes",
+    "Summary: drag length slider, click Why? and graph nodes",
+    "Concepts: click a chip to see its evidence",
+    "Quiz: answer with a typo, check answers, see readiness rise",
+    "Flashcards: flip, rate Good and Again, see the SM-2 schedule",
+    "Ask: question with highlights and confidence, then an off-topic one"
+  ],
+  "impact": [
+    "AI study help for students with poor connectivity",
+    "No subscription, no API cost, no mobile data",
+    "Notes and progress never leave the device",
+    "CPU-only inference in milliseconds, negligible energy"
+  ],
+  "business": [
+    "Free core app for every student",
+    "College licence: LAN server and class readiness dashboards",
+    "White-label quiz generation for ed-tech and coaching",
+    "Premium packs: Tamil/Hindi support, PDF import"
+  ],
+  "future": [
+    "PDF and offline OCR import",
+    "Tamil and Hindi tokenisers and stemmers",
+    "Synonym-aware query expansion",
+    "FSRS scheduler and exam-date planner",
+    "Faculty mode with class-level weak-concept view"
+  ],
+  "port": 8001,
+  "dir": "projects/01-studypilot"
+}

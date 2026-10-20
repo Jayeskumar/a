@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StudyPilot – offline AI study companion</title>
+<meta name="description" content="Summaries, key concepts, quizzes, flashcards and Q&A from your own notes – fully offline.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%236C4CF1'/%3E%3Cpath d='M7 16l18-8-6 18-3-7z' fill='white'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <svg class="logo" viewBox="0 0 40 40" aria-hidden="true">
+      <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8B70FF"/><stop offset="1" stop-color="#5134D6"/></linearGradient></defs>
+      <rect width="40" height="40" rx="11" fill="url(#lg)"/>
+      <path d="M9 20.5 30 11l-7.5 20-4-7.6z" fill="#fff"/>
+      <path d="M18.5 23.4 30 11" stroke="#5134D6" stroke-width="1.6"/>
+    </svg>
+    <div>
+      <h1>StudyPilot</h1>
+      <p class="tagline">Your offline AI study companion</p>
+    </div>
+  </div>
+  <div class="top-actions">
+    <span class="pill pill-ok" title="All NLP runs locally in Python – no internet, no API keys"><span class="dot"></span>Offline · no API keys</span>
+    <button class="icon-btn" id="theme-btn" title="Toggle light / dark" aria-label="Toggle theme">
+      <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="card notes" id="notes">
+    <div class="notes-row">
+      <div class="doc-meta">
+        <label class="eyebrow" for="doc-title">Your notes</label>
+        <input id="doc-title" class="title-input" placeholder="Untitled notes" maxlength="120">
+      </div>
+      <div class="notes-actions">
+        <button class="btn btn-primary" id="btn-demo" title="Load a bundled sample and analyse it">
+          <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>Load demo notes</button>
+        <div class="seg" id="sample-chips" role="group" aria-label="Demo note sets"></div>
+        <label class="btn btn-ghost" for="file-input" title="Upload a .txt or .md file">
+          <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M12 3 7 8h3v6h4V8h3zM5 18h14v2H5z"/></svg>Upload .txt/.md</label>
+        <input type="file" id="file-input" accept=".txt,.md,.markdown,text/plain,text/markdown" hidden>
+        <button class="btn btn-ghost" id="btn-edit" aria-expanded="true">Edit notes</button>
+      </div>
+    </div>
+    <div class="editor" id="editor">
+      <textarea id="notes-text" spellcheck="false" placeholder="Paste lecture notes or textbook text here (Markdown headings and bullets are fine)…&#10;&#10;Or drop a .txt / .md file onto this box, or click “Load demo notes”."></textarea>
+      <div class="editor-bar">
+        <span id="word-count" class="muted">0 words</span>
+        <button class="btn btn-primary" id="btn-analyze">Analyse notes</button>
+      </div>
+    </div>
+    <div class="stats" id="stats" hidden></div>
+  </section>
+
+  <div class="grid">
+    <section class="card workspace">
+      <nav class="tabs" role="tablist">
+        <button role="tab" class="tab active" data-tab="summary" id="tab-btn-summary">Summary</button>
+        <button role="tab" class="tab" data-tab="concepts" id="tab-btn-concepts">Concepts</button>
+        <button role="tab" class="tab" data-tab="quiz" id="tab-btn-quiz">Quiz</button>
+        <button role="tab" class="tab" data-tab="cards" id="tab-btn-cards">Flashcards <span class="badge" id="due-badge" hidden></span></button>
+        <button role="tab" class="tab" data-tab="ask" id="tab-btn-ask">Ask</button>
+      </nav>
+
+      <div class="empty" id="empty-state">
+        <svg viewBox="0 0 120 90" width="140" aria-hidden="true"><rect x="10" y="10" width="70" height="70" rx="10" fill="var(--accent-soft)"/><rect x="40" y="20" width="70" height="60" rx="10" fill="var(--accent)" opacity=".85"/><path d="M52 40h46M52 52h46M52 64h30" stroke="#fff" stroke-width="5" stroke-linecap="round"/></svg>
+        <h2>Turn your notes into an exam plan</h2>
+        <p>Paste notes, upload a file or load a demo set. StudyPilot summarises with TextRank, extracts key concepts, writes a quiz, builds spaced-repetition flashcards and answers questions – all on this laptop.</p>
+      </div>
+
+      <div class="panel" id="tab-summary" role="tabpanel" hidden>
+        <div class="panel-head">
+          <div>
+            <h2>Extractive summary</h2>
+            <p class="muted" id="sum-sub">TextRank picks the sentences most connected to the rest of your notes.</p>
+          </div>
+          <div class="control">
+            <label for="sum-len">Length <b id="sum-len-val">5</b> sentences</label>
+            <input type="range" id="sum-len" min="1" max="15" value="5">
+          </div>
+        </div>
+        <div class="sum-grid">
+          <ol class="summary-list" id="summary-list"></ol>
+          <div class="graph-box">
+            <div class="graph-title">Sentence similarity graph <span class="muted">· node size = TextRank score</span></div>
+            <svg id="graph" viewBox="0 0 320 320" role="img" aria-label="Sentence graph"></svg>
+            <div class="legend"><span><i class="lg lg-a"></i>in summary</span><span><i class="lg lg-b"></i>other sentence</span></div>
+            <div class="sum-stats" id="sum-stats"></div>
+          </div>
+        </div>
+        <details class="all-sent">
+          <summary>Show every sentence with its score</summary>
+          <div id="all-sentences"></div>
+        </details>
+      </div>
+
+      <div class="panel" id="tab-concepts" role="tabpanel" hidden>
+        <div class="panel-head">
+          <div>
+            <h2>Key concepts</h2>
+            <p class="muted">RAKE keyphrases, boosted by how often they recur. Bigger chip = more important. Click one for the evidence.</p>
+          </div>
+        </div>
+        <div class="chips" id="chips"></div>
+        <div class="concept-detail" id="concept-detail"></div>
+      </div>
+
+      <div class="panel" id="tab-quiz" role="tabpanel" hidden>
+        <div class="panel-head">
+          <div>
+            <h2>Auto-generated quiz</h2>
+            <p class="muted">Fill-in-the-blank and multiple-choice questions from your most important sentences.</p>
+          </div>
+          <div class="control row">
+            <select id="quiz-n" aria-label="Number of questions"><option value="5">5 questions</option><option value="8" selected>8 questions</option><option value="12">12 questions</option></select>
+            <button class="btn btn-ghost" id="btn-new-quiz">New quiz</button>
+          </div>
+        </div>
+        <form id="quiz-form" class="quiz"></form>
+        <div class="quiz-foot">
+          <div id="quiz-score" class="quiz-score"></div>
+          <button class="btn btn-primary" id="btn-grade" form="quiz-form" type="submit">Check answers</button>
+        </div>
+      </div>
+
+      <div class="panel" id="tab-cards" role="tabpanel" hidden>
+        <div class="panel-head">
+          <div>
+            <h2>Flashcards <span class="muted small">· SM-2 spaced repetition</span></h2>
+            <p class="muted">Click the card (or press Space) to flip, then rate yourself 1–4. Your schedule is saved on this laptop.</p>
+          </div>
+          <div class="deck-counts" id="deck-counts"></div>
+        </div>
+        <div class="fc-stage">
+          <div class="flashcard" id="flashcard" tabindex="0" aria-live="polite">
+            <div class="fc-inner">
+              <div class="fc-face fc-front"><span class="fc-tag" id="fc-kind"></span><div id="fc-front"></div><span class="fc-hint">click to reveal</span></div>
+              <div class="fc-face fc-back"><span class="fc-tag">Answer</span><div class="fc-answer" id="fc-answer"></div><div id="fc-back"></div></div>
+            </div>
+          </div>
+          <div class="ratings" id="ratings">
+            <button class="rate r-again" data-rating="again"><b>Again</b><span></span><kbd>1</kbd></button>
+            <button class="rate r-hard" data-rating="hard"><b>Hard</b><span></span><kbd>2</kbd></button>
+            <button class="rate r-good" data-rating="good"><b>Good</b><span></span><kbd>3</kbd></button>
+            <button class="rate r-easy" data-rating="easy"><b>Easy</b><span></span><kbd>4</kbd></button>
+          </div>
+          <div class="fc-explain muted" id="fc-explain"></div>
+        </div>
+        <details class="all-sent">
+          <summary>All cards &amp; their schedule</summary>
+          <div class="table-wrap"><table class="tbl" id="card-table"></table></div>
+          <button class="btn btn-ghost small" id="btn-reset-cards">Reset schedule</button>
+        </details>
+      </div>
+
+      <div class="panel" id="tab-ask" role="tabpanel" hidden>
+        <div class="panel-head">
+          <div>
+            <h2>Ask your notes</h2>
+            <p class="muted">BM25 search over your sentences. Answers come only from your notes – nothing is invented.</p>
+          </div>
+        </div>
+        <form class="ask-form" id="ask-form">
+          <input id="ask-input" placeholder="e.g. How can circular wait be prevented?" maxlength="500" autocomplete="off">
+          <button class="btn btn-primary" type="submit">Ask</button>
+        </form>
+        <div class="suggest" id="suggest"></div>
+        <div id="ask-results"></div>
+      </div>
+    </section>
+
+    <aside class="card readiness" id="readiness">
+      <h2>Exam readiness</h2>
+      <div class="ring-row">
+        <svg class="ring" viewBox="0 0 120 120" aria-hidden="true">
+          <circle cx="60" cy="60" r="50" class="ring-bg"/>
+          <circle cx="60" cy="60" r="50" class="ring-fg" id="ring-fg" stroke-dasharray="314.16" stroke-dashoffset="314.16"/>
+        </svg>
+        <div class="ring-label"><b id="ready-pct">0%</b><span id="ready-level">Just starting</span></div>
+      </div>
+      <div class="mini-stats" id="mini-stats"></div>
+      <h3>Study next</h3>
+      <ul class="next-list" id="study-next"><li class="muted">Analyse notes to begin.</li></ul>
+      <h3>Concept mastery</h3>
+      <ul class="mastery-list" id="mastery-list"></ul>
+      <p class="muted small why">Readiness = importance-weighted mastery of the top concepts. Mastery blends Laplace-smoothed quiz accuracy with flashcard strength.</p>
+    </aside>
+  </div>
+</main>
+
+<div class="toast" id="toast" role="status" hidden></div>
+<footer class="foot">Built for QUANTIX 2K26 · KSRCE <span class="muted">· StudyPilot runs 100% offline</span></footer>
+<script src="app.js"></script>
+</body>
+</html>
