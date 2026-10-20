@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PlaceIQ</title>
+<meta name="description" content="Placement analytics that tells every student what to fix next.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230B1B3F'/%3E%3Cpath d='M8 22l6-7 4 4 7-9' stroke='%230EA5E9' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" class="logo-bg"/><path d="M8 22l6-7 4 4 7-9" class="logo-line"/></svg>
+    <div>
+      <div class="brand-name">PlaceIQ</div>
+      <div class="brand-tag">Placement analytics that tells every student what to fix next</div>
+    </div>
+  </div>
+  <div class="top-actions">
+    <span class="source-pill" id="sourcePill" title="Current dataset">Loading…</span>
+    <button class="btn btn-primary" id="demoBtn" type="button">Load demo data</button>
+    <button class="btn btn-ghost" id="themeBtn" type="button" title="Toggle light / dark">Theme</button>
+  </div>
+</header>
+
+<nav class="tabs" id="tabs" role="tablist">
+  <button role="tab" data-tab="overview" class="active">Overview</button>
+  <button role="tab" data-tab="students">Student coach</button>
+  <button role="tab" data-tab="risk">At-risk list</button>
+  <button role="tab" data-tab="personas">Personas</button>
+  <button role="tab" data-tab="model">Model &amp; fairness</button>
+  <button role="tab" data-tab="eda">Auto-EDA</button>
+  <button role="tab" data-tab="data">Data / upload</button>
+</nav>
+
+<main>
+  <!-- ============================== OVERVIEW -->
+  <section class="tab-panel active" id="tab-overview">
+    <div class="filters">
+      <label>Department <select id="ovDept"></select></label>
+      <label>Batch <select id="ovBatch"></select></label>
+      <span class="hint" id="ovHint"></span>
+    </div>
+    <div class="kpis" id="kpis"></div>
+    <div class="grid g-ov">
+      <div class="card">
+        <div class="card-h"><h3>Placement rate by department</h3><span class="sub">labelled students</span></div>
+        <div id="ovDeptChart" class="chart"></div>
+      </div>
+      <div class="card">
+        <div class="card-h"><h3>Predicted placement probability</h3><span class="sub">students per band</span></div>
+        <div id="ovBands" class="chart"></div>
+      </div>
+      <div class="card">
+        <div class="card-h"><h3>Most common top gap</h3><span class="sub">among at-risk students</span></div>
+        <div id="ovGaps" class="chart"></div>
+      </div>
+      <div class="card span2">
+        <div class="card-h"><h3>Who to call first</h3><span class="sub">lowest predicted probability, not yet placed</span>
+          <button class="btn btn-small" type="button" data-goto="risk">Full at-risk list</button></div>
+        <div id="ovUrgent"></div>
+      </div>
+      <div class="card">
+        <div class="card-h"><h3>Student personas</h3><span class="sub">k-means, k = 4</span></div>
+        <div id="ovPersonas" class="chart"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== STUDENT COACH -->
+  <section class="tab-panel" id="tab-students">
+    <div class="coach">
+      <aside class="card list-card">
+        <div class="list-tools">
+          <input id="stuSearch" type="search" placeholder="Search ID or name" aria-label="Search students">
+          <select id="stuDept" aria-label="Department filter"></select>
+        </div>
+        <div class="list-meta" id="stuMeta"></div>
+        <div id="stuList" class="stu-list" role="listbox" aria-label="Students"></div>
+      </aside>
+      <div class="coach-main" id="stuDetail">
+        <div class="card empty">Pick a student on the left.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== AT RISK -->
+  <section class="tab-panel" id="tab-risk">
+    <div class="filters">
+      <label>Department <select id="riskDept"></select></label>
+      <label>Batch <select id="riskBatch"></select></label>
+      <label class="range">Risk threshold <input id="riskThr" type="range" min="0.1" max="0.9" step="0.05" value="0.5"><b id="riskThrVal">50%</b></label>
+      <label class="check"><input type="checkbox" id="riskPlaced"> include already placed</label>
+      <a class="btn btn-primary" id="riskCsv" href="/api/at-risk.csv" download>Export CSV</a>
+    </div>
+    <div class="card">
+      <div class="card-h"><h3 id="riskTitle">At-risk students</h3><span class="sub">P(placed) below threshold · top gap = the single fix with the biggest lift in the minimum-effort plan</span></div>
+      <div class="table-wrap"><table class="tbl" id="riskTable"></table></div>
+    </div>
+  </section>
+
+  <!-- ============================== PERSONAS -->
+  <section class="tab-panel" id="tab-personas">
+    <div class="filters">
+      <label>Number of personas (k) <select id="kSel"><option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option></select></label>
+      <span class="hint" id="kHint"></span>
+    </div>
+    <div class="persona-grid" id="personaCards"></div>
+    <div class="card">
+      <div class="card-h"><h3>Persona profiles</h3><span class="sub">cluster mean vs. cohort in standard deviations · blue = above average, red = below (for backlogs, above average is bad)</span></div>
+      <div id="personaHeat" class="chart"></div>
+    </div>
+  </section>
+
+  <!-- ============================== MODEL -->
+  <section class="tab-panel" id="tab-model">
+    <div class="kpis" id="modelKpis"></div>
+    <div class="grid g-model">
+      <div class="card">
+        <div class="card-h"><h3>ROC curve</h3><span class="sub" id="rocSub">hold-out test set</span></div>
+        <div id="rocChart" class="chart"></div>
+      </div>
+      <div class="card">
+        <div class="card-h"><h3>Confusion matrix</h3><span class="sub">threshold 0.5, test set</span></div>
+        <div id="confusion"></div>
+      </div>
+      <div class="card">
+        <div class="card-h"><h3>Coefficients</h3><span class="sub">log-odds per +1 SD (deployed model)</span></div>
+        <div id="coefChart" class="chart"></div>
+      </div>
+      <div class="card">
+        <div class="card-h"><h3>Training loss</h3><span class="sub">gradient descent, L2 regularised</span></div>
+        <div id="lossChart" class="chart"></div>
+      </div>
+      <div class="card">
+        <div class="card-h"><h3>Package regression</h3><span class="sub" id="pkgSub">placed students, test set</span></div>
+        <div id="pkgChart" class="chart"></div>
+      </div>
+      <div class="card">
+        <div class="card-h"><h3>How this model was built</h3></div>
+        <div id="modelNotes" class="notes"></div>
+      </div>
+      <div class="card span3">
+        <div class="card-h"><h3>Fairness check by department</h3><span class="sub" id="fairSub"></span></div>
+        <div class="table-wrap"><table class="tbl" id="fairTable"></table></div>
+        <div id="fairNotes" class="notes"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== EDA -->
+  <section class="tab-panel" id="tab-eda">
+    <div class="grid g-eda">
+      <div class="card span2">
+        <div class="card-h"><h3>Top drivers of placement</h3><span class="sub">model weight, correlation and quartile placement rates</span></div>
+        <div class="table-wrap"><table class="tbl" id="driverTable"></table></div>
+      </div>
+      <div class="card">
+        <div class="card-h"><h3>Placement rate by department</h3></div>
+        <div id="edaDept" class="chart"></div>
+      </div>
+      <div class="card span3">
+        <div class="card-h"><h3>Pearson correlation heatmap</h3><span class="sub">labelled students · blue = positive, red = negative</span></div>
+        <div id="corrChart" class="chart"></div>
+      </div>
+      <div class="card span3">
+        <div class="card-h"><h3>Distributions</h3><span class="sub">all students, equal-width bins</span></div>
+        <div id="histGrid" class="hist-grid"></div>
+      </div>
+      <div class="card span3">
+        <div class="card-h"><h3>Summary statistics</h3></div>
+        <div class="table-wrap"><table class="tbl" id="summaryTable"></table></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== DATA -->
+  <section class="tab-panel" id="tab-data">
+    <div class="grid g-data">
+      <div class="card">
+        <div class="card-h"><h3>Upload your placement sheet</h3></div>
+        <label class="drop" id="drop">
+          <input type="file" id="fileInput" accept=".csv,text/csv">
+          <span class="drop-big">Drop a CSV here or click to choose</span>
+          <span class="drop-small">Same columns as the demo file · leave <code>placed</code> blank for the current batch to score it without training on it</span>
+        </label>
+        <div class="row-actions">
+          <a class="btn" href="/api/sample.csv" download>Download demo CSV</a>
+          <button class="btn" id="errDemoBtn" type="button">Try a file with errors</button>
+          <button class="btn btn-primary" id="demoBtn2" type="button">Load demo data</button>
+        </div>
+        <div id="uploadReport"></div>
+      </div>
+      <div class="card">
+        <div class="card-h"><h3>Expected columns</h3></div>
+        <div id="schema" class="notes"></div>
+      </div>
+      <div class="card span2">
+        <div class="card-h"><h3>Dataset preview</h3><span class="sub" id="previewSub"></span></div>
+        <div class="table-wrap"><table class="tbl" id="previewTable"></table></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">Built for QUANTIX 2K26 · KSRCE <span class="dot">·</span> every model trained from scratch in pure Python, fully offline</footer>
+<div id="tip" class="tip" role="tooltip"></div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script src="app.js"></script>
+</body>
+</html>

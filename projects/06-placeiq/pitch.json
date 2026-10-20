@@ -1,0 +1,94 @@
+{
+  "name": "PlaceIQ",
+  "tagline": "Placement analytics that tells every student what to fix next",
+  "domain": "Data Science & Analytics",
+  "color": "#0EA5E9",
+  "problem": [
+    "Placement cells track hundreds of students in spreadsheets",
+    "They learn who got placed only after the drive is over",
+    "Students don't know which skill gap matters most",
+    "Departments can't see weak trends early enough to act"
+  ],
+  "stats": [
+    {"value": "10 lakh+", "label": "engineering seats a year in India (AICTE intake, approx.)"},
+    {"value": "~50%", "label": "graduate employability in industry surveys (approx., varies)"}
+  ],
+  "solution": [
+    "Upload the placement sheet (or load demo) and get instant auto-EDA",
+    "Explainable model predicts each student's placement chance",
+    "Optimiser finds the least-effort plan that lifts them above 70%",
+    "At-risk call list, personas and a fairness audit for the cell"
+  ],
+  "features": [
+    {"title": "What to fix next", "desc": "Exact minimum-effort counterfactual plan per student, ranked by effort"},
+    {"title": "Why this prediction", "desc": "Coefficient x standardised value bars that add up to the score"},
+    {"title": "What-if simulator", "desc": "12 sliders with a live probability gauge and re-planning"},
+    {"title": "At-risk list", "desc": "Threshold slider, top gap per student, one-click CSV export"},
+    {"title": "Student personas", "desc": "k-means++ clusters such as Coding stars and Toppers lacking projects"},
+    {"title": "Fairness check", "desc": "Per-department FPR, FNR and calibration gap on out-of-fold predictions"}
+  ],
+  "architecture": [
+    "Browser UI -> vanilla JS, hand-drawn SVG charts, live simulator",
+    "app.py -> stdlib ThreadingHTTPServer, JSON API, input validation",
+    "data.py -> latent-model cohort generator + CSV row validation",
+    "models.py / metrics.py -> LogReg GD+L2, ridge, AUC, ROC, F1, R2",
+    "explain.py -> contributions + dynamic-programming planner",
+    "cluster.py / engine.py -> k-means++ personas, fairness, dashboards"
+  ],
+  "algorithms": [
+    "Logistic regression (gradient descent, L2) - placement probability",
+    "Ridge linear regression (normal equations) - expected package",
+    "Bounded knapsack DP - minimum-effort counterfactual plan",
+    "k-means++ - student personas",
+    "Rank-based ROC-AUC, Pearson correlation - evaluation and EDA"
+  ],
+  "tech": [
+    "Python 3 stdlib only",
+    "Vanilla HTML/CSS/JS",
+    "Inline SVG charts",
+    "No CDN, fully offline",
+    "unittest (46 tests)"
+  ],
+  "innovation": [
+    "Prescribes the cheapest realistic fix, not just a probability",
+    "Glass-box: chart, simulator and plan use one exact model",
+    "Effort costs and caps are editable named assumptions",
+    "Department excluded from the model, then audited for fairness"
+  ],
+  "results": [
+    {"value": "0.935", "label": "ROC-AUC on 150 held-out students"},
+    {"value": "86.0%", "label": "hold-out accuracy (baseline 58.0%)"},
+    {"value": "0.588", "label": "package R2, MAE 1.17 LPA"},
+    {"value": "2.7 s", "label": "cold start: data + 9 models, pure Python"}
+  ],
+  "demo_flow": [
+    "Overview: KPIs, MECH lagging, who to call first",
+    "Student coach: Tarun M at 40% and why",
+    "What to fix next: +10 aptitude, +3 hackathons -> 71%",
+    "Simulator: drag backlogs, watch the gauge move",
+    "At-risk list: set threshold, export the call sheet",
+    "Model & fairness: AUC 0.935, MECH over-predicted 8 pts",
+    "Upload a file with errors: 8 bad rows reported"
+  ],
+  "impact": [
+    "Students get a ranked to-do list, not 'improve your profile'",
+    "~200 at-risk students found before drives, not after",
+    "Personas turn into targeted workshops per batch",
+    "Runs on any lab PC, so small colleges benefit too"
+  ],
+  "business": [
+    "Free open-source edition for single colleges",
+    "Paid multi-campus edition with history and role logins",
+    "Opt-in readiness-verified talent pipeline for hiring firms",
+    "Implementation workshops for placement officers"
+  ],
+  "future": [
+    "Semester-long progress tracking per student",
+    "Company-specific models and package bands",
+    "Effort costs learned from students who improved",
+    "WhatsApp/email weekly next-fix nudges",
+    "Tamil/English interface"
+  ],
+  "port": 8006,
+  "dir": "projects/06-placeiq"
+}
