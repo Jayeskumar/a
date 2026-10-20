@@ -1,0 +1,89 @@
+{
+  "name": "KrishiMitra",
+  "tagline": "A smart farming advisor in the farmer's own language",
+  "domain": "Smart Agriculture & Rural Development (AgriTech)",
+  "color": "#D97706",
+  "problem": [
+    "Crops chosen by habit, not by soil and season",
+    "Urea over-used, P and K neglected; money and soil wasted",
+    "Irrigation by guesswork; produce sold at the harvest-glut low",
+    "Advisory apps are English-first, online-only black boxes"
+  ],
+  "stats": [
+    {"value": "~86%", "label": "Indian farm holdings small/marginal (Agri Census 2015-16, approx.)"},
+    {"value": "~80%", "label": "India's freshwater used by agriculture (approx.)"},
+    {"value": "4:2:1", "label": "target N:P:K ratio; actual use is N-heavy (approx.)"}
+  ],
+  "solution": [
+    "Soil test in, four decisions out: crop, fertiliser, water, sell",
+    "Two from-scratch ML models with per-input explanations",
+    "Full Tamil / English UI with read-aloud voice",
+    "Runs offline on one laptop; phones join over local Wi-Fi"
+  ],
+  "features": [
+    {"title": "Crop recommender", "desc": "Top-3 of 14 TN crops from Naive Bayes + Random Forest, with why-bars"},
+    {"title": "Fertiliser advisor", "desc": "NPK deficit to Urea / DAP / MOP kg per acre, bags, organic options"},
+    {"title": "Irrigation planner", "desc": "FAO-56 Ra + Hargreaves ET0 x Kc: 7-day plan in mm and litres/acre"},
+    {"title": "Market timing", "desc": "Seasonal index + trend: sell now or hold N weeks, with price band"},
+    {"title": "Crop calendar", "desc": "Visual timeline from land prep to harvest with key operations"},
+    {"title": "Tamil + voice", "desc": "Every label and advice in Tamil script; speechSynthesis read-aloud"}
+  ],
+  "architecture": [
+    "Browser UI -> vanilla JS, SVG charts, EN/TA, speech",
+    "app.py -> stdlib ThreadingHTTPServer, JSON API, validation",
+    "advisor -> one call runs every module for the chosen crop",
+    "recommender -> GNB + RF trained on seeded synthetic data",
+    "fertiliser / irrigation / market / calendar -> pure Python",
+    "config.py -> every assumption, labelled approx."
+  ],
+  "algorithms": [
+    "Gaussian Naive Bayes – crop probabilities + log-odds per input",
+    "CART + Random Forest – bootstrap, feature bagging, OOB, Saabas",
+    "FAO-56 Ra + Hargreaves ET0 – reference water demand",
+    "Kc stage curve + soil bucket – 7-day irrigation schedule",
+    "Ratio-to-moving-average seasonal index + OLS trend – sell/hold"
+  ],
+  "tech": ["Python 3 stdlib only", "Vanilla HTML/CSS/JS", "Inline SVG charts", "Web Speech API", "No CDN, no internet"],
+  "innovation": [
+    "One plan: crop choice drives dose, Kc, prices and calendar",
+    "Explainable ML written from scratch, two models side by side",
+    "Tamil-first advice text and voice, not just translated labels",
+    "Fully offline on a ₹15k laptop, ~3 ms per request"
+  ],
+  "results": [
+    {"value": "94.3%", "label": "hold-out accuracy, GNB+RF blend (synthetic, 14 crops)"},
+    {"value": "93.6%", "label": "GNB and RF each, on the same hold-out"},
+    {"value": "2.9 ms", "label": "median HTTP latency, full advisory"},
+    {"value": "32.2", "label": "Ra MJ/m²/day: matches FAO-56 Example 8"}
+  ],
+  "demo_flow": [
+    "Open on phone + projector, Wi-Fi off",
+    "Tiruchengode farm: groundnut 99%, read the why-bars",
+    "Toggle Tamil and tap Read aloud",
+    "Fertiliser: 0 urea, 15 kg DAP, 29 kg MOP per acre",
+    "Delta paddy: irrigate once, 3.5 lakh L/acre",
+    "Market: sell now vs Erode turmeric hold",
+    "Switch crop: every card updates"
+  ],
+  "impact": [
+    "Right-sized fertiliser cuts input cost and nitrate pollution",
+    "ET-based irrigation saves water and pumping power",
+    "Tamil voice advice reaches low-literacy and older farmers",
+    "Better sell timing on storable crops (illustrative)"
+  ],
+  "business": [
+    "B2G: explain-your-Soil-Health-Card layer for KVKs / state",
+    "B2B: white-label advisories for FPOs and input dealers",
+    "Freemium: free app, paid SMS/IVR voice advisories",
+    "Consented, anonymised data for agronomic research"
+  ],
+  "future": [
+    "Train on real Soil Health Card + yield data",
+    "Live IMD weather and Agmarknet prices, cached offline",
+    "More Indian languages and voice input",
+    "Pest and disease alerts from weather",
+    "Android PWA and SMS/IVR for feature phones"
+  ],
+  "port": 8005,
+  "dir": "projects/05-krishimitra"
+}

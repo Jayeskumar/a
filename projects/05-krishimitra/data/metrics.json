@@ -1,0 +1,165 @@
+{
+  "n_train": 1260,
+  "n_test": 420,
+  "n_crops": 14,
+  "gnb_accuracy": 0.9357,
+  "rf_accuracy": 0.9357,
+  "blend_accuracy": 0.9429,
+  "gnb_top3_accuracy": 1.0,
+  "rf_top3_accuracy": 1.0,
+  "rf_oob_accuracy": 0.9484126984126984,
+  "gnb_train_ms": 1.8,
+  "rf_train_ms": 541.6,
+  "rf_trees": 30,
+  "rf_max_depth": 10,
+  "rf_max_features": 3,
+  "rf_feature_importance": {
+    "N": 0.2107,
+    "P": 0.1682,
+    "K": 0.2165,
+    "ph": 0.0427,
+    "temperature": 0.0871,
+    "humidity": 0.1062,
+    "rainfall": 0.1686
+  },
+  "full_training_s": 0.653,
+  "per_crop_accuracy": {
+    "rice": {
+      "rf": 1.0,
+      "gnb": 1.0
+    },
+    "sugarcane": {
+      "rf": 1.0,
+      "gnb": 1.0
+    },
+    "banana": {
+      "rf": 1.0,
+      "gnb": 1.0
+    },
+    "cotton": {
+      "rf": 0.7,
+      "gnb": 0.733
+    },
+    "maize": {
+      "rf": 0.733,
+      "gnb": 0.7
+    },
+    "groundnut": {
+      "rf": 0.967,
+      "gnb": 0.967
+    },
+    "blackgram": {
+      "rf": 0.933,
+      "gnb": 0.933
+    },
+    "greengram": {
+      "rf": 1.0,
+      "gnb": 1.0
+    },
+    "turmeric": {
+      "rf": 1.0,
+      "gnb": 1.0
+    },
+    "coconut": {
+      "rf": 1.0,
+      "gnb": 1.0
+    },
+    "ragi": {
+      "rf": 1.0,
+      "gnb": 1.0
+    },
+    "tomato": {
+      "rf": 1.0,
+      "gnb": 1.0
+    },
+    "chilli": {
+      "rf": 0.767,
+      "gnb": 0.767
+    },
+    "pearlmillet": {
+      "rf": 1.0,
+      "gnb": 1.0
+    }
+  },
+  "most_confused_rf": [
+    {
+      "true": "cotton",
+      "predicted": "chilli",
+      "count": 7
+    },
+    {
+      "true": "maize",
+      "predicted": "chilli",
+      "count": 7
+    },
+    {
+      "true": "chilli",
+      "predicted": "maize",
+      "count": 5
+    },
+    {
+      "true": "blackgram",
+      "predicted": "greengram",
+      "count": 2
+    },
+    {
+      "true": "cotton",
+      "predicted": "maize",
+      "count": 2
+    },
+    {
+      "true": "chilli",
+      "predicted": "cotton",
+      "count": 1
+    }
+  ],
+  "latency": {
+    "gnb.predict_proba": {
+      "median_ms": 0.023,
+      "p95_ms": 0.028,
+      "n": 300
+    },
+    "rf.predict_proba (30 trees)": {
+      "median_ms": 0.046,
+      "p95_ms": 0.062,
+      "n": 300
+    },
+    "recommend (both models + explanation)": {
+      "median_ms": 0.175,
+      "p95_ms": 0.357,
+      "n": 300
+    },
+    "fertiliser.advise": {
+      "median_ms": 0.035,
+      "p95_ms": 0.064,
+      "n": 300
+    },
+    "irrigation.plan (7 days)": {
+      "median_ms": 0.066,
+      "p95_ms": 0.119,
+      "n": 300
+    },
+    "market.analyse": {
+      "median_ms": 1.001,
+      "p95_ms": 1.939,
+      "n": 300
+    },
+    "advise (all modules)": {
+      "median_ms": 1.45,
+      "p95_ms": 2.673,
+      "n": 300
+    },
+    "POST /api/advise": {
+      "median_ms": 2.88,
+      "p95_ms": 4.39,
+      "n": 100
+    },
+    "POST /api/recommend": {
+      "median_ms": 1.13,
+      "p95_ms": 1.432,
+      "n": 100
+    }
+  },
+  "machine": "Linux-6.18.44-fc-v139-x86_64-with-glibc2.39, Python 3.13.16",
+  "measured_on": "2026-10-20"
+}

@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>KrishiMitra · Smart farming advisor</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23D97706'/%3E%3Cpath d='M9 22c0-7 5-12 14-13-1 9-6 14-13 14' fill='%2316a34a'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <svg class="logo" viewBox="0 0 48 48" aria-hidden="true">
+      <circle cx="24" cy="24" r="22" fill="var(--amber)"/>
+      <path d="M12 34c0-11 8-19 24-21-1.5 14-10 22-21 22" fill="var(--leaf)"/>
+      <path d="M14 34c5-6 10-10 16-14" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div>
+      <h1>KrishiMitra <span class="ta-name">கிருஷிமித்ரா</span></h1>
+      <p class="tagline" data-i18n="tagline">A smart farming advisor in the farmer's own language</p>
+    </div>
+  </div>
+  <div class="top-actions">
+    <div class="lang-toggle" role="group" aria-label="Language">
+      <button id="langEn" class="seg active" type="button">English</button>
+      <button id="langTa" class="seg" type="button">தமிழ்</button>
+    </div>
+    <button id="speakBtn" class="btn ghost" type="button" title="Read advice aloud">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+      <span data-i18n="speak">Read aloud</span>
+    </button>
+  </div>
+</header>
+
+<section class="demo-bar">
+  <button id="demoBtn" class="btn primary big" type="button">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18M5 20V10l7-5 7 5v10M9 20v-6h6v6" stroke="currentColor" stroke-width="2" fill="none" stroke-linejoin="round"/></svg>
+    <span data-i18n="loadDemo">Load demo farm</span>
+  </button>
+  <div id="presetChips" class="chips" aria-label="Demo farms"></div>
+</section>
+
+<main class="layout">
+  <aside class="card inputs" id="inputsCard">
+    <h2 data-i18n="farmInputs">Your farm</h2>
+    <form id="farmForm" autocomplete="off">
+      <div class="soil-head">
+        <span data-i18n="soilTest">Soil test &amp; climate</span>
+        <span class="muted small" data-i18n="approxNote">ranges are approximate</span>
+      </div>
+      <div id="featureInputs"></div>
+      <div class="row2">
+        <label><span data-i18n="soil">Soil type</span><select id="soil"></select></label>
+        <label><span data-i18n="method">Irrigation</span><select id="method"></select></label>
+      </div>
+      <div class="row2">
+        <label><span data-i18n="area">Area (acres)</span><input id="area" type="number" min="0.05" max="10000" step="0.05" value="1" inputmode="decimal"></label>
+        <label><span data-i18n="lat">Latitude (°N)</span><input id="lat" type="number" min="-60" max="60" step="0.01" value="11.0" inputmode="decimal"></label>
+      </div>
+      <div class="row2">
+        <label><span data-i18n="sowing">Sowing date</span><input id="sowing" type="date"></label>
+        <label><span data-i18n="cropChoice">Advise for</span><select id="cropChoice"></select></label>
+      </div>
+      <button class="btn primary big wide" type="submit" id="adviseBtn"><span data-i18n="getAdvice">Get advice</span></button>
+      <p id="formError" class="error" role="alert" hidden></p>
+    </form>
+  </aside>
+
+  <div class="content">
+    <section class="summary" id="summary" aria-live="polite">
+      <div class="tile t-crop"><div class="tile-k" data-i18n="kCrop">Best crop</div><div class="tile-v" id="sCrop">–</div><div class="tile-s" id="sCropSub"></div></div>
+      <div class="tile t-fert"><div class="tile-k" data-i18n="kFert">Fertiliser / acre</div><div class="tile-v" id="sFert">–</div><div class="tile-s" id="sFertSub"></div></div>
+      <div class="tile t-water"><div class="tile-k" data-i18n="kWater">Water this week</div><div class="tile-v" id="sWater">–</div><div class="tile-s" id="sWaterSub"></div></div>
+      <div class="tile t-mkt"><div class="tile-k" data-i18n="kMarket">Market</div><div class="tile-v" id="sMkt">–</div><div class="tile-s" id="sMktSub"></div></div>
+    </section>
+
+    <div class="grid">
+      <section class="card" id="recCard">
+        <div class="card-head"><h2 data-i18n="recTitle">Recommended crops</h2><span class="badge" data-i18n="mlBadge">GNB + Random Forest</span></div>
+        <div id="top3" class="top3"></div>
+        <div id="modelCompare" class="model-compare"></div>
+      </section>
+
+      <section class="card" id="whyCard">
+        <div class="card-head"><h2 data-i18n="whyTitle">Why this crop?</h2><span class="muted small" id="whyVs"></span></div>
+        <div id="whyBars" class="why"></div>
+        <p class="muted small" data-i18n="whyNote">Bars: Naive Bayes log-likelihood of the best crop minus the runner-up for each input (right = pushed towards the best crop). RF %: Random Forest path contribution.</p>
+      </section>
+
+      <section class="card" id="fertCard">
+        <div class="card-head"><h2 data-i18n="fertTitle">Fertiliser advisor</h2><span class="muted small" id="fertCrop"></span></div>
+        <div id="fertProducts" class="products"></div>
+        <div id="npkBars" class="npk"></div>
+        <h3 data-i18n="schedule">When to apply</h3>
+        <ol id="fertSchedule" class="schedule"></ol>
+        <h3 data-i18n="organic">Organic alternatives</h3>
+        <div id="organic" class="organic"></div>
+        <ul id="fertTips" class="tips"></ul>
+        <details class="formula"><summary data-i18n="howCalc">How is this calculated?</summary><code id="fertFormula"></code></details>
+      </section>
+
+      <section class="card" id="irrCard">
+        <div class="card-head"><h2 data-i18n="irrTitle">7-day irrigation plan</h2><span class="muted small" id="irrMeta"></span></div>
+        <p id="irrSummary" class="advice"></p>
+        <div id="irrChart" class="chart"></div>
+        <div class="legend"><span class="lg etc"></span><span data-i18n="lgEtc">Crop water use (ETc)</span><span class="lg rain"></span><span data-i18n="lgRain">Effective rain</span><span class="lg irr"></span><span data-i18n="lgIrr">Irrigate (gross)</span></div>
+        <div class="table-wrap"><table id="irrTable" class="days"></table></div>
+        <details class="formula"><summary data-i18n="howCalc">How is this calculated?</summary><code id="irrFormula"></code><p class="muted small" data-i18n="irrNote">Hargreaves ET0 from Tmin/Tmax and FAO-56 extraterrestrial radiation (latitude + day of year). Kc follows the FAO-56 stage curve. The 7-day forecast is synthesised offline from approximate climate normals.</p></details>
+      </section>
+
+      <section class="card span2" id="mktCard">
+        <div class="card-head"><h2 data-i18n="mktTitle">Market timing</h2><span class="badge warn" data-i18n="synthetic">Synthetic prices</span></div>
+        <div class="mkt-layout">
+          <div class="mkt-main">
+            <div id="mktChart" class="chart"></div>
+            <div class="legend"><span class="lg price"></span><span data-i18n="lgPrice">Weekly price</span><span class="lg ma"></span><span data-i18n="lgMa">12-week average</span><span class="lg fc"></span><span data-i18n="lgFc">Forecast + band</span></div>
+          </div>
+          <div class="mkt-side">
+            <div id="mktDecision" class="decision"></div>
+            <h3 data-i18n="seasonal">Seasonal index (by month)</h3>
+            <div id="siBars" class="si"></div>
+            <p class="muted small" data-i18n="mktNote">Forecast = deseasonalised level + 52-week trend, times the month's seasonal index. Hold only if the gain beats storage cost.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card span2" id="calCard">
+        <div class="card-head"><h2 data-i18n="calTitle">Crop calendar</h2><span class="muted small" id="calMeta"></span></div>
+        <div id="calendar" class="calendar"></div>
+        <ul id="calOps" class="ops"></ul>
+      </section>
+    </div>
+    <p class="disclaimer" id="disclaimer"></p>
+  </div>
+</main>
+
+<footer class="footer">
+  <span data-i18n="footer">Built for QUANTIX 2K26 · KSRCE</span>
+  <span class="muted" id="footMetrics"></span>
+</footer>
+<div id="toast" class="toast" role="status" hidden></div>
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
