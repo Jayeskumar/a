@@ -40,6 +40,16 @@ algorithm is written from scratch, unit-tested and measured.
 
 Measured results for every project are in [`docs/PORTFOLIO.md`](docs/PORTFOLIO.md).
 
+## Deliverables
+
+| What | Where |
+|---|---|
+| **Complete report (PDF, A4, ~180 pages)**: cover, strategy playbook, portfolio overview and all 19 project reports with screenshots and architecture diagrams | [`docs/QUANTIX2K26_Report.pdf`](docs/QUANTIX2K26_Report.pdf) |
+| **Pitch decks**: 19 × 11-slide PowerPoint decks with speaker notes | [`decks/`](decks/) |
+| **Per-project reports**: problem, architecture, algorithms, results, demo script, judges' Q&A | `projects/NN-name/REPORT.md` |
+| **Strategy playbook**: rules, domain picks, 24-hour plan, checklists | [`docs/STRATEGY.md`](docs/STRATEGY.md) |
+| **Working code**: 19 offline demos + showcase hub, 1,159 unit tests, CI on Linux/Windows × Python 3.9/3.13 | [`projects/`](projects/), [`run_all.py`](run_all.py) |
+
 ## Gallery
 
 <table>
@@ -71,7 +81,7 @@ hub/                  showcase page served on :8000 by run_all.py
 docs/STRATEGY.md      how to win: rules, domain picks, 24 h plan, checklists, Q&A
 docs/PORTFOLIO.md     generated summary of every project and its measured results
 docs/BUILD_SPEC.md    the conventions every project follows
-tools/                build_decks.js (pptx generator) · build_portfolio.py · run_tests.py · screenshot.js
+tools/                build_decks.js (pptx) · build_report.py (PDF) · build_portfolio.py · run_tests.py · screenshot.js
 team.json             team name, members and GitHub link, used on the title and closing slides
 ```
 
@@ -83,7 +93,9 @@ team.json             team name, members and GitHub link, used on the title and 
 cd tools && npm install && node build_decks.js          # → decks/*.pptx
 # 3. Portfolio summary:
 python tools/build_portfolio.py                          # → docs/PORTFOLIO.md
-# 4. Fresh screenshot for a project (server must be running):
+# 4. Complete PDF report (needs pandoc + poppler-utils; uses the tools/ npm packages):
+python tools/build_report.py                             # → build/QUANTIX2K26_Report.pdf (copy to docs/)
+# 5. Fresh screenshot for a project (server must be running):
 NODE_PATH="$(npm root -g)" node tools/screenshot.js http://127.0.0.1:8003/ projects/03-pulseguard/docs/screenshot.png
 ```
 

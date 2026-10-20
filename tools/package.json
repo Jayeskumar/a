@@ -6,6 +6,8 @@
     "decks": "node build_decks.js"
   },
   "dependencies": {
+    "@fontsource/noto-sans-tamil": "^5.1.1",
+    "mermaid": "^11.4.1",
     "pptxgenjs": "^4.0.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

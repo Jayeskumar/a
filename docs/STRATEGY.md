@@ -144,6 +144,7 @@ Rules of thumb: one message per slide, never read the slide aloud, demo before m
 ## 8. Submission checklist
 
 - [ ] **PPT:** `decks/<project>.pptx`, customised and saved as PDF too
+- [ ] **Report:** `docs/QUANTIX2K26_Report.pdf` (rebuild with `python tools/build_report.py` after editing `team.json`) as a leave-behind for judges
 - [ ] **GitHub link:** a public repo with the README screenshot on top and a green CI badge (`.github/workflows/tests.yml` runs every project's tests on Linux and Windows)
 - [ ] **Demo link:** an unlisted YouTube or Drive video of the 3-minute demo; the apps are offline by design, so a video is the most reliable "link"
 - [ ] REPORT.md of the pitched project reviewed: every statistic double-checked and anything unsure marked approx.
