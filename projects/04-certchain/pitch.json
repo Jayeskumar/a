@@ -91,5 +91,15 @@
     "Mobile offline verifier app"
   ],
   "port": 8004,
-  "dir": "projects/04-certchain"
+  "dir": "projects/04-certchain",
+  "compare": {
+    "columns": ["Paper + manual check", "Public blockchain apps", "CertChain"],
+    "rows": [
+      ["Verify a certificate instantly", "No (manual)", "Yes", "Yes (~33 ms)"],
+      ["Detects an edited CGPA", "Partial", "Yes", "Yes"],
+      ["Explains every check", "No", "Partial", "Yes"],
+      ["Signed, on-chain revocation", "No", "Partial", "Yes"],
+      ["Cost per verification", "Staff time", "Network fees", "₹0 / offline"]
+    ]
+  }
 }

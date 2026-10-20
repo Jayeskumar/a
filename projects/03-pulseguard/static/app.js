@@ -42,7 +42,11 @@
   }
   function fmt(v, d) { return typeof v === "number" ? v.toFixed(d) : esc(v); }
   function bandClass(b) { return "b-" + b; }
-  function signed(v, d) { return (v > 0 ? "+" : "") + v.toFixed(d === undefined ? 1 : d); }
+  function signed(v, d) {
+    var t = v.toFixed(d === undefined ? 1 : d);
+    if (Number(t) === 0) return t.replace("-", "");
+    return (v > 0 ? "+" : "") + t;
+  }
 
   // --------------------------------------------------------------- controls
   function control(action, extra) {
@@ -235,7 +239,7 @@
   }
 
   function lineChart(hist, key, opts) {
-    var w = 300, h = 110, padL = 30, padR = 6, padT = 6, padB = 16;
+    var w = 260, h = 120, padL = 32, padR = 6, padT = 6, padB = 18;
     var vals = hist.map(function (r) { return r[key]; });
     var ts = hist.map(function (r) { return r.t; });
     var lo = Math.min.apply(null, vals), hi = Math.max.apply(null, vals);
@@ -258,13 +262,13 @@
         '" fill="' + POINT_COLOR[z.pts] + '" opacity="' + (0.08 + 0.06 * z.pts) + '"/>';
     });
     [lo + (hi - lo) * 0.1, (lo + hi) / 2, hi - (hi - lo) * 0.1].forEach(function (v) {
-      out += '<text x="' + (padL - 4) + '" y="' + (Y(v) + 3) + '" text-anchor="end" font-size="9" fill="var(--muted)">' +
+      out += '<text x="' + (padL - 4) + '" y="' + (Y(v) + 3) + '" text-anchor="end" font-size="12" fill="var(--muted)">' +
         (opts.dec ? v.toFixed(opts.dec) : Math.round(v)) + "</text>";
     });
     var step = Math.max(1, Math.ceil((t1 - t0) / 4));
     for (var t = Math.ceil(t0); t <= t1; t += step) {
       var hh = (6 + Math.floor(t)) % 24;
-      out += '<text x="' + X(t) + '" y="' + (h - 3) + '" text-anchor="middle" font-size="9" fill="var(--muted)">' + (hh < 10 ? "0" : "") + hh + ":00</text>";
+      out += '<text x="' + X(t) + '" y="' + (h - 3) + '" text-anchor="' + (X(t) > w - 20 ? "end" : "middle") + '" font-size="12" fill="var(--muted)">' + (hh < 10 ? "0" : "") + hh + ":00</text>";
     }
     if (opts.horizon) {
       out += '<rect x="' + X(tLast) + '" width="' + (X(t1) - X(tLast)) + '" y="' + padT + '" height="' + (h - padT - padB) +
@@ -323,7 +327,7 @@
       lineChart(hist, "score", { label: "NEWS2", min: 0, max: 8, color: "var(--text)", horizon: tr.horizon_h, projection: tr.enough_data ? tr.projected_score : null, zones: [{ lo: 4.5, hi: 6.5, pts: 2 }, { lo: 6.5, hi: Infinity, pts: 3 }] }) + "</div>";
     VITALS.forEach(function (v) {
       var refKey = v.key === "spo2" && p.scale === 2 ? "spo2_2" : v.ref;
-      charts += '<div class="chart"><h3><span>' + v.label + " (" + v.unit + ")</span><span>" + esc(p.vitals[v.key]) + "</span></h3>" +
+      charts += '<div class="chart"><h3><span>' + v.label + " (" + v.unit + ")</span><span>" + (v.key === "temp" ? fmt(p.vitals.temp, 1) : esc(p.vitals[v.key])) + "</span></h3>" +
         lineChart(hist, v.key, { label: v.label, zones: zonesFor(refKey), dec: v.key === "temp" ? 1 : 0, projection: projBy[v.key], horizon: tr.horizon_h }) + "</div>";
     });
     var s1 = d.scale1_comparison
@@ -502,12 +506,15 @@
     return (hh < 10 ? "0" : "") + hh + ":" + (mm < 10 ? "0" : "") + mm;
   }
   function timeline(rows) {
-    var w = 1200, rowH = 30, h = rows.length * rowH + 28, padL = 130, padR = 20;
+    // drawn at the container's real pixel width so labels stay ~12 px on any screen
+    var avail = ($("#eval-body").clientWidth || 1200) - 30;
+    var w = Math.max(320, Math.min(1200, avail)), rowH = 30, h = rows.length * rowH + 28;
+    var padL = w < 700 ? 104 : 130, padR = 20, tStep = w < 520 ? 6 : (w < 900 ? 4 : 2);
     function X(t) { return padL + t / 24 * (w - padL - padR); }
     var out = '<svg viewBox="0 0 ' + w + " " + h + '" role="img" aria-label="Detection timeline">';
-    for (var t = 0; t <= 24; t += 2) {
+    for (var t = 0; t <= 24; t += tStep) {
       out += '<line x1="' + X(t) + '" x2="' + X(t) + '" y1="4" y2="' + (h - 18) + '" stroke="var(--border)"/><text x="' + X(t) + '" y="' + (h - 4) +
-        '" font-size="11" text-anchor="middle" fill="var(--muted)">' + clockOf(t) + "</text>";
+        '" font-size="12" text-anchor="middle" fill="var(--muted)">' + clockOf(t) + "</text>";
     }
     rows.forEach(function (r, i) {
       var y = 6 + i * rowH + rowH / 2;

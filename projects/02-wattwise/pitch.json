@@ -93,5 +93,15 @@
     "NILM to learn end-use shares automatically"
   ],
   "port": 8002,
-  "dir": "projects/02-wattwise"
+  "dir": "projects/02-wattwise",
+  "compare": {
+    "columns": ["Monthly bill review", "Cloud energy dashboards", "WattWise"],
+    "rows": [
+      ["Hourly waste detection", "No", "Yes", "Yes"],
+      ["Explains every alert & forecast", "No", "Partial", "Yes"],
+      ["Forecast accuracy shown", "No", "Varies", "5.6% MAPE (sim)"],
+      ["Solar payback + what-if", "No", "Partial", "Yes"],
+      ["Cost / works offline", "₹0", "Subscription", "₹0 / offline"]
+    ]
+  }
 }

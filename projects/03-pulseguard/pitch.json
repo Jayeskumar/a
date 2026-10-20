@@ -84,5 +84,15 @@
     "Tamil/Hindi UI and voice entry"
   ],
   "port": 8003,
-  "dir": "projects/03-pulseguard"
+  "dir": "projects/03-pulseguard",
+  "compare": {
+    "columns": ["Paper NEWS2 chart", "Cloud EWS software", "PulseGuard"],
+    "rows": [
+      ["Scores every new reading", "No (4-hourly)", "Yes", "Yes (15-min feed)"],
+      ["Warns before NEWS2 ≥5", "No", "Partial", "Yes (~1 h, sim)"],
+      ["Explains each alert", "Partial", "Partial", "Yes"],
+      ["Works offline, data stays local", "Yes", "No", "Yes"],
+      ["Cost to the ward", "₹0 / manual", "Subscription", "₹0 / offline"]
+    ]
+  }
 }

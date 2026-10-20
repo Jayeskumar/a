@@ -57,6 +57,13 @@
     if (a >= 1e5) { return s + '₹' + (a / 1e5).toFixed(2) + ' L'; }
     return s + '₹' + num(a);
   }
+  function pretty(t) {
+    return String(t)
+      .replace(/\bRs\.? ?(\d+(?:\.\d+)?)/g, function (_, v) { return '₹' + num(Number(v), v.indexOf('.') >= 0 ? 2 : 0); })
+      .replace(/(^|[^\d.,₹-])(\d{5,})(?![\d.])/g, function (_, p, v) { return p + num(Number(v)); })
+      .replace(/\bm2\b/g, 'm²').replace(/\bCO2\b/g, 'CO₂').replace(/ ?\bdegC\b/g, ' °C')
+      .replace(/ x (?=[\w(])/g, ' × ').replace(/ -> /g, ' → ');
+  }
   function compact(n) {
     var a = Math.abs(n);
     if (a >= 1e6) { return (n / 1e6).toFixed(1) + 'M'; }
@@ -189,7 +196,7 @@
     if (!s || !box.clientWidth) { return; }
     $('#chart-title').textContent = s.name + ' · actual vs forecast';
     box.innerHTML = '';
-    var W = box.clientWidth, H = 300, m = { l: 40, r: 64, t: 12, b: 26 };
+    var W = box.clientWidth, H = 300, m = { l: 40, r: 64, t: 24, b: 26 };
     var actT = s.actual.timestamps.map(parseTs), btT = s.backtest.timestamps.map(parseTs), fcT = s.forecast.timestamps.map(parseTs);
     var t0 = actT[0].getTime(), t1 = fcT[fcT.length - 1].getTime() + 3600e3;
     var maxV = Math.max(Math.max.apply(null, s.actual.kwh), Math.max.apply(null, s.forecast.kwh), Math.max.apply(null, s.backtest.kwh));
@@ -204,8 +211,10 @@
       svg('line', { x1: m.l, x2: W - m.r, y1: yy, y2: yy, 'class': i === 0 ? 'baseline' : 'gridline' }, root);
       var tx = svg('text', { x: m.l - 8, y: yy + 4, 'text-anchor': 'end', 'class': 'tick' }, root);
       tx.textContent = num(v);
-      tx.setAttribute('style', 'fill:var(--muted);font-size:11px');
+      tx.setAttribute('style', 'fill:var(--muted);font-size:12px');
     }
+    var yu = svg('text', { x: 0, y: 12, style: 'fill:var(--muted);font-size:12px' }, root);
+    yu.textContent = 'kWh per hour';
     // x ticks: every N days at midnight
     var days = Math.round((t1 - t0) / 86400e3);
     var step = Math.max(1, Math.ceil(days / Math.max(3, Math.floor((W - m.l - m.r) / 70))));
@@ -213,7 +222,7 @@
       var dt = new Date(actT[0].getTime() + d * 86400e3), xx = x(dt.getTime());
       if (xx > W - m.r) { break; }
       svg('line', { x1: xx, x2: xx, y1: H - m.b, y2: H - m.b + 4, 'class': 'baseline' }, root);
-      var lt = svg('text', { x: xx, y: H - 8, 'text-anchor': 'middle', style: 'fill:var(--muted);font-size:11px' }, root);
+      var lt = svg('text', { x: xx, y: H - 8, 'text-anchor': 'middle', style: 'fill:var(--muted);font-size:12px' }, root);
       lt.textContent = DAYS[dt.getDay()] + ' ' + dt.getDate();
     }
     // waste bands
@@ -225,10 +234,10 @@
     // "now" divider
     var nowT = fcT[0].getTime();
     svg('line', { x1: x(nowT), x2: x(nowT), y1: m.t, y2: H - m.b, 'class': 'now-line' }, root);
-    var nl = svg('text', { x: x(nowT) + 5, y: m.t + 10, style: 'fill:var(--text-2);font-size:11px;font-weight:600' }, root);
+    var nl = svg('text', { x: x(nowT) + 5, y: m.t + 10, style: 'fill:var(--text-2);font-size:12px;font-weight:600' }, root);
     nl.textContent = 'Forecast →';
     if (W >= 600) {
-      var hl = svg('text', { x: x(btT[0].getTime()) + 5, y: m.t + 10, style: 'fill:var(--muted);font-size:11px' }, root);
+      var hl = svg('text', { x: x(btT[0].getTime()) + 5, y: m.t + 10, style: 'fill:var(--muted);font-size:12px' }, root);
       hl.textContent = 'Hold-out week (back-test)';
     }
 
@@ -239,9 +248,9 @@
     svg('path', { d: path(actT, s.actual.kwh), fill: 'none', style: 'stroke:var(--s1)', 'stroke-width': 2, 'stroke-linejoin': 'round' }, root);
     svg('path', { d: path(fT, fV), fill: 'none', style: 'stroke:var(--s2)', 'stroke-width': 2, 'stroke-dasharray': '5 3', 'stroke-linejoin': 'round' }, root);
     // direct labels at line ends
-    var la = svg('text', { x: x(actT[actT.length - 1].getTime()) - 4, y: m.t + 26, 'text-anchor': 'end', style: 'fill:var(--text-2);font-size:11px;font-weight:600' }, root);
+    var la = svg('text', { x: x(actT[actT.length - 1].getTime()) - 4, y: m.t + 26, 'text-anchor': 'end', style: 'fill:var(--text-2);font-size:12px;font-weight:600' }, root);
     la.textContent = 'Actual';
-    var lf = svg('text', { x: W - m.r + 6, y: y(fV[fV.length - 1]) + 4, style: 'fill:var(--text-2);font-size:11px;font-weight:600' }, root);
+    var lf = svg('text', { x: W - m.r + 6, y: y(fV[fV.length - 1]) + 4, style: 'fill:var(--text-2);font-size:12px;font-weight:600' }, root);
     lf.textContent = 'Forecast';
 
     // hover layer
@@ -318,7 +327,7 @@
         svg('rect', { x: 0, y: yy, width: W, height: rowH, rx: 6, style: 'fill:var(--brand-wash)' }, root);
       }
       svg('line', { x1: lab, x2: W - m.r, y1: yy + rowH / 2, y2: yy + rowH / 2, 'class': 'gridline' }, root);
-      var t = svg('text', { x: 6, y: yy + rowH / 2 + 4, style: 'fill:var(--text-2);font-size:11.5px;font-weight:' + (b.id === state.building ? 700 : 500) + ';cursor:pointer' }, root);
+      var t = svg('text', { x: 6, y: yy + rowH / 2 + 4, style: 'fill:var(--text-2);font-size:12px;font-weight:' + (b.id === state.building ? 700 : 500) + ';cursor:pointer' }, root);
       t.textContent = b.name;
       t.addEventListener('click', function () { selectBuilding(b.id); });
     });
@@ -326,8 +335,8 @@
     for (var wk = 0; wk <= nH / 168; wk++) {
       var xx = x(wk * 168);
       svg('line', { x1: xx, x2: xx, y1: m.t, y2: H - m.b, 'class': 'gridline' }, root);
-      if (wk < nH / 168) {
-        var tl = svg('text', { x: xx + 2, y: H - 6, style: 'fill:var(--muted);font-size:11px' }, root);
+      if (wk < nH / 168 && (wk % Math.max(1, Math.ceil(52 / (x(168) - x(0)))) === 0)) {
+        var tl = svg('text', { x: xx + 2, y: H - 6, style: 'fill:var(--muted);font-size:12px' }, root);
         tl.textContent = fmtDay(new Date(t0 + wk * 7 * 86400e3));
       }
     }
@@ -369,7 +378,7 @@
     if (!hm || !box.clientWidth) { return; }
     $('#heat-title').textContent = hm.name + ' · load heatmap';
     box.innerHTML = '';
-    var W = box.clientWidth, m = { l: 40, t: 4, b: 22, r: 4 }, cellH = 8;
+    var W = box.clientWidth, m = { l: 46, t: 4, b: 22, r: 4 }, cellH = Math.max(8, Math.min(14, Math.round(W / 46)));
     var nD = hm.days.length, cw = (W - m.l - m.r) / nD, H = m.t + 24 * cellH + m.b;
     var lo = hexToRgb(cssVar('--heat-lo') || '#eef7f1'), hi = hexToRgb(cssVar('--heat-hi') || '#0a5a2c');
     var root = svg('svg', { viewBox: '0 0 ' + W + ' ' + H, width: W, height: H, role: 'img', 'aria-label': 'Heatmap of hourly load' }, box);
@@ -380,8 +389,8 @@
         svg('rect', { x: m.l + i * cw, y: m.t + h * cellH, width: Math.max(1, cw - 1), height: cellH - 1, fill: mix(lo, hi, Math.sqrt(v)) }, root);
         if (d.flags[h]) { flags.push([i, h]); }
       }
-      if (i % 7 === 0) {
-        var t = svg('text', { x: m.l + i * cw, y: H - 6, style: 'fill:var(--muted);font-size:11px' }, root);
+      if (i % (cw * 7 < 52 ? 14 : 7) === 0) {
+        var t = svg('text', { x: m.l + i * cw, y: H - 6, style: 'fill:var(--muted);font-size:12px' }, root);
         t.textContent = fmtDay(parseTs(d.date + 'T00:00:00'));
       }
     });
@@ -389,7 +398,7 @@
       svg('rect', { x: m.l + f[0] * cw + 0.5, y: m.t + f[1] * cellH + 0.5, width: Math.max(1, cw - 2), height: cellH - 2, fill: 'none', style: 'stroke:var(--critical)', 'stroke-width': 1.5 }, root);
     });
     [0, 6, 12, 18].forEach(function (h) {
-      var t = svg('text', { x: m.l - 6, y: m.t + h * cellH + cellH, 'text-anchor': 'end', style: 'fill:var(--muted);font-size:11px' }, root);
+      var t = svg('text', { x: m.l - 6, y: m.t + h * cellH + cellH, 'text-anchor': 'end', style: 'fill:var(--muted);font-size:12px' }, root);
       t.textContent = hourLabel(h);
     });
     var sel = svg('rect', { width: cw, height: cellH, fill: 'none', style: 'stroke:var(--text);display:none', 'stroke-width': 1.5 }, root);
@@ -448,16 +457,16 @@
       kpi('CO₂ avoided', num(r.co2_avoided_t_per_year, 1), 't/yr', '<b>' + num(r.co2_avoided_t_lifetime) + ' t</b> over ' + r.lifetime_years + ' yrs ≈ ' + num(r.trees_equivalent) + ' trees')
     ].join('');
     $('#solar-sub').textContent = 'Net ' + inr(r.lifetime_net_saving_inr) + ' over ' + r.lifetime_years + ' years after capex and O&M. Hover a bar for that year.';
-    $('#solar-explain').innerHTML = r.explain.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('');
+    $('#solar-explain').innerHTML = r.explain.map(function (s) { return '<li>' + esc(pretty(s)) + '</li>'; }).join('');
     var a = r.assumptions;
-    $('#solar-assume').textContent = 'Assumptions: ' + [a.yield, a.area, a.cost, a.degradation + ' degradation', a.om + ' O&M', a.emission_factor].join(' · ');
+    $('#solar-assume').textContent = 'Assumptions: ' + pretty([a.yield, a.area, a.cost, a.degradation + ' degradation', a.om + ' O&M', a.emission_factor].join(' · '));
     renderSolarChart();
   }
   function renderSolarChart() {
     var r = state.solar, box = $('#solar-chart');
     if (!r || !box.clientWidth) { return; }
     box.innerHTML = '';
-    var W = box.clientWidth, H = 230, m = { l: 58, r: 10, t: 12, b: 26 };
+    var W = box.clientWidth, H = 230, m = { l: 66, r: 10, t: 14, b: 26 };
     var vals = [{ year: 0, cumulative_inr: -r.capex_inr }].concat(r.cashflow);
     var maxV = Math.max.apply(null, vals.map(function (v) { return v.cumulative_inr; }));
     var minV = Math.min.apply(null, vals.map(function (v) { return v.cumulative_inr; }));
@@ -467,7 +476,7 @@
     var root = svg('svg', { viewBox: '0 0 ' + W + ' ' + H, width: W, height: H, role: 'img', 'aria-label': 'Cumulative solar cash flow' }, box);
     [bot, bot / 2, 0, top / 2, top].forEach(function (v) {
       svg('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), 'class': v === 0 ? 'baseline' : 'gridline' }, root);
-      var t = svg('text', { x: m.l - 6, y: y(v) + 4, 'text-anchor': 'end', style: 'fill:var(--muted);font-size:11px' }, root);
+      var t = svg('text', { x: m.l - 6, y: y(v) + 4, 'text-anchor': 'end', style: 'fill:var(--muted);font-size:12px' }, root);
       t.textContent = inr(v).replace('.00', '');
     });
     vals.forEach(function (v, i) {
@@ -477,7 +486,7 @@
       svg('rect', { x: x0, y: v.cumulative_inr >= 0 ? y(v.cumulative_inr) : y(0), width: Math.max(2, bw - 2), height: Math.max(1, h), rx: 2,
         style: 'fill:' + (v.cumulative_inr >= 0 ? 'var(--brand)' : 'var(--critical)') }, g);
       if (i % 5 === 0) {
-        var t = svg('text', { x: x0 + bw / 2, y: H - 8, 'text-anchor': 'middle', style: 'fill:var(--muted);font-size:11px' }, root);
+        var t = svg('text', { x: x0 + bw / 2, y: H - 8, 'text-anchor': 'middle', style: 'fill:var(--muted);font-size:12px' }, root);
         t.textContent = 'Yr ' + v.year;
       }
       g.addEventListener('mousemove', function (evt) {
@@ -489,7 +498,7 @@
     if (r.payback_year_with_degradation) {
       var px = m.l + (r.payback_year_with_degradation + 0.5) * bw;
       svg('line', { x1: px, x2: px, y1: m.t, y2: H - m.b, 'class': 'now-line', 'stroke-dasharray': '4 3' }, root);
-      var pl = svg('text', { x: px + 5, y: m.t + 10, style: 'fill:var(--text-2);font-size:11px;font-weight:600' }, root);
+      var pl = svg('text', { x: px + 5, y: m.t + 10, style: 'fill:var(--text-2);font-size:12px;font-weight:600' }, root);
       pl.textContent = 'Payback ≈ ' + num(r.payback_year_with_degradation, 1) + ' yr';
     }
   }
@@ -523,7 +532,7 @@
       kpi('CO₂ avoided', num(r.monthly_co2_saved_kg / 1000, 1), 't/month', '≈ <b>' + num(r.trees_equivalent) + '</b> trees\' yearly absorption'),
       kpi('Biggest lever', LEVERS.reduce(function (a, l) { return r.by_lever_kwh[l.key] > r.by_lever_kwh[a.key] ? l : a; }, LEVERS[0]).label, '', 'by monthly kWh saved')
     ].join('');
-    $('#whatif-explain').innerHTML = r.explain.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('');
+    $('#whatif-explain').innerHTML = r.explain.map(function (s) { return '<li>' + esc(pretty(s)) + '</li>'; }).join('');
     $('#whatif-legend').innerHTML = LEVERS.map(function (l) {
       return '<span><i class="sw sw-box" style="background:' + l.color + '"></i>' + l.label + ' · ' + num(r.by_lever_kwh[l.key]) + ' kWh</span>';
     }).join('');
@@ -564,7 +573,7 @@
     var lb = state.board;
     if (!lb) { return; }
     $('#lb-sub').textContent = 'Ranked by weather-normalised % saving vs each building\'s own baseline · challenge period ' + lb.challenge_period;
-    $('#lb-method').textContent = lb.method + ' Points: ' + lb.points_rule + '.';
+    $('#lb-method').textContent = pretty(lb.method + ' Points: ' + lb.points_rule + '.');
     var maxAbs = Math.max.apply(null, lb.rows.map(function (r) { return Math.abs(r.saving_pct); })) || 1;
     var box = $('#leaderboard');
     box.innerHTML = '';
@@ -575,7 +584,7 @@
       row.innerHTML = '<div class="rank">' + (champ ? '🏆' : '#' + r.rank) + '</div>' +
         '<div class="lb-name"><b>' + esc(r.name) + '</b><span>' + esc(r.type) + (r.initiative ? ' · ' + esc(r.initiative) : '') + '</span></div>' +
         '<div class="lb-bar" title="' + num(r.saved_kwh) + ' kWh saved"><span class="zero"></span><span class="fill ' + (r.saving_pct >= 0 ? 'pos' : 'neg') + '" style="width:' + w.toFixed(1) + '%"></span></div>' +
-        '<div class="lb-pct">' + (r.saving_pct > 0 ? '+' : '') + num(r.saving_pct, 1) + '%<small>' + num(r.saved_kwh) + ' kWh · ' + inr(r.saved_inr) + ' · ' + r.points + ' pts</small></div>' +
+        '<div class="lb-pct">' + (r.saving_pct > 0 ? '+' : '') + num(r.saving_pct, 1) + '%<small><span class="nw">' + num(r.saved_kwh) + ' kWh</span> · <span class="nw">' + inr(r.saved_inr) + '</span> · <span class="nw">' + r.points + ' pts</span></small></div>' +
         '<div class="badges">' + r.badges.map(function (b) {
           var cls = b === 'Green Champion' ? 'gold' : b === 'Needs Attention' ? 'warn' : '';
           return '<span class="badge ' + cls + '">' + (b === 'Needs Attention' ? '▲ ' : b === 'Green Champion' ? '★ ' : '✓ ') + esc(b) + '</span>';

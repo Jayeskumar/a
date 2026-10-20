@@ -266,10 +266,11 @@
     });
     d.sentences.forEach(function (s, i) {
       var r = 4 + 9 * Math.sqrt(s.score / maxS);
+      if (s.in_summary) r = Math.max(r, 10);
       html += '<circle data-id="' + s.id + '" class="' + (s.in_summary ? "n-in" : "n-out") + '" cx="' + pos[i][0].toFixed(1) + '" cy="' +
         pos[i][1].toFixed(1) + '" r="' + r.toFixed(1) + '"><title>#' + s.rank + " · " + s.score.toFixed(2) + "× – " + esc(s.text) + "</title></circle>";
-      if (s.in_summary && r > 7) {
-        html += '<text x="' + pos[i][0].toFixed(1) + '" y="' + (pos[i][1] + 3).toFixed(1) + '" text-anchor="middle">' +
+      if (s.in_summary) {
+        html += '<text x="' + pos[i][0].toFixed(1) + '" y="' + (pos[i][1] + 4).toFixed(1) + '" text-anchor="middle">' +
           (d.summary_ids.indexOf(s.id) + 1) + "</text>";
       }
     });
@@ -293,8 +294,8 @@
   function renderConcepts() {
     $("#chips").innerHTML = S.concepts.map(function (c, i) {
       var size = (12.5 + 9 * c.weight).toFixed(1);
-      var alpha = (0.35 + 0.65 * c.weight).toFixed(2);
-      return '<button type="button" class="chip' + (S.selectedConcept === i ? " sel" : "") + '" data-i="' + i + '" style="font-size:' + size +
+      var alpha = (0.62 + 0.38 * c.weight).toFixed(2);
+      return '<button type="button" class="chip' + ((S.selectedConcept == null ? 0 : S.selectedConcept) === i ? " sel" : "") + '" data-i="' + i + '" style="font-size:' + size +
         'px;opacity:' + alpha + '">' + esc(c.phrase) + "<small>" + c.weight.toFixed(2) + "</small></button>";
     }).join("");
     $$("#chips .chip").forEach(function (b) {
@@ -463,7 +464,7 @@
       S.deck.cards.map(function (c) {
         var st = c.state, due = st.due ? (st.due <= now ? "now" : humanize(st.due - now)) : "–";
         return "<tr><td>" + esc(c.answer) + '</td><td><span class="st st-' + (c.status === "learning" ? "due" : c.status) + '">' + c.status +
-          "</span></td><td>" + st.ef.toFixed(2) + "</td><td>" + st.reps + "</td><td>" + st.interval + " d</td><td>" + due + "</td></tr>";
+          "</span></td><td>" + st.ef.toFixed(2) + "</td><td>" + st.reps + "</td><td>" + (st.reps ? st.interval + " d" : "–") + "</td><td>" + due + "</td></tr>";
       }).join("");
   }
   function humanize(s) {

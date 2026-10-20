@@ -90,5 +90,15 @@
     "Faculty mode with class-level weak-concept view"
   ],
   "port": 8001,
-  "dir": "projects/01-studypilot"
+  "dir": "projects/01-studypilot",
+  "compare": {
+    "columns": ["Re-reading notes", "Cloud AI chatbots", "StudyPilot"],
+    "rows": [
+      ["Works offline, notes stay local", "Yes", "No", "Yes"],
+      ["Answers only from your notes", "Yes", "Partial", "Yes (extractive)"],
+      ["Shows why (scores, evidence)", "No", "Partial", "Yes"],
+      ["Auto quiz + spaced review", "No", "Partial", "Yes (SM-2)"],
+      ["Cost to the student", "₹0", "Free tier or paid", "₹0 / offline"]
+    ]
+  }
 }
