@@ -1,0 +1,97 @@
+{
+  "name": "WattWise",
+  "tagline": "AI energy & carbon copilot for smart campuses",
+  "domain": "Sustainability, CleanTech & Green Energy",
+  "color": "#12A150",
+  "problem": [
+    "Labs, ACs and lights run all night and on weekends",
+    "The only feedback is a monthly bill, weeks late",
+    "No one knows if rooftop solar would really pay off",
+    "Green drives fade because savings are never measured"
+  ],
+  "stats": [
+    {"value": "~0.7 kg", "label": "CO2 per kWh on India's grid (approx., CEA)"},
+    {"value": "~1/3", "label": "of India's electricity is used by buildings (approx., BEE)"},
+    {"value": "1.34 GWh", "label": "yearly use of our 6-building demo campus (synthetic)"}
+  ],
+  "solution": [
+    "Reads hourly meter data for every campus building",
+    "Forecasts next week and flags waste with a plain reason",
+    "Converts every kWh to rupees, CO2 and trees",
+    "Plans rooftop solar and simulates savings before you spend"
+  ],
+  "features": [
+    {"title": "7-day forecast", "desc": "Hourly per building, split into calendar baseline + weather effect"},
+    {"title": "Waste detective", "desc": "Robust z-score alerts: '18 kW at 3 AM Sun vs 3 kW typical'"},
+    {"title": "Carbon ledger", "desc": "kWh to rupees to kg CO2 to trees, with named, editable factors"},
+    {"title": "Solar planner", "desc": "kWp, payback, 25-year cash flow and CO2 avoided for any roof"},
+    {"title": "What-if levers", "desc": "AC setpoint, auto-off, LED and BLDC - live savings, no double count"},
+    {"title": "Green leaderboard", "desc": "Weather-normalised savings vs own baseline; Green Champion badge"}
+  ],
+  "architecture": [
+    "Meters / CSV -> hourly kWh + temperature per building",
+    "dataset.py -> deterministic synthetic campus with ground truth",
+    "forecast.py -> robust weighted regression, Holt-Winters baseline",
+    "anomaly.py -> median + MAD per hour-of-week, rule-based causes",
+    "solar.py / whatif.py / leaderboard.py -> decisions in rupees and CO2",
+    "app.py -> stdlib HTTP JSON API; static/ -> vanilla JS + SVG dashboard"
+  ],
+  "algorithms": [
+    "Weighted ridge regression (Gaussian elimination) - hourly load forecast",
+    "Robust trimming from category medians - waste never becomes 'normal'",
+    "Modified z-score (median + MAD) - waste event detection",
+    "Holt-Winters triple smoothing - benchmark forecaster",
+    "Degraded cash-flow model - solar payback and 25-year savings",
+    "Weather-normalised baseline (IPMVP-style) - fair leaderboard"
+  ],
+  "tech": [
+    "Python 3 standard library only",
+    "http.server ThreadingHTTPServer",
+    "Vanilla HTML/CSS/JS",
+    "Hand-drawn inline SVG charts",
+    "unittest (30 tests)",
+    "Runs fully offline"
+  ],
+  "innovation": [
+    "Every forecast and alert explains itself - no black box",
+    "Buildings compete with their own weather-adjusted past",
+    "Detection to rupees to fix to solar, all in one offline tool",
+    "Zero dependencies: runs on a Rs 15k laptop with no internet"
+  ],
+  "results": [
+    {"value": "5.6%", "label": "forecast MAPE on hold-out week (Holt-Winters 27.7%)"},
+    {"value": "100% / 89%", "label": "waste-event precision / recall vs injected truth"},
+    {"value": "10%", "label": "monthly saving from 4 cheap levers (Rs 10.7 L/yr, demo)"},
+    {"value": "300 ms", "label": "full pipeline for 6 buildings x 8 weeks"}
+  ],
+  "demo_flow": [
+    "Click Run demo - models retrain offline in ~300 ms",
+    "Read KPI tiles: kWh, rupees, CO2, waste, next-week forecast",
+    "Hover the CSE Lab night-time waste band for its reason",
+    "Open Why this forecast: baseline + weather split",
+    "Solar planner: all roofs, 442 kWp, 4.5-year payback",
+    "What-if: drag AC and LED sliders, watch savings update",
+    "Leaderboard and Model report: champion and live accuracy"
+  ],
+  "impact": [
+    "~10% lower bills from operational levers (demo estimate)",
+    "~95 t CO2/yr avoided by levers, ~456 t/yr by rooftop solar",
+    "Students see their building's footprint and compete to cut it",
+    "Transparent maths doubles as a sustainability teaching tool"
+  ],
+  "business": [
+    "Free open-source core for colleges via eco-clubs",
+    "Pro tier per building: alerts, meter connectors, NAAC reports",
+    "Referral fee from solar EPC vendors",
+    "Shared-savings contracts verified by the same baseline"
+  ],
+  "future": [
+    "Live Modbus/MQTT meters and WhatsApp alerts",
+    "Academic calendar and humidity as forecast inputs",
+    "Time-of-day tariff and peak-demand optimisation",
+    "Battery dispatch and carbon-aware scheduling",
+    "NILM to learn end-use shares automatically"
+  ],
+  "port": 8002,
+  "dir": "projects/02-wattwise"
+}

@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WattWise</title>
+<meta name="description" content="AI energy & carbon copilot for smart campuses - offline, explainable, standard-library Python.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2312A150'/%3E%3Cpath d='M18 4 9 18h6l-2 10 10-15h-6z' fill='white'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8"/><path d="M18 4 9 18h6l-2 10 10-15h-6z"/></svg>
+    <div>
+      <h1>WattWise</h1>
+      <p class="tagline">AI energy &amp; carbon copilot for smart campuses</p>
+    </div>
+  </div>
+  <div class="top-actions">
+    <span class="pill" id="data-pill" title="All data is synthetic and generated deterministically">Demo campus · synthetic data</span>
+    <button class="btn primary" id="run-demo" type="button">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z"/></svg>
+      Run demo
+    </button>
+  </div>
+</header>
+
+<nav class="tabs" role="tablist" aria-label="Sections">
+  <button role="tab" class="tab" data-tab="overview" aria-selected="true">Dashboard</button>
+  <button role="tab" class="tab" data-tab="solar" aria-selected="false">Solar planner</button>
+  <button role="tab" class="tab" data-tab="whatif" aria-selected="false">What-if simulator</button>
+  <button role="tab" class="tab" data-tab="leaderboard" aria-selected="false">Leaderboard</button>
+  <button role="tab" class="tab" data-tab="report" aria-selected="false">Model report</button>
+</nav>
+
+<main>
+  <!-- =================================================== DASHBOARD -->
+  <section class="panel" id="tab-overview" role="tabpanel">
+    <div class="kpis" id="kpis">
+      <div class="kpi skeleton"></div><div class="kpi skeleton"></div><div class="kpi skeleton"></div>
+      <div class="kpi skeleton"></div><div class="kpi skeleton"></div><div class="kpi skeleton"></div>
+    </div>
+
+    <div class="grid-main">
+      <div class="card chart-card">
+        <div class="card-head">
+          <div>
+            <h2 id="chart-title">Actual vs forecast</h2>
+            <p class="sub" id="chart-sub">Last 14 days metered · hold-out week back-test · next 7 days forecast</p>
+          </div>
+          <div class="seg" id="building-chips" role="group" aria-label="Building"></div>
+        </div>
+        <div class="legend" id="line-legend">
+          <span><i class="sw sw-line s1"></i>Actual kWh</span>
+          <span><i class="sw sw-dash s2"></i>Forecast kWh</span>
+          <span><i class="sw sw-band"></i>Waste event</span>
+        </div>
+        <div class="chart" id="line-chart" aria-label="Line chart of hourly energy, actual and forecast"></div>
+      </div>
+
+      <aside class="card why-card" id="why-card">
+        <h2>Why this forecast?</h2>
+        <div id="why-body" class="why-body"><p class="muted">Loading…</p></div>
+      </aside>
+    </div>
+
+    <div class="grid-two">
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h2>Waste timeline · all buildings</h2>
+            <p class="sub">Each mark is a detected waste event (robust hour-of-week baseline). Hover for the reason.</p>
+          </div>
+        </div>
+        <div class="chart" id="timeline-chart"></div>
+        <h3 class="mini-h">Latest alerts</h3>
+        <ul class="alerts" id="alerts"></ul>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h2 id="heat-title">Load heatmap</h2>
+            <p class="sub">Hour of day × date, 8 weeks. Outlined cells were flagged as waste.</p>
+          </div>
+        </div>
+        <div class="chart" id="heatmap"></div>
+        <div class="heat-legend"><span>Low</span><i id="heat-ramp"></i><span>High kWh</span><span class="flag-key"><i></i>Flagged</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================================================== SOLAR -->
+  <section class="panel" id="tab-solar" role="tabpanel" hidden>
+    <div class="grid-side">
+      <form class="card form" id="solar-form" novalidate>
+        <h2>Rooftop solar planner</h2>
+        <p class="sub">Sizes a grid-tied plant from roof area and consumption, then works out payback and CO₂.</p>
+        <label>Pre-fill from
+          <select name="building" id="solar-building"></select>
+        </label>
+        <label>Roof area (m²)<input name="roof_area_m2" type="number" min="1" step="1" required></label>
+        <div class="row2">
+          <label>Monthly use (kWh)<input name="monthly_kwh" type="number" min="0" step="1"></label>
+          <label>or monthly bill (₹)<input name="monthly_bill_inr" type="number" min="0" step="100"></label>
+        </div>
+        <div class="row2">
+          <label>Tariff (₹/kWh)<input name="tariff" type="number" min="1" max="50" step="0.1" placeholder="8.0"></label>
+          <label>Cost (₹/kWp)<input name="cost_per_kwp" type="number" min="10000" step="1000" placeholder="50000"></label>
+        </div>
+        <div class="form-actions">
+          <button class="btn primary" type="submit">Calculate</button>
+          <button class="btn" type="button" id="solar-demo">Load demo values</button>
+        </div>
+        <p class="error" id="solar-error" role="alert"></p>
+      </form>
+      <div class="stack">
+        <div class="kpis kpis-4" id="solar-kpis"></div>
+        <div class="card">
+          <div class="card-head"><div><h2>Cumulative cash flow (25 years)</h2>
+            <p class="sub" id="solar-sub">Investment recovered where the bars cross zero.</p></div></div>
+          <div class="chart" id="solar-chart"></div>
+        </div>
+        <div class="card">
+          <h2>How we got these numbers</h2>
+          <ol class="explain" id="solar-explain"></ol>
+          <p class="assume" id="solar-assume"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================================================== WHAT-IF -->
+  <section class="panel" id="tab-whatif" role="tabpanel" hidden>
+    <div class="grid-side">
+      <form class="card form" id="whatif-form">
+        <h2>What-if simulator</h2>
+        <p class="sub">Drag the levers - savings are computed on the last 28 days of real meter data.</p>
+        <label class="slider">AC setpoint raised by <b id="v-ac">1 °C</b>
+          <input type="range" name="ac_setpoint_delta" min="0" max="4" step="0.5" value="1"></label>
+        <label class="check"><input type="checkbox" name="auto_off" checked> Auto-off non-essential loads after
+          <select name="auto_off_hour"><option value="21">9 PM</option><option value="22" selected>10 PM</option><option value="23">11 PM</option></select></label>
+        <label class="slider">LED retrofit of remaining tubes <b id="v-led">50%</b>
+          <input type="range" name="led_pct" min="0" max="100" step="5" value="50"></label>
+        <label class="slider">BLDC ceiling fans <b id="v-bldc">30%</b>
+          <input type="range" name="bldc_pct" min="0" max="100" step="5" value="30"></label>
+        <ul class="explain small" id="whatif-explain"></ul>
+      </form>
+      <div class="stack">
+        <div class="kpis kpis-4" id="whatif-kpis"></div>
+        <div class="card">
+          <div class="card-head"><div><h2>Monthly savings by building and lever</h2>
+            <p class="sub">kWh per month. Hostels and canteen are excluded from auto-off.</p></div></div>
+          <div class="legend" id="whatif-legend"></div>
+          <div class="chart" id="whatif-chart"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================================================== LEADERBOARD -->
+  <section class="panel" id="tab-leaderboard" role="tabpanel" hidden>
+    <div class="card">
+      <div class="card-head">
+        <div><h2>Campus energy leaderboard</h2>
+          <p class="sub" id="lb-sub"></p></div>
+      </div>
+      <div class="lb" id="leaderboard"></div>
+      <p class="assume" id="lb-method"></p>
+    </div>
+  </section>
+
+  <!-- =================================================== REPORT -->
+  <section class="panel" id="tab-report" role="tabpanel" hidden>
+    <div class="kpis kpis-4" id="report-kpis"></div>
+    <div class="grid-two">
+      <div class="card">
+        <h2>Forecast accuracy on the hold-out week</h2>
+        <p class="sub" id="fc-sub"></p>
+        <div class="table-wrap"><table id="fc-table"></table></div>
+      </div>
+      <div class="card">
+        <h2>Waste detection vs injected ground truth</h2>
+        <p class="sub">Event counted as found if a detected event overlaps it. Threshold presets show the precision/recall trade-off.</p>
+        <div class="table-wrap"><table id="an-table"></table></div>
+        <h3 class="mini-h">Missed events (too subtle by design)</h3>
+        <ul class="alerts" id="missed"></ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <span>Built for QUANTIX 2K26 · KSRCE</span>
+  <span class="muted">Runs offline · Python standard library · every model built from scratch</span>
+</footer>
+
+<div class="tooltip" id="tooltip" role="tooltip" hidden></div>
+<div class="toast" id="toast" role="status" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>
