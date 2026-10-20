@@ -1,0 +1,133 @@
+{
+  "name": "NeuroCanvas",
+  "tagline": "Draw a digit, watch a neural network think",
+  "domain": "Artificial Intelligence & Machine Learning",
+  "color": "#4F46E5",
+  "problem": [
+    "Students meet neural networks as model.fit(): a black box",
+    "Backprop, activations and failure modes stay invisible",
+    "Deep-learning tutorials assume GPUs, cloud notebooks and internet",
+    "Labs with weak Wi-Fi cannot run AI-literacy sessions at all"
+  ],
+  "stats": [
+    {
+      "value": "~4.3 crore",
+      "label": "students in Indian higher education (AISHE 2021-22, approx.)"
+    },
+    {
+      "value": "0",
+      "label": "GPUs, installs or internet NeuroCanvas needs"
+    },
+    {
+      "value": "18,858",
+      "label": "weights you can watch, every one written in plain Python"
+    }
+  ],
+  "solution": [
+    "Draw a digit: probabilities, neurons and saliency update live",
+    "Explain mode walks forward pass and backprop with your numbers",
+    "Train a fresh network live; teach it your own handwriting",
+    "Pure-Python MLP, hand-derived backprop, runs offline on any laptop"
+  ],
+  "features": [
+    {
+      "title": "Live prediction",
+      "desc": "10-class bars update as you draw, about 2 ms per forward + backward pass"
+    },
+    {
+      "title": "Inside the network",
+      "desc": "Every neuron's activation, strongest connections, top voters, weight images"
+    },
+    {
+      "title": "Saliency overlay",
+      "desc": "Gradient of the winning score per pixel, glowing on your own strokes"
+    },
+    {
+      "title": "Explain mode",
+      "desc": "11 steps from pixels to softmax to backprop to one SGD step, real numbers"
+    },
+    {
+      "title": "Live training lab",
+      "desc": "Tune lr, neurons, layers, data; watch loss curves and filters evolve"
+    },
+    {
+      "title": "Teach it",
+      "desc": "Label your drawings, fine-tune with replay, measure fixes vs forgetting"
+    }
+  ],
+  "architecture": [
+    "Browser (vanilla JS + SVG/canvas) -> drawing pad, MNIST-style preprocessing",
+    "app.py ThreadingHTTPServer -> JSON API, validation, static files",
+    "render + templates -> deterministic synthetic digit generator",
+    "mlp + train -> MLP, backprop, SGD with momentum, L2",
+    "explain -> saliency, contributions, step-by-step text",
+    "live + teach -> background trainer, fine-tuning with replay"
+  ],
+  "algorithms": [
+    "Stroke templates + elastic warp + affine – synthetic handwriting",
+    "Bounding-box fit + centre-of-mass shift – MNIST-style preprocessing",
+    "MLP 256-64-32-10, ReLU, softmax + cross-entropy – classifier",
+    "Backpropagation + mini-batch SGD with momentum, He init, L2",
+    "Gradient saliency and gradient x activation – explanations",
+    "Replay fine-tuning – learn new styles without forgetting"
+  ],
+  "tech": [
+    "Python 3 stdlib only (http.server, math, random, gzip, json)",
+    "Vanilla HTML/CSS/JS, inline SVG and canvas, no CDN",
+    "6,000-image dataset in 0.8 MB, trained weights in 160 KB",
+    "unittest: 50 tests incl. finite-difference gradient check"
+  ],
+  "innovation": [
+    "Every number is inspectable: no framework hides the maths",
+    "Explanations use the actual activations of your drawing",
+    "Shows failure honestly: confident mistakes, forgetting, divergence",
+    "Starts in 0.1 s on a cheap laptop with Wi-Fi off"
+  ],
+  "results": [
+    {
+      "value": "99.4%",
+      "label": "test accuracy, 1,000 held-out synthetic digits"
+    },
+    {
+      "value": "57/60",
+      "label": "mouse-drawn digits in a real browser; 60/60 after teaching 3"
+    },
+    {
+      "value": "0.4 ms",
+      "label": "forward pass per image, pure Python (1.8 ms with saliency)"
+    },
+    {
+      "value": "60→83%",
+      "label": "unseen LCD-style digits after teaching 20 examples (2.6 s)"
+    }
+  ],
+  "demo_flow": [
+    "Open the app: a demo 3 draws itself, bars and neurons light up",
+    "Draw a 7 by hand: show saliency glow and top voting neurons",
+    "Explain tab: pick label 1 and watch backprop push hard",
+    "Live training: run 'lr too high' then defaults, compare curves",
+    "Evaluation: confusion matrix, click a cell to see mistakes",
+    "Teach it: load LCD lesson, fine-tune, show fixes and forgetting"
+  ],
+  "impact": [
+    "AI literacy for any college lab, even without internet",
+    "Students see why models fail, not just that they work",
+    "Teachers get a ready demo for backprop, overfitting, forgetting",
+    "Runs on existing laptops: no GPU or cloud spend"
+  ],
+  "business": [
+    "Free and open for students; offline by design",
+    "Paid workshop kits for colleges and school ATL labs",
+    "Teacher edition: lesson plans and auto-graded exercises",
+    "Extend to letters, Tamil script and other datasets"
+  ],
+  "future": [
+    "Convolutional layer view, to compare with the MLP",
+    "Tamil and Devanagari character sets",
+    "Class mode: students' drawings pooled into one dataset",
+    "Real MNIST import when a copy is available offline",
+    "Step-through backprop animation, one neuron at a time"
+  ],
+  "port": 8014,
+  "dir": "projects/14-neurocanvas"
+}
