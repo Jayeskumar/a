@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LogSentinel</title>
+<script>
+  /* Default to the dark security-console theme (the brand); honour a saved choice. */
+  try { document.documentElement.setAttribute("data-theme", localStorage.getItem("ls-theme") || "dark"); }
+  catch (e) { document.documentElement.setAttribute("data-theme", "dark"); }
+</script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="logo" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="26" height="26"><path d="M12 2 4 5v6c0 5 3.4 8.4 8 11 4.6-2.6 8-6 8-11V5l-8-3z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8.5 12.2l2.3 2.3 4.7-4.9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </span>
+    <div>
+      <h1>LogSentinel</h1>
+      <p class="tag">A pocket SOC: detect attacks hiding in your server logs</p>
+    </div>
+  </div>
+  <div class="topbar-actions">
+    <span id="source-label" class="source-pill" title="Current data source">loading…</span>
+    <button id="btn-reset" class="btn btn-primary" title="Reload the deterministic demo log">Run demo</button>
+    <button id="btn-upload" class="btn" title="Analyse your own log file">Upload log</button>
+    <button id="btn-theme" class="icon-btn" title="Toggle light / dark" aria-label="Toggle theme">◐</button>
+  </div>
+</header>
+
+<nav class="tabs" role="tablist">
+  <button class="tab is-active" data-tab="overview" role="tab">Overview</button>
+  <button class="tab" data-tab="alerts" role="tab">Alerts <span id="tabcount-alerts" class="tabcount"></span></button>
+  <button class="tab" data-tab="incidents" role="tab">Incidents <span id="tabcount-incidents" class="tabcount"></span></button>
+  <button class="tab" data-tab="tail" role="tab">Live tail</button>
+  <button class="tab" data-tab="eval" role="tab">Evaluation</button>
+</nav>
+
+<main>
+  <!-- OVERVIEW -->
+  <section id="tab-overview" class="panel is-active">
+    <div class="kpis" id="kpis"></div>
+    <div class="grid-3">
+      <div class="card">
+        <h2>Alerts by severity</h2>
+        <div id="donut" class="donut-wrap"></div>
+      </div>
+      <div class="card">
+        <h2>Top attacker IPs <span class="hint">by threat score</span></h2>
+        <div id="attackers"></div>
+      </div>
+      <div class="card">
+        <h2>Attack categories</h2>
+        <div id="categories"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <h2>Requests per minute <span class="hint">green = observed · dashed = EWMA baseline · red = anomaly</span></h2>
+      </div>
+      <div id="rpm" class="rpm-wrap"></div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <h2>Export</h2>
+        <p class="muted small">Artefacts for your admin. LogSentinel never touches your firewall - these are text to review and apply yourself.</p>
+        <div class="btn-row">
+          <button id="btn-blocklist" class="btn">Download blocklist (.txt)</button>
+          <span class="muted small" id="blocklist-note"></span>
+        </div>
+      </div>
+      <div class="card">
+        <h2>How a finding is made</h2>
+        <ol class="explain-list">
+          <li><b>Signatures</b> — URL-decode first, then regex for SQLi/XSS/traversal/scanner UAs.</li>
+          <li><b>Correlation</b> — sliding windows: N fails/IP, one IP ↔ many users, fails→success.</li>
+          <li><b>Anomaly</b> — per-IP EWMA + z-score on request rate, user-agent & path novelty.</li>
+          <li>Every alert carries evidence, MITRE ATT&CK, and a response playbook.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ALERTS -->
+  <section id="tab-alerts" class="panel">
+    <div class="filters" id="alert-filters">
+      <label>Severity
+        <select id="f-severity"><option value="">all</option><option>critical</option><option>high</option><option>medium</option><option>low</option><option>info</option></select>
+      </label>
+      <label>Category <select id="f-category"><option value="">all</option></select></label>
+      <label>Source IP <input id="f-src" type="text" placeholder="e.g. 203.0.113.66" autocomplete="off"></label>
+      <button id="f-clear" class="btn btn-ghost">clear</button>
+      <span class="grow"></span>
+      <span class="muted small" id="alert-total"></span>
+    </div>
+    <div class="table-wrap">
+      <table class="atable">
+        <thead><tr><th>Sev</th><th>Rule</th><th>Finding</th><th>Source</th><th>When</th><th>MITRE</th></tr></thead>
+        <tbody id="alert-rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- INCIDENTS -->
+  <section id="tab-incidents" class="panel">
+    <div id="incident-list" class="incident-list"></div>
+  </section>
+
+  <!-- LIVE TAIL -->
+  <section id="tab-tail" class="panel">
+    <div class="tail-controls">
+      <button id="tail-play" class="btn btn-primary">▶ Play replay</button>
+      <button id="tail-pause" class="btn" disabled>⏸ Pause</button>
+      <button id="tail-restart" class="btn btn-ghost">⟲ Restart</button>
+      <label>Speed
+        <select id="tail-speed">
+          <option value="40">1×</option>
+          <option value="160" selected>4×</option>
+          <option value="600">15×</option>
+          <option value="2000">50×</option>
+        </select>
+      </label>
+      <span class="grow"></span>
+      <span class="tail-stat" id="tail-progress">0 / 0 lines</span>
+      <span class="tail-stat alarm" id="tail-alertcount">0 alerts lit</span>
+    </div>
+    <div id="tail-console" class="tail-console" aria-live="polite"></div>
+  </section>
+
+  <!-- EVALUATION -->
+  <section id="tab-eval" class="panel">
+    <div class="card">
+      <h2>Detection quality vs. the generator's ground truth</h2>
+      <p class="muted small">Measured on the deterministic demo log (seed 1337). An alert counts as a hit when it shares the attacker's IP, overlaps the labelled window, and matches the expected category.</p>
+      <div class="kpis" id="eval-kpis"></div>
+      <div class="table-wrap">
+        <table class="atable" id="eval-table">
+          <thead><tr><th>Attack type</th><th>Labels</th><th>Detected</th><th>Recall</th></tr></thead>
+          <tbody id="eval-rows"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">Built for QUANTIX 2K26 · KSRCE — stdlib-only · runs offline · <span class="muted">detection from scratch, no black box</span></footer>
+
+<!-- Upload modal -->
+<div id="upload-modal" class="modal" hidden>
+  <div class="modal-card">
+    <div class="modal-head"><h2>Analyse your own log</h2><button id="upload-close" class="icon-btn">✕</button></div>
+    <p class="muted small">Paste Apache/Nginx access lines, Linux <code>auth.log</code>, or iptables/UFW firewall lines. Format is auto-detected per line; mixed files are fine. Malformed lines are counted, not fatal.</p>
+    <textarea id="upload-text" rows="9" placeholder="203.0.113.5 - - [15/Oct/2026:12:00:00 +0000] &quot;GET / HTTP/1.1&quot; 200 12 &quot;-&quot; &quot;curl/8&quot;&#10;Oct 15 12:00:01 web01 sshd[9]: Failed password for root from 198.51.100.9 port 40000 ssh2"></textarea>
+    <div class="btn-row">
+      <input type="file" id="upload-file" accept=".log,.txt,text/plain">
+      <span class="grow"></span>
+      <button id="upload-run" class="btn btn-primary">Analyse</button>
+    </div>
+    <p id="upload-err" class="err small" hidden></p>
+  </div>
+</div>
+
+<!-- Detail drawer (alerts + incidents) -->
+<aside id="drawer" class="drawer" hidden>
+  <div class="drawer-inner">
+    <button id="drawer-close" class="icon-btn drawer-close">✕</button>
+    <div id="drawer-body"></div>
+  </div>
+</aside>
+<div id="drawer-scrim" class="scrim" hidden></div>
+
+<script src="app.js"></script>
+</body>
+</html>

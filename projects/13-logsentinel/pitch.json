@@ -1,0 +1,94 @@
+{
+  "name": "LogSentinel",
+  "tagline": "A pocket SOC: detect attacks hiding in your server logs",
+  "domain": "Cybersecurity & Blockchain Technology",
+  "color": "#22C55E",
+  "problem": [
+    "Colleges and small businesses run web + SSH servers with zero security monitoring.",
+    "Commercial SIEMs are costly, cloud-tied and complex to operate.",
+    "Brute force, SQLi and scans sit in logs that nobody ever reads.",
+    "By the time a breach is noticed, the attacker is already inside."
+  ],
+  "stats": [
+    {"value": "0", "label": "false positives on a benign-only log (measured)"},
+    {"value": "100%", "label": "attacks detected in the demo (11/11, measured)"},
+    {"value": "~89k", "label": "log lines/sec parsed on a laptop (approx.)"}
+  ],
+  "solution": [
+    "Auto-detects Apache/Nginx, auth.log and firewall logs; robust to bad lines.",
+    "Signatures + sliding-window correlation + statistical anomaly detection.",
+    "Every alert: evidence, MITRE ATT&CK mapping and a response playbook.",
+    "Groups alerts into incidents with a kill-chain timeline; exports a blocklist."
+  ],
+  "features": [
+    {"title": "Three-layer engine", "desc": "Signatures, stateful correlation and EWMA anomaly - all from scratch"},
+    {"title": "MITRE ATT&CK", "desc": "Each alert maps to a technique ID with a why-it-fired note"},
+    {"title": "Incident timelines", "desc": "Alerts from one IP merged into a kill-chain story"},
+    {"title": "Live tail replay", "desc": "Streams the log at speed, lighting up attacks as they land"},
+    {"title": "Bring your own log", "desc": "Paste or upload a real log; format auto-detected per line"},
+    {"title": "Actionable export", "desc": "iptables / fail2ban blocklist + Markdown/HTML report"}
+  ],
+  "architecture": [
+    "Parsers -> normalize web/SSH/firewall lines into one event type",
+    "Signatures -> URL-decode then regex for SQLi/XSS/traversal/scanners",
+    "Correlation -> sliding windows: brute force, spraying, compromise, scans",
+    "Anomaly -> per-IP EWMA + z-score on request rate, UA/path novelty",
+    "Incidents -> group by IP+time into a kill-chain timeline",
+    "stdlib http.server -> JSON API + vanilla JS console dashboard"
+  ],
+  "algorithms": [
+    "URL-decoding signature matching - defeats percent/double-encoding evasion",
+    "Sliding-window correlation - N events in T seconds, distinct-key counts",
+    "EWMA mean + variance with z-score - per-IP request-rate anomalies",
+    "Credential-stuffing vs spraying - invalid-user ratio splits the two",
+    "Kill-chain incident grouping - phase-ordered timeline per source IP"
+  ],
+  "tech": [
+    "Python 3 standard library (http.server, re, urllib, datetime)",
+    "Vanilla HTML/CSS/JS, hand-drawn inline-SVG charts",
+    "No pip, no CDN, no network - runs offline on a cheap laptop",
+    "Deterministic log generator with ground-truth labels for evaluation"
+  ],
+  "innovation": [
+    "Explainable by design - every alert shows evidence + the rule + MITRE why.",
+    "Three complementary detectors catch known AND novel attacks.",
+    "Ships its own labelled attack dataset, so accuracy is measured, not claimed.",
+    "Never touches your firewall - it hands you a blocklist to review and apply."
+  ],
+  "results": [
+    {"value": "100%", "label": "recall across 11 labelled attack types"},
+    {"value": "100%", "label": "detection precision (IP-level, 0 false alerts)"},
+    {"value": "0", "label": "false positives on 11.9k benign lines"},
+    {"value": "~89k/s", "label": "parse throughput, lines/sec (approx.)"}
+  ],
+  "demo_flow": [
+    "Open the dashboard - demo log is already analysed (12k lines, 16 alerts).",
+    "Overview: severity donut, top attacker IPs, requests/min with red anomaly markers.",
+    "Incidents: open INC for 192.0.2.77 - see stuffing -> compromise -> sudo kill-chain.",
+    "Alerts: filter to SQL Injection, open one, read decoded payload + MITRE + fix.",
+    "Live tail: hit Play - watch attacks light up in the streaming console.",
+    "Evaluation tab: 100% recall / precision, 0 benign FPs, throughput.",
+    "Export a blocklist, then Upload log to analyse a judge's own file."
+  ],
+  "impact": [
+    "Free, offline security monitoring for orgs that can afford none.",
+    "Turns ignored logs into an early-warning system before a breach spreads.",
+    "Teaches SOC concepts (MITRE, kill-chain) - a learning tool for students.",
+    "No cloud, no data leaves the laptop - privacy and sovereignty by default."
+  ],
+  "business": [
+    "Open-core: free self-hosted tool; paid support + managed rules for SMBs.",
+    "Campus/MSP tier: one install watches many hosts via shipped logs.",
+    "Rule packs and MITRE-aligned reports as a subscription add-on.",
+    "Near-zero running cost - stdlib Python, no infra to rent."
+  ],
+  "future": [
+    "Live log tailing from files/journald instead of replay.",
+    "GeoIP and ASN enrichment for attacker context (offline DB).",
+    "Optional fail2ban/iptables apply with human approval.",
+    "More sources: IIS, Postfix, Windows Event Log, Kubernetes audit.",
+    "Tunable rule editor and alert suppression lists in the UI."
+  ],
+  "port": 8013,
+  "dir": "projects/13-logsentinel"
+}
