@@ -5,7 +5,7 @@
 //   node build_decks.js --out /some/dir path/to/pitch.json
 //
 // Team details shown on the title and closing slides come from ../team.json (optional):
-//   { "team": "Team Name", "members": ["A", "B"], "github": "https://github.com/..." }
+//   { "team": "Team Name", "members": ["A", "B"], "github": "https://github.com/...", "branch": "main" }
 const fs = require("fs");
 const path = require("path");
 const pptxgen = require("pptxgenjs");
@@ -69,14 +69,14 @@ const shadow = () => ({ type: "outer", color: "000000", opacity: 0.14, blur: 8, 
 
 // "Component -> what it does" or "Algorithm – purpose" → [head, tail]
 function splitPair(s) {
-  const m = String(s).split(/\s*(?:->|→|–|—|:)\s*/);
+  const m = String(s).split(/\s*(?:->|→|–|—|:)\s*|\s+-\s+/);
   if (m.length < 2) return [String(s), ""];
   return [m[0], m.slice(1).join(" – ")];
 }
 
 function loadTeam() {
   const p = path.join(ROOT, "team.json");
-  const team = { team: "Your Team Name", members: [], github: "github.com/<your-team>/<repo>" };
+  const team = { team: "Your Team Name", members: [], github: "github.com/<your-team>/<repo>", branch: "main" };
   if (fs.existsSync(p)) Object.assign(team, JSON.parse(fs.readFileSync(p, "utf8")));
   return team;
 }
@@ -326,7 +326,7 @@ async function buildDeck(pitchPath, outDir, team) {
   s.addText(`${pitch.name} · ${pitch.tagline}`, { x: M, y: 2.9, w: 7, h: 0.9, fontSize: 20, color: C.accent6, margin: 0, valign: "top", isTextBox: true, objectName: "Thanks tagline" });
   s.addText([
     { text: "Code  ", options: { bold: true, color: C.accent6 } },
-    { text: `${team.github}/tree/main/${pitch.dir}`, options: { color: C.background1, breakLine: true } },
+    { text: `${team.github}/tree/${team.branch}/${pitch.dir}`, options: { color: C.background1, breakLine: true } },
     { text: "Run  ", options: { bold: true, color: C.accent6 } },
     { text: `cd ${pitch.dir} && python app.py`, options: { color: C.background1, fontFace: "Courier New" } },
   ], { x: M, y: 4.3, w: 11.5, h: 1.0, fontSize: 15, margin: 0, valign: "top", paraSpaceAfter: 8, isTextBox: true, objectName: "Links" });
