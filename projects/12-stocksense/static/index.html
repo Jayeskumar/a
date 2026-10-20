@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StockSense</title>
+<meta name="description" content="Demand forecasting and smart reordering for neighbourhood stores">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <svg class="logo" viewBox="0 0 32 32" aria-hidden="true">
+      <rect x="2" y="2" width="28" height="28" rx="7" fill="var(--brand)"/>
+      <path d="M8 21.5 L13 16.5 L17 19.5 L24 11" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M19.5 11 H24 V15.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div>
+      <h1>StockSense</h1>
+      <p class="tagline">Demand forecasting and smart reordering for neighbourhood stores</p>
+    </div>
+  </div>
+  <div class="actions">
+    <span class="data-badge" id="dataBadge">Loading…</span>
+    <button class="btn primary" id="btnDemo" type="button" title="Reload the deterministic demo store">▶ Load demo data</button>
+    <label class="btn" for="fileInput" title="Upload date,sku,qty CSV">⇪ Upload CSV</label>
+    <input type="file" id="fileInput" accept=".csv,text/csv" hidden>
+    <button class="btn icon" id="btnTheme" type="button" aria-label="Toggle light/dark theme" title="Toggle theme"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/></svg></button>
+  </div>
+</header>
+
+<nav class="tabs" id="tabs" role="tablist">
+  <button role="tab" data-tab="overview" class="active">Overview</button>
+  <button role="tab" data-tab="reorder">Reorder today <span class="pill" id="tabReorderCount"></span></button>
+  <button role="tab" data-tab="sku">SKU explorer</button>
+  <button role="tab" data-tab="abc">ABC–XYZ</button>
+  <button role="tab" data-tab="basket">Basket insights</button>
+  <button role="tab" data-tab="sim">Simulation</button>
+  <button role="tab" data-tab="data">Data &amp; method</button>
+</nav>
+
+<main>
+  <!-- ============================== OVERVIEW -->
+  <section class="view active" id="view-overview">
+    <div class="kpis" id="kpis"></div>
+    <div class="grid g-2-1">
+      <div class="card fill">
+        <div class="card-head">
+          <div><h2>Store sales &amp; 28-day forecast</h2>
+            <p class="sub" id="trendSub">Daily revenue, best model per SKU summed, 80% band</p></div>
+          <div class="legend" id="trendLegend"></div>
+        </div>
+        <div class="chart" id="trendChart" style="min-height:300px"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h2>Reorder now</h2><p class="sub" id="reorderTopSub">Highest rupee risk first</p></div>
+          <button class="link" data-goto="reorder" type="button">Full list →</button></div>
+        <ul class="top-list" id="reorderTop"></ul>
+      </div>
+    </div>
+    <div class="grid g-3">
+      <div class="card" id="festCard">
+        <div class="card-head"><div><h2>Festival planner</h2><p class="sub" id="festSub">Learned from last year's sales</p></div></div>
+        <div id="festBody"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h2>Model leaderboard</h2><p class="sub">Wins per model after rolling backtests</p></div>
+          <button class="link" data-goto="sku" type="button">Per SKU →</button></div>
+        <div id="lbSummary"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h2>Gut feel vs StockSense</h2><p class="sub" id="simHeadSub">Last 90 days replayed</p></div>
+          <button class="link" data-goto="sim" type="button">Details →</button></div>
+        <div id="simHead"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== REORDER -->
+  <section class="view" id="view-reorder">
+    <div class="toolbar">
+      <div class="slider-box">
+        <label for="slService">Target service level <strong id="slServiceVal">95.0%</strong></label>
+        <input type="range" id="slService" min="80" max="99.9" step="0.1" value="95">
+        <span class="hint">z = <span id="zVal">1.645</span> · cost-optimal ≈ <span id="optVal">–</span></span>
+      </div>
+      <div class="seg" id="reorderFilter" role="group" aria-label="Filter">
+        <button data-f="need" class="active" type="button">Needs order</button>
+        <button data-f="urgent" type="button">Urgent</button>
+        <button data-f="overstock" type="button">Overstock</button>
+        <button data-f="all" type="button">All</button>
+      </div>
+      <input class="search" id="reorderSearch" type="search" placeholder="Search SKU…" aria-label="Search SKU">
+      <button class="btn" id="btnExport" type="button">⇩ Order list CSV</button>
+    </div>
+    <div class="kpis small" id="reorderTotals"></div>
+    <div class="grid g-2-1">
+      <div class="card">
+        <div class="card-head"><div><h2>What if: service level vs cost</h2>
+          <p class="sub">Yearly cost of safety stock vs expected lost margin, all SKUs · drag the slider above</p></div>
+          <div class="legend" id="whatifLegend"></div></div>
+        <div class="chart" id="whatifChart" style="height:250px"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h2>Service level, explained</h2><p class="sub">Probability of not running out before the next delivery</p></div></div>
+        <p class="explain" id="whatifExplain" style="margin-top:0"></p>
+        <div class="table-wrap"><table class="tbl" id="whatifTable"></table></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div><h2>Today's reorder list</h2><p class="sub" id="reorderSub"></p></div></div>
+      <div class="table-wrap"><table class="tbl" id="reorderTable"></table></div>
+    </div>
+  </section>
+
+  <!-- ============================== SKU EXPLORER -->
+  <section class="view" id="view-sku">
+    <div class="toolbar">
+      <button class="btn icon" id="skuPrev" type="button" aria-label="Previous SKU">‹</button>
+      <select id="skuSelect" aria-label="Choose SKU"></select>
+      <button class="btn icon" id="skuNext" type="button" aria-label="Next SKU">›</button>
+      <div class="chips" id="skuChips"></div>
+    </div>
+    <div class="grid g-2-1">
+      <div class="card">
+        <div class="card-head"><div><h2 id="skuTitle">–</h2><p class="sub" id="skuSub"></p></div>
+          <div class="legend toggles" id="skuLegend"></div></div>
+        <div class="chart" id="skuChart" style="height:300px"></div>
+        <p class="explain" id="skuWhy"></p>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h2>Backtest leaderboard</h2><p class="sub" id="foldSub"></p></div></div>
+        <div id="skuLeaderboard"></div>
+        <div id="foldViz" class="folds"></div>
+      </div>
+    </div>
+    <div class="grid g-3">
+      <div class="card"><div class="card-head"><div><h2>Reorder maths</h2><p class="sub">Every number traceable</p></div></div>
+        <div id="skuPolicy"></div></div>
+      <div class="card"><div class="card-head"><div><h2>What drives demand</h2><p class="sub">Learned festival uplift &amp; regression effects</p></div></div>
+        <div id="skuDrivers"></div></div>
+      <div class="card"><div class="card-head"><div><h2>Frequently bought together</h2><p class="sub">Apriori rules where this SKU is the trigger</p></div></div>
+        <div id="skuBasket"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div><h2>Last 90 days replayed for this SKU</h2><p class="sub" id="skuSimSub"></p></div>
+        <div class="legend" id="skuSimLegend"></div></div>
+      <div class="chart" id="skuSimChart" style="height:220px"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div><h2>All SKUs: backtest sMAPE by model</h2><p class="sub" id="lbMethod"></p></div></div>
+      <div class="table-wrap"><table class="tbl" id="lbTable"></table></div>
+    </div>
+  </section>
+
+  <!-- ============================== ABC-XYZ -->
+  <section class="view" id="view-abc">
+    <div class="grid g-2-1">
+      <div class="card">
+        <div class="card-head"><div><h2>ABC–XYZ matrix</h2>
+          <p class="sub">Rows: revenue Pareto (A = top 80%). Columns: weekly demand variability (CV).</p></div></div>
+        <div class="matrix" id="abcMatrix"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h2>Pareto curve</h2><p class="sub">Cumulative revenue share by SKU rank</p></div></div>
+        <div class="chart" id="paretoChart" style="height:260px"></div>
+        <div id="cellDetail" class="cell-detail"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== BASKET -->
+  <section class="view" id="view-basket">
+    <div class="toolbar">
+      <div class="slider-box"><label for="slSupport">Min support <strong id="slSupportVal">2.0%</strong></label>
+        <input type="range" id="slSupport" min="1" max="8" step="0.5" value="2"></div>
+      <div class="slider-box"><label for="slConf">Min confidence <strong id="slConfVal">30%</strong></label>
+        <input type="range" id="slConf" min="10" max="90" step="5" value="30"></div>
+      <span class="hint" id="basketInfo"></span>
+    </div>
+    <div class="grid g-1-2">
+      <div class="card"><div class="card-head"><div><h2>Shelf &amp; bundle suggestions</h2><p class="sub">Each backed by the rule that fired</p></div></div>
+        <div id="suggestions"></div></div>
+      <div class="card"><div class="card-head"><div><h2>Association rules</h2><p class="sub">Sorted by lift (how many times likelier than chance)</p></div>
+        <input class="search" id="ruleSearch" type="search" placeholder="Filter rules…" aria-label="Filter rules"></div>
+        <div class="table-wrap tall"><table class="tbl" id="rulesTable"></table></div></div>
+    </div>
+  </section>
+
+  <!-- ============================== SIMULATION -->
+  <section class="view" id="view-sim">
+    <p class="lede" id="simLede"></p>
+    <div class="compare" id="simCompare"></div>
+    <div class="grid g-1-2">
+      <div class="card"><div class="card-head"><div><h2>Where the money goes</h2><p class="sub">90-day cost of running inventory (₹)</p></div></div>
+        <div class="legend" id="simCostLegend"></div>
+        <div id="simCost"></div>
+        <ul class="assumptions" id="simAssumptions"></ul></div>
+      <div class="card"><div class="card-head"><div><h2>Stock on hand, day by day</h2><p class="sub" id="simTrajSub"></p></div>
+        <select id="simSku" aria-label="SKU for trajectory"></select></div>
+        <div class="legend" id="simTrajLegend"></div>
+        <div class="chart" id="simTraj" style="height:260px"></div></div>
+    </div>
+    <div class="card"><div class="card-head"><div><h2>Per-SKU outcome</h2><p class="sub">Click a column to sort</p></div></div>
+      <div class="table-wrap"><table class="tbl" id="simTable"></table></div></div>
+  </section>
+
+  <!-- ============================== DATA & METHOD -->
+  <section class="view" id="view-data">
+    <div class="grid g-2">
+      <div class="card">
+        <div class="card-head"><div><h2>Use your own sales</h2><p class="sub">CSV with columns <code>date, sku, qty</code> (optional <code>stockout, promo, name, price, cost, lead_time, shelf_life, pack</code>)</p></div></div>
+        <div class="drop" id="dropZone" tabindex="0">
+          <strong>Drop a CSV here</strong> or <label for="fileInput" class="link">choose a file</label>
+          <p class="hint">At least 90 days · up to 60 SKUs · dates as YYYY-MM-DD or DD-MM-YYYY · no data leaves this laptop</p>
+        </div>
+        <p><a class="link" href="/api/sample.csv" download>⇩ Download a sample CSV (last 200 days of the demo store)</a></p>
+        <div id="uploadResult"></div>
+        <div id="dataWarnings"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h2>How StockSense decides</h2><p class="sub">Every step is plain Python you can read</p></div></div>
+        <ol class="pipeline">
+          <li><b>Clean</b> stock-out days (flagged, or detected when a zero is implausible: Poisson P(0) &lt; 1%) are imputed so censored sales don't drag forecasts down.</li>
+          <li><b>De-festival</b> last year's festival spikes are measured per SKU and divided out.</li>
+          <li><b>Forecast</b> with 4 models: seasonal naive, moving average, Holt-Winters (additive, weekly), regression (day-of-week + festival + promo).</li>
+          <li><b>Backtest</b> 4 rolling-origin folds × 14 days; the lowest sMAPE wins per SKU.</li>
+          <li><b>Re-apply</b> festival uplift for upcoming festivals (e.g. Diwali).</li>
+          <li><b>Optimise</b> safety stock z·σ, reorder point, EOQ, shelf-life cap, case-pack rounding.</li>
+          <li><b>Explain</b> every order with its numbers, risk and rupee impact.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h2>Assumptions</h2><p class="sub">All in <code>stocksense/config.py</code></p></div></div>
+        <div class="table-wrap"><table class="tbl" id="assumptionTable"></table></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h2>JSON API</h2><p class="sub">Everything on screen comes from these endpoints</p></div></div>
+        <div class="table-wrap"><table class="tbl mono" id="apiTable"></table></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">Built for QUANTIX 2K26 · KSRCE <span class="dot">·</span> <span id="footInfo">runs fully offline, Python standard library only</span></footer>
+<div class="tooltip" id="tooltip" role="status" aria-live="polite"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+{
+  "name": "StockSense",
+  "tagline": "Demand forecasting and smart reordering for neighbourhood stores",
+  "domain": "Data Science & Analytics",
+  "color": "#EA580C",
+  "problem": [
+    "Kiranas, pharmacies and canteens reorder by gut feel",
+    "Fast movers run out; customers walk to the next shop",
+    "Perishables expire; festival spikes are missed",
+    "Enterprise forecasting tools are costly, complex, online-only"
+  ],
+  "stats": [
+    {"value": "1 crore+", "label": "kirana stores in India (approx., widely cited estimate)"},
+    {"value": "~15%", "label": "demand lost to empty shelves under gut feel (demo replay)"},
+    {"value": "5-6x", "label": "Diwali-week sweets demand vs a normal day (demo data)"}
+  ],
+  "solution": [
+    "Upload date, sku, qty - get a morning reorder list",
+    "4 models backtested per SKU; the best one wins",
+    "Safety stock, reorder point, EOQ with shelf-life caps",
+    "Every order explained with risk and rupees at stake"
+  ],
+  "features": [
+    {"title": "Auto model selection", "desc": "Naive, moving avg, Holt-Winters, regression; rolling backtests pick the best"},
+    {"title": "Festival-aware", "desc": "Learns last Diwali/Pongal uplift per SKU and plans pre-orders"},
+    {"title": "Smart reorder list", "desc": "Qty, run-out risk, sales at risk and the maths behind each line"},
+    {"title": "What-if service level", "desc": "Slider shows holding cost vs lost margin and the optimum"},
+    {"title": "ABC-XYZ + basket rules", "desc": "Pareto x variability matrix and Apriori shelf/bundle advice"},
+    {"title": "90-day simulation", "desc": "Replays real demand: gut feel vs StockSense, side by side"}
+  ],
+  "architecture": [
+    "CSV / demo generator -> validate, detect + impute stock-outs",
+    "Festival layer -> learn uplift, de-festival, re-apply",
+    "4 forecasting models -> rolling-origin backtest -> best per SKU + sigma",
+    "Inventory engine -> safety stock, ROP, EOQ, perishable cap, risk in Rs",
+    "Simulator + ABC-XYZ + Apriori -> JSON API (stdlib http.server)",
+    "Vanilla JS dashboard -> hand-drawn SVG charts, light/dark, mobile"
+  ],
+  "algorithms": [
+    "Holt-Winters (additive, weekly, damped) - level, trend, weekday pattern",
+    "Ridge regression via Gaussian elimination - weekday, festival, promo effects",
+    "Rolling-origin backtesting - leak-free sMAPE/MAPE model selection",
+    "Acklam inverse normal - z-score for any service level",
+    "Safety stock z*sigma, ROP, EOQ sqrt(2DS/H) - reorder policy",
+    "Normal loss function G(z) - expected lost sales in rupees",
+    "ABC-XYZ - revenue Pareto x weekly demand CV",
+    "Apriori - support, confidence, lift basket rules"
+  ],
+  "tech": [
+    "Python 3 stdlib only",
+    "http.server JSON API",
+    "Vanilla HTML/CSS/JS",
+    "Hand-drawn SVG charts",
+    "Runs fully offline"
+  ],
+  "innovation": [
+    "Explainable: every order traces to forecast, sigma, z and EOQ",
+    "Honest evaluation: nested hold-out and leak-free simulation",
+    "Indian retail realism: festivals, case packs, perishables, stock-outs",
+    "Zero install, zero cloud: runs on a Rs 15k laptop"
+  ],
+  "results": [
+    {"value": "-41%", "label": "forecast error vs seasonal naive (WAPE 28.4% vs 47.9%, hold-out)"},
+    {"value": "309 -> 17", "label": "stock-out SKU-days in 90-day replay vs gut feel"},
+    {"value": "-49.5%", "label": "total inventory cost (holding+ordering+waste+lost margin)"},
+    {"value": "1.5 s", "label": "full analysis of 40 SKUs x 400 days on a laptop"}
+  ],
+  "demo_flow": [
+    "Load demo data: 40 SKUs, 13 months, Diwali in 19 days",
+    "Trend chart: forecast band with learned Diwali spike",
+    "Reorder today: urgent items, row explains ROP and EOQ",
+    "Drag service-level slider: cost trade-off and optimum",
+    "SKU explorer (Sweets): leaderboard, +577% Diwali uplift",
+    "Simulation: 309 -> 17 stock-out days, cost halved",
+    "ABC-XYZ and basket rules; upload your own CSV"
+  ],
+  "impact": [
+    "Fewer empty shelves: fill rate 84.9% -> 99.6% (demo replay)",
+    "Less food waste: 17% fewer expired units, fewer orders",
+    "Small shops compete with quick-commerce without big software",
+    "Data never leaves the shop; works without internet"
+  ],
+  "business": [
+    "Free offline single-store edition",
+    "Rs 199-499/month (indicative) multi-store + WhatsApp orders",
+    "White-label module for billing and distributor apps",
+    "Pilot with campus canteens and FMCG distributors"
+  ],
+  "future": [
+    "Direct billing-app and barcode integration",
+    "WhatsApp purchase orders per supplier with MOQs",
+    "Batch-level expiry tracking with markdown advice",
+    "Weather, exam and local-event demand features",
+    "Regional festival calendars and Tamil/Hindi UI"
+  ],
+  "port": 8012,
+  "dir": "projects/12-stocksense"
+}

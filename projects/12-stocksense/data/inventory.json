@@ -1,0 +1,162 @@
+{
+ "AGAR-STK": {
+  "on_hand": 18,
+  "on_order": 0
+ },
+ "ATTA-5": {
+  "on_hand": 76,
+  "on_order": 0
+ },
+ "BATT-AA": {
+  "on_hand": 17,
+  "on_order": 0
+ },
+ "BISC-CRM": {
+  "on_hand": 46,
+  "on_order": 0
+ },
+ "BISC-GLU": {
+  "on_hand": 2395,
+  "on_order": 0
+ },
+ "BREAD-400": {
+  "on_hand": 64,
+  "on_order": 0
+ },
+ "BUTTER-100": {
+  "on_hand": 2,
+  "on_order": 0
+ },
+ "CAMPH-50": {
+  "on_hand": 4,
+  "on_order": 0
+ },
+ "CHIPS-50": {
+  "on_hand": 1393,
+  "on_order": 0
+ },
+ "COFF-200": {
+  "on_hand": 227,
+  "on_order": 0
+ },
+ "COLA-750": {
+  "on_hand": 25,
+  "on_order": 0
+ },
+ "CURD-400": {
+  "on_hand": 24,
+  "on_order": 0
+ },
+ "DAL-TOOR1": {
+  "on_hand": 65,
+  "on_order": 0
+ },
+ "DETG-1": {
+  "on_hand": 12,
+  "on_order": 0
+ },
+ "DISH-BAR": {
+  "on_hand": 15,
+  "on_order": 0
+ },
+ "DRYF-250": {
+  "on_hand": 3,
+  "on_order": 0
+ },
+ "EGG-6": {
+  "on_hand": 119,
+  "on_order": 0
+ },
+ "GHEE-500": {
+  "on_hand": 21,
+  "on_order": 0
+ },
+ "HWASH-R": {
+  "on_hand": 1,
+  "on_order": 0
+ },
+ "JAGG-1": {
+  "on_hand": 24,
+  "on_order": 0
+ },
+ "JUICE-1L": {
+  "on_hand": 50,
+  "on_order": 0
+ },
+ "LAMP-OIL": {
+  "on_hand": 11,
+  "on_order": 0
+ },
+ "MILK-500": {
+  "on_hand": 27,
+  "on_order": 0
+ },
+ "MIXT-200": {
+  "on_hand": 42,
+  "on_order": 0
+ },
+ "MOSQ-COIL": {
+  "on_hand": 155,
+  "on_order": 0
+ },
+ "NOOD-70": {
+  "on_hand": 238,
+  "on_order": 0
+ },
+ "OIL-GN1": {
+  "on_hand": 50,
+  "on_order": 0
+ },
+ "OIL-SUN1": {
+  "on_hand": 341,
+  "on_order": 0
+ },
+ "PANEER-200": {
+  "on_hand": 23,
+  "on_order": 0
+ },
+ "PASTE-150": {
+  "on_hand": 81,
+  "on_order": 0
+ },
+ "RAVA-500": {
+  "on_hand": 134,
+  "on_order": 0
+ },
+ "RICE-PON5": {
+  "on_hand": 15,
+  "on_order": 0
+ },
+ "RUSK-300": {
+  "on_hand": 81,
+  "on_order": 0
+ },
+ "SALT-1": {
+  "on_hand": 74,
+  "on_order": 0
+ },
+ "SHAMP-180": {
+  "on_hand": 50,
+  "on_order": 0
+ },
+ "SOAP-100": {
+  "on_hand": 49,
+  "on_order": 0
+ },
+ "SUGAR-1": {
+  "on_hand": 52,
+  "on_order": 0
+ },
+ "SWEET-500": {
+  "on_hand": 1,
+  "on_order": 0
+ },
+ "TEA-250": {
+  "on_hand": 105,
+  "on_order": 0
+ },
+ "WATER-1L": {
+  "on_hand": 74,
+  "on_order": 0
+ }
+}
