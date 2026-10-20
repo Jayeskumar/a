@@ -40,16 +40,16 @@ the faculty coordinator** (Mr. Gopinath V, AI&DS) or a student coordinator liste
 Being upfront about this protects the team. Judges respect honesty, and a disqualification costs far
 more than any head start gains.
 
-## 3. The portfolio: 13 prototypes, every domain covered
+## 3. The portfolio: 19 prototypes, every domain covered
 
-| Domain | Lead project | Backup project | Why the lead wins |
+| Domain | Lead project | Backup projects | Why the lead wins |
 |---|---|---|---|
-| AI & ML | **StudyPilot** (01): offline study companion | **ResumeRadar** (08): fair resume screening | Every student judge "gets" it instantly; the AI runs with no API keys |
-| Sustainability | **WattWise** (02): campus energy & carbon copilot | **WasteWise** (09): smart bins + route optimisation | Uses the judges' own campus as the story; ₹ and CO₂ savings on screen |
-| HealthTech | **PulseGuard** (03): NEWS2 early-warning ward | **BloodLink** (10): emergency donor matching | A real clinical standard (RCP NEWS2), a live simulation and a lead-time metric |
-| Cyber & Blockchain | **CertChain** (04): tamper-proof certificates | **PhishGuard** (07) scam detector · **LogSentinel** (13) log SOC | The tamper demo is theatrical; crypto from scratch is checked against the RFC 8032 vectors |
-| AgriTech & Rural | **KrishiMitra** (05): Tamil/English farm advisor | **SchemeSetu** (11): welfare-scheme matcher | Local relevance (Tiruchengode farms, Tamil voice); four decisions in one plan |
-| Data Science | **PlaceIQ** (06): placement analytics | **StockSense** (12): retail demand forecasting | Matches the sponsor's pre-placement theme; tells each student what to fix next |
+| AI & ML | **StudyPilot** (01): offline study companion | **ResumeRadar** (08) fair resume screening · **NeuroCanvas** (14) neural-net explainer | Every student judge "gets" it instantly; the AI runs with no API keys |
+| Sustainability | **WattWise** (02): campus energy & carbon copilot | **WasteWise** (09) smart bins + routing · **AirSense** (15) hyperlocal AQI | Uses the judges' own campus as the story; ₹ and CO₂ savings on screen |
+| HealthTech | **PulseGuard** (03): NEWS2 early-warning ward | **BloodLink** (10) donor matching · **MindEase** (16) student wellbeing | A real clinical standard (RCP NEWS2), a live simulation and a lead-time metric |
+| Cyber & Blockchain | **CertChain** (04): tamper-proof certificates | **PhishGuard** (07) scam detector · **LogSentinel** (13) log SOC · **CampusVote** (17) verifiable e-voting | The tamper demo is theatrical; crypto from scratch is checked against the RFC 8032 vectors |
+| AgriTech & Rural | **KrishiMitra** (05): Tamil/English farm advisor | **SchemeSetu** (11) welfare schemes · **AgriSky** (18) drone crop health | Local relevance (Tiruchengode farms, Tamil voice); four decisions in one plan |
+| Data Science | **PlaceIQ** (06): placement analytics | **StockSense** (12) retail forecasting · **CivicLens** (19) complaint triage | Matches the sponsor's pre-placement theme; tells each student what to fix next |
 
 **If only one project can be pitched as open innovation, pick PulseGuard or CertChain.** They have the
 strongest "wow" moment (a patient tile turning red before the threshold; a chain breaking live), are
@@ -73,6 +73,12 @@ judges value local or social impact most.
 | rural citizens, government schemes, e-governance, accessibility | SchemeSetu (11) |
 | analytics dashboards, prediction, education data | PlaceIQ (06) |
 | retail, inventory, sales forecasting, MSMEs | StockSense (12) |
+| neural networks, computer vision, AI education | NeuroCanvas (14) |
+| air pollution, AQI, IoT sensors, smart city environment | AirSense (15) |
+| mental health, student wellbeing, counselling | MindEase (16) |
+| e-voting, elections, transparency, anonymity | CampusVote (17) |
+| drones, remote sensing, precision agriculture, pesticides | AgriSky (18) |
+| grievances, e-governance, citizen services, municipal analytics | CivicLens (19) |
 
 Most of the code generalises. For example, CertChain's ledger works for land records or drug
 batches, and StockSense's forecaster works for hospital consumables.

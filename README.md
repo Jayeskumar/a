@@ -1,10 +1,10 @@
-# QUANTIX 2K26: 13 hackathon-ready prototypes
+# QUANTIX 2K26: 19 hackathon-ready prototypes
 
 [![tests](https://github.com/jayeskumar/a/actions/workflows/tests.yml/badge.svg)](https://github.com/jayeskumar/a/actions/workflows/tests.yml)
 
 Working prototypes, reports and pitch decks for **QUANTIX 2K26**, the 24-hour hackathon at
-K.S.R. College of Engineering (23–24 Oct 2026). All six hackathon domains are covered, with two or
-three projects each.
+K.S.R. College of Engineering (23–24 Oct 2026). All six hackathon domains are covered, with three or
+four projects each.
 
 Every project is **offline-first and zero-install**: Python 3.9+ standard library only, vanilla
 HTML/JS with hand-drawn SVG charts, and no CDNs or network calls. Every ML, statistics and crypto
@@ -18,25 +18,43 @@ algorithm is written from scratch, unit-tested and measured.
 |---|---|---|---|---|
 | 01 | [StudyPilot](projects/01-studypilot/) | AI & ML | Offline study companion: TextRank summaries, auto-quizzes, SM-2 flashcards, BM25 Q&A over your notes | 8001 |
 | 08 | [ResumeRadar](projects/08-resumeradar/) | AI & ML | Explainable resume ↔ JD matching, blind (bias-free) screening, skill-gap learning paths | 8008 |
+| 14 | [NeuroCanvas](projects/14-neurocanvas/) | AI & ML | Draw a digit and watch a from-scratch neural network think: activations, saliency, live training | 8014 |
 | 02 | [WattWise](projects/02-wattwise/) | Sustainability | Campus energy forecasting, waste detection, carbon accounting, rooftop-solar ROI | 8002 |
 | 09 | [WasteWise](projects/09-wastewise/) | Sustainability | Smart-bin fill forecasting plus Clarke-Wright / 2-opt collection routing | 8009 |
+| 15 | [AirSense](projects/15-airsense/) | Sustainability | Hyperlocal CPCB AQI from calibrated low-cost sensors, kriging maps, 24 h forecasts, source hints | 8015 |
 | 03 | [PulseGuard](projects/03-pulseguard/) | HealthTech | NEWS2 early-warning ward monitor with trend-based alerts | 8003 |
 | 10 | [BloodLink](projects/10-bloodlink/) | HealthTech | Emergency blood-donor matching, blood-bank FEFO stock and transfer suggestions | 8010 |
+| 16 | [MindEase](projects/16-mindease/) | HealthTech | Private student-wellbeing companion: PHQ-9/GAD-7, mood trends, safety net, counsellor view | 8016 |
 | 04 | [CertChain](projects/04-certchain/) | Cyber & Blockchain | Tamper-proof certificates: pure-Python Ed25519, Merkle proofs, signed PoW chain, QR | 8004 |
 | 07 | [PhishGuard](projects/07-phishguard/) | Cyber & Blockchain | Explainable scam-SMS and phishing-link detector built for Indian scams | 8007 |
 | 13 | [LogSentinel](projects/13-logsentinel/) | Cyber & Blockchain | Pocket SOC: detects brute force, SQLi/XSS and scans in logs, mapped to MITRE ATT&CK | 8013 |
+| 17 | [CampusVote](projects/17-campusvote/) | Cyber & Blockchain | Verifiable anonymous e-voting: RSA blind signatures, commitments, hash-chained bulletin board | 8017 |
 | 05 | [KrishiMitra](projects/05-krishimitra/) | AgriTech | Tamil/English farm advisor: crop ML, fertiliser, FAO-56 irrigation, market timing | 8005 |
 | 11 | [SchemeSetu](projects/11-schemesetu/) | AgriTech & Rural | Welfare-scheme eligibility engine with an adaptive questionnaire, in Tamil/English | 8011 |
+| 18 | [AgriSky](projects/18-agrisky/) | AgriTech | Drone NDVI crop-health maps, stress diagnosis, variable-rate prescriptions, spray missions | 8018 |
 | 06 | [PlaceIQ](projects/06-placeiq/) | Data Science | Placement prediction plus a minimum-effort "what to fix next" plan for each student | 8006 |
 | 12 | [StockSense](projects/12-stocksense/) | Data Science | Retail demand forecasting, safety stock / EOQ, ABC-XYZ, Apriori basket analysis | 8012 |
+| 19 | [CivicLens](projects/19-civiclens/) | Data Science | Citizen-complaint triage in English/Tamil/Tanglish: routing, urgency, duplicates, hotspots, SLA | 8019 |
 
 Measured results for every project are in [`docs/PORTFOLIO.md`](docs/PORTFOLIO.md).
+
+## Gallery
+
+<table>
+<tr><td align="center" width="33%"><a href="projects/01-studypilot/"><img src="projects/01-studypilot/docs/screenshot.png" alt="studypilot" width="100%"></a><br><sub><b>01</b> · <a href="projects/01-studypilot/REPORT.md">report</a></sub></td><td align="center" width="33%"><a href="projects/08-resumeradar/"><img src="projects/08-resumeradar/docs/screenshot.png" alt="resumeradar" width="100%"></a><br><sub><b>08</b> · <a href="projects/08-resumeradar/REPORT.md">report</a></sub></td><td align="center" width="33%"><a href="projects/14-neurocanvas/"><img src="projects/14-neurocanvas/docs/screenshot.png" alt="neurocanvas" width="100%"></a><br><sub><b>14</b> · <a href="projects/14-neurocanvas/REPORT.md">report</a></sub></td></tr>
+<tr><td align="center" width="33%"><a href="projects/02-wattwise/"><img src="projects/02-wattwise/docs/screenshot.png" alt="wattwise" width="100%"></a><br><sub><b>02</b> · <a href="projects/02-wattwise/REPORT.md">report</a></sub></td><td align="center" width="33%"><a href="projects/09-wastewise/"><img src="projects/09-wastewise/docs/screenshot.png" alt="wastewise" width="100%"></a><br><sub><b>09</b> · <a href="projects/09-wastewise/REPORT.md">report</a></sub></td><td align="center" width="33%"><a href="projects/15-airsense/"><img src="projects/15-airsense/docs/screenshot.png" alt="airsense" width="100%"></a><br><sub><b>15</b> · <a href="projects/15-airsense/REPORT.md">report</a></sub></td></tr>
+<tr><td align="center" width="33%"><a href="projects/03-pulseguard/"><img src="projects/03-pulseguard/docs/screenshot.png" alt="pulseguard" width="100%"></a><br><sub><b>03</b> · <a href="projects/03-pulseguard/REPORT.md">report</a></sub></td><td align="center" width="33%"><a href="projects/10-bloodlink/"><img src="projects/10-bloodlink/docs/screenshot.png" alt="bloodlink" width="100%"></a><br><sub><b>10</b> · <a href="projects/10-bloodlink/REPORT.md">report</a></sub></td><td align="center" width="33%"><a href="projects/16-mindease/"><img src="projects/16-mindease/docs/screenshot.png" alt="mindease" width="100%"></a><br><sub><b>16</b> · <a href="projects/16-mindease/REPORT.md">report</a></sub></td></tr>
+<tr><td align="center" width="33%"><a href="projects/04-certchain/"><img src="projects/04-certchain/docs/screenshot.png" alt="certchain" width="100%"></a><br><sub><b>04</b> · <a href="projects/04-certchain/REPORT.md">report</a></sub></td><td align="center" width="33%"><a href="projects/07-phishguard/"><img src="projects/07-phishguard/docs/screenshot.png" alt="phishguard" width="100%"></a><br><sub><b>07</b> · <a href="projects/07-phishguard/REPORT.md">report</a></sub></td><td align="center" width="33%"><a href="projects/13-logsentinel/"><img src="projects/13-logsentinel/docs/screenshot.png" alt="logsentinel" width="100%"></a><br><sub><b>13</b> · <a href="projects/13-logsentinel/REPORT.md">report</a></sub></td></tr>
+<tr><td align="center" width="33%"><a href="projects/17-campusvote/"><img src="projects/17-campusvote/docs/screenshot.png" alt="campusvote" width="100%"></a><br><sub><b>17</b> · <a href="projects/17-campusvote/REPORT.md">report</a></sub></td><td align="center" width="33%"><a href="projects/05-krishimitra/"><img src="projects/05-krishimitra/docs/screenshot.png" alt="krishimitra" width="100%"></a><br><sub><b>05</b> · <a href="projects/05-krishimitra/REPORT.md">report</a></sub></td><td align="center" width="33%"><a href="projects/11-schemesetu/"><img src="projects/11-schemesetu/docs/screenshot.png" alt="schemesetu" width="100%"></a><br><sub><b>11</b> · <a href="projects/11-schemesetu/REPORT.md">report</a></sub></td></tr>
+<tr><td align="center" width="33%"><a href="projects/18-agrisky/"><img src="projects/18-agrisky/docs/screenshot.png" alt="agrisky" width="100%"></a><br><sub><b>18</b> · <a href="projects/18-agrisky/REPORT.md">report</a></sub></td><td align="center" width="33%"><a href="projects/06-placeiq/"><img src="projects/06-placeiq/docs/screenshot.png" alt="placeiq" width="100%"></a><br><sub><b>06</b> · <a href="projects/06-placeiq/REPORT.md">report</a></sub></td><td align="center" width="33%"><a href="projects/12-stocksense/"><img src="projects/12-stocksense/docs/screenshot.png" alt="stocksense" width="100%"></a><br><sub><b>12</b> · <a href="projects/12-stocksense/REPORT.md">report</a></sub></td></tr>
+<tr><td align="center" width="33%"><a href="projects/19-civiclens/"><img src="projects/19-civiclens/docs/screenshot.png" alt="civiclens" width="100%"></a><br><sub><b>19</b> · <a href="projects/19-civiclens/REPORT.md">report</a></sub></td></tr>
+</table>
 
 ## Quick start
 
 ```bash
 cd projects/03-pulseguard && python app.py      # one project → http://127.0.0.1:8003
-python run_all.py                               # every project at once
+python run_all.py                               # every project at once + showcase hub on :8000
 python run_all.py --lan                         # bind 0.0.0.0 so judges can open demos on their phones
 python tools/run_tests.py                       # every project's unit tests
 ```
@@ -47,6 +65,7 @@ python tools/run_tests.py                       # every project's unit tests
 projects/NN-name/     app.py · <package>/ (pure logic) · static/ · data/ · tests/ · docs/screenshot.png
                       README.md · REPORT.md (15-section hackathon report) · pitch.json (deck content)
 decks/                one generated .pptx pitch deck per project (11 slides, with speaker notes)
+hub/                  showcase page served on :8000 by run_all.py
 docs/STRATEGY.md      how to win: rules, domain picks, 24 h plan, checklists, Q&A
 docs/PORTFOLIO.md     generated summary of every project and its measured results
 docs/BUILD_SPEC.md    the conventions every project follows
